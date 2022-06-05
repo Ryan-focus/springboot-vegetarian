@@ -1,6 +1,7 @@
 package com.eeit45.champion.vegetarian.service.impl;
 
 import com.eeit45.champion.vegetarian.dao.ProductDao;
+import com.eeit45.champion.vegetarian.dto.ProductRequest;
 import com.eeit45.champion.vegetarian.model.Product;
 import com.eeit45.champion.vegetarian.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,5 +16,10 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product getProductById(Integer productId) {
         return productDao.getProductById(productId);
+    }
+
+    @Override
+    public Integer createProduct(ProductRequest productRequest) {
+        return productDao.createProduct(productRequest);
     }
 }

@@ -1,11 +1,15 @@
 package com.eeit45.champion.vegetarian.dao.impl;
 
 import com.eeit45.champion.vegetarian.dao.ProductDao;
+import com.eeit45.champion.vegetarian.dto.ProductRequest;
 import com.eeit45.champion.vegetarian.model.Product;
 import com.eeit45.champion.vegetarian.rowmapper.ProductRowMapper;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -31,5 +35,25 @@ public class ProductDaoImpl implements ProductDao {
         }else{
             return null;
         }
+    }
+
+    @Override
+    public Integer createProduct(ProductRequest productRequest) {
+        String sql = "INSERT INTO products ( name, category, price, image) " +
+                     "VALUES (:productName, :productCategory, :price, :imageUrl)";
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("productName",productRequest.getProductName());
+        map.put("productCategory",productRequest.getProductCategory().toString());
+        map.put("price",productRequest.getPrice());
+        map.put("imageUrl",productRequest.getImageUrl());
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        namedParameterJdbcTemplate.update(sql,new MapSqlParameterSource(map), keyHolder);
+
+        int productId = keyHolder.getKey().intValue();
+
+        return productId;
     }
 }

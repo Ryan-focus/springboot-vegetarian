@@ -20,7 +20,6 @@ public class ProductRowMapper implements RowMapper<Product> {
         ProductCategory category = ProductCategory.valueOf(categoryStr);
         product.setProductCategory(category);
 
-
         product.setPrice(rs.getInt("price"));
         product.setImageUrl(rs.getString("image"));
 
