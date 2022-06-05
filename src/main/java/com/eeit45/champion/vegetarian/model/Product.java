@@ -1,9 +1,11 @@
 package com.eeit45.champion.vegetarian.model;
 
+import com.eeit45.champion.vegetarian.constant.ProductCategory;
+
 public class Product {
     private Integer productId;
     private String productName;
-    private String productCategory;
+    private ProductCategory productCategory;
     private Integer price;
     private String imageUrl;
 
@@ -23,11 +25,11 @@ public class Product {
         this.productName = productName;
     }
 
-    public String getProductCategory() {
+    public ProductCategory getProductCategory() {
         return productCategory;
     }
 
-    public void setProductCategory(String productCategory) {
+    public void setProductCategory(ProductCategory productCategory) {
         this.productCategory = productCategory;
     }
 

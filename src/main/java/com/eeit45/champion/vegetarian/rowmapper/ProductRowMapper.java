@@ -1,5 +1,6 @@
 package com.eeit45.champion.vegetarian.rowmapper;
 
+import com.eeit45.champion.vegetarian.constant.ProductCategory;
 import com.eeit45.champion.vegetarian.dao.ProductDao;
 import com.eeit45.champion.vegetarian.model.Product;
 import org.springframework.jdbc.core.RowMapper;
@@ -14,7 +15,12 @@ public class ProductRowMapper implements RowMapper<Product> {
 
         product.setProductId(rs.getInt("id"));
         product.setProductName(rs.getString("name"));
-        product.setProductCategory(rs.getString("category"));
+
+        String categoryStr = rs.getString("category");
+        ProductCategory category = ProductCategory.valueOf(categoryStr);
+        product.setProductCategory(category);
+
+
         product.setPrice(rs.getInt("price"));
         product.setImageUrl(rs.getString("image"));
 
