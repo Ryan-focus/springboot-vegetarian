@@ -1,6 +1,7 @@
 package com.eeit45.champion.vegetarian.controller;
 
 import com.eeit45.champion.vegetarian.constant.ProductCategory;
+import com.eeit45.champion.vegetarian.dto.ProductQueryParams;
 import com.eeit45.champion.vegetarian.dto.ProductRequest;
 import com.eeit45.champion.vegetarian.model.Product;
 import com.eeit45.champion.vegetarian.service.ProductService;
@@ -23,7 +24,11 @@ public class ProductController {
            @RequestParam(required = false) ProductCategory category,
            @RequestParam(required = false) String search
     ){
-        List<Product> productList =  productService.getProducts(category,search);
+        ProductQueryParams productQueryParams = new ProductQueryParams();
+        productQueryParams.setCategory(category);
+        productQueryParams.setSearch(search);
+
+        List<Product> productList =  productService.getProducts(productQueryParams);
 
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }
