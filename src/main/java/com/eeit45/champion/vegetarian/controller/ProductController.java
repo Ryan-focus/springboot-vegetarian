@@ -8,11 +8,15 @@ import com.eeit45.champion.vegetarian.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import java.util.List;
 
+@Validated
 @RestController
 public class ProductController {
 
@@ -22,17 +26,22 @@ public class ProductController {
     @GetMapping("/products")
     public ResponseEntity<List<Product>> getProducts(
             //Filtering
-           @RequestParam(required = false) ProductCategory category,
-           @RequestParam(required = false) String search,
-           //Sorting
-           @RequestParam(defaultValue = "Id") String orderBy,
-           @RequestParam(defaultValue = "desc") String sorting
+            @RequestParam(required = false) ProductCategory category,
+            @RequestParam(required = false) String search,
+            //Sorting
+            @RequestParam(defaultValue = "Id") String orderBy,
+            @RequestParam(defaultValue = "desc") String sorting,
+            //Pagination
+            @RequestParam(defaultValue = "0")@Min(0) Integer limit,
+            @RequestParam(defaultValue = "3")@Max(100) @Min(1) Integer offset
     ){
         ProductQueryParams productQueryParams = new ProductQueryParams();
         productQueryParams.setCategory(category);
         productQueryParams.setSearch(search);
         productQueryParams.setOrderBy(orderBy);
         productQueryParams.setSorting(sorting);
+        productQueryParams.setLimit(limit);
+        productQueryParams.setOffset(offset);
 
         List<Product> productList =  productService.getProducts(productQueryParams);
 
