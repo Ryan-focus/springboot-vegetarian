@@ -1,5 +1,6 @@
 package com.eeit45.champion.vegetarian.service.impl;
 
+import com.eeit45.champion.vegetarian.constant.ProductCategory;
 import com.eeit45.champion.vegetarian.dao.ProductDao;
 import com.eeit45.champion.vegetarian.dto.ProductRequest;
 import com.eeit45.champion.vegetarian.model.Product;
@@ -16,8 +17,9 @@ public class ProductServiceImpl implements ProductService {
     private ProductDao productDao;
 
     @Override
-    public List<Product> getProducts() {
-        return productDao.getProducts();
+    public List<Product> getProducts(ProductCategory category,
+                                     String search) {
+        return productDao.getProducts(category,search);
     }
 
     @Override

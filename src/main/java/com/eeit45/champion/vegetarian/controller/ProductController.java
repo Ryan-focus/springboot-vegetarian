@@ -1,5 +1,6 @@
 package com.eeit45.champion.vegetarian.controller;
 
+import com.eeit45.champion.vegetarian.constant.ProductCategory;
 import com.eeit45.champion.vegetarian.dto.ProductRequest;
 import com.eeit45.champion.vegetarian.model.Product;
 import com.eeit45.champion.vegetarian.service.ProductService;
@@ -18,8 +19,11 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(){
-        List<Product> productList =  productService.getProducts();
+    public ResponseEntity<List<Product>> getProducts(
+           @RequestParam(required = false) ProductCategory category,
+           @RequestParam(required = false) String search
+    ){
+        List<Product> productList =  productService.getProducts(category,search);
 
         return ResponseEntity.status(HttpStatus.OK).body(productList);
     }

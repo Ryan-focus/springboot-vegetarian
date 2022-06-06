@@ -1,5 +1,6 @@
 package com.eeit45.champion.vegetarian.dao.impl;
 
+import com.eeit45.champion.vegetarian.constant.ProductCategory;
 import com.eeit45.champion.vegetarian.dao.ProductDao;
 import com.eeit45.champion.vegetarian.dto.ProductRequest;
 import com.eeit45.champion.vegetarian.model.Product;
@@ -23,10 +24,21 @@ public class ProductDaoImpl implements ProductDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public List<Product> getProducts() {
-        String sql = "SELECT * FROM products";
+    public List<Product> getProducts(ProductCategory category,
+                                     String search) {
+        String sql = "SELECT * FROM products WHERE 1=1";
 
         Map<String,Object> map = new HashMap<>();
+
+        if(category != null){
+            sql = sql + " AND category = :category";
+            map.put("category", category.name());
+        }
+
+        if(search != null){
+            sql = sql + " AND name LIKE :search";
+            map.put("search", "%" + search + "%");
+        }
 
         List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
 
