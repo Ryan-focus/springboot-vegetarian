@@ -28,6 +28,8 @@ public class ProductRowMapper implements RowMapper<Product> {
         product.setPrice(rs.getInt("price"));
         product.setImageUrl(rs.getString("image"));
 
+        product.setDescription(rs.getString("description"));
+
         //日期處理輸出
         Timestamp createdTime = rs.getTimestamp("createdTime");
         product.setCreatedTime(createdTime);

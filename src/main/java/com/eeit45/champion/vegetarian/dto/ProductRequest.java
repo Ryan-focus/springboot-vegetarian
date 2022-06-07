@@ -24,6 +24,8 @@ public class ProductRequest {
 
     private DateTimeFormatter updatedTime;
 
+    private String description;
+
     public String getProductName() {
         return productName;
     }
