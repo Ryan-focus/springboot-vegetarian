@@ -6,6 +6,8 @@ import com.eeit45.champion.vegetarian.dto.ProductQueryParams;
 import com.eeit45.champion.vegetarian.dto.ProductRequest;
 import com.eeit45.champion.vegetarian.model.Product;
 import com.eeit45.champion.vegetarian.service.ProductService;
+import com.eeit45.champion.vegetarian.util.Page;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,17 +27,17 @@ public class ProductController {
     private ProductService productService;
 
     @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts(
+    public ResponseEntity<Page<Product>> getProducts(
             //Filtering
             @RequestParam(required = false) ProductCategory category,
             @RequestParam(required = false) VeganCategory veganCategory,
             @RequestParam(required = false) String search,
             //Sorting
-            @RequestParam(defaultValue = "Id") String orderBy,
+            @RequestParam(defaultValue = "updatedTime") String orderBy,
             @RequestParam(defaultValue = "desc") String sorting,
             //Pagination
             @RequestParam(defaultValue = "5")@Max(100) @Min(0) Integer limit,
-            @RequestParam(defaultValue = "1")@Min(0) Integer offset
+            @RequestParam(defaultValue = "0")@Min(0) Integer offset
     ){
         ProductQueryParams productQueryParams = new ProductQueryParams();
         productQueryParams.setCategory(category);
@@ -46,9 +48,20 @@ public class ProductController {
         productQueryParams.setLimit(limit);
         productQueryParams.setOffset(offset);
 
+        //GET product list
         List<Product> productList =  productService.getProducts(productQueryParams);
 
-        return ResponseEntity.status(HttpStatus.OK).body(productList);
+        //GET product total
+        Integer total = productService.totalProduct(productQueryParams);
+
+        //分頁
+        Page<Product> page = new Page<>();
+        page.setLimit(limit);
+        page.setOffset(offset);
+        page.setTotal(total);
+        page.setResults(productList);
+        
+        return ResponseEntity.status(HttpStatus.OK).body(page);
     }
 
     @GetMapping("/products/{productId}")

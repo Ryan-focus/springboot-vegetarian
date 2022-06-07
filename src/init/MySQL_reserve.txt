@@ -1,0 +1,12 @@
+use veganDB;
+
+drop table if exists reserve;
+
+CREATE TABLE reserve (
+                          reserveId int NOT NULL auto_increment primary key,
+                          reserveDate DATETIME not null ,
+                          count int not null ,
+                          reserveTime DATETIME not null ,
+                          restaurantId int not null,
+                          userId int not null
+);
