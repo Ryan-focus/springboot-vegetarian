@@ -1,6 +1,5 @@
 package com.eeit45.champion.vegetarian.dao.impl;
 
-import com.eeit45.champion.vegetarian.constant.ProductCategory;
 import com.eeit45.champion.vegetarian.dao.ProductDao;
 import com.eeit45.champion.vegetarian.dto.ProductQueryParams;
 import com.eeit45.champion.vegetarian.dto.ProductRequest;
@@ -21,6 +20,7 @@ import java.util.Map;
 @Component
 public class ProductDaoImpl implements ProductDao {
 
+
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
@@ -36,6 +36,12 @@ public class ProductDaoImpl implements ProductDao {
             map.put("category", productQueryParams.getCategory().name());
         }
 
+        if(productQueryParams.getVeganCategory() != null){
+            System.out.println(productQueryParams.getVeganCategory());
+            sql = sql + " AND veganCategory = :veganCategory";
+            map.put("veganCategory", productQueryParams.getVeganCategory().name());
+        }
+
         if(productQueryParams.getSearch() != null){
             sql = sql + " AND name LIKE :search";
             map.put("search", "%" + productQueryParams.getSearch() + "%");
@@ -45,7 +51,9 @@ public class ProductDaoImpl implements ProductDao {
         sql = sql + " ORDER BY " + productQueryParams.getOrderBy() + " " + productQueryParams.getSorting();
 
         //分頁
-        sql = sql + " OFFSET :limit ROWS FETCH NEXT :offset ROWS ONLY";
+//        SQL SERVER分頁語法
+//        sql = sql + " OFFSET :limit ROWS FETCH NEXT :offset ROWS ONLY";
+        sql = sql + " LIMIT :limit OFFSET :offset";
         map.put("limit",productQueryParams.getLimit());
         map.put("offset",productQueryParams.getOffset());
 

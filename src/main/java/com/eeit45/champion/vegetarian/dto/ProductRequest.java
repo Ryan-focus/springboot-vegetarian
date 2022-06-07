@@ -1,8 +1,10 @@
 package com.eeit45.champion.vegetarian.dto;
 
 import com.eeit45.champion.vegetarian.constant.ProductCategory;
+import com.eeit45.champion.vegetarian.constant.VeganCategory;
 
 import javax.validation.constraints.NotNull;
+import java.time.format.DateTimeFormatter;
 
 
 public class ProductRequest {
@@ -10,10 +12,15 @@ public class ProductRequest {
     private String productName;
     @NotNull
     private ProductCategory productCategory;
+
+    @NotNull
+    private VeganCategory veganCategory;
     @NotNull
     private Integer price;
 
     private String imageUrl;
+
+    private DateTimeFormatter createdDate;
 
     public String getProductName() {
         return productName;
@@ -21,6 +28,14 @@ public class ProductRequest {
 
     public void setProductName(String productName) {
         this.productName = productName;
+    }
+
+    public VeganCategory getVeganCategory() {
+        return veganCategory;
+    }
+
+    public void setVeganCategory(VeganCategory veganCategory) {
+        this.veganCategory = veganCategory;
     }
 
     public ProductCategory getProductCategory() {
@@ -45,5 +60,13 @@ public class ProductRequest {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public DateTimeFormatter getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(DateTimeFormatter createdDate) {
+        this.createdDate = createdDate;
     }
 }

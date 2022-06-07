@@ -1,10 +1,12 @@
 package com.eeit45.champion.vegetarian.dto;
 
 import com.eeit45.champion.vegetarian.constant.ProductCategory;
+import com.eeit45.champion.vegetarian.constant.VeganCategory;
 import org.springframework.web.bind.annotation.RequestParam;
 
 public class ProductQueryParams {
 
+       private VeganCategory veganCategory;
        private ProductCategory category;
        private String search;
        private String orderBy;
@@ -12,12 +14,23 @@ public class ProductQueryParams {
        private Integer limit;
        private Integer offset;
 
+
+
+
     public ProductCategory getCategory() {
         return category;
     }
 
     public void setCategory(ProductCategory category) {
         this.category = category;
+    }
+
+    public VeganCategory getVeganCategory() {
+        return veganCategory;
+    }
+
+    public void setVeganCategory(VeganCategory veganCategory) {
+        this.veganCategory = veganCategory;
     }
 
     public String getSearch() {

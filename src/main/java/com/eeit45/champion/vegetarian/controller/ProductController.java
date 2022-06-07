@@ -1,6 +1,7 @@
 package com.eeit45.champion.vegetarian.controller;
 
 import com.eeit45.champion.vegetarian.constant.ProductCategory;
+import com.eeit45.champion.vegetarian.constant.VeganCategory;
 import com.eeit45.champion.vegetarian.dto.ProductQueryParams;
 import com.eeit45.champion.vegetarian.dto.ProductRequest;
 import com.eeit45.champion.vegetarian.model.Product;
@@ -27,16 +28,18 @@ public class ProductController {
     public ResponseEntity<List<Product>> getProducts(
             //Filtering
             @RequestParam(required = false) ProductCategory category,
+            @RequestParam(required = false) VeganCategory veganCategory,
             @RequestParam(required = false) String search,
             //Sorting
             @RequestParam(defaultValue = "Id") String orderBy,
             @RequestParam(defaultValue = "desc") String sorting,
             //Pagination
-            @RequestParam(defaultValue = "0")@Min(0) Integer limit,
-            @RequestParam(defaultValue = "3")@Max(100) @Min(1) Integer offset
+            @RequestParam(defaultValue = "5")@Max(100) @Min(0) Integer limit,
+            @RequestParam(defaultValue = "1")@Min(0) Integer offset
     ){
         ProductQueryParams productQueryParams = new ProductQueryParams();
         productQueryParams.setCategory(category);
+        productQueryParams.setVeganCategory(veganCategory);
         productQueryParams.setSearch(search);
         productQueryParams.setOrderBy(orderBy);
         productQueryParams.setSorting(sorting);
