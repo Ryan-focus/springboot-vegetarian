@@ -3,6 +3,9 @@ package com.eeit45.champion.vegetarian.model;
 import com.eeit45.champion.vegetarian.constant.ProductCategory;
 import com.eeit45.champion.vegetarian.constant.VeganCategory;
 
+import java.util.Date;
+
+
 public class Product {
     private Integer productId;
     private String productName;
@@ -10,6 +13,10 @@ public class Product {
     private VeganCategory veganCategory;
     private Integer price;
     private String imageUrl;
+
+    private Date createdTime;
+
+    private Date updatedTime;
 
     public Integer getProductId() {
         return productId;
@@ -57,5 +64,21 @@ public class Product {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public Date getUpdatedTime() {
+        return updatedTime;
+    }
+
+    public void setUpdatedTime(Date updatedTime) {
+        this.updatedTime = updatedTime;
     }
 }

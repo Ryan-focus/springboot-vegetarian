@@ -20,7 +20,9 @@ public class ProductRequest {
 
     private String imageUrl;
 
-    private DateTimeFormatter createdDate;
+    private DateTimeFormatter createdTime;
+
+    private DateTimeFormatter updatedTime;
 
     public String getProductName() {
         return productName;
@@ -62,11 +64,5 @@ public class ProductRequest {
         this.imageUrl = imageUrl;
     }
 
-    public DateTimeFormatter getCreatedDate() {
-        return createdDate;
-    }
 
-    public void setCreatedDate(DateTimeFormatter createdDate) {
-        this.createdDate = createdDate;
-    }
 }

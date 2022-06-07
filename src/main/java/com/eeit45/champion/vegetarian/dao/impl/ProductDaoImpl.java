@@ -13,6 +13,9 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -79,14 +82,23 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public Integer createProduct(ProductRequest productRequest) {
-        String sql = "INSERT INTO products ( name, category, price, image) " +
-                     "VALUES (:productName, :productCategory, :price, :imageUrl)";
+        String sql = "INSERT INTO products ( name, category, veganCategory, price, image, createdTime , updatedTime)" +
+                     "VALUES (:productName, :productCategory, :veganCategory, :price, :imageUrl, :createdTime , :updatedTime)";
 
         Map<String,Object> map = new HashMap<>();
         map.put("productName",productRequest.getProductName());
         map.put("productCategory",productRequest.getProductCategory().toString());
+        map.put("veganCategory",productRequest.getVeganCategory().toString());
         map.put("price",productRequest.getPrice());
         map.put("imageUrl",productRequest.getImageUrl());
+
+
+        //日期處理
+        Date nowTime = new Date();
+        Timestamp timestamp = new Timestamp(nowTime.getTime());
+
+        map.put("createdTime",timestamp);
+        map.put("updatedTime",timestamp);
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -100,7 +112,7 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public void updateProduct(Integer productId, ProductRequest productRequest) {
         String sql = "UPDATE products SET name = :productName, category = :productCategory," +
-                     " price = :price,image= :imageUrl WHERE id = :productId";
+                     " price = :price,image= :imageUrl,updatedTime = :updatedTime WHERE id = :productId";
 
         Map<String,Object> map = new HashMap<>();
         map.put("productId", productId);
@@ -109,6 +121,12 @@ public class ProductDaoImpl implements ProductDao {
         map.put("productCategory",productRequest.getProductCategory().toString());
         map.put("price",productRequest.getPrice());
         map.put("imageUrl",productRequest.getImageUrl());
+
+        //日期處理
+        Date now = new Date();
+        Timestamp timestamp = new Timestamp(now.getTime());
+
+        map.put("updatedTime",timestamp);
 
         namedParameterJdbcTemplate.update(sql,map);
     }

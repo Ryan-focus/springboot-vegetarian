@@ -7,6 +7,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 
 public class ProductRowMapper implements RowMapper<Product> {
     @Override
@@ -26,6 +27,13 @@ public class ProductRowMapper implements RowMapper<Product> {
 
         product.setPrice(rs.getInt("price"));
         product.setImageUrl(rs.getString("image"));
+
+        //日期處理輸出
+        Timestamp createdTime = rs.getTimestamp("createdTime");
+        product.setCreatedTime(createdTime);
+
+        Timestamp updatedTime = rs.getTimestamp("updatedTime");
+        product.setUpdatedTime(updatedTime);
 
         return product;
     }
