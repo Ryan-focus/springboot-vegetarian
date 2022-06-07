@@ -13,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -48,9 +49,7 @@ public class ReserveDaoImpl implements ReserveDao {
 
         Map<String, Object> map = new HashMap<>();
 
-
         map.put("reserveDate" ,reserveRequest.getReserveDate());
-
 
         map.put("count" ,reserveRequest.getCount());
 
