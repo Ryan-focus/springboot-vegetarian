@@ -13,7 +13,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
@@ -40,7 +39,6 @@ public class ProductDaoImpl implements ProductDao {
         }
 
         if(productQueryParams.getVeganCategory() != null){
-            System.out.println(productQueryParams.getVeganCategory());
             sql = sql + " AND veganCategory = :veganCategory";
             map.put("veganCategory", productQueryParams.getVeganCategory().name());
         }
