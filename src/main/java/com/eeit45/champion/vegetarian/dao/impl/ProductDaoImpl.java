@@ -107,8 +107,8 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public Integer createProduct(ProductRequest productRequest) {
-        String sql = "INSERT INTO products ( name, category, veganCategory, price, image, createdTime , updatedTime)" +
-                     "VALUES (:productName, :productCategory, :veganCategory, :price, :imageUrl, :createdTime , :updatedTime)";
+        String sql = "INSERT INTO products ( name, category, veganCategory, price, image, createdTime , updatedTime, description)" +
+                     "VALUES (:productName, :productCategory, :veganCategory, :price, :imageUrl, :createdTime , :updatedTime, :description)";
 
         Map<String,Object> map = new HashMap<>();
         map.put("productName",productRequest.getProductName());
@@ -116,6 +116,7 @@ public class ProductDaoImpl implements ProductDao {
         map.put("veganCategory",productRequest.getVeganCategory().toString());
         map.put("price",productRequest.getPrice());
         map.put("imageUrl",productRequest.getImageUrl());
+        map.put("description",productRequest.getDescription());
 
 
         //日期處理
@@ -137,7 +138,7 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public void updateProduct(Integer productId, ProductRequest productRequest) {
         String sql = "UPDATE products SET name = :productName, category = :productCategory," +
-                     " price = :price,image= :imageUrl,updatedTime = :updatedTime WHERE id = :productId";
+                     " price = :price,image= :imageUrl,updatedTime = :updatedTime,description = :description  WHERE id = :productId";
 
         Map<String,Object> map = new HashMap<>();
         map.put("productId", productId);
@@ -146,6 +147,7 @@ public class ProductDaoImpl implements ProductDao {
         map.put("productCategory",productRequest.getProductCategory().toString());
         map.put("price",productRequest.getPrice());
         map.put("imageUrl",productRequest.getImageUrl());
+        map.put("description",productRequest.getDescription());
 
         //日期處理
         Date now = new Date();
