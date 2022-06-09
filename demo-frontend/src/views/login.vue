@@ -5,7 +5,7 @@
       <el-form-item>
         <el-input
           type="text"
-          v-model="loginForm.loginName"
+          v-model="loginForm.loginEmail"
           auto-complete="off"
           placeholder="E-mail"
         ></el-input>
@@ -44,7 +44,7 @@ export default {
       loginForm: {
    
    
-        loginName: "",
+        loginEmail: "",
         password: "",
       },
       responseResult: [],
@@ -56,24 +56,23 @@ export default {
    
         this.$axios
           .post('/login', {
-   
-   
-            loginName: this.loginForm.loginName,
+            loginEmail: this.loginForm.loginEmail,
             password: this.loginForm.password
           })
           .then(successResponse => {
+            console.log("already success"); 
+            console.log(successResponse.status);
    
-   
-            if (successResponse.data.code === 200) {
+            if (successResponse.status === 200) {
    
    
               this.$router.replace({
    
-   path: '/'})
+   path: '/index'})
             }
           })
           .catch(failResponse => {
-   
+            alert("登入失敗");
    
           })
       }

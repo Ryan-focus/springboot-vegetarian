@@ -1,10 +1,9 @@
 package com.eeit45.champion.vegetarian.dao.impl;
 
 import com.eeit45.champion.vegetarian.dao.UserDao;
+import com.eeit45.champion.vegetarian.dto.UserLoginRequest;
 import com.eeit45.champion.vegetarian.dto.UserRegisterRequest;
-import com.eeit45.champion.vegetarian.model.Product;
 import com.eeit45.champion.vegetarian.model.User;
-import com.eeit45.champion.vegetarian.rowmapper.ProductRowMapper;
 import com.eeit45.champion.vegetarian.rowmapper.UserRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -13,7 +12,6 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -26,22 +24,6 @@ public class UserDaoImpl implements UserDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public boolean login(UserRegisterRequest userRegisterRequest) {
-
-        String sql = "SELECT * FROM users WHERE email = :loginEmail AND password = :password" ;
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("loginEmail" , userRegisterRequest.getLoginEmail());
-        map.put("password" , userRegisterRequest.getPassword());
-
-        List<User> userList =  namedParameterJdbcTemplate.query(sql,map,new UserRowMapper());
-
-        boolean isPassed = userList.size() > 0 ? true : false ;
-
-        return isPassed;
-    }
-
-    @Override
     public Integer createUser(UserRegisterRequest userRegisterRequest) {
         String sql = "INSERT INTO users ( email, password, userName, status, userPic, createdTime , lastLoginTime)" +
                 "VALUES (:email, :password, :userName, :status, :userPic, :createdTime , :lastLoginTime)";
@@ -50,9 +32,9 @@ public class UserDaoImpl implements UserDao {
         map.put("email",userRegisterRequest.getLoginEmail());
         map.put("password",userRegisterRequest.getPassword());
         map.put("userName",userRegisterRequest.getUserName());
-        map.put("status",userRegisterRequest.getStatus());
         map.put("userPic",userRegisterRequest.getUserPic());
 
+        map.put("status","未審核");
 
         //TimeStamp
         Date now = new Date();
@@ -75,6 +57,21 @@ public class UserDaoImpl implements UserDao {
 
         Map<String,Object> map = new HashMap<>();
         map.put("userId" , userId);
+
+        List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
+        if(userList.size() > 0){
+            return userList.get(0);
+        }else{
+            return null;
+        }
+    }
+
+    @Override
+    public User getUserByEmail(String loginEmail) {
+        String sql = "SELECT * FROM users WHERE email = :userEmail";
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("userEmail" , loginEmail);
 
         List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
         if(userList.size() > 0){

@@ -15,7 +15,7 @@ var axios = require('axios')
 Vue.prototype.$axios = axios
 
 // 設定反向代理，前端請求預設傳送到 http://localhost:8888/api
-axios.defaults.baseURL = 'http://localhost:8088/api'
+axios.defaults.baseURL = 'http://localhost:8088/users'
 /* eslint-disable no-new */
 
 Vue.use(ElementUI)

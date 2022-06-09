@@ -1,10 +1,13 @@
 package com.eeit45.champion.vegetarian.dto;
 
+
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 public class UserRegisterRequest {
     @NotBlank
+    @Email
     private String loginEmail;
 
     @NotBlank
