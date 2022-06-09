@@ -1,4 +1,4 @@
-# vegetarian
+# demo-frontend
 
 > A Vue.js project
 
