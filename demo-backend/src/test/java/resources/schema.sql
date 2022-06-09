@@ -29,8 +29,8 @@ drop table if exists users;
 create table users(
                       userId int NOT NULL auto_increment primary key,
                       email varchar(256) not null UNIQUE KEY ,
-                      password nvarchar(20) not null,
-                      userName nvarchar(30) not null,
+                      password nvarchar(256) not null,
+                      userName nvarchar(64) not null,
                       status nvarchar (20) not null,
                       userPic nvarchar(50),
                       createdTime TIMESTAMP not null ,
