@@ -1,6 +1,5 @@
 package com.eeit45.champion.vegetarian.dao;
 
-import com.eeit45.champion.vegetarian.constant.ProductCategory;
 import com.eeit45.champion.vegetarian.dto.ProductQueryParams;
 import com.eeit45.champion.vegetarian.dto.ProductRequest;
 import com.eeit45.champion.vegetarian.model.Product;

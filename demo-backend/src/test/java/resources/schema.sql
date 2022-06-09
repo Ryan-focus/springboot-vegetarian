@@ -25,3 +25,15 @@ CREATE TABLE reserve (
                          userId int not null
 );
 
+drop table if exists users;
+create table users(
+                      userId int NOT NULL auto_increment primary key,
+                      email nvarchar(50) not null,
+                      password nvarchar(20) not null,
+                      userName nvarchar(30) not null,
+                      status nvarchar (20) not null,
+                      userPic nvarchar(50),
+                      createdTime DATETIME not null ,
+                      lastLoginTime DATETIME not null
+    )
+
