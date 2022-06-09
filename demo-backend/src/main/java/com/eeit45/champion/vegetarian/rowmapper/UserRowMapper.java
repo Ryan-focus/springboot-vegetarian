@@ -9,6 +9,7 @@ import java.sql.Timestamp;
 
 public class UserRowMapper implements RowMapper<User> {
 
+    //將資料庫的結果轉換成User Object
     @Override
     public User mapRow(ResultSet rs, int rowNum) throws SQLException {
         User user = new User();
@@ -19,12 +20,8 @@ public class UserRowMapper implements RowMapper<User> {
         user.setUserName(rs.getString("userName"));
         user.setStatus(rs.getString("status"));
         user.setUserPic(rs.getString("userPic"));
-
-        Timestamp createdTime = rs.getTimestamp("createdTime");
-        user.setCreatedTime(createdTime);
-
-        Timestamp lastLoginTime = rs.getTimestamp("lastLoginTime");
-        user.setLastLoginTime(lastLoginTime);
+        user.setCreatedTime(rs.getTimestamp("createdTime"));
+        user.setLastLoginTime(rs.getTimestamp("lastLoginTime"));
 
         return user;
     }

@@ -1,5 +1,5 @@
 use veganDB;
-
+-- products
 drop table if exists products;
 
 CREATE TABLE products (
@@ -13,7 +13,7 @@ CREATE TABLE products (
                           updatedTime DATETIME NOT NULL,
                           description TEXT
     );
-
+-- reserve
 drop table if exists reserve;
 
 CREATE TABLE reserve (
@@ -24,16 +24,16 @@ CREATE TABLE reserve (
                          restaurantId int not null,
                          userId int not null
 );
-
+-- users
 drop table if exists users;
 create table users(
                       userId int NOT NULL auto_increment primary key,
-                      email nvarchar(50) not null,
+                      email varchar(256) not null UNIQUE KEY ,
                       password nvarchar(20) not null,
                       userName nvarchar(30) not null,
                       status nvarchar (20) not null,
                       userPic nvarchar(50),
-                      createdTime DATETIME not null ,
-                      lastLoginTime DATETIME not null
+                      createdTime TIMESTAMP not null ,
+                      lastLoginTime TIMESTAMP not null
     )
 
