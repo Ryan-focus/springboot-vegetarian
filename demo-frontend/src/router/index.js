@@ -12,12 +12,11 @@ export default new Router({
     {
       path: '/index',
       name: 'HelloWorld',
-      component: HelloWorld
+      component: HelloWorld,
+      meta: {requireAuth: true}
     },
      //新增登入頁面路由
      {
-   
-   
       path:'/login',
       name: 'Login',
       component: Login
