@@ -3,8 +3,10 @@ package com.eeit45.champion.vegetarian.service.impl;
 import com.eeit45.champion.vegetarian.dao.UserDao;
 import com.eeit45.champion.vegetarian.dto.UserLoginRequest;
 import com.eeit45.champion.vegetarian.dto.UserRegisterRequest;
+import com.eeit45.champion.vegetarian.interceptor.LoginVO;
 import com.eeit45.champion.vegetarian.model.User;
 import com.eeit45.champion.vegetarian.service.UserService;
+import com.eeit45.champion.vegetarian.util.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.nio.charset.StandardCharsets;
+import java.util.UUID;
 
 
 @Component
@@ -33,6 +35,7 @@ public class UserServiceImpl implements UserService {
             log.warn("該 Email:{} 尚未註冊", userLoginRequest.getLoginEmail());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
+
         // using MD5 building hash Value
         String hashPassword = DigestUtils.md5DigestAsHex(userLoginRequest.getPassword().getBytes());
 
