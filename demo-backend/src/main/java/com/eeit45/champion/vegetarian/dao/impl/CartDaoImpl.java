@@ -1,87 +1,76 @@
 package com.eeit45.champion.vegetarian.dao.impl;
 
 import com.eeit45.champion.vegetarian.dao.CartDao;
-
-import com.eeit45.champion.vegetarian.dto.CartRequest;
-
+import com.eeit45.champion.vegetarian.dto.CartEntryRequest;
 import com.eeit45.champion.vegetarian.model.Cart;
-
-import com.eeit45.champion.vegetarian.model.Product;
+import com.eeit45.champion.vegetarian.model.CartEntry;
+import com.eeit45.champion.vegetarian.rowmapper.CartEntryRowMapper;
 import com.eeit45.champion.vegetarian.rowmapper.CartRowMapper;
-import com.eeit45.champion.vegetarian.rowmapper.ProductRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
-@Component
 public class CartDaoImpl implements CartDao {
-
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+
     @Override
-    public Cart addToCart(Integer productId) {
-        return null;
+    public Cart getCartById(Integer userId) {
+        String sql = "SELECT * FROM cart WHERE userId= :userId";
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+
+        Cart cart = namedParameterJdbcTemplate.queryForObject(sql, map, new  CartRowMapper());
+
+
+        return cart;
     }
 
     @Override
-    public Cart getCartItemById(Integer userId) {
-        String sql = "SELECT * FROM cart WHERE userId = :userId";
-
-        Map<String,Object> map = new HashMap<>();
-        map.put("userId",userId);
-
-        List<Cart> cartList = namedParameterJdbcTemplate.query(sql, map, new CartRowMapper());
-        if(cartList.size() > 0){
-            return cartList.get(0);
-        }else{
+    public List<CartEntry> getCartEntriesById(Integer cartId) {
+        String sql = "SELECT * FROM cartEntry WHERE cartId= :cartId";
+        Map<String, Object> map = new HashMap<>();
+        map.put("cartId",cartId);
+        List<CartEntry> cartEntryList = namedParameterJdbcTemplate.query(sql,map,new CartEntryRowMapper());
+        if(cartEntryList.size()>0) {
+            return cartEntryList;
+        }else {
             return null;
         }
-
     }
 
     @Override
-    public Integer insertCartItem(CartRequest cartRequest) {
-        String sql = "INSERT INTO cart ( userId, productId, quantity)" +
-                "VALUES (:userId, :productId, :quantity)";
-
-        Map<String,Object> map = new HashMap<>();
-        map.put("userId" ,cartRequest.getUserId());
-        map.put("productId" ,cartRequest.getProductId());
-        map.put("quantity" ,cartRequest.getQuantity());
+    public Integer AddToCart(CartEntryRequest cartEntryRequest) {
+        String sql ="INSERT INTO cartEntry(cartId,productId,quantity,entryPrice)" +
+                "VALUES (:cartId, :productId, :quantity, :entryPrice)";
+        Map<String, Object> map = new HashMap<>();
+        map.put("cartId",cartEntryRequest.getCartId());
+        map.put("productId",cartEntryRequest.getProductId());
+        map.put("quantity",cartEntryRequest.getQuantity());
+        map.put("entryPrice",cartEntryRequest.getEntryPrice());
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
+        namedParameterJdbcTemplate.update(sql,new MapSqlParameterSource(map),keyHolder);
+        int id = keyHolder.getKey().intValue();
 
-        namedParameterJdbcTemplate.update(sql,new MapSqlParameterSource(map), keyHolder);
-
-        int userId = keyHolder.getKey().intValue();
-
-        return userId;
+        return id;
     }
 
     @Override
-    public void updateQuantity(Integer productId, CartRequest cartRequest) {
+    public void deleteProductFromCartById(Integer productId) {
 
     }
 
     @Override
-    public void deleteCartItem(Integer productId) {
-        String sql = "DELETE FROM cart WHERE id= :productId";
+    public void updateQuantity(Integer productId, CartEntryRequest cartEntryRequest) {
 
-        Map<String,Object> map = new HashMap<>();
-        map.put("productId", productId);
-
-        namedParameterJdbcTemplate.update(sql,map);
     }
 }

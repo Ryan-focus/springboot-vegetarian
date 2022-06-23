@@ -2,23 +2,23 @@ package com.eeit45.champion.vegetarian.dto;
 
 import javax.validation.constraints.NotNull;
 
-public class CartRequest {
+public class CartEntryRequest {
 
     @NotNull
-    private Integer userId;
-
+    private Integer cartId;
     @NotNull
     private Integer productId;
-
     @NotNull
     private Integer quantity;
 
-    public Integer getUserId() {
-        return userId;
+    private int entryPrice;
+
+    public Integer getCartId() {
+        return cartId;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setCartId(Integer cartId) {
+        this.cartId = cartId;
     }
 
     public Integer getProductId() {
@@ -35,5 +35,13 @@ public class CartRequest {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public int getEntryPrice() {
+        return entryPrice;
+    }
+
+    public void setEntryPrice(int entryPrice) {
+        this.entryPrice = entryPrice;
     }
 }

@@ -1,20 +1,20 @@
 package com.eeit45.champion.vegetarian.dao;
 
-import com.eeit45.champion.vegetarian.dto.CartRequest;
-import com.eeit45.champion.vegetarian.dto.ProductRequest;
-import com.eeit45.champion.vegetarian.dto.ReserveRequest;
+import com.eeit45.champion.vegetarian.dto.CartEntryRequest;
 import com.eeit45.champion.vegetarian.model.Cart;
-import com.eeit45.champion.vegetarian.model.Reserve;
+import com.eeit45.champion.vegetarian.model.CartEntry;
+
+import java.util.List;
 
 public interface CartDao {
 
-    Cart addToCart(Integer productId);
+    Cart getCartById(Integer userId);
 
-    Cart getCartItemById(Integer userId);
+    List<CartEntry>getCartEntriesById(Integer cartId);
 
-    Integer insertCartItem(CartRequest cartRequest);
+    Integer AddToCart(CartEntryRequest cartEntryRequest);
 
-    void updateQuantity(Integer productId, CartRequest cartRequest);
+    void deleteProductFromCartById(Integer productId);
 
-    void deleteCartItem(Integer productId);
+    void updateQuantity(Integer productId, CartEntryRequest cartEntryRequest);
 }

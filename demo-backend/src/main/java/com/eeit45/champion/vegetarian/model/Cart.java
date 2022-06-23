@@ -1,10 +1,29 @@
 package com.eeit45.champion.vegetarian.model;
 
+import java.util.List;
+
 public class Cart {
 
-    private  Integer userId;
-    private  Integer productId;
-    private  Integer quantity;
+    private int cartId;
+    private Integer userId;
+    private List<CartEntry> cartEntries;
+
+    public int getCartId() {
+        return cartId;
+    }
+
+    public void setCartId(int cartId) {
+        this.cartId = cartId;
+    }
+
+
+    public Cart() {
+    }
+
+    public Cart(Integer userId, List<CartEntry> cartEntries) {
+        this.userId = userId;
+        this.cartEntries = cartEntries;
+    }
 
     public Integer getUserId() {
         return userId;
@@ -14,19 +33,11 @@ public class Cart {
         this.userId = userId;
     }
 
-    public Integer getProductId() {
-        return productId;
+    public List<CartEntry> getCartEntries() {
+        return cartEntries;
     }
 
-    public void setProductId(Integer productId) {
-        this.productId = productId;
-    }
-
-    public Integer getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setCartEntries(List<CartEntry> cartEntries) {
+        this.cartEntries = cartEntries;
     }
 }
