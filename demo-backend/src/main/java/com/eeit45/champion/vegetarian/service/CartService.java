@@ -20,4 +20,5 @@ public interface CartService {
 
     void updateQuantity(Integer entryId, CartEntryRequest cartEntryRequest);
 
+    public Integer CreateNewCart(Integer userId);
 }

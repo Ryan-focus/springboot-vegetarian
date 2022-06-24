@@ -39,4 +39,9 @@ public class CartServiceImpl implements CartService {
     public void updateQuantity(Integer entryId, CartEntryRequest cartEntryRequest) {
         cartDao.updateQuantity(entryId,cartEntryRequest);
     }
+
+    @Override
+    public Integer CreateNewCart(Integer userId) {
+        return cartDao.CreateNewCart(userId);
+    }
 }

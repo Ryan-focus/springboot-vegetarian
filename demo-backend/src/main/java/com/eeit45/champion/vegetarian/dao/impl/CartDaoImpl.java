@@ -85,4 +85,16 @@ public class CartDaoImpl implements CartDao {
         namedParameterJdbcTemplate.update(sql, map);
 
     }
+
+    @Override
+    public Integer CreateNewCart(Integer userId) {
+        String sql = "INSERT into cart (userId) VALUES (:userId)";
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId",userId);
+        namedParameterJdbcTemplate.update(sql,map);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        int cartId = keyHolder.getKey().intValue();
+
+        return cartId;
+    }
 }
