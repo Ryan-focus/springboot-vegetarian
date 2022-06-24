@@ -21,12 +21,17 @@ public class CartRowMapper implements RowMapper<Cart> {
         cart.setCartId(rs.getInt(("id")));
         cart.setUserId(rs.getInt("userId"));
         List<CartEntry> cartEntries = new ArrayList<>();
+        if(rs.getString("cartEntries")==null){
+            cart.setCartEntries(cartEntries);
+        }
+
         try {
-           cartEntries = mapper.readValue(rs.getString("cartEntries"), new TypeReference<List<CartEntry>>() {
-            });
+            cartEntries = mapper.readValue(rs.getString("cartEntries"), new TypeReference<List<CartEntry>>() {
+             });
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+
         cart.setCartEntries(cartEntries);
 
 

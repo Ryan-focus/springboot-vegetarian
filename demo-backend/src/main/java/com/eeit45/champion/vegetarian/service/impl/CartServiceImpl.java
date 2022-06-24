@@ -6,9 +6,10 @@ import com.eeit45.champion.vegetarian.model.Cart;
 import com.eeit45.champion.vegetarian.model.CartEntry;
 import com.eeit45.champion.vegetarian.service.CartService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
-
+@Component
 public class CartServiceImpl implements CartService {
 
     @Autowired
@@ -26,7 +27,7 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public List<CartEntry> getSingleCartEntry(Integer cartEntryId) {
+    public CartEntry getSingleCartEntry(Integer cartEntryId) {
         return cartDao.getSingleCartEntry(cartEntryId);
     }
 
@@ -36,13 +37,13 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void deleteProductFromCartById(Integer entryId) {
-        cartDao.deleteProductFromCartById(entryId);
+    public void deleteProductFromCartById(Integer cartEntryId) {
+        cartDao.deleteProductFromCartById(cartEntryId);
     }
 
     @Override
-    public void updateQuantity(Integer entryId, CartEntryRequest cartEntryRequest) {
-        cartDao.updateQuantity(entryId, cartEntryRequest);
+    public void updateQuantity(Integer cartEntryId, CartEntryRequest cartEntryRequest) {
+        cartDao.updateQuantity(cartEntryId, cartEntryRequest);
     }
 
     @Override

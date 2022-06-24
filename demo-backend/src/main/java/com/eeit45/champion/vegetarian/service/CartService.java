@@ -14,13 +14,13 @@ public interface CartService {
 
     List<CartEntry> getCartEntriesById(Integer cartId);
 
-    List<CartEntry> getSingleCartEntry(Integer cartEntryId);
+    CartEntry getSingleCartEntry(Integer cartEntryId);
 
     Integer AddToCart(CartEntryRequest cartEntryRequest);
 
-    void deleteProductFromCartById(Integer entryId);
+    void deleteProductFromCartById(Integer cartEntryId);
 
-    void updateQuantity(Integer entryId, CartEntryRequest cartEntryRequest);
+    void updateQuantity(Integer cartEntryId, CartEntryRequest cartEntryRequest);
 
     public Integer CreateNewCart(Integer userId);
 }

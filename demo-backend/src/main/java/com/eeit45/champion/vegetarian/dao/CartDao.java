@@ -12,13 +12,13 @@ public interface CartDao {
 
     List<CartEntry>getCartEntriesById(Integer cartId);
 
-    List<CartEntry> getSingleCartEntry(Integer cartEntryId);
+    CartEntry getSingleCartEntry(Integer cartEntryId);
 
     Integer AddToCart(CartEntryRequest cartEntryRequest);
 
     Integer CreateNewCart(Integer userId);
 
-    void deleteProductFromCartById(Integer entryId);
+    void deleteProductFromCartById(Integer cartEntryId);
 
-    void updateQuantity(Integer entryId, CartEntryRequest cartEntryRequest);
+    void updateQuantity(Integer cartEntryId, CartEntryRequest cartEntryRequest);
 }

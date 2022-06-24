@@ -9,7 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/cart")
@@ -31,12 +31,31 @@ public class CartController {
         }
     }
 
-    public ResponseEntity<CartEntry> addToCart(@RequestBody CartEntryRequest cartEntryRequest) {
+    @PostMapping("/ ")
+    public ResponseEntity<CartEntry> addToCart(@RequestBody @Valid CartEntryRequest cartEntryRequest) {
         Integer cartEntryId = cartService.AddToCart(cartEntryRequest);
-        List<CartEntry> cartEntry = cartService.getCartEntriesById(cartEntryId);
+        CartEntry cartEntry = cartService.getSingleCartEntry(cartEntryId);
 
 
-        return null;
+        return ResponseEntity.status(HttpStatus.CREATED).body(cartEntry);
+    }
+
+    @DeleteMapping("/{cartEntryId}")
+    public ResponseEntity<CartEntry> deleteProduct(@PathVariable Integer cartEntryId) {
+        cartService.deleteProductFromCartById(cartEntryId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+   @PatchMapping("/updateQuantity/{cartEntryId}")
+    public ResponseEntity<CartEntry> updateQuantity(@PathVariable Integer cartEntryId,
+                                                    @RequestBody CartEntryRequest cartEntryRequest) {
+        CartEntry checkCartEntry = cartService.getSingleCartEntry(cartEntryId);
+        if (checkCartEntry == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        cartService.updateQuantity(cartEntryId, cartEntryRequest);
+        CartEntry updateCartEntry = cartService.getSingleCartEntry(cartEntryId);
+        return ResponseEntity.status(HttpStatus.OK).body(updateCartEntry);
     }
 
 
