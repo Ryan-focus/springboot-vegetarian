@@ -12,6 +12,8 @@ public interface CartDao {
 
     List<CartEntry>getCartEntriesById(Integer cartId);
 
+    List<CartEntry> getSingleCartEntry(Integer cartEntryId);
+
     Integer AddToCart(CartEntryRequest cartEntryRequest);
 
     Integer CreateNewCart(Integer userId);

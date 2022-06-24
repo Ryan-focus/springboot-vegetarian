@@ -26,6 +26,11 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
+    public List<CartEntry> getSingleCartEntry(Integer cartEntryId) {
+        return cartDao.getSingleCartEntry(cartEntryId);
+    }
+
+    @Override
     public Integer AddToCart(CartEntryRequest cartEntryRequest) {
         return cartDao.AddToCart(cartEntryRequest);
     }
@@ -37,7 +42,7 @@ public class CartServiceImpl implements CartService {
 
     @Override
     public void updateQuantity(Integer entryId, CartEntryRequest cartEntryRequest) {
-        cartDao.updateQuantity(entryId,cartEntryRequest);
+        cartDao.updateQuantity(entryId, cartEntryRequest);
     }
 
     @Override

@@ -50,6 +50,19 @@ public class CartDaoImpl implements CartDao {
     }
 
     @Override
+    public List<CartEntry> getSingleCartEntry(Integer cartEntryId) {
+        String sql = "SELECT * FROM cartEntry WHERE cartEntryId= :cartEntryId";
+        Map<String, Object> map = new HashMap<>();
+        map.put("cartEntryId", cartEntryId);
+        List<CartEntry> cartEntry = namedParameterJdbcTemplate.query(sql, map, new CartEntryRowMapper());
+        if (cartEntry.size() > 0) {
+            return cartEntry;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public Integer AddToCart(CartEntryRequest cartEntryRequest) {
         String sql = "INSERT INTO cartEntry(cartId,productId,quantity,entryPrice)" +
                 "VALUES (:cartId, :productId, :quantity, :entryPrice)";
@@ -61,9 +74,9 @@ public class CartDaoImpl implements CartDao {
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
-        int id = keyHolder.getKey().intValue();
+        int cartEntryId = keyHolder.getKey().intValue();
 
-        return id;
+        return cartEntryId;
     }
 
     @Override
@@ -90,8 +103,8 @@ public class CartDaoImpl implements CartDao {
     public Integer CreateNewCart(Integer userId) {
         String sql = "INSERT into cart (userId) VALUES (:userId)";
         Map<String, Object> map = new HashMap<>();
-        map.put("userId",userId);
-        namedParameterJdbcTemplate.update(sql,map);
+        map.put("userId", userId);
+        namedParameterJdbcTemplate.update(sql, map);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         int cartId = keyHolder.getKey().intValue();
 
