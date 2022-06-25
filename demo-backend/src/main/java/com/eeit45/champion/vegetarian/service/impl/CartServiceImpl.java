@@ -48,8 +48,8 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void CreateNewCart(Integer userId) {
-        cartDao.CreateNewCart(userId);
+    public Integer CreateNewCart(Integer userId) {
+        return cartDao.CreateNewCart(userId);
     }
 
     @Override

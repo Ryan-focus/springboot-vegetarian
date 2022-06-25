@@ -93,7 +93,7 @@ public class CartDaoImpl implements CartDao {
         map.put("quantity", cartEntryRequest.getQuantity());
         Product product = productDao.getProductById(cartEntryRequest.getProductId());
         int productPrice = product.getPrice();
-        map.put("entryPrice", cartEntryRequest.getQuantity()*productPrice);
+        map.put("entryPrice", cartEntryRequest.getQuantity() * productPrice);
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
@@ -119,20 +119,20 @@ public class CartDaoImpl implements CartDao {
         map.put("cartEntryId", cartEntryId);
         //用productId取得價格，再乘上新的數量的到新的價格
         Product product = productDao.getProductById(cartEntryRequest.getProductId());
-        map.put("entryPrice",product.getPrice()*cartEntryRequest.getQuantity());
+        map.put("entryPrice", product.getPrice() * cartEntryRequest.getQuantity());
 
         namedParameterJdbcTemplate.update(sql, map);
 
     }
 
     @Override
-    public void CreateNewCart(Integer userId) {
-//        KeyHolder keyHolder = new GeneratedKeyHolder();
+    public Integer CreateNewCart(Integer userId) {
         String sql = "INSERT into cart (userId) VALUES ( :userId)";
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
-        namedParameterJdbcTemplate.update(sql, map);
-//        int cartId = keyHolder.getKey().intValue();
-//        return cartId;
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
+        int cartId = keyHolder.getKey().intValue();
+        return cartId;
     }
 }

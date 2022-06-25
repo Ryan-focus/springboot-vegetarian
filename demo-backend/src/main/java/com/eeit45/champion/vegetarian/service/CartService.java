@@ -23,7 +23,7 @@ public interface CartService {
 
     void updateQuantity(Integer cartEntryId, CartEntryRequest cartEntryRequest);
 
-    public void CreateNewCart(Integer userId);
+    Integer CreateNewCart(Integer userId);
 
     CartEntryDetail showCartEntryDetail(CartEntry cartEntry);
 }

@@ -18,7 +18,7 @@ public interface CartDao {
 
     Integer AddToCart(CartEntryRequest cartEntryRequest);
 
-    void CreateNewCart(Integer userId);
+    Integer CreateNewCart(Integer userId);
 
     void deleteProductFromCartById(Integer cartEntryId);
 
