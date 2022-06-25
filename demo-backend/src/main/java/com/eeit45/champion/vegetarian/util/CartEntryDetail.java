@@ -10,8 +10,10 @@ public class CartEntryDetail {
     private int entryId;
     @NotNull
     private int cartId;
+    @NotNull
     private int quantity;
     private int entryPrice;
+    @NotNull
     private int productId;
     private Product product;
 

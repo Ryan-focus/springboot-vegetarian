@@ -1,10 +1,15 @@
 package com.eeit45.champion.vegetarian.model;
 
+import javax.validation.constraints.NotNull;
+
 public class CartEntry{
 
     private int entryId;
+    @NotNull
     private int productId;
+    @NotNull
     private int cartId;
+    @NotNull
     private int quantity;
     private int entryPrice;
 

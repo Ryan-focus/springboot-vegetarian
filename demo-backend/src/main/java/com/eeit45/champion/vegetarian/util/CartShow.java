@@ -3,11 +3,14 @@ package com.eeit45.champion.vegetarian.util;
 import com.eeit45.champion.vegetarian.model.CartEntry;
 import com.eeit45.champion.vegetarian.model.Product;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 public class CartShow {
 
+    @NotNull
     private int cartId;
+    @NotNull
     private int userId;
     private List<CartEntryDetail> cartEntryDetailList;
 

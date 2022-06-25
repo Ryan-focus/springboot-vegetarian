@@ -56,11 +56,10 @@ public class CartController {
 
     }
 
-    @PostMapping("/ ")
+    @PostMapping("/AddToCart")
     public ResponseEntity<CartEntry> addToCart(@RequestBody @Valid CartEntryRequest cartEntryRequest) {
         Integer cartEntryId = cartService.AddToCart(cartEntryRequest);
         CartEntry cartEntry = cartService.getSingleCartEntry(cartEntryId);
-
 
         return ResponseEntity.status(HttpStatus.CREATED).body(cartEntry);
     }
