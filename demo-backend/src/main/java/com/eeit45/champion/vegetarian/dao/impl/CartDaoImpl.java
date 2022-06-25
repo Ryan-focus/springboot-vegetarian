@@ -1,11 +1,14 @@
 package com.eeit45.champion.vegetarian.dao.impl;
 
 import com.eeit45.champion.vegetarian.dao.CartDao;
+import com.eeit45.champion.vegetarian.dao.ProductDao;
 import com.eeit45.champion.vegetarian.dto.CartEntryRequest;
 import com.eeit45.champion.vegetarian.model.Cart;
 import com.eeit45.champion.vegetarian.model.CartEntry;
+import com.eeit45.champion.vegetarian.model.Product;
 import com.eeit45.champion.vegetarian.rowmapper.CartEntryRowMapper;
 import com.eeit45.champion.vegetarian.rowmapper.CartRowMapper;
+import com.eeit45.champion.vegetarian.util.CartEntryDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -22,7 +25,8 @@ public class CartDaoImpl implements CartDao {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-
+    @Autowired
+    private ProductDao productDao;
 
     @Override
     public Cart getCartById(Integer userId) {
@@ -30,10 +34,25 @@ public class CartDaoImpl implements CartDao {
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
 
-        Cart cart = namedParameterJdbcTemplate.queryForObject(sql, map, new CartRowMapper());
+        List<Cart> cart = namedParameterJdbcTemplate.query(sql, map, new CartRowMapper());
+        if (cart.size() > 0) {
+            return cart.get(0);
+        } else {
+            return null;
+        }
+    }
 
+    public CartEntryDetail showCartEntryDetail(CartEntry cartEntry) {
+        Product product = productDao.getProductById(cartEntry.getProductId());
+        CartEntryDetail cartEntryDetail = new CartEntryDetail();
+        cartEntryDetail.setEntryId(cartEntry.getEntryId());
+        cartEntryDetail.setCartId(cartEntry.getCartId());
+        cartEntryDetail.setQuantity(cartEntry.getQuantity());
+        cartEntryDetail.setEntryPrice(cartEntry.getEntryPrice());
+        cartEntryDetail.setProductId(cartEntry.getProductId());
+        cartEntryDetail.setProduct(product);
 
-        return cart;
+        return cartEntryDetail;
     }
 
     @Override
@@ -41,12 +60,14 @@ public class CartDaoImpl implements CartDao {
         String sql = "SELECT * FROM cartEntry WHERE cartId= :cartId";
         Map<String, Object> map = new HashMap<>();
         map.put("cartId", cartId);
+
         List<CartEntry> cartEntryList = namedParameterJdbcTemplate.query(sql, map, new CartEntryRowMapper());
         if (cartEntryList.size() > 0) {
             return cartEntryList;
         } else {
             return null;
         }
+
     }
 
     @Override
@@ -100,14 +121,13 @@ public class CartDaoImpl implements CartDao {
     }
 
     @Override
-    public Integer CreateNewCart(Integer userId) {
-        String sql = "INSERT into cart (userId) VALUES (:userId)";
+    public void CreateNewCart(Integer userId) {
+//        KeyHolder keyHolder = new GeneratedKeyHolder();
+        String sql = "INSERT into cart (userId) VALUES ( :userId)";
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
         namedParameterJdbcTemplate.update(sql, map);
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        int cartId = keyHolder.getKey().intValue();
-
-        return cartId;
+//        int cartId = keyHolder.getKey().intValue();
+//        return cartId;
     }
 }

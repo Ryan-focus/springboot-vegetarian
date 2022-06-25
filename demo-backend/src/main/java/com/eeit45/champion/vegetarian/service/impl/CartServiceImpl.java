@@ -5,6 +5,7 @@ import com.eeit45.champion.vegetarian.dto.CartEntryRequest;
 import com.eeit45.champion.vegetarian.model.Cart;
 import com.eeit45.champion.vegetarian.model.CartEntry;
 import com.eeit45.champion.vegetarian.service.CartService;
+import com.eeit45.champion.vegetarian.util.CartEntryDetail;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -47,7 +48,12 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public Integer CreateNewCart(Integer userId) {
-        return cartDao.CreateNewCart(userId);
+    public void CreateNewCart(Integer userId) {
+        cartDao.CreateNewCart(userId);
+    }
+
+    @Override
+    public CartEntryDetail showCartEntryDetail(CartEntry cartEntry) {
+        return cartDao.showCartEntryDetail(cartEntry);
     }
 }

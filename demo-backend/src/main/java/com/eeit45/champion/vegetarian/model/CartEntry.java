@@ -1,6 +1,6 @@
 package com.eeit45.champion.vegetarian.model;
 
-public class CartEntry extends Product {
+public class CartEntry{
 
     private int entryId;
     private int productId;
@@ -11,15 +11,15 @@ public class CartEntry extends Product {
     public CartEntry() {
     }
 
-    public CartEntry(int productId, int cartId, int quantity, int entryPrice) {
+    public CartEntry(int entryId, int productId, int cartId, int quantity, int entryPrice) {
+        this.entryId = entryId;
         this.productId = productId;
         this.cartId = cartId;
         this.quantity = quantity;
         this.entryPrice = entryPrice;
     }
 
-    public CartEntry(int entryId, int productId, int cartId, int quantity, int entryPrice) {
-        this.entryId = entryId;
+    public CartEntry(int productId, int cartId, int quantity, int entryPrice) {
         this.productId = productId;
         this.cartId = cartId;
         this.quantity = quantity;
@@ -32,6 +32,10 @@ public class CartEntry extends Product {
 
     public void setEntryId(int entryId) {
         this.entryId = entryId;
+    }
+
+    public int getProductId() {
+        return productId;
     }
 
     public void setProductId(int productId) {

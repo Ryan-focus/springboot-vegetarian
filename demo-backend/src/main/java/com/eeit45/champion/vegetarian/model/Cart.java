@@ -6,7 +6,15 @@ public class Cart {
 
     private int cartId;
     private Integer userId;
-    private List<CartEntry> cartEntries;
+
+
+    public Cart() {
+    }
+
+    public Cart(int cartId, Integer userId) {
+        this.cartId = cartId;
+        this.userId = userId;
+    }
 
     public int getCartId() {
         return cartId;
@@ -14,15 +22,6 @@ public class Cart {
 
     public void setCartId(int cartId) {
         this.cartId = cartId;
-    }
-
-
-    public Cart() {
-    }
-
-    public Cart(Integer userId, List<CartEntry> cartEntries) {
-        this.userId = userId;
-        this.cartEntries = cartEntries;
     }
 
     public Integer getUserId() {
@@ -33,11 +32,4 @@ public class Cart {
         this.userId = userId;
     }
 
-    public List<CartEntry> getCartEntries() {
-        return cartEntries;
-    }
-
-    public void setCartEntries(List<CartEntry> cartEntries) {
-        this.cartEntries = cartEntries;
-    }
 }

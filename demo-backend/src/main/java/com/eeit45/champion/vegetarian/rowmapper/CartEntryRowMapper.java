@@ -10,7 +10,7 @@ public class CartEntryRowMapper implements RowMapper<CartEntry> {
     @Override
     public CartEntry mapRow(ResultSet rs, int rowNum) throws SQLException {
         CartEntry cartEntry = new CartEntry();
-
+        cartEntry.setEntryId(rs.getInt("cartEntryId"));
         cartEntry.setCartId(rs.getInt("cartId"));
         cartEntry.setProductId(rs.getInt("productId"));
         cartEntry.setQuantity(rs.getInt("quantity"));

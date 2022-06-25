@@ -3,6 +3,7 @@ package com.eeit45.champion.vegetarian.service;
 import com.eeit45.champion.vegetarian.dto.CartEntryRequest;
 import com.eeit45.champion.vegetarian.model.Cart;
 import com.eeit45.champion.vegetarian.model.CartEntry;
+import com.eeit45.champion.vegetarian.util.CartEntryDetail;
 
 
 import java.util.List;
@@ -22,5 +23,7 @@ public interface CartService {
 
     void updateQuantity(Integer cartEntryId, CartEntryRequest cartEntryRequest);
 
-    public Integer CreateNewCart(Integer userId);
+    public void CreateNewCart(Integer userId);
+
+    CartEntryDetail showCartEntryDetail(CartEntry cartEntry);
 }
