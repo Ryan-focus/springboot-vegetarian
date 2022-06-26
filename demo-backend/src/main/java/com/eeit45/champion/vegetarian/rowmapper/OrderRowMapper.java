@@ -23,19 +23,6 @@ public class OrderRowMapper implements RowMapper<Order> {
         order.setShipping(rs.getString("shipping"));
         order.setStatus(rs.getString("status"));
         order.setPayment(rs.getString("payment"));
-        List<CartEntry> orderEntries = new ArrayList<>();
-        try {
-            orderEntries = mapper.readValue(rs.getString("orderEntryList"), new TypeReference<List<CartEntry>>() {
-            });
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
-        order.setOrderEntryList(orderEntries);
-        order.setCreatedTime(rs.getTimestamp("createdTime"));
-        order.setUpdatedTime(rs.getTimestamp("updateTime"));
-
-
         return order;
     }
 

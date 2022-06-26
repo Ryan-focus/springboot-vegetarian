@@ -6,7 +6,7 @@ import com.eeit45.champion.vegetarian.model.Product;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-public class CartShow {
+public class CartShow <T>{
 
     @NotNull
     private int cartId;

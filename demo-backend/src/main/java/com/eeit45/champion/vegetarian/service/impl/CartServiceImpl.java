@@ -56,4 +56,14 @@ public class CartServiceImpl implements CartService {
     public CartEntryDetail showCartEntryDetail(CartEntry cartEntry) {
         return cartDao.showCartEntryDetail(cartEntry);
     }
+
+    @Override
+    public void deleteCartById(Integer cartId) {
+        cartDao.deleteCartById(cartId);
+    }
+
+    @Override
+    public void deleteCartEntryById(Integer cartId) {
+        cartDao.deleteCartEntryById(cartId);
+    }
 }

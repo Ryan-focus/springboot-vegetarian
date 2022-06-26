@@ -1,6 +1,8 @@
 package com.eeit45.champion.vegetarian.dao.impl;
 
 import com.eeit45.champion.vegetarian.dao.OrderDao;
+import com.eeit45.champion.vegetarian.dao.ProductDao;
+import com.eeit45.champion.vegetarian.dto.OrderEntryRequest;
 import com.eeit45.champion.vegetarian.dto.OrderRequest;
 import com.eeit45.champion.vegetarian.model.Order;
 import com.eeit45.champion.vegetarian.rowmapper.OrderRowMapper;
@@ -20,34 +22,33 @@ public class OrderDaoImpl implements OrderDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
+    @Autowired
+    private ProductDao productDao;
+
     @Override
     public Integer createOrder(OrderRequest orderRequest) {
-        String sql="INSERT INTO order (orderId,userId,payment,shipping,orderEntry,status,createdTime)" +
-                "VALUES(:orderId, :userId, :payment, :shipping, :orderEntry, :status, :createdTime)";
+        String sql = "INSERT INTO veganDB.order (userId,payment,shipping,status,createdTime)" +
+                "VALUES(:userId, :payment, :shipping, :status, :createdTime)";
         Map<String, Object> map = new HashMap<>();
         //生成訂單Id
-        UUID uuid = UUID.randomUUID();
-
-        map.put("orderId",uuid);
-        map.put("userId",orderRequest.getUserId());
-        map.put("payment",orderRequest.getPayment());
-        map.put("shipping",orderRequest.getShipping());
-        map.put("orderEntry",orderRequest.getCartEntries().toString());
-        map.put("status",orderRequest.getStatus());
+        map.put("userId", orderRequest.getUserId());
+        map.put("payment", orderRequest.getPayment());
+        map.put("shipping", orderRequest.getShipping());
+        map.put("status", orderRequest.getStatus());
         //生成現在日期
         Date now = new Date();
         Timestamp timestamp = new Timestamp(now.getTime());
-        map.put("createdTime",timestamp);
+        map.put("createdTime", timestamp);
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.update(sql,new MapSqlParameterSource(map),keyHolder );
+        namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
+        int orderId = keyHolder.getKey().intValue();
 
-
-        return null;
+        return orderId;
     }
 
     @Override
     public Order getOrderById(Integer orderId) {
-        String sql = "SELECT * FROM reserve WHERE orderId = :orderId";
+        String sql = "SELECT * FROM veganDB.order WHERE orderId = :orderId";
         Map<String, Object> map = new HashMap<>();
         map.put("orderId", orderId);
         List<Order> orderList = namedParameterJdbcTemplate.query(sql, map, new OrderRowMapper());
@@ -60,15 +61,35 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Order> getOrderByUserId(Integer userId) {
-        String sql = "SELECT * FROM reserve WHERE userId = :userId";
+        String sql = "SELECT * FROM veganDB.order WHERE userId= :userId";
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
         List<Order> orderList = namedParameterJdbcTemplate.query(sql, map, new OrderRowMapper());
-        if (orderList.size() > 0) {
+        if (orderList != null && orderList.size() > 0) {
             return orderList;
         } else {
-
             return null;
         }
+    }
+
+    @Override
+    public Integer insertOrderEntry(OrderEntryRequest orderEntryRequest) {
+        String sql = "Insert Into orderEntry (orderId,productId,quantity,orderEntryPrice)" +
+                "values(:orderId, :productId, :quantity, :orderEntryPrice)";
+        Map<String, Object> map = new HashMap<>();
+        map.put("orderId", orderEntryRequest.getOrderId());
+        map.put("productId", orderEntryRequest.getProductId());
+        map.put("quantity", orderEntryRequest.getQuantity());
+        //根據product取出值後乘上數量在寫入
+        int orderEntryPrice = productDao.getProductById(orderEntryRequest.getProductId()).getPrice() *
+                orderEntryRequest.getQuantity();
+        map.put("orderEntryPrice", orderEntryPrice);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
+        int orderEntryId = keyHolder.getKey().intValue();
+
+        return orderEntryId;
+
+
     }
 }

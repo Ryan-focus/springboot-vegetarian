@@ -1,7 +1,9 @@
 package com.eeit45.champion.vegetarian.dao;
 
+import com.eeit45.champion.vegetarian.dto.OrderEntryRequest;
 import com.eeit45.champion.vegetarian.dto.OrderRequest;
 import com.eeit45.champion.vegetarian.model.Order;
+import com.eeit45.champion.vegetarian.model.OrderEntry;
 
 import java.util.List;
 
@@ -12,5 +14,8 @@ public interface OrderDao {
      Order getOrderById(Integer orderId);
 
      List<Order> getOrderByUserId(Integer userId);
+
+     Integer insertOrderEntry(OrderEntryRequest orderEntryRequest);
+
 
 }

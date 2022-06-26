@@ -1,5 +1,6 @@
 package com.eeit45.champion.vegetarian.service;
 
+import com.eeit45.champion.vegetarian.dto.OrderEntryRequest;
 import com.eeit45.champion.vegetarian.dto.OrderRequest;
 import com.eeit45.champion.vegetarian.model.Order;
 
@@ -12,4 +13,6 @@ public interface OrderService {
     Order getOrderById(Integer orderId);
 
     public List<Order> getOrderByUserId(Integer userId);
+
+    Integer insertOrderEntry(OrderEntryRequest orderEntryRequest);
 }

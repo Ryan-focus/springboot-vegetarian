@@ -1,6 +1,7 @@
 package com.eeit45.champion.vegetarian.service.impl;
 
 import com.eeit45.champion.vegetarian.dao.OrderDao;
+import com.eeit45.champion.vegetarian.dto.OrderEntryRequest;
 import com.eeit45.champion.vegetarian.dto.OrderRequest;
 import com.eeit45.champion.vegetarian.model.Order;
 import com.eeit45.champion.vegetarian.service.OrderService;
@@ -28,5 +29,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getOrderByUserId(Integer userId) {
         return orderDao.getOrderByUserId(userId);
+    }
+
+    @Override
+    public Integer insertOrderEntry(OrderEntryRequest orderEntryRequest) {
+        return orderDao.insertOrderEntry(orderEntryRequest);
     }
 }

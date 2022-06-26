@@ -135,4 +135,21 @@ public class CartDaoImpl implements CartDao {
         int cartId = keyHolder.getKey().intValue();
         return cartId;
     }
+
+    @Override
+    public void deleteCartById(Integer cartId) {
+        String sql = "DELETE FROM cart WHERE cartId= :cartId";
+        Map<String,Object> map = new HashMap<>();
+        map.put("cartId",cartId);
+        namedParameterJdbcTemplate.update(sql,map);
+
+    }
+
+    @Override
+    public void deleteCartEntryById(Integer cartId) {
+        String sql = "DELETE FROM cartEntry WHERE cartId= :cartId";
+        Map<String,Object> map = new HashMap<>();
+        map.put("cartId",cartId);
+        namedParameterJdbcTemplate.update(sql,map);
+    }
 }

@@ -4,52 +4,36 @@ import java.util.Date;
 import java.util.List;
 
 public class Order {
-    private int orderId;
-    private int userId;
+    private Integer orderId;
+    private Integer userId;
     private String Shipping;
     private String payment;
-    private List<CartEntry> orderEntryList;
     private String status;
-    private Date createdTime;
-    private Date updatedTime;
 
     public Order() {
     }
 
-    public Order(int orderId, int userId, String shipping, String payment, List<CartEntry> orderEntryList, String status, Date createdTime, Date updatedTime) {
+    public Order(Integer orderId, Integer userId, String shipping, String payment, String status) {
         this.orderId = orderId;
         this.userId = userId;
         Shipping = shipping;
         this.payment = payment;
-        this.orderEntryList = orderEntryList;
         this.status = status;
-        this.createdTime = createdTime;
-        this.updatedTime = updatedTime;
     }
 
-    public Order(int userId, String shipping, String payment, List<CartEntry> orderEntryList, String status, Date createdTime, Date updatedTime) {
-        this.userId = userId;
-        Shipping = shipping;
-        this.payment = payment;
-        this.orderEntryList = orderEntryList;
-        this.status = status;
-        this.createdTime = createdTime;
-        this.updatedTime = updatedTime;
-    }
-
-    public int getOrderId() {
+    public Integer getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(int orderId) {
+    public void setOrderId(Integer orderId) {
         this.orderId = orderId;
     }
 
-    public int getUserId() {
+    public Integer getUserId() {
         return userId;
     }
 
-    public void setUserId(int userId) {
+    public void setUserId(Integer userId) {
         this.userId = userId;
     }
 
@@ -69,35 +53,11 @@ public class Order {
         this.payment = payment;
     }
 
-    public List<CartEntry> getOrderEntryList() {
-        return orderEntryList;
-    }
-
-    public void setOrderEntryList(List<CartEntry> orderEntryList) {
-        this.orderEntryList = orderEntryList;
-    }
-
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public Date getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    public Date getUpdatedTime() {
-        return updatedTime;
-    }
-
-    public void setUpdatedTime(Date updatedTime) {
-        this.updatedTime = updatedTime;
     }
 }

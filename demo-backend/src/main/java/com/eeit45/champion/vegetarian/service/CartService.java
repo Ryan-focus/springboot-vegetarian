@@ -26,4 +26,8 @@ public interface CartService {
     Integer CreateNewCart(Integer userId);
 
     CartEntryDetail showCartEntryDetail(CartEntry cartEntry);
+
+    public void deleteCartById(Integer cartId);
+
+    public void deleteCartEntryById(Integer cartId);
 }

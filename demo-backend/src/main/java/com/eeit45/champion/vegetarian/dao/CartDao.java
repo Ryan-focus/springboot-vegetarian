@@ -26,4 +26,8 @@ public interface CartDao {
 
     CartEntryDetail showCartEntryDetail(CartEntry cartEntry);
 
+    void deleteCartById(Integer cartId);
+
+    void deleteCartEntryById(Integer cartId);
+
 }
