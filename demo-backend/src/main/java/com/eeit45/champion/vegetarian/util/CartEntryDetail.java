@@ -7,74 +7,74 @@ import javax.validation.constraints.NotNull;
 public class CartEntryDetail {
 
     @NotNull
-    private int entryId;
+    private Integer entryId;
     @NotNull
-    private int cartId;
+    private String cartUUID;
     @NotNull
-    private int quantity;
-    private int entryPrice;
+    private Integer quantity;
+    private Integer entryPrice;
     @NotNull
-    private int productId;
+    private Integer productId;
     private Product product;
 
 
     public CartEntryDetail() {
     }
 
-    public CartEntryDetail(int entryId, int cartId, int quantity, int entryPrice, int productId, Product product) {
+    public CartEntryDetail(Integer entryId, String cartUUID, Integer quantity, Integer entryPrice, Integer productId, Product product) {
         this.entryId = entryId;
-        this.cartId = cartId;
+        this.cartUUID = cartUUID;
         this.quantity = quantity;
         this.entryPrice = entryPrice;
         this.productId = productId;
         this.product = product;
     }
 
-    public CartEntryDetail(int cartId, int quantity, int entryPrice, int productId, Product product) {
-        this.cartId = cartId;
+    public CartEntryDetail(String cartUUID, Integer quantity, Integer entryPrice, Integer productId, Product product) {
+        this.cartUUID = cartUUID;
         this.quantity = quantity;
         this.entryPrice = entryPrice;
         this.productId = productId;
         this.product = product;
     }
 
-    public int getEntryId() {
+    public Integer getEntryId() {
         return entryId;
     }
 
-    public void setEntryId(int entryId) {
+    public void setEntryId(Integer entryId) {
         this.entryId = entryId;
     }
 
-    public int getCartId() {
-        return cartId;
+    public String getCartUUID() {
+        return cartUUID;
     }
 
-    public void setCartId(int cartId) {
-        this.cartId = cartId;
+    public void setCartUUID(String cartUUID) {
+        this.cartUUID = cartUUID;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
-    public int getEntryPrice() {
+    public Integer getEntryPrice() {
         return entryPrice;
     }
 
-    public void setEntryPrice(int entryPrice) {
+    public void setEntryPrice(Integer entryPrice) {
         this.entryPrice = entryPrice;
     }
 
-    public int getProductId() {
+    public Integer getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(Integer productId) {
         this.productId = productId;
     }
 
@@ -84,8 +84,5 @@ public class CartEntryDetail {
 
     public void setProduct(Product product) {
         this.product = product;
-    }
-
-    public void add(CartEntryDetail cartEntryDetail) {
     }
 }

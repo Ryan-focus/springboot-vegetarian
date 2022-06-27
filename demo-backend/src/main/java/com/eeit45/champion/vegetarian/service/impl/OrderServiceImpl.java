@@ -3,7 +3,9 @@ package com.eeit45.champion.vegetarian.service.impl;
 import com.eeit45.champion.vegetarian.dao.OrderDao;
 import com.eeit45.champion.vegetarian.dto.OrderEntryRequest;
 import com.eeit45.champion.vegetarian.dto.OrderRequest;
+import com.eeit45.champion.vegetarian.model.CartEntry;
 import com.eeit45.champion.vegetarian.model.Order;
+import com.eeit45.champion.vegetarian.model.OrderEntry;
 import com.eeit45.champion.vegetarian.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -34,5 +36,10 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public Integer insertOrderEntry(OrderEntryRequest orderEntryRequest) {
         return orderDao.insertOrderEntry(orderEntryRequest);
+    }
+
+    @Override
+    public OrderEntry CartEntryToOrderEntry(CartEntry cartEntry) {
+        return orderDao.CartEntryToOrderEntry(cartEntry);
     }
 }

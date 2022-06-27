@@ -1,7 +1,6 @@
 package com.eeit45.champion.vegetarian.model;
 
 import javax.validation.constraints.NotNull;
-import java.util.List;
 
 public class Cart {
 
@@ -9,13 +8,29 @@ public class Cart {
     @NotNull
     private Integer userId;
 
+    private String cartUUID;
+
 
     public Cart() {
     }
 
-    public Cart(int cartId, Integer userId) {
+    public Cart(Integer userId, String cartUUID) {
+        this.userId = userId;
+        this.cartUUID = cartUUID;
+    }
+
+    public Cart(int cartId, Integer userId, String cartUUID) {
         this.cartId = cartId;
         this.userId = userId;
+        this.cartUUID = cartUUID;
+    }
+
+    public String getCartUUID() {
+        return cartUUID;
+    }
+
+    public void setCartUUID(String cartUUID) {
+        this.cartUUID = cartUUID;
     }
 
     public int getCartId() {
@@ -33,5 +48,4 @@ public class Cart {
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
-
 }

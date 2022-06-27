@@ -1,9 +1,8 @@
 package com.eeit45.champion.vegetarian.controller;
 
+import com.eeit45.champion.vegetarian.dto.OrderEntryRequest;
 import com.eeit45.champion.vegetarian.dto.OrderRequest;
-import com.eeit45.champion.vegetarian.model.Cart;
-import com.eeit45.champion.vegetarian.model.CartEntry;
-import com.eeit45.champion.vegetarian.model.Order;
+import com.eeit45.champion.vegetarian.model.*;
 import com.eeit45.champion.vegetarian.service.CartService;
 import com.eeit45.champion.vegetarian.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,12 +40,18 @@ public class OrderController {
         //取出購物車的所有物品準備寫入order
         List<CartEntry> cartEntryList = cartService.getCartEntriesById(cartId);
         //轉換cartEntry變成Order
+        for (int i = 0; i < cartEntryList.size(); i++) {
+            OrderEntry orderEntry = orderService.CartEntryToOrderEntry(cartEntryList.get(i));
+
+
+        }
 
         //寫入完購物車物品後刪除購物車
         cartService.deleteCartById(cartId);
         //寫入後刪除所有購物車商品
         cartService.deleteCartEntryById(cartId);
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
+
     }
 
 

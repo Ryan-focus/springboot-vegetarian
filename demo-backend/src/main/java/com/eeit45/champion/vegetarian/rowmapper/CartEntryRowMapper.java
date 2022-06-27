@@ -11,7 +11,7 @@ public class CartEntryRowMapper implements RowMapper<CartEntry> {
     public CartEntry mapRow(ResultSet rs, int rowNum) throws SQLException {
         CartEntry cartEntry = new CartEntry();
         cartEntry.setEntryId(rs.getInt("cartEntryId"));
-        cartEntry.setCartId(rs.getInt("cartId"));
+        cartEntry.setCartUUID(rs.getNString("cartId"));
         cartEntry.setProductId(rs.getInt("productId"));
         cartEntry.setQuantity(rs.getInt("quantity"));
         cartEntry.setEntryPrice(rs.getInt("entryPrice"));

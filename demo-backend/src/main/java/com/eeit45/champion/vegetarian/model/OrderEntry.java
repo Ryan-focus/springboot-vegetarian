@@ -2,29 +2,37 @@ package com.eeit45.champion.vegetarian.model;
 
 public class OrderEntry {
 
-    private int orderEntryId;
+    private Integer orderEntryId;
     private Integer orderId;
-    private int productId;
-    private int quantity;
-    private int orderEntryPrice;
+    private Integer productId;
+    private Integer quantity;
+    private Integer orderEntryPrice;
 
 
     public OrderEntry() {
     }
 
-    public OrderEntry(Integer orderId, int productId, int quantity, int orderEntryPrice) {
+    public OrderEntry(Integer orderId, Integer productId, Integer quantity, Integer orderEntryPrice) {
         this.orderId = orderId;
         this.productId = productId;
         this.quantity = quantity;
         this.orderEntryPrice = orderEntryPrice;
     }
 
-    public OrderEntry(int orderEntryId, Integer orderId, int productId, int quantity, int orderEntryPrice) {
+    public OrderEntry(Integer orderEntryId, Integer orderId, Integer productId, Integer quantity, Integer orderEntryPrice) {
         this.orderEntryId = orderEntryId;
         this.orderId = orderId;
         this.productId = productId;
         this.quantity = quantity;
         this.orderEntryPrice = orderEntryPrice;
+    }
+
+    public Integer getOrderEntryId() {
+        return orderEntryId;
+    }
+
+    public void setOrderEntryId(Integer orderEntryId) {
+        this.orderEntryId = orderEntryId;
     }
 
     public Integer getOrderId() {
@@ -35,36 +43,27 @@ public class OrderEntry {
         this.orderId = orderId;
     }
 
-    public int getOrderEntryId() {
-        return orderEntryId;
-    }
-
-    public void setOrderEntryId(int orderEntryId) {
-        this.orderEntryId = orderEntryId;
-    }
-
-
-    public int getProductId() {
+    public Integer getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(Integer productId) {
         this.productId = productId;
     }
 
-    public int getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
-    public int getOrderEntryPrice() {
+    public Integer getOrderEntryPrice() {
         return orderEntryPrice;
     }
 
-    public void setOrderEntryPrice(int orderEntryPrice) {
+    public void setOrderEntryPrice(Integer orderEntryPrice) {
         this.orderEntryPrice = orderEntryPrice;
     }
 }

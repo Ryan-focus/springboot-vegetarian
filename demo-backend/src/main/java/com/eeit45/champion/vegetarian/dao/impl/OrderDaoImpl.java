@@ -4,7 +4,9 @@ import com.eeit45.champion.vegetarian.dao.OrderDao;
 import com.eeit45.champion.vegetarian.dao.ProductDao;
 import com.eeit45.champion.vegetarian.dto.OrderEntryRequest;
 import com.eeit45.champion.vegetarian.dto.OrderRequest;
+import com.eeit45.champion.vegetarian.model.CartEntry;
 import com.eeit45.champion.vegetarian.model.Order;
+import com.eeit45.champion.vegetarian.model.OrderEntry;
 import com.eeit45.champion.vegetarian.rowmapper.OrderRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -89,7 +91,17 @@ public class OrderDaoImpl implements OrderDao {
         int orderEntryId = keyHolder.getKey().intValue();
 
         return orderEntryId;
+    }
 
+    @Override
+    public OrderEntry CartEntryToOrderEntry(CartEntry cartEntry) {
+        OrderEntry orderEntry = new OrderEntry();
+        orderEntry.setProductId(cartEntry.getProductId());
+        orderEntry.setQuantity(cartEntry.getQuantity());
+        orderEntry.setOrderEntryId(null);
+        orderEntry.setOrderEntryPrice(cartEntry.getEntryPrice());
+        orderEntry.setOrderId(null);
 
+        return orderEntry;
     }
 }

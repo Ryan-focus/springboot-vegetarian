@@ -28,7 +28,7 @@ public class CartController {
 
         if (cart != null) {
             CartShow cartShow = new CartShow();
-            cartShow.setCartId(cart.getCartId());
+            cartShow.setCartUUID(cart.getCartUUID());
             cartShow.setUserId(cart.getUserId());
             //轉換原始資料cart資料，搜尋購物車裡面的商品
             List<CartEntry> originalCart = cartService.getCartEntriesById(cart.getCartId());
@@ -48,7 +48,7 @@ public class CartController {
             cartService.CreateNewCart(userId);
             Cart newCart = cartService.getCartById(userId);
             CartShow cartShow = new CartShow();
-            cartShow.setCartId(newCart.getCartId());
+            cartShow.setCartUUID(newCart.getCartUUID());
             cartShow.setUserId(newCart.getUserId());
             cartShow.setCartEntryDetailList(null);
             return ResponseEntity.status(HttpStatus.OK).body(cartShow);

@@ -9,7 +9,7 @@ import java.util.List;
 public class CartShow <T>{
 
     @NotNull
-    private int cartId;
+    private String cartUUID;
     @NotNull
     private int userId;
     private List<CartEntryDetail> cartEntryDetailList;
@@ -23,18 +23,19 @@ public class CartShow <T>{
     public CartShow() {
     }
 
-    public CartShow(int cartId, int userId, List<CartEntryDetail> cartEntryDetailList) {
-        this.cartId = cartId;
+
+    public CartShow(String cartUUID, int userId, List<CartEntryDetail> cartEntryDetailList) {
+        this.cartUUID = cartUUID;
         this.userId = userId;
         this.cartEntryDetailList = cartEntryDetailList;
     }
 
-    public int getCartId() {
-        return cartId;
+    public String getCartUUID() {
+        return cartUUID;
     }
 
-    public void setCartId(int cartId) {
-        this.cartId = cartId;
+    public void setCartUUID(String cartUUID) {
+        this.cartUUID = cartUUID;
     }
 
     public int getUserId() {

@@ -8,7 +8,7 @@ public class CartEntry{
     @NotNull
     private int productId;
     @NotNull
-    private int cartId;
+    private String cartUUID;
     @NotNull
     private int quantity;
     private int entryPrice;
@@ -16,19 +16,30 @@ public class CartEntry{
     public CartEntry() {
     }
 
-    public CartEntry(int entryId, int productId, int cartId, int quantity, int entryPrice) {
-        this.entryId = entryId;
+    public CartEntry(int productId, String cartUUID, int quantity, int entryPrice) {
         this.productId = productId;
-        this.cartId = cartId;
+        this.cartUUID = cartUUID;
         this.quantity = quantity;
         this.entryPrice = entryPrice;
     }
 
-    public CartEntry(int productId, int cartId, int quantity, int entryPrice) {
+    public CartEntry(int entryId, int productId, String cartUUID, int quantity, int entryPrice) {
+        this.entryId = entryId;
         this.productId = productId;
-        this.cartId = cartId;
+        this.cartUUID = cartUUID;
         this.quantity = quantity;
         this.entryPrice = entryPrice;
+    }
+
+    @Override
+    public String toString() {
+        return "CartEntry{" +
+                "entryId=" + entryId +
+                ", productId=" + productId +
+                ", cartUUID='" + cartUUID + '\'' +
+                ", quantity=" + quantity +
+                ", entryPrice=" + entryPrice +
+                '}';
     }
 
     public int getEntryId() {
@@ -47,12 +58,12 @@ public class CartEntry{
         this.productId = productId;
     }
 
-    public int getCartId() {
-        return cartId;
+    public String getCartUUID() {
+        return cartUUID;
     }
 
-    public void setCartId(int cartId) {
-        this.cartId = cartId;
+    public void setCartUUID(String cartUUID) {
+        this.cartUUID = cartUUID;
     }
 
     public int getQuantity() {

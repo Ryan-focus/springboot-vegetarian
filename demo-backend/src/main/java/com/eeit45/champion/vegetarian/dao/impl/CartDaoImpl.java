@@ -19,6 +19,7 @@ import org.springframework.stereotype.Component;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 @Component
 public class CartDaoImpl implements CartDao {
@@ -46,7 +47,7 @@ public class CartDaoImpl implements CartDao {
         Product product = productDao.getProductById(cartEntry.getProductId());
         CartEntryDetail cartEntryDetail = new CartEntryDetail();
         cartEntryDetail.setEntryId(cartEntry.getEntryId());
-        cartEntryDetail.setCartId(cartEntry.getCartId());
+        cartEntryDetail.setCartUUID(cartEntry.getCartUUID());
         cartEntryDetail.setQuantity(cartEntry.getQuantity());
         cartEntryDetail.setEntryPrice(cartEntry.getEntryPrice());
         cartEntryDetail.setProductId(cartEntry.getProductId());
@@ -127,9 +128,13 @@ public class CartDaoImpl implements CartDao {
 
     @Override
     public Integer CreateNewCart(Integer userId) {
-        String sql = "INSERT into cart (userId) VALUES ( :userId)";
+        String sql = "INSERT into cart (userId,cartUUID) VALUES ( :userId, :cartUUID)";
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
+        UUID uuid = UUID.randomUUID();
+        //去掉UUID的斜線
+        String uuidNoneDash = uuid.toString().replace("-","");
+        map.put("cartUUID",uuidNoneDash);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
         int cartId = keyHolder.getKey().intValue();
