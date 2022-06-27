@@ -29,14 +29,15 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public Integer createOrder(OrderRequest orderRequest) {
-        String sql = "INSERT INTO veganDB.order (userId,payment,shipping,status,createdTime)" +
-                "VALUES(:userId, :payment, :shipping, :status, :createdTime)";
+        String sql = "INSERT INTO veganDB.order (userId,payment,shipping,status,orderUUID,createdTime)" +
+                "VALUES(:userId, :payment, :shipping, :status, :orderUUID, :createdTime)";
         Map<String, Object> map = new HashMap<>();
         //生成訂單Id
         map.put("userId", orderRequest.getUserId());
         map.put("payment", orderRequest.getPayment());
         map.put("shipping", orderRequest.getShipping());
         map.put("status", orderRequest.getStatus());
+        map.put("orderUUID",orderRequest.getOrderUUID());
         //生成現在日期
         Date now = new Date();
         Timestamp timestamp = new Timestamp(now.getTime());
@@ -94,14 +95,14 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public OrderEntry CartEntryToOrderEntry(CartEntry cartEntry) {
-        OrderEntry orderEntry = new OrderEntry();
-        orderEntry.setProductId(cartEntry.getProductId());
-        orderEntry.setQuantity(cartEntry.getQuantity());
-        orderEntry.setOrderEntryId(null);
-        orderEntry.setOrderEntryPrice(cartEntry.getEntryPrice());
-        orderEntry.setOrderId(null);
+    public void insertCartEntryIntoOrderEntry(String cartUUID) {
+        String sql="INSERT INTO veganDB.orderEntry(productId,orderUUID,quantity,entryPrice)\n" +
+                "SELECT productId,cartUUID,quantity,entryPrice\n" +
+                "FROM veganDB.cartEntry\n" +
+                "WHERE cartUUID = :cartUUID";
+        Map<String, Object> map = new HashMap<>();
+        map.put("cartUUID",cartUUID);
 
-        return orderEntry;
+        namedParameterJdbcTemplate.update(sql,map);
     }
 }

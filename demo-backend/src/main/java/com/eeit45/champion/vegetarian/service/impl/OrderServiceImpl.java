@@ -34,12 +34,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public Integer insertOrderEntry(OrderEntryRequest orderEntryRequest) {
-        return orderDao.insertOrderEntry(orderEntryRequest);
-    }
-
-    @Override
-    public OrderEntry CartEntryToOrderEntry(CartEntry cartEntry) {
-        return orderDao.CartEntryToOrderEntry(cartEntry);
+    public void insertCartEntryIntoOrderEntry(String cartUUID) {
+        orderDao.insertCartEntryIntoOrderEntry(cartUUID);
     }
 }
+
+

@@ -23,13 +23,13 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public List<CartEntry> getCartEntriesById(Integer cartId) {
-        return cartDao.getCartEntriesById(cartId);
+    public List<CartEntry> getCartEntriesByUUID(String cartUUID) {
+        return cartDao.getCartEntriesByUUID(cartUUID);
     }
 
     @Override
     public CartEntry getSingleCartEntry(Integer cartEntryId) {
-        return cartDao.getSingleCartEntry(cartEntryId);
+        return cartDao.getSingleCartEntryById(cartEntryId);
     }
 
     @Override
@@ -58,12 +58,12 @@ public class CartServiceImpl implements CartService {
     }
 
     @Override
-    public void deleteCartById(Integer cartId) {
-        cartDao.deleteCartById(cartId);
+    public void deleteCartById(String cartUUID) {
+        cartDao.deleteCartById(cartUUID);
     }
 
     @Override
-    public void deleteCartEntryById(Integer cartId) {
-        cartDao.deleteCartEntryById(cartId);
+    public void deleteCartEntryById(String cartUUID) {
+        cartDao.deleteCartEntryById(cartUUID);
     }
 }

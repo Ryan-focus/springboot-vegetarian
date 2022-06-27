@@ -44,23 +44,24 @@ public class CartDaoImpl implements CartDao {
     }
 
     public CartEntryDetail showCartEntryDetail(CartEntry cartEntry) {
-        Product product = productDao.getProductById(cartEntry.getProductId());
         CartEntryDetail cartEntryDetail = new CartEntryDetail();
         cartEntryDetail.setEntryId(cartEntry.getEntryId());
         cartEntryDetail.setCartUUID(cartEntry.getCartUUID());
         cartEntryDetail.setQuantity(cartEntry.getQuantity());
         cartEntryDetail.setEntryPrice(cartEntry.getEntryPrice());
         cartEntryDetail.setProductId(cartEntry.getProductId());
+        //根據productId找出商品後生成product物件
+        Product product = productDao.getProductById(cartEntry.getProductId());
         cartEntryDetail.setProduct(product);
 
         return cartEntryDetail;
     }
 
     @Override
-    public List<CartEntry> getCartEntriesById(Integer cartId) {
-        String sql = "SELECT * FROM cartEntry WHERE cartId= :cartId";
+    public List<CartEntry> getCartEntriesByUUID(String cartUUID) {
+        String sql = "SELECT * FROM cartEntry WHERE cartUUID= :cartUUID";
         Map<String, Object> map = new HashMap<>();
-        map.put("cartId", cartId);
+        map.put("cartUUID", cartUUID);
 
         List<CartEntry> cartEntryList = namedParameterJdbcTemplate.query(sql, map, new CartEntryRowMapper());
         if (cartEntryList.size() > 0) {
@@ -72,7 +73,7 @@ public class CartDaoImpl implements CartDao {
     }
 
     @Override
-    public CartEntry getSingleCartEntry(Integer cartEntryId) {
+    public CartEntry getSingleCartEntryById(Integer cartEntryId) {
         String sql = "SELECT * FROM cartEntry WHERE cartEntryId= :cartEntryId";
         Map<String, Object> map = new HashMap<>();
         map.put("cartEntryId", cartEntryId);
@@ -86,10 +87,10 @@ public class CartDaoImpl implements CartDao {
 
     @Override
     public Integer AddToCart(CartEntryRequest cartEntryRequest) {
-        String sql = "INSERT INTO cartEntry(cartId,productId,quantity,entryPrice)" +
-                "VALUES (:cartId, :productId, :quantity, :entryPrice)";
+        String sql = "INSERT INTO cartEntry(cartUUID,productId,quantity,entryPrice)" +
+                "VALUES (:cartUUID, :productId, :quantity, :entryPrice)";
         Map<String, Object> map = new HashMap<>();
-        map.put("cartId", cartEntryRequest.getCartId());
+        map.put("cartUUID", cartEntryRequest.getCartUUID());
         map.put("productId", cartEntryRequest.getProductId());
         map.put("quantity", cartEntryRequest.getQuantity());
         Product product = productDao.getProductById(cartEntryRequest.getProductId());
@@ -142,19 +143,19 @@ public class CartDaoImpl implements CartDao {
     }
 
     @Override
-    public void deleteCartById(Integer cartId) {
-        String sql = "DELETE FROM cart WHERE cartId= :cartId";
+    public void deleteCartById(String cartUUID) {
+        String sql = "DELETE FROM cart WHERE cartUUID= :cartUUID";
         Map<String,Object> map = new HashMap<>();
-        map.put("cartId",cartId);
+        map.put("cartUUID",cartUUID);
         namedParameterJdbcTemplate.update(sql,map);
 
     }
 
     @Override
-    public void deleteCartEntryById(Integer cartId) {
-        String sql = "DELETE FROM cartEntry WHERE cartId= :cartId";
+    public void deleteCartEntryById(String cartUUID) {
+        String sql = "DELETE FROM cartEntry WHERE cartUUID= :cartUUID";
         Map<String,Object> map = new HashMap<>();
-        map.put("cartId",cartId);
+        map.put("cartUUID",cartUUID);
         namedParameterJdbcTemplate.update(sql,map);
     }
 }

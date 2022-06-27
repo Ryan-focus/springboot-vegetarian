@@ -5,6 +5,8 @@ import java.util.List;
 
 public class Order {
     private Integer orderId;
+
+    private String orderUUID;
     private Integer userId;
     private String Shipping;
     private String payment;
@@ -13,12 +15,21 @@ public class Order {
     public Order() {
     }
 
-    public Order(Integer orderId, Integer userId, String shipping, String payment, String status) {
+    public Order(Integer orderId, String orderUUID, Integer userId, String shipping, String payment, String status) {
         this.orderId = orderId;
+        this.orderUUID = orderUUID;
         this.userId = userId;
         Shipping = shipping;
         this.payment = payment;
         this.status = status;
+    }
+
+    public String getOrderUUID() {
+        return orderUUID;
+    }
+
+    public void setOrderUUID(String orderUUID) {
+        this.orderUUID = orderUUID;
     }
 
     public Integer getOrderId() {

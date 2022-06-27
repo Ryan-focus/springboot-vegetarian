@@ -16,7 +16,5 @@ public interface OrderService {
 
     public List<Order> getOrderByUserId(Integer userId);
 
-    Integer insertOrderEntry(OrderEntryRequest orderEntryRequest);
-
-    OrderEntry CartEntryToOrderEntry(CartEntry cartEntry);
+     void insertCartEntryIntoOrderEntry(String cartUUID);
 }

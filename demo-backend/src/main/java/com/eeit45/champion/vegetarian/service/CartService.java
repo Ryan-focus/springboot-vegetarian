@@ -13,7 +13,7 @@ public interface CartService {
 
     Cart getCartById(Integer userId);
 
-    List<CartEntry> getCartEntriesById(Integer cartId);
+    List<CartEntry> getCartEntriesByUUID(String cartUUID);
 
     CartEntry getSingleCartEntry(Integer cartEntryId);
 
@@ -27,7 +27,7 @@ public interface CartService {
 
     CartEntryDetail showCartEntryDetail(CartEntry cartEntry);
 
-    public void deleteCartById(Integer cartId);
+    public void deleteCartById(String cartUUID);
 
-    public void deleteCartEntryById(Integer cartId);
+    public void deleteCartEntryById(String cartUUID);
 }

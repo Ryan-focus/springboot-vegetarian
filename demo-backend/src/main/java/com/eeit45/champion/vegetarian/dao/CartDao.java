@@ -11,9 +11,9 @@ public interface CartDao {
 
     Cart getCartById(Integer userId);
 
-    List<CartEntry>getCartEntriesById(Integer cartId);
+    List<CartEntry>getCartEntriesByUUID(String cartUUID);
 
-    CartEntry getSingleCartEntry(Integer cartEntryId);
+    CartEntry getSingleCartEntryById(Integer cartEntryId);
 
 
     Integer AddToCart(CartEntryRequest cartEntryRequest);
@@ -26,8 +26,8 @@ public interface CartDao {
 
     CartEntryDetail showCartEntryDetail(CartEntry cartEntry);
 
-    void deleteCartById(Integer cartId);
+    void deleteCartById(String cartUUID);
 
-    void deleteCartEntryById(Integer cartId);
+    void deleteCartEntryById(String cartUUID);
 
 }

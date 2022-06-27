@@ -13,7 +13,7 @@ public class CartRowMapper implements RowMapper<Cart> {
         Cart cart = new Cart();
         ObjectMapper mapper = new ObjectMapper();
 
-        cart.setCartId(rs.getInt(("id")));
+        cart.setCartUUID(rs.getString("cartUUID"));
         cart.setUserId(rs.getInt("userId"));
         return cart;
     }

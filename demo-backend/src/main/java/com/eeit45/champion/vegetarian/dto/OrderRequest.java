@@ -10,6 +10,7 @@ public class OrderRequest {
     private String payment;
     private String status;
 
+    private String orderUUID;
 
     public Integer getUserId() {
         return userId;
@@ -44,4 +45,11 @@ public class OrderRequest {
         this.status = status;
     }
 
+    public String getOrderUUID() {
+        return orderUUID;
+    }
+
+    public void setOrderUUID(String orderUUID) {
+        this.orderUUID = orderUUID;
+    }
 }

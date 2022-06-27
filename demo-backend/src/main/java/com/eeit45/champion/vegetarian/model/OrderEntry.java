@@ -3,7 +3,8 @@ package com.eeit45.champion.vegetarian.model;
 public class OrderEntry {
 
     private Integer orderEntryId;
-    private Integer orderId;
+
+    private String orderUUID;
     private Integer productId;
     private Integer quantity;
     private Integer orderEntryPrice;
@@ -12,16 +13,16 @@ public class OrderEntry {
     public OrderEntry() {
     }
 
-    public OrderEntry(Integer orderId, Integer productId, Integer quantity, Integer orderEntryPrice) {
-        this.orderId = orderId;
+    public OrderEntry(String orderUUID, Integer productId, Integer quantity, Integer orderEntryPrice) {
+        this.orderUUID = orderUUID;
         this.productId = productId;
         this.quantity = quantity;
         this.orderEntryPrice = orderEntryPrice;
     }
 
-    public OrderEntry(Integer orderEntryId, Integer orderId, Integer productId, Integer quantity, Integer orderEntryPrice) {
+    public OrderEntry(Integer orderEntryId, String orderUUID, Integer productId, Integer quantity, Integer orderEntryPrice) {
         this.orderEntryId = orderEntryId;
-        this.orderId = orderId;
+        this.orderUUID = orderUUID;
         this.productId = productId;
         this.quantity = quantity;
         this.orderEntryPrice = orderEntryPrice;
@@ -35,12 +36,12 @@ public class OrderEntry {
         this.orderEntryId = orderEntryId;
     }
 
-    public Integer getOrderId() {
-        return orderId;
+    public String getOrderUUID() {
+        return orderUUID;
     }
 
-    public void setOrderId(Integer orderId) {
-        this.orderId = orderId;
+    public void setOrderUUID(String orderUUID) {
+        this.orderUUID = orderUUID;
     }
 
     public Integer getProductId() {

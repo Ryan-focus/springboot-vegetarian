@@ -18,6 +18,6 @@ public interface OrderDao {
 
      Integer insertOrderEntry(OrderEntryRequest orderEntryRequest);
 
-     OrderEntry CartEntryToOrderEntry(CartEntry cartEntry);
+     void insertCartEntryIntoOrderEntry(String cartUUID);
 
 }

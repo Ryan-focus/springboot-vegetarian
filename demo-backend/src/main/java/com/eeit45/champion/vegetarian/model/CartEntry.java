@@ -4,14 +4,14 @@ import javax.validation.constraints.NotNull;
 
 public class CartEntry{
 
-    private int entryId;
+    private Integer entryId;
     @NotNull
-    private int productId;
+    private Integer productId;
     @NotNull
     private String cartUUID;
     @NotNull
-    private int quantity;
-    private int entryPrice;
+    private Integer quantity;
+    private Integer entryPrice;
 
     public CartEntry() {
     }

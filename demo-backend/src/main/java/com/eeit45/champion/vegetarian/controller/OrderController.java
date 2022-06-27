@@ -32,24 +32,19 @@ public class OrderController {
             return null;
         }
     }
-    @PostMapping("/{cartId}")
-    public ResponseEntity<Order> createOrder(@PathVariable Integer cartId,
-                                             @RequestBody @Valid OrderRequest orderRequest) {
+    @PostMapping()
+    public ResponseEntity<Order> createOrder(@RequestBody @Valid OrderRequest orderRequest) {
         Integer orderId = orderService.createOrder(orderRequest);
         Order order = orderService.getOrderById(orderId);
-        //取出購物車的所有物品準備寫入order
-        List<CartEntry> cartEntryList = cartService.getCartEntriesById(cartId);
-        //轉換cartEntry變成Order
-        for (int i = 0; i < cartEntryList.size(); i++) {
-            OrderEntry orderEntry = orderService.CartEntryToOrderEntry(cartEntryList.get(i));
+        order.setOrderUUID(orderRequest.getOrderUUID());
+        //將cartEntry的物品全部輸入進去OrderEntry
+        orderService.insertCartEntryIntoOrderEntry(orderRequest.getOrderUUID());
 
-
-        }
 
         //寫入完購物車物品後刪除購物車
-        cartService.deleteCartById(cartId);
+        cartService.deleteCartById(orderRequest.getOrderUUID());
         //寫入後刪除所有購物車商品
-        cartService.deleteCartEntryById(cartId);
+        cartService.deleteCartEntryById(orderRequest.getOrderUUID());
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
 
     }

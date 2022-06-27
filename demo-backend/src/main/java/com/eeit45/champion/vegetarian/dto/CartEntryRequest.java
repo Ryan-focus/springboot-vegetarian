@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 public class CartEntryRequest {
 
     @NotNull
-    private Integer cartId;
+    private String cartUUID;
     @NotNull
     private Integer productId;
     @NotNull
@@ -13,12 +13,12 @@ public class CartEntryRequest {
 
     private int entryPrice;
 
-    public Integer getCartId() {
-        return cartId;
+    public String getCartUUID() {
+        return cartUUID;
     }
 
-    public void setCartId(Integer cartId) {
-        this.cartId = cartId;
+    public void setCartUUID(String cartUUID) {
+        this.cartUUID = cartUUID;
     }
 
     public Integer getProductId() {
