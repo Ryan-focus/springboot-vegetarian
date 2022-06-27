@@ -12,13 +12,12 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/api': {
-        target: 'http://localhost:8088',
+        target: "http://localhost:8088/",  //node express api的url位置
         changeOrigin: true,
         pathRewrite: {
-          '^/api': ''
+            '^/api': 'api'
         }
-      }  
-
+      }
     },
 
     // Various Dev Server settings
