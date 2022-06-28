@@ -19,7 +19,6 @@ import com.eeit45.champion.vegetarian.model.Product;
 import com.eeit45.champion.vegetarian.rowmapper.PostRowMapper;
 import com.eeit45.champion.vegetarian.rowmapper.ProductRowMapper;
 
-
 @Component
 public class PostDaoImpl implements PostDao {
 
@@ -29,23 +28,19 @@ public class PostDaoImpl implements PostDao {
 	// 新增文章圖片測試
 	public boolean addPostImage(Post post) {
 
-//		Session session = sessionFactory.getCurrentSession();
-//		session.save(post);
-//		return true;
-//		
-		String sql = "INSERT INTO post ( title, postedDate, postedText, imgurl, postStatus)" +
-                 "VALUES (:title, :postedDate, :postedText, :imgurl, :postStatus)";
+		String sql = "INSERT INTO post ( title, postedDate, postedText, imgurl, postStatus)"
+				+ "VALUES (:title, :postedDate, :postedText, :imgurl, :postStatus)";
 
-    Map<String,Object> map = new HashMap<>();
-    map.put("title",post.getTitle());
-    map.put("postedDate",post.getPostedDate());
-    map.put("postedText",post.getPostedText());
-    map.put("imgurl",post.getImgurl());
-    map.put("postStatus",post.getPostStatus());
-    
-    namedParameterJdbcTemplate.update(sql, map);
-    
-    return true;
+		Map<String, Object> map = new HashMap<>();
+		map.put("title", post.getTitle());
+		map.put("postedDate", post.getPostedDate());
+		map.put("postedText", post.getPostedText());
+		map.put("imgurl", post.getImgurl());
+		map.put("postStatus", post.getPostStatus());
+
+		namedParameterJdbcTemplate.update(sql, map);
+
+		return true;
 
 	}
 
@@ -65,32 +60,34 @@ public class PostDaoImpl implements PostDao {
 	// 更新文章
 	public boolean updatePost(Post post) {
 
-		Session session = sessionFactory.getCurrentSession();
-		String hql = "UPDATE Post  set title= :title, postedText = :postedText, imgurl = :imgurl where postId = :postId ";
-		int result = 0;
-		result = session.createQuery(hql).setParameter("title", post.getTitle())
-				.setParameter("postedText", post.getPostedText()).setParameter("imgurl", post.getImgurl())
-				.setParameter("postId", post.getPostId()).executeUpdate();
-		if (result > 0) {
-			return true;
-		} else {
-			return false;
-		}
+		String sql = "UPDATE post SET title = :title, postedText = :postedText , imgurl = :imgurl"+
+			" WHERE postId = :postId ";   
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("postId", post.getPostId());
+		map.put("title", post.getTitle());
+		//map.put("postedDate", post.getPostedDate());
+		map.put("postedText", post.getPostedText());
+		map.put("imgurl", post.getImgurl());
+		map.put("postStatus", post.getPostStatus());
+
+		namedParameterJdbcTemplate.update(sql, map);
+
+		return true;
 
 	}
 
 	public boolean updateCondition(Post post) {
 
-		Session session = sessionFactory.getCurrentSession();
-		String hql = "UPDATE Post  set postStatus= :postStatus where postId = :postId ";
-		int result = 0;
-		result = session.createQuery(hql).setParameter("postStatus", post.getPostStatus())
-				.setParameter("postId", post.getPostId()).executeUpdate();
-		if (result > 0) {
+		String sql = "UPDATE post SET postStatus = :postStatus WHERE postId = :postId ";   
+
+			Map<String, Object> map = new HashMap<>();
+			map.put("postStatus", post.getPostStatus());
+			map.put("postId", post.getPostId());
+
+			namedParameterJdbcTemplate.update(sql, map);
+			
 			return true;
-		} else {
-			return false;
-		}
 
 	}
 
