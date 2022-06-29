@@ -1,53 +1,37 @@
-// The Vue build version to load with the `import` command
-// (runtime-only or standalone) has been set in webpack.base.conf with an alias.
-import Vue from 'vue'
-import App from './App'
-import router from './router'
-//引入ElementUI
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
-import store from './store'
-var axios = require('axios')
-// 全域性註冊，之後可在其他元件中通過 this.$axios 傳送資料
-Vue.prototype.$axios = axios
-// 設定反向代理，前端請求預設傳送到 http://localhost:8888/api
-axios.defaults.baseURL = 'http://localhost:8088/api'
-Vue.config.productionTip = false
+import { createApp } from "vue";
+import { createPinia } from "pinia";
+import App from "./App.vue";
 
-/* eslint-disable no-new */
+// You can use the following starter router instead of the default one as a clean starting point
+// import router from "./router/starter";
+import router from "./router";
 
-Vue.use(ElementUI)
+// Template components
+import BaseBlock from "@/components/BaseBlock.vue";
+import BaseBackground from "@/components/BaseBackground.vue";
+import BasePageHeading from "@/components/BasePageHeading.vue";
 
-//鉤子函式，訪問路由前呼叫
-router.beforeEach((to, from, next) => {
-  //路由需要認證
-  if (to.meta.requireAuth) {
-    //判斷store裡是否有token
-    if (store.state.token) {
-      next()
-    } else {
-      next({
-        path: 'login',
-        query: {
-    redirect: to.fullPath }
-      })
-    }
-  } else {
-    next()
-  }
-}
-)
+// Template directives
+import clickRipple from "@/directives/clickRipple";
 
+// Bootstrap framework
+import * as bootstrap from "bootstrap";
+window.bootstrap = bootstrap;
 
-new Vue({
-   
-   
-  el: '#app',
-  router,
-  // 注意這裡
-  store,
-  components: {
-   
-    App },
-  template: '<App/>'
-})
+// Craft new application
+const app = createApp(App);
+
+// Register global components
+app.component("BaseBlock", BaseBlock);
+app.component("BaseBackground", BaseBackground);
+app.component("BasePageHeading", BasePageHeading);
+
+// Register global directives
+app.directive("click-ripple", clickRipple);
+
+// Use Pinia and Vue Router
+app.use(createPinia());
+app.use(router);
+
+// ..and finally mount it!
+app.mount("#app");
