@@ -56,3 +56,22 @@ CREATE TABLE order_item
     quantity      INT NOT NULL, -- 商品數量
     amount        INT NOT NULL  -- 商品花費
 );
+
+--restaurant
+drop table if exists restaurant;
+
+create table restaurant(
+	restaurantNumber int NOT NULL auto_increment primary key,
+	restaurantName nvarchar(20) NOT NULL,
+	restaurantTel nvarchar(15),
+	restaurantAddress nvarchar(50) NOT NULL,
+	restaurantCategory nvarchar(20),
+	restaurantType nvarchar(20),
+	restaurantBusinessHours nvarchar(200),
+	restaurantScore nvarchar(10),
+	imageUrl nvarchar(200),
+    createdTime TIMESTAMP NOT NULL,
+    updatedTime TIMESTAMP NOT NULL,
+	restaurantMap nvarchar(500)
+);
+
