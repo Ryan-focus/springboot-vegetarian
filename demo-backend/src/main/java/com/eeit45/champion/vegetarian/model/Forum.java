@@ -3,11 +3,13 @@ package com.eeit45.champion.vegetarian.model;
 import java.util.Date;
 
 public class Forum {
+
+
 	private Integer forumId;
-	private Integer forumCategoryId;
 	private String forumTitle;
 	private String forumContent;
-	private Date forumDate;
+	private Date forumCreateTime;
+	private Date forumUpdateTime;
 	
 	
 	public Integer getForumId() {
@@ -18,13 +20,6 @@ public class Forum {
 		this.forumId = forumId;
 	}
 
-	public Integer getForumCategoryId() {
-		return forumCategoryId;
-	}
-
-	public void setForumCategoryId(Integer forumCategoryId) {
-		this.forumCategoryId = forumCategoryId;
-	}
 
 	public String getForumTitle() {
 		return forumTitle;
@@ -42,12 +37,20 @@ public class Forum {
 		this.forumContent = forumContent;
 	}
 
-	public Date getForumDate() {
-		return forumDate;
+	public Date getForumCreateTime() {
+		return forumCreateTime;
 	}
 
-	public void setForumDate(Date forumDate) {
-		this.forumDate = forumDate;
+	public void setForumCreateTime(Date forumCreateTime) {
+		this.forumCreateTime = forumCreateTime;
+	}
+
+	public Date getForumUpdateTime() {
+		return forumUpdateTime;
+	}
+
+	public void setForumUpdateTime(Date forumUpdateTime) {
+		this.forumUpdateTime = forumUpdateTime;
 	}
 
 
