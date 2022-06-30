@@ -105,4 +105,23 @@ public class OrderDaoImpl implements OrderDao {
 
         namedParameterJdbcTemplate.update(sql,map);
     }
+
+    @Override
+    public void updateOrderPayment(String payment,Integer orderId) {
+        String sql = "UPDATE veganDB.order SET payment = :payment where orderId = :orderId";
+        Map<String, Object> map = new HashMap<>();
+        map.put("payment",payment);
+        map.put("orderId",orderId);
+        namedParameterJdbcTemplate.update(sql,map);
+    }
+
+    @Override
+    public void updateOrderShipping(String shipping, Integer orderId) {
+        String sql = "UPDATE veganDB.order SET shipping = :shipping where orderId = :orderId";
+        Map<String, Object> map = new HashMap<>();
+        map.put("shipping",shipping);
+        map.put("orderId",orderId);
+        namedParameterJdbcTemplate.update(sql,map);
+
+    }
 }

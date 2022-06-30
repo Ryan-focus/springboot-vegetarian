@@ -37,6 +37,15 @@ public class OrderServiceImpl implements OrderService {
     public void insertCartEntryIntoOrderEntry(String cartUUID) {
         orderDao.insertCartEntryIntoOrderEntry(cartUUID);
     }
+
+    @Override
+    public void updateOrderPayment(String payment, Integer orderId) {
+        orderDao.updateOrderPayment(payment,orderId);
+    }
+    @Override
+    public void updateOrderShipping(String shipping, Integer orderId) {
+        orderDao.updateOrderShipping(shipping,orderId);
+    }
 }
 
 

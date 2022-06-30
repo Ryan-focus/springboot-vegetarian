@@ -23,6 +23,7 @@ public class OrderRowMapper implements RowMapper<Order> {
         order.setShipping(rs.getString("shipping"));
         order.setStatus(rs.getString("status"));
         order.setPayment(rs.getString("payment"));
+        order.setOrderUUID(rs.getString("orderUUID"));
         return order;
     }
 

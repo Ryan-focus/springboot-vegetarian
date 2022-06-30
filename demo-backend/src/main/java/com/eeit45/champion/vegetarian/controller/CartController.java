@@ -23,7 +23,9 @@ public class CartController {
     private CartService cartService;
 
     @GetMapping("/{userId}")
-    public ResponseEntity<CartShow> getCartById(@PathVariable Integer userId) {
+    public ResponseEntity<CartShow> getCartById(@PathVariable Integer userId
+    ) {
+
         Cart cart = cartService.getCartById(userId);
         if (cart != null) {
             CartShow cartShow = new CartShow();
@@ -55,7 +57,7 @@ public class CartController {
 
     }
 
-    @PostMapping("/AddToCart")
+    @PostMapping
     public ResponseEntity<CartEntry> addToCart(@RequestBody @Valid CartEntryRequest cartEntryRequest) {
         Integer cartEntryId = cartService.AddToCart(cartEntryRequest);
         CartEntry cartEntry = cartService.getSingleCartEntry(cartEntryId);
@@ -69,7 +71,7 @@ public class CartController {
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-   @PatchMapping("/updateQuantity/{cartEntryId}")
+   @PatchMapping("/{cartEntryId}")
     public ResponseEntity<CartEntry> updateQuantity(@PathVariable Integer cartEntryId,
                                                     @RequestBody CartEntryRequest cartEntryRequest) {
         CartEntry checkCartEntry = cartService.getSingleCartEntry(cartEntryId);

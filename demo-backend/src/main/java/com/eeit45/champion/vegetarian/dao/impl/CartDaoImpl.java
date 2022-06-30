@@ -16,10 +16,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.sql.Timestamp;
+import java.util.*;
 
 @Component
 public class CartDaoImpl implements CartDao {
@@ -129,13 +127,17 @@ public class CartDaoImpl implements CartDao {
 
     @Override
     public Integer CreateNewCart(Integer userId) {
-        String sql = "INSERT into cart (userId,cartUUID) VALUES ( :userId, :cartUUID)";
+        String sql = "INSERT into cart (userId,cartUUID,createdTime) VALUES ( :userId, :cartUUID, :createdTime)";
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
         UUID uuid = UUID.randomUUID();
         //去掉UUID的斜線
         String uuidNoneDash = uuid.toString().replace("-","");
         map.put("cartUUID",uuidNoneDash);
+        //生成現在時間
+        Date now = new Date();
+        Timestamp timestamp = new Timestamp(now.getTime());
+        map.put("createdTime", timestamp);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
         int cartId = keyHolder.getKey().intValue();

@@ -46,8 +46,30 @@ public class OrderController {
         //寫入後刪除所有購物車商品
         cartService.deleteCartEntryById(orderRequest.getOrderUUID());
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
-
     }
+    @PatchMapping("/payment/{orderId}")
+    public ResponseEntity<Order> updatePayment(@PathVariable Integer orderId,
+                                               @RequestBody OrderRequest orderRequest) {
+        Order order = orderService.getOrderById(orderId);
+        if (order == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        orderService.updateOrderPayment(orderRequest.getPayment(),orderId);
+        Order updatedOrder = orderService.getOrderById(orderId);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedOrder);
+    }
+    @PatchMapping("/shipping/{orderId}")
+    public ResponseEntity<Order> updateShipping(@PathVariable Integer orderId,
+                                                @RequestBody OrderRequest orderRequest) {
+        Order order = orderService.getOrderById(orderId);
+        if (order == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        orderService.updateOrderShipping(orderRequest.getShipping(),orderId);
+        Order updatedOrder = orderService.getOrderById(orderId);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedOrder);
+    }
+
 
 
 }
