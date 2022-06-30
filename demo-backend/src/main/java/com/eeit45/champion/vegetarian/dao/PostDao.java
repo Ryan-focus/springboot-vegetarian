@@ -3,6 +3,7 @@ package com.eeit45.champion.vegetarian.dao;
 import java.util.List;
 
 import com.eeit45.champion.vegetarian.model.Post;
+import com.eeit45.champion.vegetarian.model.PostFavorite;
 
 
 
@@ -18,8 +19,12 @@ public interface PostDao {
 	
 	public List<Post> findallPost();
 	
-	public boolean updateCondition(Post post);
+	public Post updateCondition(Post post);
 	
 	public List<Post> findPostByStatus() ;
+	
+	void addFavPost(int pid, int uid);
+	
+	PostFavorite findByFavorite(int pid , int uid);
 	
 }

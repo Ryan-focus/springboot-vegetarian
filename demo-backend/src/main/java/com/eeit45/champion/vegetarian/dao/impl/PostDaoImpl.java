@@ -1,5 +1,6 @@
 package com.eeit45.champion.vegetarian.dao.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,7 @@ import java.util.Map;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
@@ -15,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.eeit45.champion.vegetarian.dao.PostDao;
 import com.eeit45.champion.vegetarian.model.Post;
+import com.eeit45.champion.vegetarian.model.PostFavorite;
 import com.eeit45.champion.vegetarian.model.Product;
 import com.eeit45.champion.vegetarian.rowmapper.PostRowMapper;
 import com.eeit45.champion.vegetarian.rowmapper.ProductRowMapper;
@@ -25,7 +28,7 @@ public class PostDaoImpl implements PostDao {
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-	// 新增文章圖片測試
+	//新增文章&圖片
 	public boolean addPostImage(Post post) {
 
 		String sql = "INSERT INTO post ( title, postedDate, postedText, imgurl, postStatus)"
@@ -77,7 +80,8 @@ public class PostDaoImpl implements PostDao {
 
 	}
 
-	public boolean updateCondition(Post post) {
+	//更新文章狀態
+	public Post updateCondition(Post post) {
 
 		String sql = "UPDATE post SET postStatus = :postStatus WHERE postId = :postId ";   
 
@@ -87,7 +91,7 @@ public class PostDaoImpl implements PostDao {
 
 			namedParameterJdbcTemplate.update(sql, map);
 			
-			return true;
+			return post;
 
 	}
 
@@ -122,6 +126,37 @@ public class PostDaoImpl implements PostDao {
 		List<Post> postList = namedParameterJdbcTemplate.query(sql, new PostRowMapper());
 		return postList;
 
+	}
+	
+	//新增收藏文章
+	public void addFavPost(int pid,int uid) {
+		
+		String sql = "INSERT INTO fav_post ( userId, favDate, postId )"+
+				"VALUES (:userId, :favDate, :postId)";
+				
+				Map<String, Object> map = new HashMap<>();
+				map.put("userId", uid);
+				map.put("favDate",new Date());
+				map.put("postId", pid);
+				
+				namedParameterJdbcTemplate.update(sql, map);
+		
+	}
+	//搜尋收藏文章
+	
+	public PostFavorite findByFavorite(int pid , int uid) {
+		
+		String sql = "SELECT * FROM fav_post where postId = :postId and userId = :userId ";
+		Map<String, Object> map = new HashMap<>();
+		map.put("postId", pid);
+		map.put("userId", uid);
+		
+		//List<Post> favPost = namedParameterJdbcTemplate.query(sql,map ,new PostRowMapper());
+		PostFavorite pFavorite = namedParameterJdbcTemplate.queryForObject(sql,map ,new BeanPropertyRowMapper<PostFavorite>(PostFavorite.class));
+		
+		return pFavorite;
+		
+		
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.eeit45.champion.vegetarian.model.Post;
+import com.eeit45.champion.vegetarian.model.PostFavorite;
 
 
 
@@ -21,9 +22,15 @@ boolean addPostImage(Post post);
 	
 	public List<Post> findallPost();
 	
-	public boolean updateCondition(Post post);
+	public Post updateCondition(Post post);
 	
 	public List<Post> findPostByStatus() ;
+	
+	void addFavPost(int pid,int uid);
+	
+	PostFavorite findByFavorite(int pid , int uid);
+	
+	public boolean isFavorite(int pid, int uid);
 	
 
 }

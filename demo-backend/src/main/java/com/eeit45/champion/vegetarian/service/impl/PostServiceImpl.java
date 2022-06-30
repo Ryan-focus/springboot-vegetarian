@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.eeit45.champion.vegetarian.dao.PostDao;
 import com.eeit45.champion.vegetarian.model.Post;
+import com.eeit45.champion.vegetarian.model.PostFavorite;
 import com.eeit45.champion.vegetarian.service.PostService;
 
 
@@ -26,13 +27,11 @@ public class PostServiceImpl implements PostService {
 
 	}
 
-	@Transactional
 	public boolean deletePost(int id) {
 		return postDao.deletePost(id);
 
 	}
 
-	@Transactional
 	public boolean updatePost(Post post) {
 		return postDao.updatePost(post);
 
@@ -47,12 +46,29 @@ public class PostServiceImpl implements PostService {
 
 	}
 	
-	public boolean updateCondition(Post post) {
+	public Post updateCondition(Post post) {
 		return postDao.updateCondition(post);
 	}
 	
 	public List<Post> findPostByStatus() {
 		return postDao.findPostByStatus();
 	}
+	
+	@Override
+	public void addFavPost(int pid,int uid) {
+		 postDao.addFavPost(pid, uid);
+	}
+	
+	public PostFavorite findByFavorite(int pid , int uid) {
+		return postDao.findByFavorite(pid, uid);
+		
+	}
+	
+	public boolean isFavorite(int pid, int uid) {
+        PostFavorite favorite = postDao.findByFavorite(pid, uid);
+        return favorite != null;//如果对象有值，则为true，反之，则为false
+    }
+
+
 
 }

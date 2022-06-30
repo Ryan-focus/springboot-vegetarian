@@ -3,6 +3,7 @@ package com.eeit45.champion.vegetarian.rowmapper;
 import com.eeit45.champion.vegetarian.constant.ProductCategory;
 import com.eeit45.champion.vegetarian.constant.VeganCategory;
 import com.eeit45.champion.vegetarian.model.Post;
+import com.eeit45.champion.vegetarian.model.PostFavorite;
 import com.eeit45.champion.vegetarian.model.Product;
 import org.springframework.jdbc.core.RowMapper;
 
@@ -10,13 +11,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 
-public class PostRowMapper implements RowMapper<Post> {
+public class PostFavoriteRowMapper implements RowMapper<PostFavorite> {
     @Override
-    public Post mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Post post = new Post();
+    public PostFavorite mapRow(ResultSet rs, int rowNum) throws SQLException {
+        PostFavorite pFavorite = new PostFavorite();
 
-        post.setPostId(rs.getInt("postId"));
-        post.setTitle(rs.getString("title"));
+        pFavorite.setPost(null);
+        pFavorite.setTitle(rs.getString("title"));
         post.setPostedText(rs.getString("postedText"));
         post.setImgurl(rs.getString("imgurl"));
         post.setPostStatus(rs.getString("postStatus"));
