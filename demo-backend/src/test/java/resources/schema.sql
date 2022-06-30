@@ -35,7 +35,7 @@ create table users(
                       userPic nvarchar(50),
                       createdTime TIMESTAMP not null ,
                       lastLoginTime TIMESTAMP not null
-    )
+    );
 
 -- Orders
 DROP TABLE IF EXISTS orders;

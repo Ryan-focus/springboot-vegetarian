@@ -19,7 +19,7 @@ import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import java.util.List;
 
-@Validated
+    @Validated
 @RestController
 public class ProductController {
 
