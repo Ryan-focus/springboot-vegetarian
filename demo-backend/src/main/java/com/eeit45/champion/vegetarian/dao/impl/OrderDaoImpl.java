@@ -36,7 +36,11 @@ public class OrderDaoImpl implements OrderDao {
         map.put("userId", orderRequest.getUserId());
         map.put("payment", orderRequest.getPayment());
         map.put("shipping", orderRequest.getShipping());
-        map.put("status", orderRequest.getStatus());
+        String status = "訂單成立";
+        if (orderRequest.getOrderUUID()!=null){
+        map.put("status", status);}else {
+            map.put("status","訂單未成立");
+        }
         map.put("orderUUID",orderRequest.getOrderUUID());
         //生成現在日期
         Date now = new Date();
