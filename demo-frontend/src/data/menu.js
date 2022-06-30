@@ -51,40 +51,148 @@ export default {
       ],
     },
     {
-      name: "真。後臺頁面",
+      name: "愛蔬網後台頁面",
       heading: true,
     },
     {
-      name: "功能選單",
-      icon: "si si-layers",
-      subActivePaths: "/backend/pages-packs",
+      name: "會員管理",
+      icon: "fa fa-users",
+      subActivePaths: "/backend-boxed",
       sub: [
         {
-          name: "會員管理",
-          icon: "si si-magnet",
-          subActivePaths: "/backend-boxed",
-          sub: [
-            {
-              name: "儀表板",
-              to: "backend-boxed-dashboard",
-            },
-            {
-              name: "搜尋",
-              to: "backend-boxed-search",
-            },
-            {
-              name: "User管理",
-              to: "backend-boxed-simple1",
-            },
-            {
-              name: "Business管理",
-              to: "backend-boxed-simple2",
-            },
-            {
-              name: "Autor權限管理",
-              to: "backend-boxed-image2",
-            },
-          ],
+          name: "儀表板",
+          icon: "fa fa-chart-line",
+          to: "backend-users-dashboard",
+        },
+        {
+          name: "USER管理",
+          to: "backend-users-user-info",
+        },
+        {
+          name: "BUSINESS管理",
+          to: "backend-users-business-info",
+        },
+      ],
+    },
+    {
+      name: "商家管理",
+      icon: "fa fa-shop",
+      subActivePaths: "/backend-boxed",
+      sub: [
+        {
+          name: "儀表板",
+          icon: "fa fa-chart-line",
+          to: "backend-boxed-dashboard",
+        },
+        {
+          name: "USER管理",
+          to: "backend-boxed-simple1",
+        },
+        {
+          name: "BUSINESS管理",
+          to: "backend-boxed-simple2",
+        },
+      ],
+    },
+    {
+      name: "餐廳管理",
+      icon: "fa fa-burger",
+      subActivePaths: "/backend-boxed",
+      sub: [
+        {
+          name: "儀表板",
+          icon: "fa fa-chart-line",
+          to: "backend-boxed-dashboard",
+        },
+        {
+          name: "USER管理",
+          to: "backend-boxed-simple1",
+        },
+        {
+          name: "BUSINESS管理",
+          to: "backend-boxed-simple2",
+        },
+      ],
+    },
+    {
+      name: "網誌管理",
+      icon: "fab fa-wpforms",
+      subActivePaths: "/backend-boxed",
+      sub: [
+        {
+          name: "儀表板",
+          icon: "fa fa-chart-line",
+          to: "backend-boxed-dashboard",
+        },
+        {
+          name: "USER管理",
+          to: "backend-boxed-simple1",
+        },
+        {
+          name: "BUSINESS管理",
+          to: "backend-boxed-simple2",
+        },
+      ],
+    },
+    {
+      name: "食記管理",
+      icon: "fa fa-pen-to-square",
+      subActivePaths: "/backend-boxed",
+      sub: [
+        {
+          name: "儀表板",
+          icon: "fa fa-chart-line",
+          to: "backend-boxed-dashboard",
+        },
+        {
+          name: "USER管理",
+          to: "backend-boxed-simple1",
+        },
+        {
+          name: "BUSINESS管理",
+          to: "backend-boxed-simple2",
+        },
+      ],
+    },
+    {
+      name: "購物車管理",
+      icon: "fa fa-cart-shopping",
+      subActivePaths: "/backend-boxed",
+      sub: [
+        {
+          name: "儀表板",
+          icon: "fa fa-chart-line",
+          to: "backend-cart-dashboard",
+        },
+        {
+          name: "商品管理",
+          icon: "fa fa-leaf",
+          to: "backend-cart-product-info",
+        },
+        {
+          name: "訂單管理",
+          icon: "far fa-clipboard",
+          to: "backend-cart-order-info",
+        },
+      ],
+    },
+    {
+      name: "訂單管理",
+      icon: "far fa-clock",
+      subActivePaths: "/backend/pages/errors",
+      sub: [
+        {
+          name: "儀表板",
+          icon: "fa fa-chart-line",
+          to: "error-404",
+        },
+        {
+          name: "USER管理",
+          to: "backend-boxed-dashboard",
+        },
+        {
+          name: "BUSINESS管理",
+          to: "backend-boxed-dashboard",
         },
       ],
     },
@@ -226,12 +334,12 @@ export default {
       ],
     },
     {
-      name: "Forms",
+      name: "表單Forms",
       icon: "si si-note",
       subActivePaths: "/backend/forms",
       sub: [
         {
-          name: "Elements",
+          name: "元素Elements",
           to: "backend-form-elements",
         },
         {
@@ -257,7 +365,7 @@ export default {
       ],
     },
     {
-      name: "Develop",
+      name: "開發者工具",
       heading: true,
     },
     {
