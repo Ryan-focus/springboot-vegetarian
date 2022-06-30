@@ -62,14 +62,14 @@ drop table if exists restaurant;
 
 create table restaurant(
 	restaurantNumber int NOT NULL auto_increment primary key,
-	restaurantName nvarchar(20) NOT NULL,
-	restaurantTel nvarchar(15),
-	restaurantAddress nvarchar(50) NOT NULL,
-	restaurantCategory nvarchar(20),
-	restaurantType nvarchar(20),
-	restaurantBusinessHours nvarchar(200),
-	restaurantScore nvarchar(10),
-	imageUrl nvarchar(200),
+	restaurantName nvarchar(256) NOT NULL,
+	restaurantTel nvarchar(256),
+	restaurantAddress nvarchar(256) NOT NULL,
+	restaurantCategory nvarchar(256),
+	restaurantType nvarchar(256),
+	restaurantBusinessHours nvarchar(256),
+	restaurantScore nvarchar(256),
+	imageUrl nvarchar(256),
     createdTime TIMESTAMP NOT NULL,
     updatedTime TIMESTAMP NOT NULL,
 	restaurantMap nvarchar(500)

@@ -13,6 +13,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import com.eeit45.champion.vegetarian.dao.RestaurantDao;
+import com.eeit45.champion.vegetarian.dto.RestaurantQueryParams;
 import com.eeit45.champion.vegetarian.dto.RestaurantRequest;
 import com.eeit45.champion.vegetarian.model.Restaurant;
 import com.eeit45.champion.vegetarian.rowmapper.RestaurantRowMapper;
@@ -22,6 +23,69 @@ public class RestaurantDaoImpl implements RestaurantDao{
 	
 	@Autowired
 	private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+	
+	@Override
+	public Integer countRestaurant(RestaurantQueryParams restaurantQueryParams) {
+		String sql = "SELECT count(*) FROM restaurant WHERE 1=1";
+		
+Map<String, Object> map = new HashMap<>();
+		
+		//查詢條件,判斷前端是否有傳這些參數過來,有的話才加上sql指令
+		if(restaurantQueryParams.getRestaurantCategory() != null) {
+			sql = sql + " AND restaurantCategory = :restaurantCategory";
+			map.put("restaurantCategory", restaurantQueryParams.getRestaurantCategory().name());
+		}
+		if(restaurantQueryParams.getRestaurantType() != null) {
+			sql = sql + " AND restaurantType = :restaurantType";
+			map.put("restaurantType", restaurantQueryParams.getRestaurantType().name());
+		}
+		if(restaurantQueryParams.getSearchName() != null) {
+			sql = sql + " AND restaurantName LIKE :searchName";
+			map.put("searchName", "%" + restaurantQueryParams.getSearchName() + "%");
+		}
+		if(restaurantQueryParams.getSearchAddress() != null) {
+			sql = sql + " AND restaurantAddress LIKE :searchAddress";
+			map.put("searchAddress", "%" + restaurantQueryParams.getSearchAddress() + "%");
+		}
+		
+		Integer total = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+		return total;
+	}
+
+	@Override
+	public List<Restaurant> getRestaurants(RestaurantQueryParams restaurantQueryParams) {
+		String sql = "SELECT * FROM restaurant WHERE 1=1";
+		Map<String, Object> map = new HashMap<>();
+		
+		//查詢條件,判斷前端是否有傳這些參數過來,有的話才加上sql指令
+		if(restaurantQueryParams.getRestaurantCategory() != null) {
+			sql = sql + " AND restaurantCategory = :restaurantCategory";
+			map.put("restaurantCategory", restaurantQueryParams.getRestaurantCategory().name());
+		}
+		if(restaurantQueryParams.getRestaurantType() != null) {
+			sql = sql + " AND restaurantType = :restaurantType";
+			map.put("restaurantType", restaurantQueryParams.getRestaurantType().name());
+		}
+		if(restaurantQueryParams.getSearchName() != null) {
+			sql = sql + " AND restaurantName LIKE :searchName";
+			map.put("searchName", "%" + restaurantQueryParams.getSearchName() + "%");
+		}
+		if(restaurantQueryParams.getSearchAddress() != null) {
+			sql = sql + " AND restaurantAddress LIKE :searchAddress";
+			map.put("searchAddress", "%" + restaurantQueryParams.getSearchAddress() + "%");
+		}
+		
+		//排序功能,不需用if來判斷,因為在controller有給預設值
+		sql = sql + " ORDER BY " + restaurantQueryParams.getOrderBy() + " " + restaurantQueryParams.getSort();
+		
+		//分頁功能,不需用if來判斷,因為在controller有給預設值
+		sql = sql + " LIMIT :limit OFFSET :offset ";
+		map.put("limit", restaurantQueryParams.getLimit());
+		map.put("offset", restaurantQueryParams.getOffset());
+		
+		List<Restaurant> restaurantList = namedParameterJdbcTemplate.query(sql, map, new RestaurantRowMapper());
+		return restaurantList;
+	}
 	
 	@Override
 	public Restaurant getRestaurantByNumber(Integer restaurantNumber) {
@@ -47,8 +111,8 @@ public class RestaurantDaoImpl implements RestaurantDao{
 		map.put("restaurantName", restaurantRequest.getRestaurantName());
 		map.put("restaurantTel", restaurantRequest.getRestaurantTel());
 		map.put("restaurantAddress", restaurantRequest.getRestaurantAddress());
-		map.put("restaurantCategory", restaurantRequest.getRestaurantCategory());
-		map.put("restaurantType", restaurantRequest.getRestaurantType());
+		map.put("restaurantCategory", restaurantRequest.getRestaurantCategory().toString());
+		map.put("restaurantType", restaurantRequest.getRestaurantType().toString());
 		map.put("restaurantBusinessHours", restaurantRequest.getRestaurantBusinessHours());
 		map.put("restaurantScore", restaurantRequest.getRestaurantScore());
 		map.put("imageUrl", restaurantRequest.getImageUrl());
@@ -79,8 +143,8 @@ public class RestaurantDaoImpl implements RestaurantDao{
 		map.put("restaurantName", restaurantRequest.getRestaurantName());
 		map.put("restaurantTel", restaurantRequest.getRestaurantTel());
 		map.put("restaurantAddress", restaurantRequest.getRestaurantAddress());
-		map.put("restaurantCategory", restaurantRequest.getRestaurantCategory());
-		map.put("restaurantType", restaurantRequest.getRestaurantType());
+		map.put("restaurantCategory", restaurantRequest.getRestaurantCategory().toString());
+		map.put("restaurantType", restaurantRequest.getRestaurantType().toString());
 		map.put("restaurantBusinessHours", restaurantRequest.getRestaurantBusinessHours());
 		map.put("restaurantScore", restaurantRequest.getRestaurantScore());
 		map.put("imageUrl", restaurantRequest.getImageUrl());
@@ -100,6 +164,5 @@ public class RestaurantDaoImpl implements RestaurantDao{
 		
 		namedParameterJdbcTemplate.update(sql,map);
 	}
-
-
+	
 }
