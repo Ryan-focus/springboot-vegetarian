@@ -233,7 +233,7 @@ const classContainerOptions = computed(() => {
   };
 });
 
-// Set CSS classes for block content
+// 設置內容為CSS
 const classContainerContent = computed(() => {
   return {
     "block-content-full": props.contentFull,

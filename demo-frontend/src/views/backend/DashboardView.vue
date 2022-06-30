@@ -1,282 +1,283 @@
 <script setup>
+// 已經宣告但從未使用過的Value (請勿刪除)
 import { reactive, ref } from "vue";
 
 // vue-chart-3, for more info and examples you can check out https://vue-chart-3.netlify.app/ and http://www.chartjs.org/docs/ -->
-import { LineChart, BarChart } from "vue-chart-3";
-import { Chart, registerables } from "chart.js";
+// import { LineChart, BarChart } from "vue-chart-3";
+// import { Chart, registerables } from "chart.js";
 
-Chart.register(...registerables);
+// Chart.register(...registerables);
 
 // Set Global Chart.js configuration
-Chart.defaults.color = "#818d96";
-Chart.defaults.scale.grid.lineWidth = 0;
-Chart.defaults.scale.beginAtZero = true;
-Chart.defaults.datasets.bar.maxBarThickness = 45;
-Chart.defaults.elements.bar.borderRadius = 4;
-Chart.defaults.elements.bar.borderSkipped = false;
-Chart.defaults.elements.point.radius = 0;
-Chart.defaults.elements.point.hoverRadius = 0;
-Chart.defaults.plugins.tooltip.radius = 3;
-Chart.defaults.plugins.legend.labels.boxWidth = 10;
+// Chart.defaults.color = "#818d96";
+// Chart.defaults.scale.grid.lineWidth = 0;
+// Chart.defaults.scale.beginAtZero = true;
+// Chart.defaults.datasets.bar.maxBarThickness = 45;
+// Chart.defaults.elements.bar.borderRadius = 4;
+// Chart.defaults.elements.bar.borderSkipped = false;
+// Chart.defaults.elements.point.radius = 0;
+// Chart.defaults.elements.point.hoverRadius = 0;
+// Chart.defaults.plugins.tooltip.radius = 3;
+// Chart.defaults.plugins.legend.labels.boxWidth = 10;
 
 // Helper variables
 const orderSearch = ref(false);
 
 // Chart Earnings data
-const earningsData = reactive({
-  labels: ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"],
-  datasets: [
-    {
-      label: "This Week",
-      fill: true,
-      backgroundColor: "rgba(100, 116, 139, .7)",
-      borderColor: "transparent",
-      pointBackgroundColor: "rgba(100, 116, 139, 1)",
-      pointBorderColor: "#fff",
-      pointHoverBackgroundColor: "#fff",
-      pointHoverBorderColor: "rgba(100, 116, 139, 1)",
-      data: [716, 628, 1056, 560, 956, 890, 790],
-    },
-    {
-      label: "Last Week",
-      fill: true,
-      backgroundColor: "rgba(100, 116, 139, .15)",
-      borderColor: "transparent",
-      pointBackgroundColor: "rgba(100, 116, 139, 1)",
-      pointBorderColor: "#fff",
-      pointHoverBackgroundColor: "#fff",
-      pointHoverBorderColor: "rgba(100, 116, 139, 1)",
-      data: [1160, 923, 1052, 1300, 880, 926, 963],
-    },
-  ],
-});
+// const earningsData = reactive({
+//   labels: ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"],
+//   datasets: [
+//     {
+//       label: "This Week",
+//       fill: true,
+//       backgroundColor: "rgba(100, 116, 139, .7)",
+//       borderColor: "transparent",
+//       pointBackgroundColor: "rgba(100, 116, 139, 1)",
+//       pointBorderColor: "#fff",
+//       pointHoverBackgroundColor: "#fff",
+//       pointHoverBorderColor: "rgba(100, 116, 139, 1)",
+//       data: [716, 628, 1056, 560, 956, 890, 790],
+//     },
+//     {
+//       label: "Last Week",
+//       fill: true,
+//       backgroundColor: "rgba(100, 116, 139, .15)",
+//       borderColor: "transparent",
+//       pointBackgroundColor: "rgba(100, 116, 139, 1)",
+//       pointBorderColor: "#fff",
+//       pointHoverBackgroundColor: "#fff",
+//       pointHoverBorderColor: "rgba(100, 116, 139, 1)",
+//       data: [1160, 923, 1052, 1300, 880, 926, 963],
+//     },
+//   ],
+// });
 
 // Chart Earnings options
-const earningsOptions = reactive({
-  scales: {
-    x: {
-      display: false,
-      grid: {
-        drawBorder: false,
-      },
-    },
-    y: {
-      display: false,
-      grid: {
-        drawBorder: false,
-      },
-    },
-  },
-  interaction: {
-    intersect: false,
-  },
-  plugins: {
-    legend: {
-      labels: {
-        boxHeight: 10,
-        font: {
-          size: 14,
-        },
-      },
-    },
-    tooltip: {
-      callbacks: {
-        label: function (context) {
-          return context.dataset.label + ": $" + context.parsed.y;
-        },
-      },
-    },
-  },
-});
+// const earningsOptions = reactive({
+//   scales: {
+//     x: {
+//       display: false,
+//       grid: {
+//         drawBorder: false,
+//       },
+//     },
+//     y: {
+//       display: false,
+//       grid: {
+//         drawBorder: false,
+//       },
+//     },
+//   },
+//   interaction: {
+//     intersect: false,
+//   },
+//   plugins: {
+//     legend: {
+//       labels: {
+//         boxHeight: 10,
+//         font: {
+//           size: 14,
+//         },
+//       },
+//     },
+//     tooltip: {
+//       callbacks: {
+//         label: function (context) {
+//           return context.dataset.label + ": $" + context.parsed.y;
+//         },
+//       },
+//     },
+//   },
+// });
 
-// Chart Total Orders data
-const totalOrdersData = reactive({
-  labels: [
-    "MON",
-    "TUE",
-    "WED",
-    "THU",
-    "FRI",
-    "SAT",
-    "SUN",
-    "MON",
-    "TUE",
-    "WED",
-    "THU",
-    "FRI",
-    "SAT",
-    "SUN",
-  ],
-  datasets: [
-    {
-      label: "Total Orders",
-      fill: true,
-      backgroundColor: "rgba(220, 38, 38, .15)",
-      borderColor: "transparent",
-      pointBackgroundColor: "rgba(220, 38, 38, 1)",
-      pointBorderColor: "#fff",
-      pointHoverBackgroundColor: "#fff",
-      pointHoverBorderColor: "rgba(220, 38, 38, 1)",
-      data: [33, 29, 32, 37, 38, 30, 34, 28, 43, 45, 26, 45, 49, 39],
-    },
-  ],
-});
+// // Chart Total Orders data
+// const totalOrdersData = reactive({
+//   labels: [
+//     "MON",
+//     "TUE",
+//     "WED",
+//     "THU",
+//     "FRI",
+//     "SAT",
+//     "SUN",
+//     "MON",
+//     "TUE",
+//     "WED",
+//     "THU",
+//     "FRI",
+//     "SAT",
+//     "SUN",
+//   ],
+//   datasets: [
+//     {
+//       label: "Total Orders",
+//       fill: true,
+//       backgroundColor: "rgba(220, 38, 38, .15)",
+//       borderColor: "transparent",
+//       pointBackgroundColor: "rgba(220, 38, 38, 1)",
+//       pointBorderColor: "#fff",
+//       pointHoverBackgroundColor: "#fff",
+//       pointHoverBorderColor: "rgba(220, 38, 38, 1)",
+//       data: [33, 29, 32, 37, 38, 30, 34, 28, 43, 45, 26, 45, 49, 39],
+//     },
+//   ],
+// });
 
-// Chart Total Orders options
-const totalOrdersOptions = reactive({
-  maintainAspectRatio: false,
-  tension: 0.4,
-  scales: {
-    x: {
-      display: false,
-    },
-    y: {
-      display: false,
-    },
-  },
-  interaction: {
-    intersect: false,
-  },
-  plugins: {
-    legend: {
-      display: false,
-    },
-    tooltip: {
-      callbacks: {
-        label: function (context) {
-          return " " + context.parsed.y + " Orders";
-        },
-      },
-    },
-  },
-});
+// // Chart Total Orders options
+// const totalOrdersOptions = reactive({
+//   maintainAspectRatio: false,
+//   tension: 0.4,
+//   scales: {
+//     x: {
+//       display: false,
+//     },
+//     y: {
+//       display: false,
+//     },
+//   },
+//   interaction: {
+//     intersect: false,
+//   },
+//   plugins: {
+//     legend: {
+//       display: false,
+//     },
+//     tooltip: {
+//       callbacks: {
+//         label: function (context) {
+//           return " " + context.parsed.y + " Orders";
+//         },
+//       },
+//     },
+//   },
+// });
 
-// Chart Total Earnings data
-const totalEarningsData = reactive({
-  labels: [
-    "MON",
-    "TUE",
-    "WED",
-    "THU",
-    "FRI",
-    "SAT",
-    "SUN",
-    "MON",
-    "TUE",
-    "WED",
-    "THU",
-    "FRI",
-    "SAT",
-    "SUN",
-  ],
-  datasets: [
-    {
-      label: "Total Earnings",
-      fill: true,
-      backgroundColor: "rgba(101, 163, 13, .15)",
-      borderColor: "transparent",
-      pointBackgroundColor: "rgba(101, 163, 13, 1)",
-      pointBorderColor: "#fff",
-      pointHoverBackgroundColor: "#fff",
-      pointHoverBorderColor: "rgba(101, 163, 13, 1)",
-      data: [
-        716, 1185, 750, 1365, 956, 890, 1200, 968, 1158, 1025, 920, 1190, 720,
-        1352,
-      ],
-    },
-  ],
-});
+// // Chart Total Earnings data
+// const totalEarningsData = reactive({
+//   labels: [
+//     "MON",
+//     "TUE",
+//     "WED",
+//     "THU",
+//     "FRI",
+//     "SAT",
+//     "SUN",
+//     "MON",
+//     "TUE",
+//     "WED",
+//     "THU",
+//     "FRI",
+//     "SAT",
+//     "SUN",
+//   ],
+//   datasets: [
+//     {
+//       label: "Total Earnings",
+//       fill: true,
+//       backgroundColor: "rgba(101, 163, 13, .15)",
+//       borderColor: "transparent",
+//       pointBackgroundColor: "rgba(101, 163, 13, 1)",
+//       pointBorderColor: "#fff",
+//       pointHoverBackgroundColor: "#fff",
+//       pointHoverBorderColor: "rgba(101, 163, 13, 1)",
+//       data: [
+//         716, 1185, 750, 1365, 956, 890, 1200, 968, 1158, 1025, 920, 1190, 720,
+//         1352,
+//       ],
+//     },
+//   ],
+// });
 
-// Chart Total Earnings options
-const totalEarningsOptions = reactive({
-  maintainAspectRatio: false,
-  tension: 0.4,
-  scales: {
-    x: {
-      display: false,
-    },
-    y: {
-      display: false,
-    },
-  },
-  interaction: {
-    intersect: false,
-  },
-  plugins: {
-    legend: {
-      display: false,
-    },
-    tooltip: {
-      callbacks: {
-        label: function (context) {
-          return " $" + context.parsed.y;
-        },
-      },
-    },
-  },
-});
+// // Chart Total Earnings options
+// const totalEarningsOptions = reactive({
+//   maintainAspectRatio: false,
+//   tension: 0.4,
+//   scales: {
+//     x: {
+//       display: false,
+//     },
+//     y: {
+//       display: false,
+//     },
+//   },
+//   interaction: {
+//     intersect: false,
+//   },
+//   plugins: {
+//     legend: {
+//       display: false,
+//     },
+//     tooltip: {
+//       callbacks: {
+//         label: function (context) {
+//           return " $" + context.parsed.y;
+//         },
+//       },
+//     },
+//   },
+// });
 
 // Chart New Customers data
-const newCustomersData = reactive({
-  labels: [
-    "MON",
-    "TUE",
-    "WED",
-    "THU",
-    "FRI",
-    "SAT",
-    "SUN",
-    "MON",
-    "TUE",
-    "WED",
-    "THU",
-    "FRI",
-    "SAT",
-    "SUN",
-  ],
-  datasets: [
-    {
-      label: "Total Orders",
-      fill: true,
-      backgroundColor: "rgba(101, 163, 13, .15)",
-      borderColor: "transparent",
-      pointBackgroundColor: "rgba(101, 163, 13, 1)",
-      pointBorderColor: "#fff",
-      pointHoverBackgroundColor: "#fff",
-      pointHoverBorderColor: "rgba(101, 163, 13, 1)",
-      data: [25, 15, 36, 14, 29, 19, 36, 41, 28, 26, 29, 33, 23, 41],
-    },
-  ],
-});
+// const newCustomersData = reactive({
+//   labels: [
+//     "MON",
+//     "TUE",
+//     "WED",
+//     "THU",
+//     "FRI",
+//     "SAT",
+//     "SUN",
+//     "MON",
+//     "TUE",
+//     "WED",
+//     "THU",
+//     "FRI",
+//     "SAT",
+//     "SUN",
+//   ],
+//   datasets: [
+//     {
+//       label: "Total Orders",
+//       fill: true,
+//       backgroundColor: "rgba(101, 163, 13, .15)",
+//       borderColor: "transparent",
+//       pointBackgroundColor: "rgba(101, 163, 13, 1)",
+//       pointBorderColor: "#fff",
+//       pointHoverBackgroundColor: "#fff",
+//       pointHoverBorderColor: "rgba(101, 163, 13, 1)",
+//       data: [25, 15, 36, 14, 29, 19, 36, 41, 28, 26, 29, 33, 23, 41],
+//     },
+//   ],
+// });
 
 // Chart New Customers options
-const newCustomersOptions = reactive({
-  maintainAspectRatio: false,
-  tension: 0.4,
-  scales: {
-    x: {
-      display: false,
-    },
-    y: {
-      display: false,
-    },
-  },
-  interaction: {
-    intersect: false,
-  },
-  plugins: {
-    legend: {
-      display: false,
-    },
-    tooltip: {
-      callbacks: {
-        label: function (context) {
-          return " " + context.parsed.y + " Customers";
-        },
-      },
-    },
-  },
-});
+// const newCustomersOptions = reactive({
+//   maintainAspectRatio: false,
+//   tension: 0.4,
+//   scales: {
+//     x: {
+//       display: false,
+//     },
+//     y: {
+//       display: false,
+//     },
+//   },
+//   interaction: {
+//     intersect: false,
+//   },
+//   plugins: {
+//     legend: {
+//       display: false,
+//     },
+//     tooltip: {
+//       callbacks: {
+//         label: function (context) {
+//           return " " + context.parsed.y + " Customers";
+//         },
+//       },
+//     },
+//   },
+// });
 </script>
 
 <template>
@@ -286,14 +287,14 @@ const newCustomersOptions = reactive({
       class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center py-2 text-center text-md-start"
     >
       <div class="flex-grow-1 mb-1 mb-md-0">
-        <h1 class="h3 fw-bold mb-2">Dashboard</h1>
+        <h1 class="h3 fw-bold mb-2">愛蔬網儀錶板</h1>
         <h2 class="h6 fw-medium fw-medium text-muted mb-0">
-          Welcome
+          歡迎 管理員
           <RouterLink
             :to="{ name: 'backend-pages-generic-profile' }"
             class="fw-semibold"
-            >John</RouterLink
-          >, everything looks great.
+            >Raven</RouterLink
+          >
         </h2>
       </div>
       <div class="mt-3 mt-md-0 ms-md-3 space-x-1">
@@ -302,7 +303,7 @@ const newCustomersOptions = reactive({
           class="btn btn-sm btn-alt-secondary space-x-1"
         >
           <i class="fa fa-cogs opacity-50"></i>
-          <span>Settings</span>
+          <span>設定</span>
         </a>
         <div class="dropdown d-inline-block">
           <button
@@ -314,7 +315,7 @@ const newCustomersOptions = reactive({
             aria-expanded="false"
           >
             <i class="fa fa-fw fa-calendar-alt opacity-50"></i>
-            <span>All time</span>
+            <span>全部時間</span>
             <i class="fa fa-fw fa-angle-down"></i>
           </button>
           <div
@@ -322,27 +323,27 @@ const newCustomersOptions = reactive({
             aria-labelledby="dropdown-analytics-overview"
           >
             <a class="dropdown-item fw-medium" href="javascript:void(0)"
-              >Last 30 days</a
+              >最近30天</a
             >
             <a class="dropdown-item fw-medium" href="javascript:void(0)"
-              >Last month</a
+              >最近一個月</a
             >
             <a class="dropdown-item fw-medium" href="javascript:void(0)"
-              >Last 3 months</a
+              >最近三個月</a
             >
             <div class="dropdown-divider"></div>
             <a class="dropdown-item fw-medium" href="javascript:void(0)"
-              >This year</a
+              >今年</a
             >
             <a class="dropdown-item fw-medium" href="javascript:void(0)"
-              >Last Year</a
+              >去年</a
             >
             <div class="dropdown-divider"></div>
             <a
               class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
               href="javascript:void(0)"
             >
-              <span>All time</span>
+              <span>全部時間</span>
               <i class="fa fa-check"></i>
             </a>
           </div>
@@ -357,16 +358,16 @@ const newCustomersOptions = reactive({
     <!-- Overview -->
     <div class="row items-push">
       <div class="col-sm-6 col-xxl-3">
-        <!-- Pending Orders -->
+        <!-- 待處理訂單 Pending Orders  :to 購物車模板-->
         <BaseBlock class="d-flex flex-column h-100 mb-0">
           <template #content>
             <div
               class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
             >
               <dl class="mb-0">
-                <dt class="fs-3 fw-bold">32</dt>
+                <dt class="fs-3 fw-bold">30678</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                  Pending Orders
+                  未審核訂單
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
@@ -378,7 +379,7 @@ const newCustomersOptions = reactive({
                 class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
                 href="javascript:void(0)"
               >
-                <span>View all orders</span>
+                <span>查看全部訂單</span>
                 <i
                   class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
                 ></i>
@@ -396,9 +397,9 @@ const newCustomersOptions = reactive({
               class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
             >
               <dl class="mb-0">
-                <dt class="fs-3 fw-bold">124</dt>
+                <dt class="fs-3 fw-bold">2266</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                  New Customers
+                  新註冊會員
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
@@ -410,7 +411,7 @@ const newCustomersOptions = reactive({
                 class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
                 href="javascript:void(0)"
               >
-                <span>View all customers</span>
+                <span>查看全部新會員</span>
                 <i
                   class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
                 ></i>
@@ -428,9 +429,9 @@ const newCustomersOptions = reactive({
               class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
             >
               <dl class="mb-0">
-                <dt class="fs-3 fw-bold">45</dt>
+                <dt class="fs-3 fw-bold">15575</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                  Messages
+                  新食記
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
@@ -442,7 +443,7 @@ const newCustomersOptions = reactive({
                 class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
                 href="javascript:void(0)"
               >
-                <span>View all messages</span>
+                <span>查看全部新食記</span>
                 <i
                   class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
                 ></i>
@@ -460,9 +461,9 @@ const newCustomersOptions = reactive({
               class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
             >
               <dl class="mb-0">
-                <dt class="fs-3 fw-bold">4.5%</dt>
+                <dt class="fs-3 fw-bold">15.99%</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                  Conversion Rate
+                  消費轉換率
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
@@ -474,7 +475,7 @@ const newCustomersOptions = reactive({
                 class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
                 href="javascript:void(0)"
               >
-                <span>View statistics</span>
+                <span>查看統計數據</span>
                 <i
                   class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
                 ></i>
@@ -491,7 +492,7 @@ const newCustomersOptions = reactive({
     <div class="row">
       <div class="col-xl-8 col-xxl-9 d-flex flex-column">
         <!-- Earnings Summary -->
-        <BaseBlock
+        <!-- <BaseBlock
           title="Earnings Summary"
           class="flex-grow-1 d-flex flex-column"
         >
@@ -553,12 +554,12 @@ const newCustomersOptions = reactive({
               </div>
             </div>
           </template>
-        </BaseBlock>
+        </BaseBlock> -->
         <!-- END Earnings Summary -->
-      </div>
-      <div class="col-xl-4 col-xxl-3 d-flex flex-column">
+        <!-- </div>
+      <div class="col-xl-4 col-xxl-3 d-flex flex-column"> -->
         <!-- Last 2 Weeks -->
-        <div class="row items-push flex-grow-1">
+        <!-- <div class="row items-push flex-grow-1">
           <div class="col-md-6 col-xl-12">
             <BaseBlock class="d-flex flex-column h-100 mb-0">
               <template #content>
@@ -620,8 +621,8 @@ const newCustomersOptions = reactive({
                 </div>
               </template>
             </BaseBlock>
-          </div>
-          <div class="col-xl-12">
+          </div> -->
+        <!-- <div class="col-xl-12">
             <BaseBlock class="d-flex flex-column h-100 mb-0">
               <template #content>
                 <div
@@ -642,9 +643,9 @@ const newCustomersOptions = reactive({
                     </div>
                   </div>
                 </div>
-                <div class="block-content p-1 text-center overflow-hidden">
-                  <!-- New Customers Chart Container -->
-                  <LineChart
+                <div class="block-content p-1 text-center overflow-hidden"> -->
+        <!-- New Customers Chart Container -->
+        <!-- <LineChart
                     :chart-data="newCustomersData"
                     :options="newCustomersOptions"
                     style="height: 90px"
@@ -653,14 +654,14 @@ const newCustomersOptions = reactive({
               </template>
             </BaseBlock>
           </div>
-        </div>
+        </div> -->
         <!-- END Last 2 Weeks -->
       </div>
     </div>
     <!-- END Statistics -->
 
     <!-- Recent Orders -->
-    <BaseBlock title="Recent Orders">
+    <BaseBlock title="最近訂單">
       <template #options>
         <div class="space-x-1">
           <button
@@ -684,7 +685,7 @@ const newCustomersOptions = reactive({
               aria-expanded="false"
             >
               <i class="fa fa-fw fa-flask"></i>
-              Filters
+              篩選器
               <i class="fa fa-angle-down ms-1"></i>
             </button>
             <div
@@ -695,28 +696,28 @@ const newCustomersOptions = reactive({
                 class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
                 href="javascript:void(0)"
               >
-                Pending
+                未審核
                 <span class="badge bg-primary rounded-pill">20</span>
               </a>
               <a
                 class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
                 href="javascript:void(0)"
               >
-                Active
+                審核中
                 <span class="badge bg-primary rounded-pill">72</span>
               </a>
               <a
                 class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
                 href="javascript:void(0)"
               >
-                Completed
+                已完成
                 <span class="badge bg-primary rounded-pill">890</span>
               </a>
               <a
                 class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
                 href="javascript:void(0)"
               >
-                All
+                全部
                 <span class="badge bg-primary rounded-pill">997</span>
               </a>
             </div>
@@ -731,7 +732,7 @@ const newCustomersOptions = reactive({
           class="block-content border-bottom"
         >
           <!-- Search Form -->
-          <form @submit.prevent>
+          <form @sumit.prevent>
             <div class="push">
               <div class="input-group">
                 <input
@@ -739,7 +740,7 @@ const newCustomersOptions = reactive({
                   class="form-control form-control-alt"
                   id="one-ecom-orders-search"
                   name="one-ecom-orders-search"
-                  placeholder="Search all orders.."
+                  placeholder="搜尋所有訂單.."
                 />
                 <span class="input-group-text bg-body border-0">
                   <i class="fa fa-search"></i>
@@ -755,12 +756,12 @@ const newCustomersOptions = reactive({
             <table class="table table-hover table-vcenter">
               <thead>
                 <tr>
-                  <th>Order ID</th>
-                  <th class="d-none d-xl-table-cell">Customer</th>
-                  <th>Status</th>
-                  <th class="d-none d-sm-table-cell text-center">Profit</th>
-                  <th class="d-none d-sm-table-cell text-end">Created</th>
-                  <th class="d-none d-sm-table-cell text-end">Value</th>
+                  <th>訂單編號</th>
+                  <th class="d-none d-xl-table-cell">消費者</th>
+                  <th>處理狀態</th>
+                  <th class="d-none d-sm-table-cell text-center">利潤</th>
+                  <th class="d-none d-sm-table-cell text-end">訂單建立時間</th>
+                  <th class="d-none d-sm-table-cell text-end">消費金額</th>
                 </tr>
               </thead>
               <tbody class="fs-sm">
@@ -1069,7 +1070,7 @@ const newCustomersOptions = reactive({
                   tabindex="-1"
                   aria-label="Previous"
                 >
-                  Prev
+                  上一頁
                 </a>
               </li>
               <li class="page-item active">
@@ -1090,7 +1091,7 @@ const newCustomersOptions = reactive({
                   href="javascript:void(0)"
                   aria-label="Next"
                 >
-                  Next
+                  下一頁
                 </a>
               </li>
             </ul>

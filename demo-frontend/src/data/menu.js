@@ -7,26 +7,27 @@
 export default {
   main: [
     {
-      name: "Dashboard",
+      name: "儀表板",
       to: "backend-dashboard",
       icon: "si si-speedometer",
     },
+
     {
-      name: "Page Packs",
+      name: "頁packs",
       icon: "si si-layers",
       subActivePaths: "/backend/pages-packs",
       sub: [
         {
-          name: "Boxed Backend",
+          name: "後台頁面",
           icon: "si si-magnet",
           subActivePaths: "/backend-boxed",
           sub: [
             {
-              name: "Dashboard",
+              name: "儀表板",
               to: "backend-boxed-dashboard",
             },
             {
-              name: "Search",
+              name: "搜尋",
               to: "backend-boxed-search",
             },
             {
@@ -50,119 +51,157 @@ export default {
       ],
     },
     {
-      name: "User Interface",
+      name: "真。後臺頁面",
       heading: true,
     },
     {
-      name: "Blocks",
+      name: "功能選單",
+      icon: "si si-layers",
+      subActivePaths: "/backend/pages-packs",
+      sub: [
+        {
+          name: "會員管理",
+          icon: "si si-magnet",
+          subActivePaths: "/backend-boxed",
+          sub: [
+            {
+              name: "儀表板",
+              to: "backend-boxed-dashboard",
+            },
+            {
+              name: "搜尋",
+              to: "backend-boxed-search",
+            },
+            {
+              name: "User管理",
+              to: "backend-boxed-simple1",
+            },
+            {
+              name: "Business管理",
+              to: "backend-boxed-simple2",
+            },
+            {
+              name: "Autor權限管理",
+              to: "backend-boxed-image2",
+            },
+          ],
+        },
+      ],
+    },
+    {
+      name: "使用者介面",
+      heading: true,
+    },
+    {
+      name: "板塊",
       icon: "si si-energy",
       subActivePaths: "/backend/blocks",
       sub: [
         {
-          name: "Styles",
+          name: "風格Styles",
           to: "backend-blocks-styles",
         },
         {
-          name: "Options",
+          name: "選項Options",
           to: "backend-blocks-options",
         },
         {
-          name: "Forms",
+          name: "表單Forms",
           to: "backend-blocks-forms",
         },
         {
-          name: "Themed",
+          name: "主題Themed",
           to: "backend-blocks-themed",
         },
         {
-          name: "API",
+          name: "板塊API",
           to: "backend-blocks-api",
         },
       ],
     },
     {
-      name: "Elements",
+      name: "元素",
       icon: "si si-badge",
       subActivePaths: "/backend/elements",
       sub: [
         {
-          name: "Grid",
+          name: "網格Grid",
           to: "backend-elements-grid",
         },
         {
-          name: "Typography",
+          name: "排版Typography",
           to: "backend-elements-typography",
         },
         {
-          name: "Icons",
+          name: "圖標Icons",
           to: "backend-elements-icons",
         },
         {
-          name: "Buttons",
+          name: "按鈕Buttons",
           to: "backend-elements-buttons",
         },
         {
-          name: "Button Groups",
+          name: "按鈕套件Button Groups",
           to: "backend-elements-button-groups",
         },
         {
-          name: "Dropdowns",
+          name: "下拉式選單Dropdowns",
           to: "backend-elements-dropdowns",
         },
         {
-          name: "Tabs",
+          name: "標籤Tabs",
           to: "backend-elements-tabs",
         },
         {
-          name: "Navigation",
+          name: "導航Navigation",
           to: "backend-elements-navigation",
         },
         {
-          name: "Horizontal Navigation",
+          name: "水平導航Horizontal Navigation",
           to: "backend-elements-navigation-horizontal",
         },
         {
-          name: "Mega Menu",
+          name: "多數據菜單Mega Menu",
           to: "backend-elements-mega-menu",
         },
         {
-          name: "Progress",
+          name: "加載程式Progress",
           to: "backend-elements-progress",
         },
         {
-          name: "Alerts",
+          name: "提醒Alerts",
           to: "backend-elements-alerts",
         },
         {
-          name: "Tooltips",
+          name: "工具提示Tooltips",
           to: "backend-elements-tooltips",
         },
         {
-          name: "Popovers",
+          name: "彈出提示框Popovers",
           to: "backend-elements-popovers",
         },
         {
-          name: "Modals",
+          name: "模態Modals",
           to: "backend-elements-modals",
         },
         {
-          name: "Images Overlay",
+          name: "圖片延遲加載Images Overlay",
           to: "backend-elements-images-overlay",
         },
         {
-          name: "Timeline",
+          name: "時間軸Timeline",
           to: "backend-elements-timeline",
         },
         {
-          name: "Ribbons",
+          name: "功能區Ribbons",
           to: "backend-elements-ribbons",
         },
         {
-          name: "Animations",
+          name: "動畫Animations",
           to: "backend-elements-animations",
         },
         {
-          name: "Color Themes",
+          name: "顏色主題Color Themes",
           to: "backend-elements-color-themes",
         },
       ],

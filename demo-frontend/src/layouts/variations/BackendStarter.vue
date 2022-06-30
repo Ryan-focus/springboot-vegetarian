@@ -44,7 +44,7 @@ store.mainContent({ mode: "narrow" });
             },
             {
               name: 'More',
-              heading: true,
+              heading: ture,
             },
             {
               name: 'Landing',

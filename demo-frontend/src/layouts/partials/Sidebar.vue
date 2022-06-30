@@ -7,18 +7,18 @@ import BaseNavigation from "@/components/BaseNavigation.vue";
 // SimpleBar, for more info and examples you can check out https://github.com/Grsmto/simplebar/tree/master/packages/simplebar-vue
 import SimpleBar from "simplebar";
 
-// Grab menu navigation arrays
+// Grab menu navigation arrays 抓取nav陣列
 import menu from "@/data/menu";
 
 const navigation = menu.main;
 
-// Main store
+// Main store 主要狀態
 const store = useTemplateStore();
 
-// Dark Mode preference helper for radios
+// Dark Mode preference helper for radios 夜視模式偏好
 const radioDarkMode = ref();
 
-// Sets default dark mode preferences for radios
+// Sets default dark mode preferences for radios 設置默認為夜視模式
 function setDarkModeRadioDefault() {
   if (store.settings.darkModeSystem) {
     radioDarkMode.value = "system";
@@ -31,7 +31,7 @@ function setDarkModeRadioDefault() {
   }
 }
 
-// When the user sets dark mode preference through the radios
+// When the user sets dark mode preference through the radios 用戶設定夜視模式偏好
 function onDarkModeRadioChange() {
   if (radioDarkMode.value === "system") {
     store.darkModeSystem({ mode: "on" });
@@ -90,9 +90,9 @@ onMounted(() => {
             <span class="smini-visible">
               <i class="fa fa-circle-notch text-primary"></i>
             </span>
-            <span class="smini-hide fs-5 tracking-wider">
+            <span class="smini-hide fs-3 tracking-wider">
               愛蔬網
-              <!-- <span class="fw-normal">Vue</span> -->
+              <!-- <span class="fw-normal"></span> -->
             </span>
           </RouterLink>
           <!-- END Logo -->
@@ -112,8 +112,8 @@ onMounted(() => {
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                <i v-if="!store.settings.darkMode" class="far fa-moon"></i>
-                <i v-if="store.settings.darkMode" class="fa fa-moon"></i>
+                <i v-if="!store.settings.darkMode" class="fa fa-adjust"></i>
+                <i v-if="store.settings.darkMode" class="fa fa-adjust"></i>
               </button>
               <div
                 class="dropdown-menu dropdown-menu-end dropdown-menu fs-sm smini-hide border-0"
@@ -133,7 +133,7 @@ onMounted(() => {
                     <label
                       class="form-check-label fw-medium"
                       for="radio-dark-mode-off"
-                      >Light</label
+                      >太陽</label
                     >
                   </div>
                   <div class="form-check">
@@ -148,7 +148,7 @@ onMounted(() => {
                     <label
                       class="form-check-label fw-medium"
                       for="radio-dark-mode-on"
-                      >Dark</label
+                      >月光</label
                     >
                   </div>
                   <div class="form-check mb-0">
@@ -163,7 +163,7 @@ onMounted(() => {
                     <label
                       class="form-check-label fw-medium"
                       for="radio-dark-mode-system"
-                      >System</label
+                      >沒人熟識</label
                     >
                   </div>
                 </div>
@@ -182,7 +182,7 @@ onMounted(() => {
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                <i class="far fa-circle"></i>
+                <i class="fa fa-paint-brush"></i>
               </button>
               <div
                 class="dropdown-menu dropdown-menu-end fs-sm smini-hide border-0"
@@ -194,7 +194,7 @@ onMounted(() => {
                   class="dropdown-item d-flex align-items-center justify-content-between fw-medium"
                   @click="store.setColorTheme({ theme: '' })"
                 >
-                  <span>Default</span>
+                  <span>預設</span>
                   <i class="fa fa-circle text-default"></i>
                 </button>
                 <button
@@ -202,7 +202,7 @@ onMounted(() => {
                   class="dropdown-item d-flex align-items-center justify-content-between fw-medium"
                   @click="store.setColorTheme({ theme: 'amethyst' })"
                 >
-                  <span>Amethyst</span>
+                  <span>紫水晶</span>
                   <i class="fa fa-circle text-amethyst"></i>
                 </button>
                 <button
@@ -210,7 +210,7 @@ onMounted(() => {
                   class="dropdown-item d-flex align-items-center justify-content-between fw-medium"
                   @click="store.setColorTheme({ theme: 'city' })"
                 >
-                  <span>City</span>
+                  <span>城市</span>
                   <i class="fa fa-circle text-city"></i>
                 </button>
                 <button
@@ -218,7 +218,7 @@ onMounted(() => {
                   class="dropdown-item d-flex align-items-center justify-content-between fw-medium"
                   @click="store.setColorTheme({ theme: 'flat' })"
                 >
-                  <span>Flat</span>
+                  <span>平淡</span>
                   <i class="fa fa-circle text-flat"></i>
                 </button>
                 <button
@@ -226,7 +226,7 @@ onMounted(() => {
                   class="dropdown-item d-flex align-items-center justify-content-between fw-medium"
                   @click="store.setColorTheme({ theme: 'modern' })"
                 >
-                  <span>Modern</span>
+                  <span>現代</span>
                   <i class="fa fa-circle text-modern"></i>
                 </button>
                 <button
@@ -234,7 +234,7 @@ onMounted(() => {
                   class="dropdown-item d-flex align-items-center justify-content-between fw-medium"
                   @click="store.setColorTheme({ theme: 'smooth' })"
                 >
-                  <span>Smooth</span>
+                  <span>平滑</span>
                   <i class="fa fa-circle text-smooth"></i>
                 </button>
                 <!-- END Color Themes -->
@@ -248,14 +248,14 @@ onMounted(() => {
                     class="dropdown-item fw-medium"
                     @click="store.sidebarStyle({ mode: 'light' })"
                   >
-                    <span>Sidebar Light</span>
+                    <span>左側邊欄</span>
                   </button>
                   <button
                     type="button"
                     class="dropdown-item fw-medium"
                     @click="store.sidebarStyle({ mode: 'dark' })"
                   >
-                    <span>Sidebar Dark</span>
+                    <span>側邊欄夜視</span>
                   </button>
                   <!-- END Sidebar Styles -->
 
@@ -267,14 +267,14 @@ onMounted(() => {
                     class="dropdown-item fw-medium"
                     @click="store.headerStyle({ mode: 'light' })"
                   >
-                    <span>Header Light</span>
+                    <span>標題欄高亮</span>
                   </button>
                   <button
                     type="button"
                     class="dropdown-item fw-medium"
                     @click="store.headerStyle({ mode: 'dark' })"
                   >
-                    <span>Header Dark</span>
+                    <span>標題欄夜視</span>
                   </button>
                   <!-- END Header Styles -->
                 </div>

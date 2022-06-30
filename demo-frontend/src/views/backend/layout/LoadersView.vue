@@ -41,9 +41,8 @@ function previewPageLoader() {
     <!-- Header Loader -->
     <BaseBlock title="Header Loader" content-full>
       <p class="fs-sm text-muted">
-        You can use the layout API to start the header loader and stop it on
-        demand. It is better to be used when the header is also set to fixed, so
-        it is always visible.
+        您可以使用佈局 API 來啟動標題加載器並將其停止
+        要求。最好在header也設置為fixed的情況下使用，所以 它總是可見的。
       </p>
       <div class="table-responsive">
         <table class="table table-hover mb-0">

@@ -57,6 +57,7 @@ store.mainContent({ mode: "boxed" });
           aria-labelledby="sidebar-themes-dropdown"
         >
           <!-- Color Themes -->
+          <!-- 對應首頁上方nav的切換按鈕 -->
           <button
             type="button"
             class="dropdown-item d-flex align-items-center justify-content-between fw-medium"

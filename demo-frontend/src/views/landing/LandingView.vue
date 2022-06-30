@@ -39,11 +39,11 @@ const store = useTemplateStore();
               >功能五合一的服務網站。
             </p>
             <!-- 連到後台的方法 -->
+            <!-- 如果要新開畫面可以加target="_blank" -->
             <RouterLink
               :to="{ name: 'backend-dashboard' }"
               class="btn btn-primary py-2 px-3 m-1"
               v-click-ripple
-              target="_blank"
             >
               <i class="fa fa-fw fa-eye opacity-50 me-1"></i> 點我進後台
             </RouterLink>

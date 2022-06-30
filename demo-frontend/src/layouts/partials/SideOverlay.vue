@@ -70,7 +70,7 @@ onUnmounted(() => {
           <!-- User Info -->
           <div class="ms-2">
             <a class="text-dark fw-semibold fs-sm" href="javascript:void(0)"
-              >John Smith</a
+              >Raven</a
             >
           </div>
           <!-- END User Info -->
@@ -110,7 +110,7 @@ onUnmounted(() => {
                     aria-selected="true"
                   >
                     <i class="fa fa-fw fa-coffee text-gray opacity-75 me-1"></i>
-                    Overview
+                    概述 OverView
                   </button>
                 </li>
                 <li class="nav-item">
@@ -127,7 +127,7 @@ onUnmounted(() => {
                     <i
                       class="fa fa-fw fa-chart-line text-gray opacity-75 me-1"
                     ></i>
-                    Sales
+                    恩客 Views
                   </button>
                 </li>
               </ul>
@@ -141,7 +141,7 @@ onUnmounted(() => {
                 >
                   <!-- Activity -->
                   <BaseBlock
-                    title="Recent Activity"
+                    title="最近活動"
                     header-bg
                     transparent
                     btn-option-content
@@ -172,7 +172,7 @@ onUnmounted(() => {
 
                   <!-- Online Friends -->
                   <BaseBlock
-                    title="Online Friends"
+                    title="在線好友"
                     header-bg
                     transparent
                     btn-option-content
@@ -207,7 +207,7 @@ onUnmounted(() => {
 
                   <!-- Quick Settings -->
                   <BaseBlock
-                    title="Quick Settings"
+                    title="快速設定"
                     header-bg
                     transparent
                     btn-option-content
@@ -318,15 +318,17 @@ onUnmounted(() => {
                     <div class="row pull-t">
                       <div class="col-6">
                         <div class="fs-sm fw-semibold text-uppercase">
-                          Sales
+                          銷售 Sales
                         </div>
-                        <a class="fs-lg" href="javascript:void(0)">22.030</a>
+                        <a class="fs-lg" href="javascript:void(0)">2287</a>
                       </div>
                       <div class="col-6">
                         <div class="fs-sm fw-semibold text-uppercase">
-                          Balance
+                          結餘 Balance
                         </div>
-                        <a class="fs-lg" href="javascript:void(0)">$4.589,00</a>
+                        <a class="fs-lg" href="javascript:void(0)"
+                          >$4.589456,00</a
+                        >
                       </div>
                     </div>
                   </BaseBlock>
@@ -334,9 +336,9 @@ onUnmounted(() => {
                   <!-- END Stats -->
 
                   <!-- Today -->
-                  <BaseBlock title="Today" header-bg>
+                  <BaseBlock title="今日銷售" header-bg>
                     <template #options>
-                      <span class="fs-sm text-muted">$996</span>
+                      <span class="fs-sm text-muted">$987987</span>
                     </template>
 
                     <ul class="nav-items mb-0">
@@ -359,9 +361,9 @@ onUnmounted(() => {
                   <!-- END Today -->
 
                   <!-- Yesterday -->
-                  <BaseBlock title="Yesterday" header-bg>
+                  <BaseBlock title="昨日銷售" header-bg>
                     <template #options>
-                      <span class="fs-sm text-muted">$765</span>
+                      <span class="fs-sm text-muted">$3067855</span>
                     </template>
 
                     <ul class="nav-items">
@@ -385,8 +387,8 @@ onUnmounted(() => {
                         class="btn btn-sm btn-alt-secondary"
                         href="javascript:void(0)"
                       >
-                        <i class="fa fa-arrow-down opacity-50 me-1"></i> Load
-                        More..
+                        <i class="fa fa-arrow-down opacity-50 me-1"></i>
+                        載入更多..
                       </a>
                     </div>
                   </BaseBlock>

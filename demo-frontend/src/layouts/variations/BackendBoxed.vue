@@ -45,8 +45,8 @@ store.mainContent({ mode: "boxed" });
           :to="{ name: 'landing' }"
           class="fw-semibold fs-5 tracking-wider text-dual me-3"
         >
-          OneUI
-          <span class="fw-normal">Vue</span>
+          愛蔬網
+          <!-- <span class="fw-normal"></span> -->
         </RouterLink>
         <!-- END Logo -->
 
