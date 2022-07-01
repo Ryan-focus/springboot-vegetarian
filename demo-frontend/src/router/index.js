@@ -27,6 +27,9 @@ const BackendBoxedSearch = () => import("@/views/backend-boxed/SearchView.vue");
 const BackendDashboard = () => import("@/views/backend/DashboardView.vue");
 
 //愛蔬網後台: users
+const VeganUsersDashboard = () =>
+  import("@/views/vegan/users/DashboardView.vue");
+const VeganUsersInfo = () => import("@/views/vegan/users/UsersInfo.vue");
 //愛蔬網後台: business
 //愛蔬網後台: restaurant
 const VeganRestaurantDashboard = () =>
@@ -351,17 +354,12 @@ const routes = [
           {
             path: "dashboard",
             name: "backend-users-dashboard",
-            // component: BackendUsersDashboard,
+            component: VeganUsersDashboard,
           },
           {
             path: "userInfo",
             name: "backend-users-user-info",
-            // component: BackendUsersUserInfo,
-          },
-          {
-            path: "businessInfo",
-            name: "backend-users-business-info",
-            // component: BackendUsersBusinessInfo,
+            component: VeganUsersInfo,
           },
         ],
       },
