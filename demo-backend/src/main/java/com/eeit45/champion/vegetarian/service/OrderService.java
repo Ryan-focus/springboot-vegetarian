@@ -18,8 +18,14 @@ public interface OrderService {
 
      void insertCartEntryIntoOrderEntry(String cartUUID);
 
+    void updateOrder(Integer orderId, OrderRequest orderRequest);
+
     void updateOrderPayment(String payment,Integer orderId);
 
     void updateOrderShipping(String shipping,Integer orderId);
+
+    List<Order> getAllOrder();
+
+    void deleteOrderById(Integer orderId);
 
 }

@@ -12,16 +12,21 @@ public class Order {
     private String payment;
     private String status;
 
+    private Date createdTime;
+    private Date updateTime;
+
     public Order() {
     }
 
-    public Order(Integer orderId, String orderUUID, Integer userId, String shipping, String payment, String status) {
+    public Order(Integer orderId, String orderUUID, Integer userId, String shipping, String payment, String status, Date createdTime, Date updateTime) {
         this.orderId = orderId;
         this.orderUUID = orderUUID;
         this.userId = userId;
         Shipping = shipping;
         this.payment = payment;
         this.status = status;
+        this.createdTime = createdTime;
+        this.updateTime = updateTime;
     }
 
     public String getOrderUUID() {
@@ -70,5 +75,21 @@ public class Order {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Date getCreatedTime() {
+        return createdTime;
+    }
+
+    public void setCreatedTime(Date createdTime) {
+        this.createdTime = createdTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }

@@ -4,9 +4,7 @@ import com.eeit45.champion.vegetarian.dao.OrderDao;
 import com.eeit45.champion.vegetarian.dao.ProductDao;
 import com.eeit45.champion.vegetarian.dto.OrderEntryRequest;
 import com.eeit45.champion.vegetarian.dto.OrderRequest;
-import com.eeit45.champion.vegetarian.model.CartEntry;
 import com.eeit45.champion.vegetarian.model.Order;
-import com.eeit45.champion.vegetarian.model.OrderEntry;
 import com.eeit45.champion.vegetarian.rowmapper.OrderRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -16,7 +14,10 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Component
 public class OrderDaoImpl implements OrderDao {
@@ -37,11 +38,12 @@ public class OrderDaoImpl implements OrderDao {
         map.put("payment", orderRequest.getPayment());
         map.put("shipping", orderRequest.getShipping());
         String status = "訂單成立";
-        if (orderRequest.getOrderUUID()!=null){
-        map.put("status", status);}else {
-            map.put("status","訂單未成立");
+        if (orderRequest.getOrderUUID() != null) {
+            map.put("status", status);
+        } else {
+            map.put("status", "訂單未成立");
         }
-        map.put("orderUUID",orderRequest.getOrderUUID());
+        map.put("orderUUID", orderRequest.getOrderUUID());
         //生成現在日期
         Date now = new Date();
         Timestamp timestamp = new Timestamp(now.getTime());
@@ -100,32 +102,65 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public void insertCartEntryIntoOrderEntry(String cartUUID) {
-        String sql="INSERT INTO veganDB.orderEntry(productId,orderUUID,quantity,entryPrice)\n" +
-                "SELECT productId,cartUUID,quantity,entryPrice\n" +
-                "FROM veganDB.cartEntry\n" +
+        String sql = "INSERT INTO veganDB.orderEntry(productId,orderUUID,quantity,entryPrice) " +
+                "SELECT productId,cartUUID,quantity,entryPrice " +
+                "FROM veganDB.cartEntry " +
                 "WHERE cartUUID = :cartUUID";
         Map<String, Object> map = new HashMap<>();
-        map.put("cartUUID",cartUUID);
+        map.put("cartUUID", cartUUID);
 
+        namedParameterJdbcTemplate.update(sql, map);
+    }
+
+    @Override
+    public void updateOrder(Integer orderId, OrderRequest orderRequest) {
+        String sql ="UPDATE veganDB.order SET userId = :userId, shipping = :shipping," +
+                "payment = :payment,status = :status,updatedTime = :updatedTime " +
+                "WHERE orderId = :orderId";
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId",orderRequest.getUserId());
+        map.put("shipping",orderRequest.getShipping());
+        map.put("payment",orderRequest.getPayment());
+        map.put("status",orderRequest.getPayment());
+        map.put("orderId",orderId);
+        //放入更新時間
+        Date now = new Date();
+        Timestamp timestamp = new Timestamp(now.getTime());
+        map.put("updatedTime",timestamp);
         namedParameterJdbcTemplate.update(sql,map);
     }
 
     @Override
-    public void updateOrderPayment(String payment,Integer orderId) {
+    public void updateOrderPayment(String payment, Integer orderId) {
         String sql = "UPDATE veganDB.order SET payment = :payment where orderId = :orderId";
         Map<String, Object> map = new HashMap<>();
-        map.put("payment",payment);
-        map.put("orderId",orderId);
-        namedParameterJdbcTemplate.update(sql,map);
+        map.put("payment", payment);
+        map.put("orderId", orderId);
+        namedParameterJdbcTemplate.update(sql, map);
     }
 
     @Override
     public void updateOrderShipping(String shipping, Integer orderId) {
         String sql = "UPDATE veganDB.order SET shipping = :shipping where orderId = :orderId";
         Map<String, Object> map = new HashMap<>();
-        map.put("shipping",shipping);
-        map.put("orderId",orderId);
-        namedParameterJdbcTemplate.update(sql,map);
+        map.put("shipping", shipping);
+        map.put("orderId", orderId);
+        namedParameterJdbcTemplate.update(sql, map);
 
+    }
+
+    @Override
+    public List<Order> getAllOrder() {
+        String sql = "SELECT * FROM veganDB.order";
+        List<Order> orderList = namedParameterJdbcTemplate.query(sql, new OrderRowMapper());
+        return orderList;
+    }
+
+    @Override
+    public void deleteOrderById(Integer orderId) {
+        String sql = "DELETE FROM veganDB.order WHERE orderId = :orderId";
+        Map<String, Object> map = new HashMap<>();
+        map.put("orderId", orderId);
+        namedParameterJdbcTemplate.update(sql, map);
     }
 }
