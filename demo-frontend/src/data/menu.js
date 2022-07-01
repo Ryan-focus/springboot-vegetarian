@@ -119,15 +119,12 @@ export default {
         {
           name: "儀表板",
           icon: "fa fa-chart-line",
-          to: "backend-boxed-dashboard",
+          to: "backend-forums-dashboard",
         },
         {
-          name: "USER管理",
-          to: "backend-boxed-simple1",
-        },
-        {
-          name: "BUSINESS管理",
-          to: "backend-boxed-simple2",
+          name: "文章管理",
+          icon: "si si-book-open",
+          to: "backend-forums-forums-info",
         },
       ],
     },

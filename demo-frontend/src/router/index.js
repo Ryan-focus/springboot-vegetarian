@@ -35,6 +35,10 @@ const VeganRestaurantInfo = () =>
   import("@/views/vegan/restaurant/RestaurantInfo.vue");
 
 //愛蔬網後台: forums
+const VeganForumsDashboard = () =>
+  import("@/views/vegan/forums/DashboardView.vue");
+const VeganForumsForumsInfo = () =>
+  import("@/views/vegan/forums/ForumsInfo.vue");
 //愛蔬網後台: posts
 //愛蔬網後台: cart
 const VeganCartDashboard = () => import("@/views/vegan/cart/DashboardView.vue");
@@ -375,6 +379,23 @@ const routes = [
             path: "restaurantinfo",
             name: "backend-restaurants-restaurant-info",
             component: VeganRestaurantInfo,
+          },
+        ],
+      },
+      {
+        path: "forums",
+        redirect: "/forums/dashboard",
+        component: RouterView,
+        children: [
+          {
+            path: "dashboard",
+            name: "backend-forums-dashboard",
+            component: VeganForumsDashboard,
+          },
+          {
+            path: "forumsinfo",
+            name: "backend-forums-forums-info",
+            component: VeganForumsForumsInfo,
           },
         ],
       },
