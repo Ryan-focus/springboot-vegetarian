@@ -27,10 +27,7 @@ INSERT INTO products ( name, category,veganCategory, price,createdTime,updatedTi
 INSERT INTO products ( name, category,veganCategory, price,createdTime,updatedTime) VALUES ('《潤覺茶 輕感淨化》茶樹茶籽綠茶潔顏慕斯(200ml)～清爽不緊繃 淨化控油效果佳','美妝保養','VEGAN',350,now(),now());
 
 
-INSERT INTO `orders` (user_id, total_amount, created_date, last_modified_date) VALUES (6, 100110, '2022-06-02 16:51:49', '2022-06-02 16:51:49');
-INSERT INTO order_item (order_id, product_id, quantity, amount) VALUES (1, 4, 2, 60);
-INSERT INTO order_item (order_id, product_id, quantity, amount) VALUES (1, 6, 5, 50);
-INSERT INTO order_item (order_id, product_id, quantity, amount) VALUES (1, 7, 1, 100000);
+
 
 --restaurant
 insert into restaurant (restaurantName,restaurantTel,restaurantAddress,restaurantCategory,restaurantType,restaurantBusinessHours,restaurantScore,imageUrl,createdTime,updatedTime,restaurantMap)
