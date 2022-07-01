@@ -2,19 +2,16 @@ package com.eeit45.champion.vegetarian.dto;
 
 import com.eeit45.champion.vegetarian.constant.ProductCategory;
 import com.eeit45.champion.vegetarian.constant.VeganCategory;
-import org.springframework.web.bind.annotation.RequestParam;
 
 public class ProductQueryParams {
 
-       private VeganCategory veganCategory;
-       private ProductCategory category;
-       private String search;
-       private String orderBy;
-       private String sorting;
-       private Integer limit;
-       private Integer offset;
-
-
+    private VeganCategory veganCategory;
+    private ProductCategory category;
+    private String search;
+    private String orderBy;
+    private String sorting;
+    private Integer limit;
+    private Integer offset;
 
 
     public ProductCategory getCategory() {

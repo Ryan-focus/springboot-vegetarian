@@ -1,23 +1,14 @@
-<template>
-  <div id="app">
-    <!-- <img src="./assets/logo.png"> -->
-    <router-view/>
-  </div>
-</template>
+<template><RouterView /></template>
 
-<script>
-export default {
-  name: 'App'
-}
-</script>
+<style lang="scss">
+// Main Stylesheet
+@import "@/assets/scss/main";
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  /* margin-top: 60px; */
-}
+// All color themes are included and available by default
+// Feel free to comment out any of them if you won't use them in your project
+@import "@/assets/scss/oneui/themes/amethyst";
+@import "@/assets/scss/oneui/themes/city";
+@import "@/assets/scss/oneui/themes/flat";
+@import "@/assets/scss/oneui/themes/modern";
+@import "@/assets/scss/oneui/themes/smooth";
 </style>
