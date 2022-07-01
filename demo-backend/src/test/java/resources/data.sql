@@ -27,7 +27,9 @@ INSERT INTO products ( name, category,veganCategory, price,createdTime,updatedTi
 INSERT INTO products ( name, category,veganCategory, price,createdTime,updatedTime) VALUES ('《潤覺茶 輕感淨化》茶樹茶籽綠茶潔顏慕斯(200ml)～清爽不緊繃 淨化控油效果佳','美妝保養','VEGAN',350,now(),now());
 
 
-
+--新增兩筆測試訂單
+INSERT INTO `veganDB`.`order` (`orderUUID`, `userId`, `payment`, `shipping`, `status`, `createdTime`, `updatedTime`) VALUES ('98c00c3902ff4aeda44bd298360e7617', '2', '已付款', '已出貨', '訂單完成', now(),now() );
+INSERT INTO `veganDB`.`order` (`orderUUID`, `userId`, `payment`, `shipping`, `status`, `createdTime`, `updatedTime`) VALUES ('f95b8a0dce3140df884fe8e39404eef9', '1', '已付款', '已出貨', '訂單完成', now(),now() );
 
 --restaurant
 insert into restaurant (restaurantName,restaurantTel,restaurantAddress,restaurantCategory,restaurantType,restaurantBusinessHours,restaurantScore,imageUrl,createdTime,updatedTime,restaurantMap)

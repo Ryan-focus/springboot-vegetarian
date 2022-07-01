@@ -121,7 +121,7 @@ public class OrderDaoImpl implements OrderDao {
         map.put("userId",orderRequest.getUserId());
         map.put("shipping",orderRequest.getShipping());
         map.put("payment",orderRequest.getPayment());
-        map.put("status",orderRequest.getPayment());
+        map.put("status",orderRequest.getStatus());
         map.put("orderId",orderId);
         //放入更新時間
         Date now = new Date();
