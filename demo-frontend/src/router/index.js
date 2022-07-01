@@ -29,6 +29,11 @@ const BackendDashboard = () => import("@/views/backend/DashboardView.vue");
 //愛蔬網後台: users
 //愛蔬網後台: business
 //愛蔬網後台: restaurant
+const VeganRestaurantDashboard = () =>
+  import("@/views/vegan/restaurant/DashboardView.vue");
+const VeganRestaurantInfo = () =>
+  import("@/views/vegan/restaurant/RestaurantInfo.vue");
+
 //愛蔬網後台: forums
 //愛蔬網後台: posts
 //愛蔬網後台: cart
@@ -353,6 +358,23 @@ const routes = [
             path: "businessInfo",
             name: "backend-users-business-info",
             // component: BackendUsersBusinessInfo,
+          },
+        ],
+      },
+      {
+        path: "restaurants",
+        redirect: "/restaurants/dashboard",
+        component: RouterView,
+        children: [
+          {
+            path: "dashboard",
+            name: "backend-restaurants-dashboard",
+            component: VeganRestaurantDashboard,
+          },
+          {
+            path: "restaurantinfo",
+            name: "backend-restaurants-restaurant-info",
+            component: VeganRestaurantInfo,
           },
         ],
       },

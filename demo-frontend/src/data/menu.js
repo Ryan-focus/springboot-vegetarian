@@ -100,17 +100,14 @@ export default {
       subActivePaths: "/backend-boxed",
       sub: [
         {
-          name: "儀表板",
-          icon: "fa fa-chart-line",
-          to: "backend-boxed-dashboard",
+          name: "數據分析",
+          icon: "fa fa-chart-column",
+          to: "backend-restaurants-dashboard",
         },
         {
-          name: "USER管理",
-          to: "backend-boxed-simple1",
-        },
-        {
-          name: "BUSINESS管理",
-          to: "backend-boxed-simple2",
+          name: "餐廳資訊",
+          icon: "fa fa-leaf",
+          to: "backend-restaurants-restaurant-info",
         },
       ],
     },
