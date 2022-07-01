@@ -248,7 +248,7 @@ onMounted(() => {
                     class="dropdown-item fw-medium"
                     @click="store.sidebarStyle({ mode: 'light' })"
                   >
-                    <span>左側邊欄</span>
+                    <span>左側邊欄高亮</span>
                   </button>
                   <button
                     type="button"

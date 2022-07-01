@@ -26,6 +26,17 @@ const BackendBoxedSearch = () => import("@/views/backend-boxed/SearchView.vue");
 // Backend: Dashboard
 const BackendDashboard = () => import("@/views/backend/DashboardView.vue");
 
+//愛蔬網後台: users
+//愛蔬網後台: business
+//愛蔬網後台: restaurant
+//愛蔬網後台: forums
+//愛蔬網後台: posts
+//愛蔬網後台: cart
+const VeganCartDashboard = () => import("@/views/vegan/cart/DashboardView.vue");
+const VeganCartProductInfo = () => import("@/views/vegan/cart/ProductInfo.vue");
+const VeganCartOrderInfo = () => import("@/views/vegan/cart/OrderInfo.vue");
+//愛蔬網後台: reserve
+
 // Backend: Blocks
 const BackendBlocksStyles = () =>
   import("@/views/backend/blocks/StylesView.vue");
@@ -213,6 +224,8 @@ const Error404 = () => import("@/views/errors/404View.vue");
 const Error500 = () => import("@/views/errors/500View.vue");
 const Error503 = () => import("@/views/errors/503View.vue");
 
+//愛蔬網 Backend 頁面
+
 // Set all routes
 const routes = [
   /*
@@ -314,6 +327,57 @@ const routes = [
         component: BackendDashboard,
       },
 
+      /*
+      |
+      |--------------------------------------------------------------------------
+      | 愛蔬網後台 Backend Routes
+      |--------------------------------------------------------------------------
+      |
+      */
+      {
+        path: "users",
+        redirect: "/users/dashboard",
+        component: RouterView,
+        children: [
+          {
+            path: "dashboard",
+            name: "backend-users-dashboard",
+            // component: BackendUsersDashboard,
+          },
+          {
+            path: "userInfo",
+            name: "backend-users-user-info",
+            // component: BackendUsersUserInfo,
+          },
+          {
+            path: "businessInfo",
+            name: "backend-users-business-info",
+            // component: BackendUsersBusinessInfo,
+          },
+        ],
+      },
+      {
+        path: "cart",
+        redirect: "/cart/dashboard",
+        component: RouterView,
+        children: [
+          {
+            path: "dashboard",
+            name: "backend-cart-dashboard",
+            component: VeganCartDashboard,
+          },
+          {
+            path: "productInfo",
+            name: "backend-cart-product-info",
+            component: VeganCartProductInfo,
+          },
+          {
+            path: "orderInfo",
+            name: "backend-cart-order-info",
+            component: VeganCartOrderInfo,
+          },
+        ],
+      },
       /*
       |--------------------------------------------------------------------------
       | Backend Blocks Routes
