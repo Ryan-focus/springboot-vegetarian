@@ -1,6 +1,5 @@
 <script setup>
 import { reactive, computed, onMounted } from "vue";
-import axios from "axios";
 // Vue Dataset, for more info and examples you can check out https://github.com/kouts/vue-dataset/tree/next
 import {
   Dataset,
@@ -13,11 +12,7 @@ import {
 
 // Get example data
 import users from "@/data/usersDataset.json";
-const url = "http://localhost:8088/";
-axios
-  .get("http://localhost:8088/order")
-  .then((response) => console.log(response))
-  .catch((error) => console.log(error));
+
 // Helper variables
 //在這邊去設定Table :th的欄位名稱
 const cols = reactive([

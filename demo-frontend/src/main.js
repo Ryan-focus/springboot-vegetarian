@@ -6,6 +6,12 @@ import App from "./App.vue";
 // import router from "./router/starter";
 import router from "./router";
 
+//Axios
+import axios from "axios";
+// axios.defaults.baseURL = config.api.url
+axios.defaults.withCredentials = false;
+axios.defaults.timeout = 5000;
+
 // Template components
 import BaseBlock from "@/components/BaseBlock.vue";
 import BaseBackground from "@/components/BaseBackground.vue";
