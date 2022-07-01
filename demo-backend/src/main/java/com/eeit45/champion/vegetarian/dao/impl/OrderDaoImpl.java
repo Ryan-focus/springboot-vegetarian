@@ -35,8 +35,8 @@ public class OrderDaoImpl implements OrderDao {
         Map<String, Object> map = new HashMap<>();
         //生成訂單Id
         map.put("userId", orderRequest.getUserId());
-        map.put("payment", orderRequest.getPayment());
-        map.put("shipping", orderRequest.getShipping());
+        map.put("payment", "尚未付款");
+        map.put("shipping", "尚未出貨");
         String status = "訂單成立";
         if (orderRequest.getOrderUUID() != null) {
             map.put("status", status);
