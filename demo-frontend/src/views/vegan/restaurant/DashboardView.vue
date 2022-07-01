@@ -100,7 +100,7 @@ const restaurantsTotal = ref();
 
 const getAxios = function () {
   axios
-    .get(`http://${url}/restaurants`, { params: { status: urlParams } })
+    .get(`http://${url}/restaurantList`, { params: { status: urlParams } })
     .then((res) => {
       //獲取伺服器的回傳資料
       resData.value = res.data;

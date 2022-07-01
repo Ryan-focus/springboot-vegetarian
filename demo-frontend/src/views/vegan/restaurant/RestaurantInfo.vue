@@ -28,16 +28,16 @@ let toast = Swal.mixin({
 
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
-const urlParams = "warning";
 //接收的資料ref
 const resData = ref();
 
 const getAxios = function () {
   axios
-    .get(`http://${url}/restaurants`, { params: { status: urlParams } })
+    .get(`http://${url}/restaurants`)
     .then((res) => {
+      console.log(res);
       //獲取伺服器的回傳資料
-      resData.value = res.data.results;
+      resData.value = res.data;
     })
     .catch((error) => {
       console.log(error, "失敗");
@@ -49,11 +49,6 @@ getAxios();
 // Helper variables
 //在這邊去設定Table :th的欄位名稱
 const cols = reactive([
-  {
-    name: "餐廳名稱",
-    field: "restaurantName",
-    sort: "",
-  },
   {
     name: "餐廳電話",
     field: "restaurantTel",
@@ -294,7 +289,7 @@ th.sort {
                 <thead>
                   <tr>
                     <th scope="col" class="text-center">編號</th>
-                    <!-- <th scope="col" class="text-center">餐廳名稱</th> -->
+                    <th scope="col" class="text-center">餐廳名稱</th>
                     <th
                       v-for="(th, index) in cols"
                       :key="th.field"
