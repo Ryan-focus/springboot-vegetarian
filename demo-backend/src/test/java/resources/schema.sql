@@ -97,3 +97,15 @@ create table restaurant(
 	restaurantMap nvarchar(500)
 );
 
+-----post-------
+drop table if exists post;
+CREATE TABLE post(
+    postId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    title NVARCHAR(255) NOT NULL,
+    postedDate DATETIME NOT NULL,
+    postedText NVARCHAR(5000) NOT NULL,
+    imgurl NVARCHAR(255),
+    postStatus NVARCHAR(255)
+   
+);
+
