@@ -1,5 +1,7 @@
 <script setup>
 import { ref, reactive, computed, onMounted } from "vue";
+// Sweetalert2, for more info and examples, you can check out https://github.com/sweetalert2/sweetalert2
+import Swal from "sweetalert2";
 
 import axios from "axios";
 
@@ -12,6 +14,17 @@ import {
   DatasetSearch,
   DatasetShow,
 } from "vue-dataset";
+
+// Set default properties
+let toast = Swal.mixin({
+  buttonsStyling: false,
+  target: "#page-container",
+  customClass: {
+    confirmButton: "btn btn-success m-1",
+    cancelButton: "btn btn-danger m-1",
+    input: "form-control",
+  },
+});
 
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
@@ -118,32 +131,47 @@ function onSort(event, i) {
 
 //Delete Restaurant Fuction
 function deleteRestaurant(number) {
-  this.$swal({
-    title: "Are you sure?",
-    text: "You won't be able to revert this!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#3085d6",
-    cancelButtonColor: "#d33",
-    confirmButtonText: "Yes, delete it!",
-    // closeOnCancel: true,
-  }).then((result) => {
-    //send request to server
-    if (result.value) {
-      axios
-        .delete(`http://${url}/restaurants/${number}`)
-        .then((res) => {
-          //獲取伺服器的回傳資料
-          console.log(res);
+  toast
+    .fire({
+      title: "確定要刪除嗎?",
+      text: "刪除之後這筆資料就消失囉~!",
+      icon: "warning",
+      showCancelButton: true,
+      customClass: {
+        confirmButton: "btn btn-danger m-1",
+        cancelButton: "btn btn-secondary m-1",
+      },
+      confirmButtonText: "幹掉他!",
+      cancelButtonText: "拯救他 !",
 
-          getAxios();
-          this.$swal("Deleted!", "Your post has been deleted!", "success");
-        })
-        .catch((error) => {
-          console.log(error, "失敗");
+      html: false,
+      preConfirm: () => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 50);
         });
-    }
-  });
+      },
+    })
+    .then((result) => {
+      //send request to server
+      if (result.value) {
+        axios
+          .delete(`http://${url}/restaurants/${number}`)
+          .then((res) => {
+            //獲取伺服器的回傳資料
+            console.log(res);
+
+            getAxios();
+            toast.fire("他被殺死了!", "你殺掉了一個人 ! 殺人犯 !", "success");
+          })
+          .catch((error) => {
+            console.log(error, "失敗");
+          });
+      } else if (result.dismiss === "cancel") {
+        toast.fire("她活下來了", "你取消了他 ! 他安全了 :)", "error");
+      }
+    });
 }
 
 // Apply a few Bootstrap 5 optimizations
@@ -208,6 +236,8 @@ th.sort {
     }
   }
 }
+// SweetAlert2
+@import "sweetalert2/dist/sweetalert2.min.css";
 </style>
 
 <template>
@@ -333,7 +363,7 @@ th.sort {
                           <button
                             type="button"
                             class="btn btn-sm btn-alt-secondary"
-                            v-on:click="deleteRestaurant(row.restaurantNumber)"
+                            @click="deleteRestaurant(row.restaurantNumber)"
                           >
                             <i class="fa fa-fw fa-times"></i>
                           </button>
