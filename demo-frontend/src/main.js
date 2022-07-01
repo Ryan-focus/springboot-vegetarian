@@ -6,12 +6,6 @@ import App from "./App.vue";
 // import router from "./router/starter";
 import router from "./router";
 
-//Axios
-import axios from "axios";
-// axios.defaults.baseURL = config.api.url
-axios.defaults.withCredentials = false;
-axios.defaults.timeout = 5000;
-
 // Template components
 import BaseBlock from "@/components/BaseBlock.vue";
 import BaseBackground from "@/components/BaseBackground.vue";
@@ -27,6 +21,15 @@ window.bootstrap = bootstrap;
 // Craft new application
 const app = createApp(App);
 
+//Axios
+import axios from "axios";
+// axios.defaults.baseURL = config.api.url
+axios.defaults.withCredentials = false;
+axios.defaults.timeout = 5000;
+
+import VueSweetalert2 from "vue-sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
+app.use(VueSweetalert2);
 // Register global components
 app.component("BaseBlock", BaseBlock);
 app.component("BaseBackground", BaseBackground);
