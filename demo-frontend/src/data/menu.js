@@ -128,17 +128,14 @@ export default {
       subActivePaths: "/backend-boxed",
       sub: [
         {
-          name: "儀表板",
-          icon: "fa fa-chart-line",
-          to: "backend-boxed-dashboard",
+          name: "數據分析",
+          icon: "fa fa-chart-pie",
+          to: "backend-posts-dashboard",
         },
         {
-          name: "USER管理",
-          to: "backend-boxed-simple1",
-        },
-        {
-          name: "BUSINESS管理",
-          to: "backend-boxed-simple2",
+          name: "文章管理",
+          icon: "fa fa-file-pen",
+          to: "backend-posts-posts-info",
         },
       ],
     },
