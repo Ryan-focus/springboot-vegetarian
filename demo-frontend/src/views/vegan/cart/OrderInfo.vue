@@ -1,6 +1,6 @@
 <script setup>
 import { reactive, computed, onMounted } from "vue";
-
+import axios from "axios";
 // Vue Dataset, for more info and examples you can check out https://github.com/kouts/vue-dataset/tree/next
 import {
   Dataset,
@@ -13,23 +13,47 @@ import {
 
 // Get example data
 import users from "@/data/usersDataset.json";
-
+const url = "http://localhost:8088/";
+axios
+  .get("http://localhost:8088/order")
+  .then((response) => console.log(response))
+  .catch((error) => console.log(error));
 // Helper variables
 //在這邊去設定Table :th的欄位名稱
 const cols = reactive([
   {
-    name: "電子郵件",
-    field: "email",
+    name: "訂單序號",
+    field: "orderId",
     sort: "",
   },
   {
-    name: "公司名稱",
-    field: "company",
+    name: "訂單編號",
+    field: "orderUUID",
     sort: "",
   },
   {
-    name: "森日",
-    field: "birthdate",
+    name: "使用者編號",
+    field: "userId",
+    sort: "",
+  },
+  {
+    name: "付款狀態",
+    field: "payment",
+    sort: "",
+  },
+  {
+    name: "運送狀態",
+    field: "shipping",
+    sort: "",
+  },
+  {
+    name: "訂單狀態",
+    field: "status",
+    sort: "",
+  },
+  {
+    name: "訂單創立時間",
+    field: "createTime",
     sort: "",
   },
 ]);
@@ -163,7 +187,15 @@ th.sort {
         v-slot="{ ds }"
         :ds-data="users"
         :ds-sortby="sortBy"
-        :ds-search-in="['name', 'email', 'company', 'birthdate']"
+        :ds-search-in="[
+          'orderId',
+          'orderUUID',
+          'userId',
+          'payment',
+          'shipping',
+          'status',
+          'updateTime',
+        ]"
       >
         <div class="row" :data-page-count="ds.dsPagecount">
           <div id="datasetLength" class="col-md-8 py-2">

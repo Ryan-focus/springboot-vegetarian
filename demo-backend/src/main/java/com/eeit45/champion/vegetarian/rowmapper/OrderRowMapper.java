@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +25,11 @@ public class OrderRowMapper implements RowMapper<Order> {
         order.setStatus(rs.getString("status"));
         order.setPayment(rs.getString("payment"));
         order.setOrderUUID(rs.getString("orderUUID"));
+
+        Timestamp createdTime = rs.getTimestamp("createdTime");
+        order.setCreatedTime(createdTime);
+        Timestamp updatedTime = rs.getTimestamp("updatedTime");
+        order.setUpdateTime(updatedTime);
         return order;
     }
 
