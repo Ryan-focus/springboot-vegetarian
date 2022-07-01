@@ -47,7 +47,7 @@ CREATE TABLE `orders`
     created_date       TIMESTAMP NOT NULL,
     last_modified_date TIMESTAMP NOT NULL
 );
-
+DROP TABLE IF EXISTS order_item;
 CREATE TABLE order_item
 (
     order_item_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
