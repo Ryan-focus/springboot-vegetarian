@@ -5,6 +5,7 @@ import com.eeit45.champion.vegetarian.dao.ProductDao;
 import com.eeit45.champion.vegetarian.dto.OrderEntryRequest;
 import com.eeit45.champion.vegetarian.dto.OrderRequest;
 import com.eeit45.champion.vegetarian.model.Order;
+import com.eeit45.champion.vegetarian.model.OrderItem;
 import com.eeit45.champion.vegetarian.rowmapper.OrderRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -30,7 +31,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public Integer createOrder(OrderRequest orderRequest) {
-        String sql = "INSERT INTO veganDB.order (userId,payment,shipping,status,orderUUID,createdTime)" +
+        String sql = "INSERT INTO `order` (userId,payment,shipping,status,orderUUID,createdTime)" +
                 "VALUES(:userId, :payment, :shipping, :status, :orderUUID, :createdTime)";
         Map<String, Object> map = new HashMap<>();
         //生成訂單Id
@@ -53,6 +54,49 @@ public class OrderDaoImpl implements OrderDao {
         int orderId = keyHolder.getKey().intValue();
 
         return orderId;
+    }
+
+    @Override
+    public Integer createOrders(Integer userId, Integer totalAmount) {
+        String sql = "INSERT INTO `orders` (user_id, total_amount, created_date, last_modified_date) " +
+                "VALUES (:userId, :totalAmount, :createdDate, :lastModifiedDate)";
+        Map<String,Object> map = new HashMap<>();
+        map.put("userId" , userId);
+        map.put("totalAmount" , totalAmount);
+
+        Date now = new Date();
+        map.put("createdDate" , now);
+        map.put("lastModifiedDate" , now);
+
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+
+        namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
+
+        Integer orderId = keyHolder.getKey().intValue();
+
+        return orderId;
+    }
+
+    @Override
+    public void createOrderItems(Integer orderId, List<OrderItem> orderItemList) {
+        //使用for loop 一條一條插入sql 效率低
+        //建議使用batchUpdates 一次性插整張訂單
+        String sql = "INSERT INTO order_item(order_id, product_id , quantity , amount) " +
+                "VALUES(:orderId , :productId , :quantity, :amount)";
+
+        MapSqlParameterSource[] parameterSources = new MapSqlParameterSource[orderItemList.size()];
+
+        for (int i = 0; i < orderItemList.size(); i++
+             ) {
+            OrderItem orderItem = orderItemList.get(i);
+
+            parameterSources[i] = new MapSqlParameterSource();
+            parameterSources[i].addValue("orderId",orderId);
+            parameterSources[i].addValue("productId",orderItem.getProductId());
+            parameterSources[i].addValue("quantity",orderItem.getQuantity());
+            parameterSources[i].addValue("amount",orderItem.getAmount());
+        }
+        namedParameterJdbcTemplate.batchUpdate(sql, parameterSources);
     }
 
     @Override
@@ -83,7 +127,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public Integer insertOrderEntry(OrderEntryRequest orderEntryRequest) {
-        String sql = "Insert Into orderEntry (orderId,productId,quantity,orderEntryPrice)" +
+        String sql = "Insert Into orderEntry (orderUUID,productId,quantity,entryPrice)" +
                 "values(:orderId, :productId, :quantity, :orderEntryPrice)";
         Map<String, Object> map = new HashMap<>();
         map.put("orderId", orderEntryRequest.getOrderId());

@@ -3,10 +3,8 @@ package com.eeit45.champion.vegetarian.service.impl;
 import com.eeit45.champion.vegetarian.dao.UserDao;
 import com.eeit45.champion.vegetarian.dto.UserLoginRequest;
 import com.eeit45.champion.vegetarian.dto.UserRegisterRequest;
-import com.eeit45.champion.vegetarian.interceptor.LoginVO;
 import com.eeit45.champion.vegetarian.model.User;
 import com.eeit45.champion.vegetarian.service.UserService;
-import com.eeit45.champion.vegetarian.util.Result;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.UUID;
 
 
 @Component

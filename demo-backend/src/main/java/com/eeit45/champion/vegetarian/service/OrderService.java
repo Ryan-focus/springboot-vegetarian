@@ -1,5 +1,6 @@
 package com.eeit45.champion.vegetarian.service;
 
+import com.eeit45.champion.vegetarian.dto.CreateOrderRequest;
 import com.eeit45.champion.vegetarian.dto.OrderEntryRequest;
 import com.eeit45.champion.vegetarian.dto.OrderRequest;
 import com.eeit45.champion.vegetarian.model.CartEntry;
@@ -11,6 +12,8 @@ import java.util.List;
 public interface OrderService {
 
     Integer createOrder(OrderRequest orderRequest);
+
+    Integer createOrders(Integer userId, CreateOrderRequest createOrderRequest);
 
     Order getOrderById(Integer orderId);
 
@@ -27,5 +30,6 @@ public interface OrderService {
     List<Order> getAllOrder();
 
     void deleteOrderById(Integer orderId);
+
 
 }

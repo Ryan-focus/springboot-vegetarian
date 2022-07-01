@@ -37,8 +37,8 @@ create table users(
                       lastLoginTime TIMESTAMP not null
     );
 
--- Orders
-drop table IF EXISTS veganDB.order;
+-- Order
+drop table IF EXISTS `order`;
 create TABLE `order`
 (
     orderId       INT           NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -48,16 +48,41 @@ create TABLE `order`
     shipping      VARCHAR(50)   NOT NULL,
     status        VARCHAR(50)   NOT NULL,
     createdTime   TIMESTAMP     NOT NULL,
-    updatedTime   TIMESTAMP
+    updatedTime   TIMESTAMP     NOT NULL
 );
+
+drop table IF EXISTS `orders`;
+CREATE TABLE `orders`
+(
+    order_id           INT       NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    user_id            INT       NOT NULL,
+    total_amount       INT       NOT NULL, -- 訂單總花費
+    created_date       TIMESTAMP NOT NULL,
+    last_modified_date TIMESTAMP NOT NULL
+);
+
+
+drop table IF EXISTS order_item;
+CREATE TABLE order_item
+(
+    order_item_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    order_id      INT NOT NULL,
+    product_id    INT NOT NULL,
+    quantity      INT NOT NULL, -- 商品數量
+    amount        INT NOT NULL  -- 商品花費
+);
+
+
+
+
 drop table IF EXISTS orderEntry;
 create TABLE orderEntry
 (
     orderEntryId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
     orderUUID     VARCHAR(36) NOT NULL,
     productid    INT NOT NULL,
-    quantity      INT NOT NULL, -- 商品數量
-    entryPrice    INT NOT NULL  -- 商品花費
+    quantity      INT NOT NULL,
+    entryPrice    INT NOT NULL
 );
 
 drop table IF EXISTS cart;
@@ -79,7 +104,7 @@ create TABLE cartEntry
     entryPrice    INT NOT NULL  -- 商品花費
 );
 
---restaurant
+-- restaurant
 drop table if exists restaurant;
 
 create table restaurant(

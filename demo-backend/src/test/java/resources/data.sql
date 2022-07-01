@@ -27,11 +27,18 @@ INSERT INTO products ( name, category,veganCategory, price,createdTime,updatedTi
 INSERT INTO products ( name, category,veganCategory, price,createdTime,updatedTime) VALUES ('《潤覺茶 輕感淨化》茶樹茶籽綠茶潔顏慕斯(200ml)～清爽不緊繃 淨化控油效果佳','美妝保養','VEGAN',350,now(),now());
 
 
---新增兩筆測試訂單
-INSERT INTO `veganDB`.`order` (`orderUUID`, `userId`, `payment`, `shipping`, `status`, `createdTime`, `updatedTime`) VALUES ('98c00c3902ff4aeda44bd298360e7617', '2', '已付款', '已出貨', '訂單完成', now(),now() );
-INSERT INTO `veganDB`.`order` (`orderUUID`, `userId`, `payment`, `shipping`, `status`, `createdTime`, `updatedTime`) VALUES ('f95b8a0dce3140df884fe8e39404eef9', '1', '已付款', '已出貨', '訂單完成', now(),now() );
+-- 新增兩筆測試訂單
+INSERT INTO `order` (`orderUUID`, `userId`, `payment`, `shipping`, `status`, `createdTime`, `updatedTime`) VALUES ('98c00c3902ff4aeda44bd298360e7617', '2', '已付款', '已出貨', '訂單完成', now(),now() );
+INSERT INTO `order` (`orderUUID`, `userId`, `payment`, `shipping`, `status`, `createdTime`, `updatedTime`) VALUES ('f95b8a0dce3140df884fe8e39404eef9', '1', '已付款', '已出貨', '訂單完成', now(),now() );
 
---restaurant
+-- order / order_item
+INSERT INTO `orders` (user_id, total_amount, created_date, last_modified_date) VALUES (6, 100110, '2022-06-02 16:51:49', '2022-06-02 16:51:49');
+INSERT INTO order_item (order_id, product_id, quantity, amount) VALUES (1, 4, 2, 60);
+INSERT INTO order_item (order_id, product_id, quantity, amount) VALUES (1, 6, 5, 50);
+INSERT INTO order_item (order_id, product_id, quantity, amount) VALUES (1, 7, 1, 100000);
+
+
+-- restaurant
 insert into restaurant (restaurantName,restaurantTel,restaurantAddress,restaurantCategory,restaurantType,restaurantBusinessHours,restaurantScore,imageUrl,createdTime,updatedTime,restaurantMap)
 values ('中平素食之家','03-4284290','桃園市中壢區新興路210號','中式','全素_奶素_蛋素','週一到週日
 10:30–13:30
