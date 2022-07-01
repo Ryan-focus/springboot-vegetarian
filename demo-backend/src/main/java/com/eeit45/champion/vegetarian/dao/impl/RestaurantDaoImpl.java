@@ -87,6 +87,19 @@ Map<String, Object> map = new HashMap<>();
 		return restaurantList;
 	}
 	
+
+	@Override
+	public List<Restaurant> getAllRestaurants() {
+		String sql = "SELECT * FROM restaurant";
+		Map<String, Object> map = new HashMap<>();
+		List<Restaurant> restaurantList = namedParameterJdbcTemplate.query(sql, map,new RestaurantRowMapper());
+		if (restaurantList.size()>0) {
+			return restaurantList;
+		}else {
+			return null;
+		}
+	}
+	
 	@Override
 	public Restaurant getRestaurantByNumber(Integer restaurantNumber) {
 		

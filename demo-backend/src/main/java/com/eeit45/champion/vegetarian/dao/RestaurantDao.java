@@ -10,6 +10,7 @@ public interface RestaurantDao {
 	
 	Integer countRestaurant (RestaurantQueryParams restaurantQueryParams);
 	
+	List<Restaurant> getAllRestaurants();
 	List<Restaurant> getRestaurants(RestaurantQueryParams restaurantQueryParams);
 	
 	Restaurant getRestaurantByNumber(Integer restaurantNumber);
