@@ -22,6 +22,11 @@ public class RestaurantServiceImpl implements RestaurantService{
 		return restaurantDao.countRestaurant(restaurantQueryParams);
 	}
 
+
+	@Override
+	public List<Restaurant> getAllRestaurants() {
+		return restaurantDao.getAllRestaurants();
+	}
 	
 	@Override
 	public List<Restaurant> getRestaurants(RestaurantQueryParams restaurantQueryParams) {

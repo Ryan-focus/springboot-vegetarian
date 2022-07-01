@@ -35,7 +35,7 @@ public class RestaurantController {
 	private RestaurantService restaurantService;
 	
 	//搜尋全部、有條件的篩選
-	@GetMapping("/restaurants")
+	@GetMapping("/restaurantList")
 	public ResponseEntity<Page<Restaurant>> getRestaurants(
 			//查詢條件 Filtering
 			@RequestParam(required = false) RestaurantCategory restaurantCategory,
@@ -79,6 +79,17 @@ public class RestaurantController {
 		page.setResults(restaurantList);
 		
 		return ResponseEntity.status(HttpStatus.OK).body(page);
+	}
+	
+	@GetMapping("/restaurants")
+	public ResponseEntity<List<Restaurant>> getAllRestaurant() {
+		List<Restaurant> restaurantList = restaurantService.getAllRestaurants();
+
+		if (restaurantList != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(restaurantList);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
 	}
 
 	
