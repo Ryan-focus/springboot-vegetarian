@@ -27,6 +27,9 @@ const BackendBoxedSearch = () => import("@/views/backend-boxed/SearchView.vue");
 const BackendDashboard = () => import("@/views/backend/DashboardView.vue");
 
 //愛蔬網後台: users
+const VeganUsersDashboard = () =>
+  import("@/views/vegan/users/DashboardView.vue");
+const VeganUsersInfo = () => import("@/views/vegan/users/UsersInfo.vue");
 //愛蔬網後台: business
 //愛蔬網後台: restaurant
 const VeganRestaurantDashboard = () =>
@@ -35,7 +38,16 @@ const VeganRestaurantInfo = () =>
   import("@/views/vegan/restaurant/RestaurantInfo.vue");
 
 //愛蔬網後台: forums
+const VeganForumsDashboard = () =>
+  import("@/views/vegan/forums/DashboardView.vue");
+const VeganForumsForumsInfo = () =>
+  import("@/views/vegan/forums/ForumsInfo.vue");
 //愛蔬網後台: posts
+const VeganPostsDashboard = () =>
+  import("@/views/vegan/posts/DashboardView.vue");
+const VeganPostsPostsInfo = () => import("@/views/vegan/posts/PostsInfo.vue");
+const VeganForumsUpdatePost = () =>
+  import("@/views/vegan/posts/UpdatePost.vue");
 //愛蔬網後台: cart
 const VeganCartDashboard = () => import("@/views/vegan/cart/DashboardView.vue");
 const VeganCartProductInfo = () => import("@/views/vegan/cart/ProductInfo.vue");
@@ -347,17 +359,12 @@ const routes = [
           {
             path: "dashboard",
             name: "backend-users-dashboard",
-            // component: BackendUsersDashboard,
+            component: VeganUsersDashboard,
           },
           {
             path: "userInfo",
             name: "backend-users-user-info",
-            // component: BackendUsersUserInfo,
-          },
-          {
-            path: "businessInfo",
-            name: "backend-users-business-info",
-            // component: BackendUsersBusinessInfo,
+            component: VeganUsersInfo,
           },
         ],
       },
@@ -375,6 +382,45 @@ const routes = [
             path: "restaurantinfo",
             name: "backend-restaurants-restaurant-info",
             component: VeganRestaurantInfo,
+          },
+        ],
+      },
+      {
+        path: "posts",
+        redirect: "/posts/dashboard",
+        component: RouterView,
+        children: [
+          {
+            path: "dashboard",
+            name: "backend-posts-dashboard",
+            component: VeganPostsDashboard,
+          },
+          {
+            path: "postinfo",
+            name: "backend-posts-posts-info",
+            component: VeganPostsPostsInfo,
+          },
+          {
+            path: "update",
+            name: "backend-posts-update",
+            component: VeganForumsUpdatePost,
+          },
+        ],
+      },
+      {
+        path: "forums",
+        redirect: "/forums/dashboard",
+        component: RouterView,
+        children: [
+          {
+            path: "dashboard",
+            name: "backend-forums-dashboard",
+            component: VeganForumsDashboard,
+          },
+          {
+            path: "forumsinfo",
+            name: "backend-forums-forums-info",
+            component: VeganForumsForumsInfo,
           },
         ],
       },

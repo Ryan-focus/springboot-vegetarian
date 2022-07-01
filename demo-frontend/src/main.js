@@ -21,6 +21,15 @@ window.bootstrap = bootstrap;
 // Craft new application
 const app = createApp(App);
 
+//Axios
+import axios from "axios";
+// axios.defaults.baseURL = config.api.url
+axios.defaults.withCredentials = false;
+axios.defaults.timeout = 5000;
+
+import VueSweetalert2 from "vue-sweetalert2";
+import "sweetalert2/dist/sweetalert2.min.css";
+app.use(VueSweetalert2);
 // Register global components
 app.component("BaseBlock", BaseBlock);
 app.component("BaseBackground", BaseBackground);

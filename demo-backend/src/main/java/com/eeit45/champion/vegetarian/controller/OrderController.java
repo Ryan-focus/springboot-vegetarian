@@ -1,8 +1,7 @@
 package com.eeit45.champion.vegetarian.controller;
 
-import com.eeit45.champion.vegetarian.dto.OrderEntryRequest;
 import com.eeit45.champion.vegetarian.dto.OrderRequest;
-import com.eeit45.champion.vegetarian.model.*;
+import com.eeit45.champion.vegetarian.model.Order;
 import com.eeit45.champion.vegetarian.service.CartService;
 import com.eeit45.champion.vegetarian.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +31,17 @@ public class OrderController {
             return null;
         }
     }
+    @GetMapping
+    public ResponseEntity<List<Order>> getAllOrders() {
+        List<Order> orderList = orderService.getAllOrder();
+        if (orderList != null && orderList.size() > 0) {
+            return ResponseEntity.status(HttpStatus.CREATED).body(orderList);
+        } else {
+            return null;
+        }
+    }
+
+
     @PostMapping()
     public ResponseEntity<Order> createOrder(@RequestBody @Valid OrderRequest orderRequest) {
         Integer orderId = orderService.createOrder(orderRequest);
@@ -47,6 +57,15 @@ public class OrderController {
         cartService.deleteCartEntryById(orderRequest.getOrderUUID());
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
+    @PutMapping("/{orderId}")
+    public ResponseEntity<Order> updateOrder(@PathVariable Integer orderId,
+                                             @RequestBody OrderRequest orderRequest
+    ){
+        orderService.updateOrder(orderId,orderRequest);
+       Order order =  orderService.getOrderById(orderId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(order);
+    }
+
     @PatchMapping("/payment/{orderId}")
     public ResponseEntity<Order> updatePayment(@PathVariable Integer orderId,
                                                @RequestBody OrderRequest orderRequest) {
@@ -54,10 +73,11 @@ public class OrderController {
         if (order == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        orderService.updateOrderPayment(orderRequest.getPayment(),orderId);
+        orderService.updateOrderPayment(orderRequest.getPayment(), orderId);
         Order updatedOrder = orderService.getOrderById(orderId);
         return ResponseEntity.status(HttpStatus.OK).body(updatedOrder);
     }
+
     @PatchMapping("/shipping/{orderId}")
     public ResponseEntity<Order> updateShipping(@PathVariable Integer orderId,
                                                 @RequestBody OrderRequest orderRequest) {
@@ -65,11 +85,16 @@ public class OrderController {
         if (order == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        orderService.updateOrderShipping(orderRequest.getShipping(),orderId);
+        orderService.updateOrderShipping(orderRequest.getShipping(), orderId);
         Order updatedOrder = orderService.getOrderById(orderId);
         return ResponseEntity.status(HttpStatus.OK).body(updatedOrder);
     }
+    @DeleteMapping("/{orderId}")
+    public ResponseEntity<Order> deleteOrderById(@PathVariable Integer orderId){
+        orderService.deleteOrderById(orderId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
+    }
 
 
 }

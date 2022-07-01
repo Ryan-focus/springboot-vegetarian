@@ -39,12 +39,27 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public void updateOrder(Integer orderId, OrderRequest orderRequest) {
+        orderDao.updateOrder(orderId,orderRequest);
+    }
+
+    @Override
     public void updateOrderPayment(String payment, Integer orderId) {
         orderDao.updateOrderPayment(payment,orderId);
     }
     @Override
     public void updateOrderShipping(String shipping, Integer orderId) {
         orderDao.updateOrderShipping(shipping,orderId);
+    }
+
+    @Override
+    public List<Order> getAllOrder() {
+        return orderDao.getAllOrder();
+    }
+
+    @Override
+    public void deleteOrderById(Integer orderId) {
+        orderDao.deleteOrderById(orderId);
     }
 }
 

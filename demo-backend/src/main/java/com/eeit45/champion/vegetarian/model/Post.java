@@ -12,22 +12,18 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 
-@Entity
 public class Post {
 
 
 	//private static final long serialVersionUID = 1L;
 	
-	  @Id
-	  @GeneratedValue(strategy = GenerationType.IDENTITY)
+
 		private Integer postId;
-	  	@Column(columnDefinition = "nvarchar(255)")
 	    private String title;
-	    @Column(columnDefinition = "datetime")
 	    private Date postedDate;
-	    @Column(columnDefinition = "nvarchar(MAX)")
+
 	    private String postedText;
-	    @Column(columnDefinition = "nvarchar(255)")
+
 	    private String imgurl;
 	    
 //	    @ManyToOne(cascade = CascadeType.ALL)
@@ -36,7 +32,7 @@ public class Post {
 	    
 	    private String postStatus;
 	    
-	    @Transient
+
 	    private MultipartFile postImage;
 	    
 	    

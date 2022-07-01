@@ -65,12 +65,9 @@ export default {
           to: "backend-users-dashboard",
         },
         {
-          name: "USER管理",
+          name: "使用者管理",
+          icon: "fa fa-user",
           to: "backend-users-user-info",
-        },
-        {
-          name: "BUSINESS管理",
-          to: "backend-users-business-info",
         },
       ],
     },
@@ -82,15 +79,12 @@ export default {
         {
           name: "儀表板",
           icon: "fa fa-chart-line",
-          to: "backend-boxed-dashboard",
+          // to: "backend-boxed-dashboard",
         },
         {
-          name: "USER管理",
-          to: "backend-boxed-simple1",
-        },
-        {
-          name: "BUSINESS管理",
-          to: "backend-boxed-simple2",
+          name: "商家後台",
+          icon: "fa fa-home",
+          // to: "backend-boxed-simple2",
         },
       ],
     },
@@ -119,15 +113,12 @@ export default {
         {
           name: "儀表板",
           icon: "fa fa-chart-line",
-          to: "backend-boxed-dashboard",
+          to: "backend-forums-dashboard",
         },
         {
-          name: "USER管理",
-          to: "backend-boxed-simple1",
-        },
-        {
-          name: "BUSINESS管理",
-          to: "backend-boxed-simple2",
+          name: "文章管理",
+          icon: "si si-book-open",
+          to: "backend-forums-forums-info",
         },
       ],
     },
@@ -137,17 +128,14 @@ export default {
       subActivePaths: "/backend-boxed",
       sub: [
         {
-          name: "儀表板",
-          icon: "fa fa-chart-line",
-          to: "backend-boxed-dashboard",
+          name: "數據分析",
+          icon: "fa fa-chart-pie",
+          to: "backend-posts-dashboard",
         },
         {
-          name: "USER管理",
-          to: "backend-boxed-simple1",
-        },
-        {
-          name: "BUSINESS管理",
-          to: "backend-boxed-simple2",
+          name: "文章管理",
+          icon: "fa fa-file-pen",
+          to: "backend-posts-posts-info",
         },
       ],
     },
