@@ -1,5 +1,9 @@
 <script setup>
-import { reactive, computed, onMounted } from "vue";
+import { ref, reactive, computed, onMounted } from "vue";
+// Sweetalert2, for more info and examples, you can check out https://github.com/sweetalert2/sweetalert2
+import Swal from "sweetalert2";
+
+import axios from "axios";
 
 // Vue Dataset, for more info and examples you can check out https://github.com/kouts/vue-dataset/tree/next
 import {
@@ -11,25 +15,61 @@ import {
   DatasetShow,
 } from "vue-dataset";
 
+// Set default properties
+let toast = Swal.mixin({
+  buttonsStyling: false,
+  target: "#page-container",
+  customClass: {
+    confirmButton: "btn btn-success m-1",
+    cancelButton: "btn btn-danger m-1",
+    input: "form-control",
+  },
+});
+
+//預設傳值伺服器與[params]
+const url = "localhost:8088";
+//接收的資料ref
+const resData = ref();
+
+const getAxios = function () {
+  axios
+    .get(`http://${url}/postIndex`)
+    .then((res) => {
+      console.log(res);
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+//執行Axios
+getAxios();
+
 // Get example data
-import users from "@/data/usersDataset.json";
+//import users from "@/data/usersDataset.json";
 
 // Helper variables
 //在這邊去設定Table :th的欄位名稱
 const cols = reactive([
   {
-    name: "電子郵件",
-    field: "email",
+    name: "文章名稱",
+    field: "title",
     sort: "",
   },
   {
-    name: "公司名稱",
-    field: "company",
+    name: "文章內文",
+    field: "postedText",
     sort: "",
   },
   {
-    name: "森日",
-    field: "birthdate",
+    name: "發表日期",
+    field: "postedDate",
+    sort: "",
+  },
+  {
+    name: "圖片預覽",
+    field: "imgurl",
     sort: "",
   },
 ]);
@@ -86,6 +126,29 @@ onMounted(() => {
   selectLength.classList.add("form-select");
   selectLength.style.width = "80px";
 });
+
+//格式化時間
+
+function formatTime(postedDate, row, index) {
+  var date = new Date();
+  date.setTime(postedDate);
+  var month = date.getMonth() + 1;
+  var hours = date.getHours();
+  if (hours < 10) hours = "0" + hours;
+  var minutes = date.getMinutes();
+  if (minutes < 10) minutes = "0" + minutes;
+  var time =
+    date.getFullYear() +
+    "-" +
+    month +
+    "-" +
+    date.getDate() +
+    " " +
+    hours +
+    ":" +
+    minutes;
+  return time;
+}
 </script>
 
 <style lang="scss" scoped>
@@ -134,6 +197,8 @@ th.sort {
     }
   }
 }
+// SweetAlert2
+@import "sweetalert2/dist/sweetalert2.min.css";
 </style>
 
 <template>
@@ -161,16 +226,63 @@ th.sort {
     <BaseBlock title="文章後台資料" content-full>
       <Dataset
         v-slot="{ ds }"
-        :ds-data="users"
+        :ds-data="resData"
         :ds-sortby="sortBy"
-        :ds-search-in="['name', 'email', 'company', 'birthdate']"
+        :ds-search-in="['postStatus', 'title', 'postedDate', 'postedText']"
       >
         <div class="row" :data-page-count="ds.dsPagecount">
+          <div class="col-md-4 py-2">
+            <DatasetSearch ds-search-placeholder="資料搜尋..." />
+          </div>
           <div id="datasetLength" class="col-md-8 py-2">
             <DatasetShow />
           </div>
-          <div class="col-md-4 py-2">
-            <DatasetSearch ds-search-placeholder="資料搜尋..." />
+          <div class="dropdown d-inline-block">
+            <button
+              type="button"
+              class="btn btn-sm btn-alt-secondary"
+              id="dropdown-recent-orders-filters"
+              data-bs-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <i class="fa fa-fw fa-flask"></i>
+              篩選器
+              <i class="fa fa-angle-down ms-1"></i>
+            </button>
+            <div
+              class="dropdown-menu dropdown-menu-md dropdown-menu-end fs-sm"
+              aria-labelledby="dropdown-recent-orders-filters"
+            >
+              <a
+                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
+                href="javascript:void(0)"
+              >
+                未審核
+                <span class="badge bg-primary rounded-pill">20</span>
+              </a>
+              <a
+                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
+                href="javascript:void(0)"
+              >
+                審核中
+                <span class="badge bg-primary rounded-pill">72</span>
+              </a>
+              <a
+                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
+                href="javascript:void(0)"
+              >
+                已完成
+                <span class="badge bg-primary rounded-pill">890</span>
+              </a>
+              <a
+                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
+                href="javascript:void(0)"
+              >
+                全部
+                <span class="badge bg-primary rounded-pill">997</span>
+              </a>
+            </div>
           </div>
         </div>
         <hr />
@@ -181,7 +293,7 @@ th.sort {
                 <thead>
                   <tr>
                     <th scope="col" class="text-center">編號</th>
-                    <th scope="col" class="text-center">用戶名稱</th>
+                    <th scope="col" class="text-center">文章狀態</th>
                     <th
                       v-for="(th, index) in cols"
                       :key="th.field"
@@ -190,31 +302,54 @@ th.sort {
                     >
                       {{ th.name }} <i class="gg-select float-end"></i>
                     </th>
-                    <th class="text-center" style="width: 100px">動作</th>
+                    <th class="text-center" style="width: 100px">審核</th>
                   </tr>
                 </thead>
                 <DatasetItem tag="tbody" class="fs-sm">
-                  <template #default="{ row, rowIndex }">
-                    <tr>
-                      <th scope="row">{{ rowIndex + 1 }}</th>
-                      <td class="text-center" style="min-width: 150px">
-                        {{ row.name }}
+                  <template #default="{ row }">
+                    <tr style="line-height: 5px">
+                      <th scope="row">{{ row.postId }}</th>
+                      <td class="text-center" style="min-width: 100px">
+                        <span
+                          class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success"
+                          >{{ row.postStatus }}</span
+                        >
                       </td>
-                      <td class="d-none d-md-table-cell fs-sm">
-                        {{ row.email }}
+                      <td
+                        class="text-center"
+                        style="
+                          overflow: hidden;
+                          white-space: nowrap;
+                          text-overflow: ellipsis;
+                          max-width: 150px;
+                        "
+                      >
+                        {{ row.title }}
+                      </td>
+                      <td
+                        class="d-none d-md-table-cell fs-sm"
+                        style="
+                          overflow: hidden;
+                          white-space: nowrap;
+                          text-overflow: ellipsis;
+                          max-width: 150px;
+                        "
+                      >
+                        {{ row.postedText }}
                       </td>
                       <td
                         class="d-none d-sm-table-cell"
                         style="min-width: 150px"
                       >
-                        {{ row.company }}
+                        {{ row.postedDate }}
                       </td>
                       <td
                         class="d-none d-sm-table-cell"
                         style="min-width: 150px"
                       >
-                        {{ row.birthdate }}
+                        {{ row.imgurl }}
                       </td>
+
                       <td class="text-center">
                         <div class="btn-group">
                           <button
