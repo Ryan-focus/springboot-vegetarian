@@ -71,23 +71,23 @@ export default {
         },
       ],
     },
-    {
-      name: "商家管理",
-      icon: "fa fa-shop",
-      subActivePaths: "/backend-boxed",
-      sub: [
-        {
-          name: "儀表板",
-          icon: "fa fa-chart-line",
-          // to: "backend-boxed-dashboard",
-        },
-        {
-          name: "商家後台",
-          icon: "fa fa-home",
-          // to: "backend-boxed-simple2",
-        },
-      ],
-    },
+    // {
+    //   name: "商家管理",
+    //   icon: "fa fa-shop",
+    //   subActivePaths: "/backend-boxed",
+    //   sub: [
+    //     {
+    //       name: "儀表板",
+    //       icon: "fa fa-chart-line",
+    //       // to: "backend-boxed-dashboard",
+    //     },
+    //     {
+    //       name: "商家後台",
+    //       icon: "fa fa-home",
+    //       // to: "backend-boxed-simple2",
+    //     },
+    //   ],
+    // },
     {
       name: "餐廳管理",
       icon: "fa fa-burger",

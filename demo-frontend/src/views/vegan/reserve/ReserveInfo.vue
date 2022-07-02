@@ -54,7 +54,7 @@ getAxios();
 //在這邊去設定Table :th的欄位名稱
 const cols = reactive([
   {
-    name: "文章名稱",
+    name: "商家名稱",
     field: "title",
     sort: "",
   },
@@ -204,17 +204,17 @@ th.sort {
 
 <template>
   <!-- Hero -->
-  <BasePageHeading title="文章管理" subtitle="現在可以查閱所有文章資訊..">
+  <BasePageHeading title="訂單總覽" subtitle="現在可以查閱所有訂單狀態..">
     <template #extra>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-alt">
           <li class="breadcrumb-item">
-            <a class="link-fx" href="#/backend/cart/dashboard">
-              <i class="fa fa-pen-to-square"></i> 食記管理</a
+            <a class="link-fx" href="#/backend/reserve/dashboard">
+              <i class="fa fa-hourglass"></i> 訂位管理</a
             >
           </li>
           <li class="breadcrumb-item" aria-current="page">
-            <i class="fa fa-file-pen"></i> 文章管理
+            <i class="fab fa-dashcube"></i> 訂單總覽
           </li>
         </ol>
       </nav>
@@ -224,7 +224,7 @@ th.sort {
 
   <!-- Page Content -->
   <div class="content">
-    <BaseBlock title="文章後台資料" content-full>
+    <BaseBlock title="訂單資料" content-full>
       <template #options>
         <div class="space-x-1">
           <div class="dropdown d-inline-block">
@@ -237,7 +237,7 @@ th.sort {
               aria-expanded="false"
             >
               <i class="fa fa-fw fa-flask"></i>
-              篩選器
+              篩選
               <i class="fa fa-angle-down ms-1"></i>
             </button>
             <div
@@ -284,7 +284,7 @@ th.sort {
       >
         <div class="row" :data-page-count="ds.dsPagecount">
           <div class="col-md-3 py-2">
-            <DatasetSearch ds-search-placeholder="資料搜尋..." />
+            <DatasetSearch ds-search-placeholder="內部搜尋..." />
           </div>
           <div id="datasetLength" class="col-md-2 ms-auto py-2">
             <DatasetShow />
@@ -300,7 +300,8 @@ th.sort {
                     <th scope="col" class="text-center" style="min-width: 55px">
                       編號
                     </th>
-                    <th scope="col" class="d-none d-sm-table-cell">文章狀態</th>
+                    <!-- 此欄位放上合作的商家開通的狀態是否為 試用期/開通中/未開通 -->
+                    <th scope="col" class="d-none d-sm-table-cell">開通狀態</th>
                     <th
                       v-for="(th, index) in cols"
                       :key="th.field"
@@ -309,6 +310,7 @@ th.sort {
                     >
                       {{ th.name }} <i class="gg-select float-end"></i>
                     </th>
+                    <!-- 直接採取動作，點選更新狀態 -->
                     <th class="text-center" style="width: 100px">審核</th>
                   </tr>
                 </thead>
