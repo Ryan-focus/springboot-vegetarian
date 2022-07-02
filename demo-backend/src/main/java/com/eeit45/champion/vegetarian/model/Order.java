@@ -8,7 +8,7 @@ public class Order {
 
     private String orderUUID;
     private Integer userId;
-    private String Shipping;
+    private String shipping;
     private String payment;
     private String status;
 
@@ -22,7 +22,7 @@ public class Order {
         this.orderId = orderId;
         this.orderUUID = orderUUID;
         this.userId = userId;
-        Shipping = shipping;
+        this.shipping = shipping;
         this.payment = payment;
         this.status = status;
         this.createdTime = createdTime;
@@ -54,11 +54,11 @@ public class Order {
     }
 
     public String getShipping() {
-        return Shipping;
+        return shipping;
     }
 
     public void setShipping(String shipping) {
-        Shipping = shipping;
+        shipping = shipping;
     }
 
     public String getPayment() {

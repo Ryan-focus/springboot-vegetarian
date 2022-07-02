@@ -1,5 +1,6 @@
 package com.eeit45.champion.vegetarian.controller;
 
+import com.eeit45.champion.vegetarian.dto.CreateOrderRequest;
 import com.eeit45.champion.vegetarian.dto.OrderRequest;
 import com.eeit45.champion.vegetarian.model.Order;
 import com.eeit45.champion.vegetarian.service.CartService;
@@ -37,8 +38,20 @@ public class OrderController {
         if (orderList != null && orderList.size() > 0) {
             return ResponseEntity.status(HttpStatus.CREATED).body(orderList);
         } else {
-            return null;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+    }
+
+
+    //表示前端送一個已經存在的User所購買的訂單
+    // JsonObject : {"buyItemList:[{"productId":9,"quantity:1},{"productId":10,"quantity:18}]}
+    //表示前端送了一個 購物車的List 內容物是 數量1個的productID=9的東西  + 數量18個的productID=10的東西
+    @PostMapping("{userId}/orders")
+    public ResponseEntity<?> createOrders(@PathVariable Integer userId,
+                                          @RequestBody @Valid CreateOrderRequest createOrderRequest){
+
+       Integer orderId =  orderService.createOrders(userId,createOrderRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(orderId);
     }
 
 

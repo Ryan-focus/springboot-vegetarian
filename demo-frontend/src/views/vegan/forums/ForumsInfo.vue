@@ -1,5 +1,9 @@
 <script setup>
-import { reactive, computed, onMounted } from "vue";
+import { ref, reactive, computed, onMounted } from "vue";
+// Sweetalert2, for more info and examples, you can check out https://github.com/sweetalert2/sweetalert2
+import Swal from "sweetalert2";
+
+import axios from "axios";
 
 // Vue Dataset, for more info and examples you can check out https://github.com/kouts/vue-dataset/tree/next
 import {
@@ -11,6 +15,38 @@ import {
   DatasetShow,
 } from "vue-dataset";
 
+// Set default properties
+let toast = Swal.mixin({
+  buttonsStyling: false,
+  target: "#page-container",
+  customClass: {
+    confirmButton: "btn btn-success m-1",
+    cancelButton: "btn btn-danger m-1",
+    input: "form-control",
+  },
+});
+
+//預設傳值伺服器與[params]
+const url = "localhost:8088";
+//接收的資料ref
+const resData = ref();
+
+const getAxios = function () {
+  axios
+    .get(`http://${url}/forums`)
+    .then((res) => {
+      console.log(res);
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+//執行Axios
+getAxios();
+
+
 // Get example data
 import users from "@/data/usersDataset.json";
 
@@ -18,18 +54,23 @@ import users from "@/data/usersDataset.json";
 //在這邊去設定Table :th的欄位名稱
 const cols = reactive([
   {
-    name: "電子郵件",
-    field: "email",
+    name: "標題",
+    field: "forumTitle",
     sort: "",
   },
   {
-    name: "公司名稱",
-    field: "company",
+    name: "文章",
+    field: "forumContent",
     sort: "",
   },
   {
-    name: "森日",
-    field: "birthdate",
+    name: "發表時間",
+    field: "forumCreateTime",
+    sort: "",
+  },
+    {
+    name: "更新時間",
+    field: "forumUpdateTime",
     sort: "",
   },
 ]);
@@ -86,6 +127,8 @@ onMounted(() => {
   selectLength.classList.add("form-select");
   selectLength.style.width = "80px";
 });
+
+
 </script>
 
 <style lang="scss" scoped>
@@ -134,6 +177,7 @@ th.sort {
     }
   }
 }
+@import "sweetalert2/dist/sweetalert2.min.css";
 </style>
 
 <template>
@@ -161,9 +205,9 @@ th.sort {
     <BaseBlock title="文章後台資料" content-full>
       <Dataset
         v-slot="{ ds }"
-        :ds-data="users"
+        :ds-data="resData"
         :ds-sortby="sortBy"
-        :ds-search-in="['name', 'email', 'company', 'birthdate']"
+        :ds-search-in="['forumTitle', 'forumContent', 'forumCreateTime', 'forumUpdateTime']"
       >
         <div class="row" :data-page-count="ds.dsPagecount">
           <div class="col-md-4 py-2">
@@ -172,6 +216,7 @@ th.sort {
           <div id="datasetLength" class="col-md-8 py-2">
             <DatasetShow />
           </div>
+
         </div>
         <hr />
         <div class="row">
@@ -181,7 +226,7 @@ th.sort {
                 <thead>
                   <tr>
                     <th scope="col" class="text-center">編號</th>
-                    <th scope="col" class="text-center">用戶名稱</th>
+                   <!-- <th scope="col" class="text-center">標題</th>  -->
                     <th
                       v-for="(th, index) in cols"
                       :key="th.field"
@@ -190,30 +235,34 @@ th.sort {
                     >
                       {{ th.name }} <i class="gg-select float-end"></i>
                     </th>
-                    <th class="text-center" style="width: 100px">動作</th>
+                    <th class="text-center" style="width: 100px">操作</th>
                   </tr>
                 </thead>
                 <DatasetItem tag="tbody" class="fs-sm">
-                  <template #default="{ row, rowIndex }">
-                    <tr>
-                      <th scope="row">{{ rowIndex + 1 }}</th>
-                      <td class="text-center" style="min-width: 150px">
-                        {{ row.name }}
-                      </td>
-                      <td class="d-none d-md-table-cell fs-sm">
-                        {{ row.email }}
+                  <template #default="{ row }">
+                    <tr style="width: 100px">
+                      <th scope="row">{{ row.forumId }}</th>
+
+                      <td class="d-none d-md-table-cell fs-sm" style="width: 85px">
+                        {{ row.forumTitle }}
                       </td>
                       <td
                         class="d-none d-sm-table-cell"
                         style="min-width: 150px"
                       >
-                        {{ row.company }}
+                        {{ row.forumContent }}
                       </td>
                       <td
                         class="d-none d-sm-table-cell"
                         style="min-width: 150px"
                       >
-                        {{ row.birthdate }}
+                        {{ row.forumCreateTime }}
+                      </td>
+                      <td
+                        class="d-none d-sm-table-cell"
+                        style="min-width: 150px"
+                      >
+                        {{ row.forumUpdateTime }}
                       </td>
                       <td class="text-center">
                         <div class="btn-group">

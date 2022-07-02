@@ -31,6 +31,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public List<Product> getAllProduct() {
+        return productDao.getAllProduct();
+    }
+
+    @Override
     public Integer createProduct(ProductRequest productRequest) {
         return productDao.createProduct(productRequest);
     }

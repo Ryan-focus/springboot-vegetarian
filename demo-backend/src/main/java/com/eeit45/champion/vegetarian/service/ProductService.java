@@ -12,6 +12,8 @@ public interface ProductService {
     List<Product> getProducts(ProductQueryParams productQueryParams);
     Product getProductById(Integer productId);
 
+    List<Product> getAllProduct();
+
     Integer createProduct(ProductRequest productRequest);
 
     void updateProduct(Integer productId, ProductRequest productRequest);

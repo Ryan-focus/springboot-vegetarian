@@ -34,23 +34,32 @@ public class Post {
 	    
 
 	    private MultipartFile postImage;
-	    
-	    
-	    
+
+
+		private String variant;
 
 		public Post() {
 	    	
 	    }
 	    
-	    public Post(Integer postId,String title,Date postedDate,String postedText,String imgurl) {
+	    public Post(Integer postId,String title,Date postedDate,String postedText,String imgurl, String variant) {
 	    	
 	    	this.postId =postId;
 	    	this.title = title;
 	    	this.postedDate = postedDate;
 	    	this.postedText = postedText;
 	    	this.imgurl = imgurl;
-	    	
+	    	this.variant = variant;
 	    }
+
+		public Post(Integer postId,String title,Date postedDate,String postedText,String imgurl ) {
+
+			this.postId =postId;
+			this.title = title;
+			this.postedDate = postedDate;
+			this.postedText = postedText;
+			this.imgurl = imgurl;
+		}
 	    
 		public Post(Integer postId, String title, String postedText) {
 			this.postId =postId;
@@ -131,8 +140,13 @@ public class Post {
 			this.postStatus = postStatus;
 		}
 
+	public String getVariant() {
+		return variant;
+	}
 
-	
+	public void setVariant(String variant) {
+		this.variant = variant;
+	}
 
 //		public PostSataus getPostSataus() {
 //			return postSataus;

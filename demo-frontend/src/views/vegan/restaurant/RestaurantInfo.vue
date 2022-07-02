@@ -1,5 +1,9 @@
 <script setup>
-import { reactive, computed, onMounted } from "vue";
+import { ref, reactive, computed, onMounted } from "vue";
+// Sweetalert2, for more info and examples, you can check out https://github.com/sweetalert2/sweetalert2
+import Swal from "sweetalert2";
+
+import axios from "axios";
 
 // Vue Dataset, for more info and examples you can check out https://github.com/kouts/vue-dataset/tree/next
 import {
@@ -11,25 +15,73 @@ import {
   DatasetShow,
 } from "vue-dataset";
 
-// Get example data
-import users from "@/data/usersDataset.json";
+// Set default properties
+let toast = Swal.mixin({
+  buttonsStyling: false,
+  target: "#page-container",
+  customClass: {
+    confirmButton: "btn btn-success m-1",
+    cancelButton: "btn btn-danger m-1",
+    input: "form-control",
+  },
+});
+
+//預設傳值伺服器與[params]
+const url = "localhost:8088";
+//接收的資料ref
+const resData = ref();
+
+const getAxios = function () {
+  axios
+    .get(`http://${url}/restaurants`)
+    .then((res) => {
+      console.log(res);
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+//執行Axios
+getAxios();
 
 // Helper variables
 //在這邊去設定Table :th的欄位名稱
 const cols = reactive([
   {
-    name: "電子郵件",
-    field: "email",
+    name: "電話",
+    field: "restaurantTel",
     sort: "",
   },
   {
-    name: "公司名稱",
-    field: "company",
+    name: "地址",
+    field: "restaurantAddress",
     sort: "",
   },
   {
-    name: "森日",
-    field: "birthdate",
+    name: "類型",
+    field: "restaurantCategory",
+    sort: "",
+  },
+  {
+    name: "素食分類",
+    field: "restaurantType",
+    sort: "",
+  },
+  {
+    name: "營業時間",
+    field: "restaurantBusinessHours",
+    sort: "",
+  },
+  {
+    name: "評分",
+    field: "restaurantScore",
+    sort: "",
+  },
+  {
+    name: "圖片",
+    field: "imageUrl",
     sort: "",
   },
 ]);
@@ -70,6 +122,51 @@ function onSort(event, i) {
   }
 
   sortEl.sort = toset;
+}
+
+//Delete Restaurant Fuction
+function deleteRestaurant(number) {
+  toast
+    .fire({
+      title: "確定要刪除嗎?",
+      text: "刪除之後這筆資料就消失囉~!",
+      icon: "warning",
+      showCancelButton: true,
+      customClass: {
+        confirmButton: "btn btn-danger m-1",
+        cancelButton: "btn btn-secondary m-1",
+      },
+      confirmButtonText: "幹掉他!",
+      cancelButtonText: "拯救他 !",
+
+      html: false,
+      preConfirm: () => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 50);
+        });
+      },
+    })
+    .then((result) => {
+      //send request to server
+      if (result.value) {
+        axios
+          .delete(`http://${url}/restaurants/${number}`)
+          .then((res) => {
+            //獲取伺服器的回傳資料
+            console.log(res);
+
+            getAxios();
+            toast.fire("他被殺死了!", "你殺掉了一個人 ! 殺人犯 !", "success");
+          })
+          .catch((error) => {
+            console.log(error, "失敗");
+          });
+      } else if (result.dismiss === "cancel") {
+        toast.fire("她活下來了", "你取消了他 ! 他安全了 :)", "error");
+      }
+    });
 }
 
 // Apply a few Bootstrap 5 optimizations
@@ -134,6 +231,8 @@ th.sort {
     }
   }
 }
+// SweetAlert2
+@import "sweetalert2/dist/sweetalert2.min.css";
 </style>
 
 <template>
@@ -147,6 +246,7 @@ th.sort {
               <i class="fa fa-burger"></i> 餐廳管理</a
             >
           </li>
+
           <li class="breadcrumb-item" aria-current="page">
             <i class="fa fa-leaf"></i> 餐廳資訊
           </li>
@@ -161,9 +261,17 @@ th.sort {
     <BaseBlock title="餐廳後台資料" content-full>
       <Dataset
         v-slot="{ ds }"
-        :ds-data="users"
+        :ds-data="resData"
         :ds-sortby="sortBy"
-        :ds-search-in="['name', 'email', 'company', 'birthdate']"
+        :ds-search-in="[
+          'restaurantName',
+          'restaurantTel',
+          'restaurantAddress',
+          'restaurantCategory',
+          'restaurantType',
+          'restaurantBusinessHours',
+          'restaurantScore',
+        ]"
       >
         <div class="row" :data-page-count="ds.dsPagecount">
           <div id="datasetLength" class="col-md-8 py-2">
@@ -180,8 +288,16 @@ th.sort {
               <table class="table table-bordered table-hover table-vcenter">
                 <thead>
                   <tr>
-                    <th scope="col" class="text-center">編號</th>
-                    <th scope="col" class="text-center">用戶名稱</th>
+                    <th scope="col" class="text-center" style="min-width: 55px">
+                      編號
+                    </th>
+                    <th
+                      scope="col"
+                      class="text-center"
+                      style="min-width: 100px"
+                    >
+                      名稱
+                    </th>
                     <th
                       v-for="(th, index) in cols"
                       :key="th.field"
@@ -190,30 +306,72 @@ th.sort {
                     >
                       {{ th.name }} <i class="gg-select float-end"></i>
                     </th>
-                    <th class="text-center" style="width: 100px">動作</th>
+                    <th class="text-center" style="width: 80px">動作</th>
                   </tr>
                 </thead>
                 <DatasetItem tag="tbody" class="fs-sm">
-                  <template #default="{ row, rowIndex }">
+                  <template #default="{ row }">
                     <tr>
-                      <th scope="row">{{ rowIndex + 1 }}</th>
-                      <td class="text-center" style="min-width: 150px">
-                        {{ row.name }}
+                      <th scope="row">{{ row.restaurantNumber }}</th>
+                      <td class="text-center" style="min-width: 80px">
+                        {{ row.restaurantName }}
                       </td>
-                      <td class="d-none d-md-table-cell fs-sm">
-                        {{ row.email }}
+                      <td
+                        class="d-none d-md-table-cell fs-sm"
+                        style="
+                          overflow: hidden;
+                          white-space: nowrap;
+                          text-overflow: ellipsis;
+                          max-width: 80px;
+                        "
+                      >
+                        {{ row.restaurantTel }}
                       </td>
                       <td
                         class="d-none d-sm-table-cell"
-                        style="min-width: 150px"
+                        style="
+                          overflow: hidden;
+                          white-space: nowrap;
+                          text-overflow: ellipsis;
+                          max-width: 110px;
+                        "
                       >
-                        {{ row.company }}
+                        {{ row.restaurantAddress }}
                       </td>
                       <td
                         class="d-none d-sm-table-cell"
-                        style="min-width: 150px"
+                        style="min-width: 80px"
                       >
-                        {{ row.birthdate }}
+                        {{ row.restaurantCategory }}
+                      </td>
+                      <td
+                        class="d-none d-sm-table-cell"
+                        style="min-width: 110px"
+                      >
+                        {{ row.restaurantType }}
+                      </td>
+                      <td
+                        class="d-none d-sm-table-cell"
+                        style="
+                          overflow: hidden;
+                          white-space: nowrap;
+                          text-overflow: ellipsis;
+                          max-width: 110px;
+                        "
+                      >
+                        {{ row.restaurantBusinessHours }}
+                      </td>
+                      <td
+                        class="d-none d-sm-table-cell"
+                        style="min-width: 80px"
+                      >
+                        {{ row.restaurantScore }}
+                      </td>
+                      <td
+                        class="d-none d-sm-table-cell"
+                        style="min-width: 80px"
+                      >
+                        {{ row.imageUrl }}
                       </td>
                       <td class="text-center">
                         <div class="btn-group">
@@ -226,6 +384,7 @@ th.sort {
                           <button
                             type="button"
                             class="btn btn-sm btn-alt-secondary"
+                            @click="deleteRestaurant(row.restaurantNumber)"
                           >
                             <i class="fa fa-fw fa-times"></i>
                           </button>

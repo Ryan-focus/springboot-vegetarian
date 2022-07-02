@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
 @Configuration
-@EnableWebMvc
+
 public class InterceptorWebMvcConfig implements WebMvcConfigurer {
 
     @Autowired
@@ -19,7 +19,7 @@ public class InterceptorWebMvcConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
 //        WebMvcConfigurer.super.addInterceptors(registry);
         //需經過Interceptor的url
-        registry.addInterceptor(loginInterceptor).addPathPatterns("/products/*")
+        registry.addInterceptor(loginInterceptor).addPathPatterns("/product/*")
         //放行路徑，可以新增多個
                 .excludePathPatterns("/users/*");
     }

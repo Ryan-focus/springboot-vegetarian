@@ -2,7 +2,6 @@ package com.eeit45.champion.vegetarian.controller;
 
 
 import com.eeit45.champion.vegetarian.dto.ReserveRequest;
-import com.eeit45.champion.vegetarian.model.Product;
 import com.eeit45.champion.vegetarian.model.Reserve;
 import com.eeit45.champion.vegetarian.service.ReserveService;
 import org.springframework.beans.factory.annotation.Autowired;

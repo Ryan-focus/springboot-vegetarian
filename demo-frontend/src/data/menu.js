@@ -162,22 +162,19 @@ export default {
       ],
     },
     {
-      name: "訂單管理",
-      icon: "far fa-clock",
-      subActivePaths: "/backend/pages/errors",
+      name: "訂位管理",
+      icon: "fa fa-clock",
+      subActivePaths: "/backend-boxed",
       sub: [
         {
-          name: "儀表板",
-          icon: "fa fa-chart-line",
-          to: "error-404",
+          name: "預訂分析",
+          icon: "fa fa-hourglass",
+          to: "backend-reserve-dashboard",
         },
         {
-          name: "USER管理",
-          to: "backend-boxed-dashboard",
-        },
-        {
-          name: "BUSINESS管理",
-          to: "backend-boxed-dashboard",
+          name: "訂單總覽",
+          icon: "fab fa-dashcube",
+          to: "backend-reserve-info",
         },
       ],
     },

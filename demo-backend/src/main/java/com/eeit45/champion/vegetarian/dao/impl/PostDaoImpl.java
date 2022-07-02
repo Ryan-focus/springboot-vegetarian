@@ -114,8 +114,10 @@ public class PostDaoImpl implements PostDao {
 	// 搜尋全部文章
 	public List<Post> findallPost() {
 
-		String sql = "SELECT * FROM post order by postId desc";
+		String sql = "SELECT * FROM post order by postId DESC";
+
 		List<Post> postList = namedParameterJdbcTemplate.query(sql, new PostRowMapper());
+
 		return postList;
 	}
 
