@@ -269,6 +269,14 @@ th.sort {
             <DatasetSearch ds-search-placeholder="資料搜尋..." />
           </div>
         </div>
+        <div class="col-sm-6 col-xl-4">
+          <br />
+          <a href="#/backend/cart/InsertProduct">
+            <button type="button" class="btn rounded-pill btn-outline-success">
+              新增商品
+            </button>
+          </a>
+        </div>
         <hr />
         <div class="row">
           <div class="col-md-12">

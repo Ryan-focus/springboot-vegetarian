@@ -113,6 +113,50 @@ function onSort(event, i) {
   sortEl.sort = toset;
 }
 
+//Delete Restaurant Fuction
+function deleteRestaurant(number) {
+  toast
+    .fire({
+      title: "確定要刪除嗎?",
+      text: "刪除之後這筆資料就消失囉~!",
+      icon: "warning",
+      showCancelButton: true,
+      customClass: {
+        confirmButton: "btn btn-danger m-1",
+        cancelButton: "btn btn-secondary m-1",
+      },
+      confirmButtonText: "幹掉他!",
+      cancelButtonText: "拯救他 !",
+
+      html: false,
+      preConfirm: () => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 50);
+        });
+      },
+    })
+    .then((result) => {
+      //send request to server
+      if (result.value) {
+        axios
+          .delete(`http://${url}/forums/${number}`)
+          .then((res) => {
+            //獲取伺服器的回傳資料
+            console.log(res);
+
+            getAxios();
+            toast.fire("他被殺死了!", "你殺掉了一個人 ! 殺人犯 !", "success");
+          })
+          .catch((error) => {
+            console.log(error, "失敗");
+          });
+      } else if (result.dismiss === "cancel") {
+        toast.fire("她活下來了", "你取消了他 ! 他安全了 :)", "error");
+      }
+    });
+}
 // Apply a few Bootstrap 5 optimizations
 onMounted(() => {
   // Remove labels from
@@ -127,8 +171,6 @@ onMounted(() => {
   selectLength.classList.add("form-select");
   selectLength.style.width = "80px";
 });
-
-
 </script>
 
 <style lang="scss" scoped>
@@ -275,6 +317,7 @@ th.sort {
                           <button
                             type="button"
                             class="btn btn-sm btn-alt-secondary"
+                            @click="deleteRestaurant(row.forumId)"
                           >
                             <i class="fa fa-fw fa-times"></i>
                           </button>

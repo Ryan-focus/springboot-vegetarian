@@ -7,14 +7,25 @@ import com.eeit45.champion.vegetarian.service.ReserveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
+@Validated
 @RestController
 public class ReserveController {
     @Autowired
     private ReserveService reserveService;
+
+//    @GetMapping("/reserves")
+//    public ResponseEntity<Reserve> getReserveList(
+//
+//    ){
+//
+//        return ResponseEntity.status(HttpStatus.OK).body(1);
+//    }
+
 
     @GetMapping("/reserves/{reserveId}")
     public ResponseEntity<Reserve> getProduct(@PathVariable Integer reserveId){
