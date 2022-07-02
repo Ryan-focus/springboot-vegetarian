@@ -53,6 +53,11 @@ const VeganCartDashboard = () => import("@/views/vegan/cart/DashboardView.vue");
 const VeganCartProductInfo = () => import("@/views/vegan/cart/ProductInfo.vue");
 const VeganCartOrderInfo = () => import("@/views/vegan/cart/OrderInfo.vue");
 //愛蔬網後台: reserve
+const VeganReserveDashboard = () =>
+  import("@/views/vegan/reserve/DashboardView.vue");
+const VeganReserveInfo = () => import("@/views/vegan/reserve/ReserveInfo.vue");
+const VeganReserveUpdatePost = () =>
+  import("@/views/vegan/reserve/UpdatePost.vue");
 
 // Backend: Blocks
 const BackendBlocksStyles = () =>
@@ -443,6 +448,28 @@ const routes = [
             path: "orderInfo",
             name: "backend-cart-order-info",
             component: VeganCartOrderInfo,
+          },
+        ],
+      },
+      {
+        path: "reserve",
+        redirect: "/reserve/dashboard",
+        component: RouterView,
+        children: [
+          {
+            path: "dashboard",
+            name: "backend-reserve-dashboard",
+            component: VeganReserveDashboard,
+          },
+          {
+            path: "reserveinfo",
+            name: "backend-reserve-info",
+            component: VeganReserveInfo,
+          },
+          {
+            path: "update",
+            name: "backend-reserve-update",
+            component: VeganReserveUpdatePost,
           },
         ],
       },
