@@ -6,7 +6,9 @@ import com.eeit45.champion.vegetarian.dto.shopCart.OrderEntryRequest;
 import com.eeit45.champion.vegetarian.dto.shopCart.OrderRequest;
 import com.eeit45.champion.vegetarian.model.shopCart.Order;
 import com.eeit45.champion.vegetarian.model.shopCart.OrderItem;
+import com.eeit45.champion.vegetarian.rowmapper.shopCart.OrderItemRowMapper;
 import com.eeit45.champion.vegetarian.rowmapper.shopCart.OrderRowMapper;
+import com.eeit45.champion.vegetarian.rowmapper.shopCart.OrdersRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -51,9 +53,27 @@ public class OrderDaoImpl implements OrderDao {
         map.put("createdTime", timestamp);
         KeyHolder keyHolder = new GeneratedKeyHolder();
         namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
-        int orderId = keyHolder.getKey().intValue();
+        Integer orderId = keyHolder.getKey().intValue();
 
         return orderId;
+    }
+
+
+    //查詢訂單資料返回Controller 使用 Join Table
+    @Override
+    public List<OrderItem> getOrderItemsByOrderId(Integer orderId) {
+        String sql = "SELECT oi.order_item_id, oi.order_id, oi.product_id, oi.quantity, oi.amount, p.name " +
+                "FROM order_item as oi " +
+                "LEFT JOIN products as p ON oi.product_id = p.id " +
+                "WHERE oi.order_id = :orderId";
+
+        Map<String , Object> map = new HashMap<>();
+        map.put("orderId" , orderId);
+
+        List<OrderItem> orderItemList = namedParameterJdbcTemplate.query(sql, map , new OrderItemRowMapper());
+
+
+        return orderItemList;
     }
 
     @Override
@@ -76,6 +96,8 @@ public class OrderDaoImpl implements OrderDao {
 
         return orderId;
     }
+
+
 
     @Override
     public void createOrderItems(Integer orderId, List<OrderItem> orderItemList) {
@@ -101,7 +123,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public Order getOrderById(Integer orderId) {
-        String sql = "SELECT * FROM veganDB.order WHERE orderId = :orderId";
+        String sql = "SELECT * FROM `order` WHERE orderId = :orderId";
         Map<String, Object> map = new HashMap<>();
         map.put("orderId", orderId);
         List<Order> orderList = namedParameterJdbcTemplate.query(sql, map, new OrderRowMapper());
@@ -112,9 +134,24 @@ public class OrderDaoImpl implements OrderDao {
         }
     }
 
+    //只能留一個方法，決定好記得刪掉。
+    @Override
+    public Order getOrdersById(Integer orderId) {
+        String sql = "SELECT * FROM orders WHERE order_id = :orderId";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("orderId", orderId);
+        List<Order> orderList = namedParameterJdbcTemplate.query(sql, map, new OrdersRowMapper());
+        if (orderList.size() > 0) {
+            return orderList.get(0);
+        } else {
+            return null;
+        }
+    }
+
     @Override
     public List<Order> getOrderByUserId(Integer userId) {
-        String sql = "SELECT * FROM veganDB.order WHERE userId= :userId";
+        String sql = "SELECT * FROM `order` WHERE userId= :userId";
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
         List<Order> orderList = namedParameterJdbcTemplate.query(sql, map, new OrderRowMapper());

@@ -50,8 +50,12 @@ public class OrderController {
     public ResponseEntity<?> createOrders(@PathVariable Integer userId,
                                           @RequestBody @Valid CreateOrderRequest createOrderRequest){
 
+
        Integer orderId =  orderService.createOrders(userId,createOrderRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(orderId);
+
+       Order order = orderService.getOrdersById(orderId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
 
 

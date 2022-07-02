@@ -14,6 +14,8 @@ public interface OrderService {
 
     Order getOrderById(Integer orderId);
 
+    Order getOrdersById(Integer orderId);
+
     public List<Order> getOrderByUserId(Integer userId);
 
      void insertCartEntryIntoOrderEntry(String cartUUID);
@@ -27,6 +29,7 @@ public interface OrderService {
     List<Order> getAllOrder();
 
     void deleteOrderById(Integer orderId);
+
 
 
 }

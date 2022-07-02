@@ -61,12 +61,23 @@ public class OrderServiceImpl implements OrderService {
         //在 order_item table 創立另一筆資料出來
         orderDao.createOrderItems(orderId,orderItemList);
 
-        return null;
+        return orderId;
     }
 
     @Override
     public Order getOrderById(Integer orderId) {
         return orderDao.getOrderById(orderId);
+    }
+
+    @Override
+    public Order getOrdersById(Integer orderId) {
+        Order order = orderDao.getOrdersById(orderId);
+
+        List<OrderItem> orderItemList = orderDao.getOrderItemsByOrderId(orderId);
+
+        order.setOrderItemList(orderItemList);
+
+        return order;
     }
 
     @Override

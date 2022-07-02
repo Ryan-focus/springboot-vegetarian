@@ -11,11 +11,17 @@ public interface OrderDao {
 
      Integer createOrder(OrderRequest orderRequest);
 
+
+     List<OrderItem> getOrderItemsByOrderId(Integer orderId);
+
      Integer createOrders(Integer userId, Integer totalAmount);
 
      void createOrderItems(Integer orderId, List<OrderItem> orderItemList);
 
      Order getOrderById(Integer orderId);
+
+     //配合寫Left Join 方法
+     Order getOrdersById(Integer orderId);
 
      List<Order> getOrderByUserId(Integer userId);
 

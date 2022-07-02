@@ -15,6 +15,9 @@ public class Order {
     private Date createdTime;
     private Date updateTime;
 
+    //設計邏輯 : 在一張訂單裡面，會包含一個OrderItemList ，裡面會包含多個Item
+    private List<OrderItem> orderItemList;
+
     public Order() {
     }
 
@@ -91,5 +94,13 @@ public class Order {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public List<OrderItem> getOrderItemList() {
+        return orderItemList;
+    }
+
+    public void setOrderItemList(List<OrderItem> orderItemList) {
+        this.orderItemList = orderItemList;
     }
 }
