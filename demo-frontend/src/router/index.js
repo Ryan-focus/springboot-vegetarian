@@ -52,6 +52,9 @@ const VeganForumsUpdatePost = () =>
 const VeganCartDashboard = () => import("@/views/vegan/cart/DashboardView.vue");
 const VeganCartProductInfo = () => import("@/views/vegan/cart/ProductInfo.vue");
 const VeganCartOrderInfo = () => import("@/views/vegan/cart/OrderInfo.vue");
+const VeganCartInsertProduct = () =>
+  import("@/views/vegan/cart/InsertProduct.vue");
+
 //愛蔬網後台: reserve
 const VeganReserveDashboard = () =>
   import("@/views/vegan/reserve/DashboardView.vue");
@@ -448,6 +451,11 @@ const routes = [
             path: "orderInfo",
             name: "backend-cart-order-info",
             component: VeganCartOrderInfo,
+          },
+          {
+            path: "insertProduct",
+            name: "backend-cart-insert-product",
+            component: VeganCartInsertProduct,
           },
         ],
       },
