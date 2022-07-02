@@ -122,15 +122,15 @@ create table restaurant(
 	restaurantMap nvarchar(500)
 );
 
------post-------
+-- post
 drop table if exists post;
 CREATE TABLE post(
     postId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    title NVARCHAR(255) NOT NULL,
+    title NVARCHAR(256) NOT NULL,
     postedDate DATETIME NOT NULL,
-    postedText NVARCHAR(5000) NOT NULL,
-    imgurl NVARCHAR(255),
-    postStatus NVARCHAR(255)
-   
+    postedText NVARCHAR(8192) NOT NULL,
+    imgurl NVARCHAR(256),
+    postStatus NVARCHAR(256),
+    variant NVARCHAR(128)
 );
 

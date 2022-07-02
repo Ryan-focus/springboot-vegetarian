@@ -20,6 +20,7 @@ public class PostRowMapper implements RowMapper<Post> {
         post.setPostedText(rs.getString("postedText"));
         post.setImgurl(rs.getString("imgurl"));
         post.setPostStatus(rs.getString("postStatus"));
+        post.setVariant(rs.getString("variant"));
 
 //        String categoryStr = rs.getString("category");
 //        ProductCategory category = ProductCategory.valueOf(categoryStr);

@@ -219,8 +219,8 @@ values ('中平素食之家','03-4284290','桃園市中壢區新興路210號','�
 週日休息','4.6','',now(),now(),'<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3615.4050702099285!2d121.49368031423813!3d25.02032384499523!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a9ca1394aa99%3A0x7f3596e6869fd1f1!2z5p2x6IiI57Sg6aOf6Ieq5Yqp6aSQ5buz!5e0!3m2!1szh-TW!2stw!4v1654708582820!5m2!1szh-TW!2stw" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>');
 
 
------食記文章-----
-INSERT INTO post (title, postedDate, postedText, imgurl,postStatus) VALUES ('【新莊聚餐推薦】廣泰樓小館，港式小點、香酥芋頭鴨、蒜香脆皮雞必點','2022-05-13 09:14:36','【廣泰樓小館】是提供粵式+港式小點的中餐廳，位在新莊區幸福路
+-- 食記文章
+INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,variant) VALUES ('【新莊聚餐推薦】廣泰樓小館，港式小點、香酥芋頭鴨、蒜香脆皮雞必點','2022-05-13 09:14:36','【廣泰樓小館】是提供粵式+港式小點的中餐廳，位在新莊區幸福路
 
 特色餐點有 香酥芋頭鴨、蒜香脆皮雞、港式小點等人氣美食
 
@@ -228,7 +228,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus) VALUES ('【
 
 有方桌和圓桌，適合2-14人的座位區，相當適合家庭、朋友聚餐
 
-不想在店內用餐、也能外帶餐點回家喔~','images/PostsPhoto/1655871971307.jpg','待審核')
+不想在店內用餐、也能外帶餐點回家喔~','images/PostsPhoto/1655871971307.jpg','待審核' , 'warning')
 
 ,('【台北東區美食】熟菜豚屋 復興本店 超好吃韓式烤肉餐廳推薦！生菜免費續加吃到飽','2022-05-18 09:14:36', '   台北東區、捷運忠孝復興站這家《熟・菜豚屋》，絕對是我目前在台北吃過，最喜歡的高級韓式燒肉餐廳
 
@@ -258,7 +258,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus) VALUES ('【
 
 沒有一道菜是不喜歡的，搭配專業又親切的服務、低調奢華的用餐空間，都加深了《熟・菜豚屋》的推薦指數
 
-喜歡吃韓式燒肉、日本料理的人，拜託你一定要收藏《熟・菜豚屋》，找一天犒賞自己一下來吃吧！','images/PostsPhoto/1655871979555.jpg','待審核'),
+喜歡吃韓式燒肉、日本料理的人，拜託你一定要收藏《熟・菜豚屋》，找一天犒賞自己一下來吃吧！','images/PostsPhoto/1655871979555.jpg','待審核','warning'),
 
 ('【桃園食記】漢來蔬食 超好吃推薦！不一樣的素食饗宴 台茂購物中心','2022-05-22 09:14:36','家中有多位長輩茹素
 
@@ -302,7 +302,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus) VALUES ('【
 
 印象中每人算起來大概7、800元，屬於中高價位並不便宜
 
-可是真得物有所值，打完食記後好想衝去桃園再吃一次啊' ,'images/PostsPhoto/1655871979444.jpg','待審核'),
+可是真得物有所值，打完食記後好想衝去桃園再吃一次啊' ,'images/PostsPhoto/1655871979444.jpg','待審核','warning'),
 
 ('【屏東市美食推薦】一碗豆腐 文青創新臭豆腐專賣店！菜單甜鹹口味都有素食也能吃','2022-05-30 09:14:36','在發掘屏東美食小吃這件事上，我一直都是跟著在地人推薦吃
 
@@ -324,7 +324,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus) VALUES ('【
 
 尤其是酸甜大根泡菜的好表現，把美味度又再往上提升，加點辣椒醬更是好吃極了，風味相當有特色
 
-《一碗豆腐》營業時間從下午開始，一路賣到晚上10點，無論當成下午茶點心，或是宵夜都很不錯呢','images/PostsPhoto/1655871979555.jpg','審核通過'),
+《一碗豆腐》營業時間從下午開始，一路賣到晚上10點，無論當成下午茶點心，或是宵夜都很不錯呢','images/PostsPhoto/1655871979555.jpg','通過','success'),
 
 ('【新店大坪林美食】原粹蔬食作 菜單料理講究素食料理，特色飛龍頭咖哩、味噌豆漿拉麵','2022-06-22 09:14:36','《原粹蔬食作》是新北市新店區、捷運大坪林站附近，人氣很高的素食餐廳
 
@@ -370,7 +370,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus) VALUES ('【
 但可以理解的是，講求品嚐食材原味的精神，讓素食料理吃來沒有太多負擔
 
 在新店大坪林一帶想找家舒適的蔬食餐廳，我還是會推薦《原粹蔬食作》啦，畢竟套餐價格不貴，食材工法也有講究
-','images/PostsPhoto/1655871979555.jpg','待審核'),
+','images/PostsPhoto/1655871979555.jpg','待審核','warning'),
 
 ('【萬華西門町美食】從心茶館 守舊時尚中式早午餐！好吃素食飯糰、包子饅頭、鍋煮奶茶','2022-06-25 19:14:36','位在萬華區、西門町商圈的《從心茶館》，是我們無意間發現的素食美食
 
@@ -410,7 +410,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus) VALUES ('【
 最好吃首推紅茶葉滷蛋，滷得夠味飄散著清新紅茶香，我們愛到相互搶食這顆蛋，不知道可不可以加價「增蛋」啊
 
 烤牛蒡天婦羅味道也很棒，我平常沒有很愛酸菜，但《從心茶館》的酸菜不會臭，完全吃得出老闆選用好的原物料，飯糰真的好好吃
-','images/PostsPhoto/1655871979432.jpg','待審核'),
+','images/PostsPhoto/1655871979432.jpg','待審核','warning'),
 
 ('【台東池上美食】舒食男孩二號店 臺東慢食評鑑二星推薦！在地食材無菜單素食料理','2022-06-30 19:14:36','私以為台東美食最迷人之處，在於大量在地食材的應用
 
@@ -438,7 +438,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus) VALUES ('【
 
 新鮮直送的蔬菜水果，搭配宜人氣候、池上悠閒，讓人能好好靜下心來品味舒食料理，感謝大自然的恩惠
 
-若來到《伯朗大道》騎腳踏車，不妨來《舒食男孩二號店》吃個飯，即使是葷食者也會喜歡的舒食美食','images/PostsPhoto/1655871979999.jpg','審核未通過'),
+若來到《伯朗大道》騎腳踏車，不妨來《舒食男孩二號店》吃個飯，即使是葷食者也會喜歡的舒食美食','images/PostsPhoto/1655871979999.jpg','未通過','danger'),
 
 ('【台北食記】御蓮齋 素食吃到飽buffet推薦！多達200道料理，素食外燴婚宴一應俱全','2022-06-03 18:14:36','
 素食飲食已經變成一股時代趨勢
@@ -476,6 +476,6 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus) VALUES ('【
 
 最後提醒大家，文章內看到的素食餐點，都可以再向《御蓮齋》詢問，是否提供外燴服務
 
-想訂購素食外燴的人，也請記得先打電話確認，以免撲空唷','images/PostsPhoto/1655871979456.jpg','審核未通過')
+想訂購素食外燴的人，也請記得先打電話確認，以免撲空唷','images/PostsPhoto/1655871979456.jpg','未通過','danger')
 
 

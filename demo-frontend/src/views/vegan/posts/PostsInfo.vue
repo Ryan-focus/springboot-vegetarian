@@ -16,6 +16,7 @@ import {
 } from "vue-dataset";
 
 // Set default properties
+// eslint-disable-next-line no-unused-vars
 let toast = Swal.mixin({
   buttonsStyling: false,
   target: "#page-container",
@@ -126,29 +127,29 @@ onMounted(() => {
   selectLength.classList.add("form-select");
   selectLength.style.width = "80px";
 });
-
 //格式化時間
 
-function formatTime(postedDate, row, index) {
-  var date = new Date();
-  date.setTime(postedDate);
-  var month = date.getMonth() + 1;
-  var hours = date.getHours();
-  if (hours < 10) hours = "0" + hours;
-  var minutes = date.getMinutes();
-  if (minutes < 10) minutes = "0" + minutes;
-  var time =
-    date.getFullYear() +
-    "-" +
-    month +
-    "-" +
-    date.getDate() +
-    " " +
-    hours +
-    ":" +
-    minutes;
-  return time;
-}
+// function formatTime(postedDate, row, index) {
+//   var date = new Date();
+//   date.setTime(postedDate);
+//   var month = date.getMonth() + 1;
+//   var hours = date.getHours();
+//   if (hours < 10) hours = "0" + hours;
+//   var minutes = date.getMinutes();
+//   if (minutes < 10) minutes = "0" + minutes;
+//   var time =
+//     date.getFullYear() +
+//     "-" +
+//     month +
+//     "-" +
+//     date.getDate() +
+//     " " +
+//     hours +
+//     ":" +
+//     minutes;
+//   return time;
+// }
+//
 </script>
 
 <style lang="scss" scoped>
@@ -224,19 +225,8 @@ th.sort {
   <!-- Page Content -->
   <div class="content">
     <BaseBlock title="文章後台資料" content-full>
-      <Dataset
-        v-slot="{ ds }"
-        :ds-data="resData"
-        :ds-sortby="sortBy"
-        :ds-search-in="['postStatus', 'title', 'postedDate', 'postedText']"
-      >
-        <div class="row" :data-page-count="ds.dsPagecount">
-          <div class="col-md-4 py-2">
-            <DatasetSearch ds-search-placeholder="資料搜尋..." />
-          </div>
-          <div id="datasetLength" class="col-md-8 py-2">
-            <DatasetShow />
-          </div>
+      <template #options>
+        <div class="space-x-1">
           <div class="dropdown d-inline-block">
             <button
               type="button"
@@ -285,6 +275,21 @@ th.sort {
             </div>
           </div>
         </div>
+      </template>
+      <Dataset
+        v-slot="{ ds }"
+        :ds-data="resData"
+        :ds-sortby="sortBy"
+        :ds-search-in="['postStatus', 'title', 'postedDate', 'postedText']"
+      >
+        <div class="row" :data-page-count="ds.dsPagecount">
+          <div class="col-md-4 py-2">
+            <DatasetSearch ds-search-placeholder="資料搜尋..." />
+          </div>
+          <div id="datasetLength" class="col-md-3 ms-auto py-2">
+            <DatasetShow />
+          </div>
+        </div>
         <hr />
         <div class="row">
           <div class="col-md-12">
@@ -309,11 +314,21 @@ th.sort {
                   <template #default="{ row }">
                     <tr style="line-height: 5px">
                       <th scope="row">{{ row.postId }}</th>
-                      <td class="text-center" style="min-width: 100px">
+                      <td
+                        class="d-none d-sm-table-cell"
+                        style="min-width: 100px"
+                      >
                         <span
-                          class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success"
+                          :class="`fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-${row.variant}-light text-${row.variant}`"
                           >{{ row.postStatus }}</span
                         >
+                        <!-- <td class="d-none d-sm-table-cell">
+                          <span
+                            :class="`fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-${user.labelVariant}-light text-${user.labelVariant}`"
+                          >
+                            {{ user.labelText }}
+                          </span>
+                        </td> -->
                       </td>
                       <td
                         class="text-center"
