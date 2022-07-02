@@ -478,7 +478,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,variant) VALU
 
 想訂購素食外燴的人，也請記得先打電話確認，以免撲空唷','images/PostsPhoto/1655871979456.jpg','未通過','danger')
 
---forum
+-- forum
 INSERT INTO forum (forumId, forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ('1', '素食炒飯', '天氣熱就吃生菜沙拉，氣溫驟降時又變成炒飯，而且比高麗菜更不容易把飯變濕黏，大家可以試試看！', '2022-01-14', '2022-02-10');
 
 INSERT INTO forum (forumId, forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ('2', '西式蔬食料理', '在空檔時間，找到這家評價還不差的歐氏蔬食料理，從前菜，湯品，主食，甜點及飲料烘焙及擺盤均十分用心。用完餐後，可順便參觀日本藝術家的作品，十分值得一訪。', now(), now());
