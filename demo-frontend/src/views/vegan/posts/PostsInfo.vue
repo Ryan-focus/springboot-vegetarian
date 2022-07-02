@@ -113,6 +113,86 @@ function onSort(event, i) {
   sortEl.sort = toset;
 }
 
+//Delete Restaurant Fuction
+function deletePost(number) {
+  toast
+    .fire({
+      title: "確定要刪除嗎?",
+      text: "刪除之後這筆資料就消失囉~!",
+      icon: "warning",
+      showCancelButton: true,
+      customClass: {
+        confirmButton: "btn btn-danger m-1",
+        cancelButton: "btn btn-secondary m-1",
+      },
+      confirmButtonText: "幹掉他!",
+      cancelButtonText: "拯救他 !",
+
+      html: false,
+      preConfirm: () => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 50);
+        });
+      },
+    })
+    .then((result) => {
+      //send request to server
+      if (result.value) {
+        axios
+          .get(`http://${url}/deletePost/${number}`)
+          .then((res) => {
+            //獲取伺服器的回傳資料
+            console.log(res);
+
+            getAxios();
+            toast.fire("他被殺死了!", "你殺掉了一個人 ! 殺人犯 !", "success");
+          })
+          .catch((error) => {
+            console.log(error, "失敗");
+          });
+      } else if (result.dismiss === "cancel") {
+        toast.fire("她活下來了", "你取消了他 ! 他安全了 :)", "error");
+      }
+    });
+}
+
+//審核文章
+function auditPost(number) {
+  //send request to server
+
+  axios
+    .get(`http://${url}/auditPost/${number}`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      console.log(res);
+
+      getAxios();
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+
+//互動視窗modal
+var exampleModal = document.getElementById("exampleModal");
+exampleModal.addEventListener("show.bs.modal", function (event) {
+  // Button that triggered the modal
+  var button = event.relatedTarget;
+  // Extract info from data-bs-* attributes
+  var recipient = button.getAttribute("data-bs-whatever");
+  // If necessary, you could initiate an AJAX request here
+  // and then do the updating in a callback.
+  //
+  // Update the modal's content.
+  var modalTitle = exampleModal.querySelector(".modal-title");
+  var modalBodyInput = exampleModal.querySelector(".modal-body input");
+
+  modalTitle.textContent = "New message to " + recipient;
+  modalBodyInput.value = recipient;
+});
+
 // Apply a few Bootstrap 5 optimizations
 onMounted(() => {
   // Remove labels from
@@ -127,29 +207,6 @@ onMounted(() => {
   selectLength.classList.add("form-select");
   selectLength.style.width = "80px";
 });
-//格式化時間
-
-// function formatTime(postedDate, row, index) {
-//   var date = new Date();
-//   date.setTime(postedDate);
-//   var month = date.getMonth() + 1;
-//   var hours = date.getHours();
-//   if (hours < 10) hours = "0" + hours;
-//   var minutes = date.getMinutes();
-//   if (minutes < 10) minutes = "0" + minutes;
-//   var time =
-//     date.getFullYear() +
-//     "-" +
-//     month +
-//     "-" +
-//     date.getDate() +
-//     " " +
-//     hours +
-//     ":" +
-//     minutes;
-//   return time;
-// }
-//
 </script>
 
 <style lang="scss" scoped>
@@ -246,28 +303,32 @@ th.sort {
             >
               <a
                 class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
+                href=""
+                data-rel="notaudit"
               >
-                未審核
+                待審核
                 <span class="badge bg-primary rounded-pill">20</span>
               </a>
               <a
                 class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
+                href=""
+                data-rel="pass"
               >
-                審核中
+                通過審核
                 <span class="badge bg-primary rounded-pill">72</span>
               </a>
               <a
                 class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
+                href=""
+                data-rel="fail"
               >
-                已完成
+                未通過審核
                 <span class="badge bg-primary rounded-pill">890</span>
               </a>
               <a
                 class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
+                href=""
+                data-rel="all"
               >
                 全部
                 <span class="badge bg-primary rounded-pill">997</span>
@@ -322,6 +383,7 @@ th.sort {
                       >
                         <span
                           :class="`fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-${row.variant}-light text-${row.variant}`"
+                          id="combo"
                           >{{ row.postStatus }}</span
                         >
                         <!-- <td class="d-none d-sm-table-cell">
@@ -377,12 +439,16 @@ th.sort {
                           <button
                             type="button"
                             class="btn btn-sm btn-alt-secondary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#auditPost"
+                            @click="auditPost(row.postId)"
                           >
                             <i class="fa fa-fw fa-pencil-alt"></i>
                           </button>
                           <button
                             type="button"
                             class="btn btn-sm btn-alt-secondary"
+                            @click="deletePost(row.postId)"
                           >
                             <i class="fa fa-fw fa-times"></i>
                           </button>
@@ -400,6 +466,79 @@ th.sort {
         >
           <DatasetInfo class="py-3 fs-sm" />
           <DatasetPager class="flex-wrap py-3 fs-sm" />
+        </div>
+
+        <div
+          class="modal fade"
+          id="auditPost"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">文章審核</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"
+                    >文章標題</label
+                  >
+                  <textarea
+                    type="textarea"
+                    class="form-control"
+                    id="exampleFormControlInput1"
+                    placeholder="這裡是標題"
+                    style="resize: none"
+                    disabled
+                    readonly
+                    rows="1"
+                  ></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="exampleFormControlTextarea1" class="form-label"
+                    >文章內文</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="exampleFormControlTextarea1"
+                    rows="12"
+                    style="resize: none"
+                    placeholder="這裡是內文"
+                    disabled
+                    readonly
+                  ></textarea>
+                </div>
+                <div class="auditselect">
+                  <select
+                    class="form-select form-select-lg mb-3"
+                    aria-label=".form-select-lg example"
+                  >
+                    <option value="待審核" selected>待審核</option>
+                    <option value="通過">通過</option>
+                    <option value="未通過">未通過</option>
+                  </select>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  關閉
+                </button>
+                <button type="submit" class="btn btn-primary">送出審核</button>
+              </div>
+            </div>
+          </div>
         </div>
       </Dataset>
     </BaseBlock>

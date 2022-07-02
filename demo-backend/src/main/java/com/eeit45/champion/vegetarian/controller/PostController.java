@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
@@ -132,13 +133,17 @@ public class PostController {
 		}
 
 	}
-
-	@PostMapping(path = "/auditPost/{id}")
-	public ResponseEntity<Post> sendauditPost(@PathVariable("id") int id,
-			@RequestParam("cd") String condition, Post post) {
-
+	//後台更新審核文章
+	@PutMapping(path = "/auditPost/{id}")
+	public ResponseEntity<Post> sendauditPost(@PathVariable("id") Integer id,
+			@RequestParam("postStatus") String condition, Post post) {
+		
+		post = postService.findPost(id);
+		if (post == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+		
 		post.setPostStatus(condition);
-		post.setPostId(id);
 		Post updateCondition = postService.updateCondition(post);
 		return ResponseEntity.status(HttpStatus.CREATED).body(updateCondition);
 		
