@@ -283,10 +283,10 @@ th.sort {
         :ds-search-in="['postStatus', 'title', 'postedDate', 'postedText']"
       >
         <div class="row" :data-page-count="ds.dsPagecount">
-          <div class="col-md-4 py-2">
+          <div class="col-md-3 py-2">
             <DatasetSearch ds-search-placeholder="資料搜尋..." />
           </div>
-          <div id="datasetLength" class="col-md-3 ms-auto py-2">
+          <div id="datasetLength" class="col-md-2 ms-auto py-2">
             <DatasetShow />
           </div>
         </div>
@@ -297,8 +297,10 @@ th.sort {
               <table class="table table-bordered table-hover table-vcenter">
                 <thead>
                   <tr>
-                    <th scope="col" class="text-center">編號</th>
-                    <th scope="col" class="text-center">文章狀態</th>
+                    <th scope="col" class="text-center" style="min-width: 55px">
+                      編號
+                    </th>
+                    <th scope="col" class="d-none d-sm-table-cell">文章狀態</th>
                     <th
                       v-for="(th, index) in cols"
                       :key="th.field"
@@ -354,13 +356,18 @@ th.sort {
                       </td>
                       <td
                         class="d-none d-sm-table-cell"
-                        style="min-width: 150px"
+                        style="min-width: 180px"
                       >
                         {{ row.postedDate }}
                       </td>
                       <td
                         class="d-none d-sm-table-cell"
-                        style="min-width: 150px"
+                        style="
+                          overflow: hidden;
+                          white-space: nowrap;
+                          text-overflow: ellipsis;
+                          max-width: 150px;
+                        "
                       >
                         {{ row.imgurl }}
                       </td>

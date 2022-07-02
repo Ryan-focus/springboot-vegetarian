@@ -50,22 +50,22 @@ getAxios();
 //在這邊去設定Table :th的欄位名稱
 const cols = reactive([
   {
-    name: "餐廳電話",
+    name: "電話",
     field: "restaurantTel",
     sort: "",
   },
   {
-    name: "餐廳地址",
+    name: "地址",
     field: "restaurantAddress",
     sort: "",
   },
   {
-    name: "餐廳類型",
+    name: "類型",
     field: "restaurantCategory",
     sort: "",
   },
   {
-    name: "素食類型",
+    name: "素食分類",
     field: "restaurantType",
     sort: "",
   },
@@ -80,7 +80,7 @@ const cols = reactive([
     sort: "",
   },
   {
-    name: "照片",
+    name: "圖片",
     field: "imageUrl",
     sort: "",
   },
@@ -288,8 +288,16 @@ th.sort {
               <table class="table table-bordered table-hover table-vcenter">
                 <thead>
                   <tr>
-                    <th scope="col" class="text-center">編號</th>
-                    <th scope="col" class="text-center">餐廳名稱</th>
+                    <th scope="col" class="text-center" style="min-width: 55px">
+                      編號
+                    </th>
+                    <th
+                      scope="col"
+                      class="text-center"
+                      style="min-width: 100px"
+                    >
+                      名稱
+                    </th>
                     <th
                       v-for="(th, index) in cols"
                       :key="th.field"
@@ -298,52 +306,70 @@ th.sort {
                     >
                       {{ th.name }} <i class="gg-select float-end"></i>
                     </th>
-                    <th class="text-center" style="width: 100px">動作</th>
+                    <th class="text-center" style="width: 80px">動作</th>
                   </tr>
                 </thead>
                 <DatasetItem tag="tbody" class="fs-sm">
                   <template #default="{ row }">
                     <tr>
                       <th scope="row">{{ row.restaurantNumber }}</th>
-                      <td class="text-center" style="min-width: 150px">
+                      <td class="text-center" style="min-width: 80px">
                         {{ row.restaurantName }}
                       </td>
-                      <td class="d-none d-md-table-cell fs-sm">
+                      <td
+                        class="d-none d-md-table-cell fs-sm"
+                        style="
+                          overflow: hidden;
+                          white-space: nowrap;
+                          text-overflow: ellipsis;
+                          max-width: 80px;
+                        "
+                      >
                         {{ row.restaurantTel }}
                       </td>
                       <td
                         class="d-none d-sm-table-cell"
-                        style="min-width: 150px"
+                        style="
+                          overflow: hidden;
+                          white-space: nowrap;
+                          text-overflow: ellipsis;
+                          max-width: 110px;
+                        "
                       >
                         {{ row.restaurantAddress }}
                       </td>
                       <td
                         class="d-none d-sm-table-cell"
-                        style="min-width: 150px"
+                        style="min-width: 80px"
                       >
                         {{ row.restaurantCategory }}
                       </td>
                       <td
                         class="d-none d-sm-table-cell"
-                        style="min-width: 150px"
+                        style="min-width: 110px"
                       >
                         {{ row.restaurantType }}
                       </td>
                       <td
                         class="d-none d-sm-table-cell"
-                        style="min-width: 150px"
+                        style="
+                          overflow: hidden;
+                          white-space: nowrap;
+                          text-overflow: ellipsis;
+                          max-width: 110px;
+                        "
                       >
                         {{ row.restaurantBusinessHours }}
                       </td>
                       <td
                         class="d-none d-sm-table-cell"
-                        style="min-width: 150px"
+                        style="min-width: 80px"
                       >
                         {{ row.restaurantScore }}
                       </td>
                       <td
                         class="d-none d-sm-table-cell"
-                        style="min-width: 150px"
+                        style="min-width: 80px"
                       >
                         {{ row.imageUrl }}
                       </td>
