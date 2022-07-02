@@ -1,0 +1,21 @@
+package com.eeit45.champion.vegetarian.rowmapper.shopCart;
+
+import com.eeit45.champion.vegetarian.model.shopCart.Cart;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.jdbc.core.RowMapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+public class CartRowMapper implements RowMapper<Cart> {
+    @Override
+    public Cart mapRow(ResultSet rs, int rowNum) throws SQLException {
+        Cart cart = new Cart();
+        ObjectMapper mapper = new ObjectMapper();
+
+        cart.setCartUUID(rs.getString("cartUUID"));
+        cart.setUserId(rs.getInt("userId"));
+        return cart;
+    }
+
+}

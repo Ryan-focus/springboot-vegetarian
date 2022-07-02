@@ -5,22 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.eeit45.champion.vegetarian.dao.PostDao;
 import com.eeit45.champion.vegetarian.model.Post;
 import com.eeit45.champion.vegetarian.model.PostFavorite;
-import com.eeit45.champion.vegetarian.model.Product;
 import com.eeit45.champion.vegetarian.rowmapper.PostRowMapper;
-import com.eeit45.champion.vegetarian.rowmapper.ProductRowMapper;
 
 @Component
 public class PostDaoImpl implements PostDao {

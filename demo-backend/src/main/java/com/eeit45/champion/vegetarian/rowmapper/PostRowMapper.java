@@ -1,9 +1,6 @@
 package com.eeit45.champion.vegetarian.rowmapper;
 
-import com.eeit45.champion.vegetarian.constant.ProductCategory;
-import com.eeit45.champion.vegetarian.constant.VeganCategory;
 import com.eeit45.champion.vegetarian.model.Post;
-import com.eeit45.champion.vegetarian.model.Product;
 import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;

@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.eeit45.champion.vegetarian.model.Post;
 import com.eeit45.champion.vegetarian.model.PostFavorite;
-import com.eeit45.champion.vegetarian.model.User;
+import com.eeit45.champion.vegetarian.model.customer.Business;
 import com.eeit45.champion.vegetarian.service.PostService;
 
 import java.time.LocalDateTime;
@@ -236,16 +236,16 @@ public class PostController {
 	@GetMapping(value = "/favtest/{id}")
 	public ResponseEntity<PostFavorite> showfav(@PathVariable("id") Integer id,HttpServletRequest request) {
 
-		 User user = (User) request.getSession().getAttribute("user");
+		 Business business = (Business) request.getSession().getAttribute("user");
 	//String userId2 = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 		
 //		System.out.println(userId2);
 		 
 		 Integer userId;//用户id
-	        if(user == null){
+	        if(business == null){
 	            return null;
 	        }else{
-	            userId = user.getUserId();
+	            userId = business.getUserId();
 	        }
 		//Integer userId = 1564;
 		PostFavorite post = postService.findByFavorite(id,userId);
@@ -270,13 +270,13 @@ public class PostController {
 		Date date = Date.from(zdt.toInstant());
 
 		
-		User user = null;
-		user.getUserId();
+		Business business = null;
+		business.getUserId();
 		 Integer userId;//用户id
-	        if(user == null){
+	        if(business == null){
 	            return null;
 	        }else{
-	            userId = user.getUserId();
+	            userId = business.getUserId();
 	        }
 		//Integer userId = user.getUserId();
 		//Integer userId = 1564;

@@ -2,7 +2,7 @@ package com.eeit45.champion.vegetarian.controller;
 
 import com.eeit45.champion.vegetarian.constant.ProductCategory;
 import com.eeit45.champion.vegetarian.constant.VeganCategory;
-import com.eeit45.champion.vegetarian.dto.ProductRequest;
+import com.eeit45.champion.vegetarian.dto.shopCart.ProductRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.RequestBuilder;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
