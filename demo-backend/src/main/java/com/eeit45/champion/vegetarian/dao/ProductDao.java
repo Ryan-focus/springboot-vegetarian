@@ -10,6 +10,7 @@ public interface ProductDao {
 
     Integer totalProduct(ProductQueryParams productQueryParams);
     List<Product> getProducts(ProductQueryParams productQueryParams);
+    List<Product> getAllProduct();
     Product getProductById(Integer productId);
 
     Integer createProduct(ProductRequest productRequest);

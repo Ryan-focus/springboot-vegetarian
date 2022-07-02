@@ -38,7 +38,7 @@ public class OrderController {
         if (orderList != null && orderList.size() > 0) {
             return ResponseEntity.status(HttpStatus.CREATED).body(orderList);
         } else {
-            return null;
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
 

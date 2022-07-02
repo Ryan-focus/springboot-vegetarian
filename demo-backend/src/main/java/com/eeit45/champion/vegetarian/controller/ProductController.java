@@ -4,6 +4,7 @@ import com.eeit45.champion.vegetarian.constant.ProductCategory;
 import com.eeit45.champion.vegetarian.constant.VeganCategory;
 import com.eeit45.champion.vegetarian.dto.ProductQueryParams;
 import com.eeit45.champion.vegetarian.dto.ProductRequest;
+import com.eeit45.champion.vegetarian.model.Order;
 import com.eeit45.champion.vegetarian.model.Product;
 import com.eeit45.champion.vegetarian.service.ProductService;
 import com.eeit45.champion.vegetarian.util.Page;
@@ -74,7 +75,15 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
-
+    @GetMapping("/products/all")
+    public ResponseEntity<List<Product>> getAllProducts(){
+        List<Product> productList =productService.getAllProduct();
+        if (productList!=null){
+            return ResponseEntity.status(HttpStatus.OK).body(productList);
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
     @PostMapping("/products")
     public ResponseEntity<Product> createProduct(@RequestBody @Valid ProductRequest productRequest){
         Integer productId = productService.createProduct(productRequest);

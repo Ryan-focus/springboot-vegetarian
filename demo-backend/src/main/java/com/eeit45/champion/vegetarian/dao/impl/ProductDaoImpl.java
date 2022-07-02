@@ -39,6 +39,18 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
+    public List<Product> getAllProduct() {
+        String sql = "SELECT * FROM veganDB.products";
+        List<Product> productList = namedParameterJdbcTemplate.query(sql,new ProductRowMapper());
+        if (productList!=null) {
+            return productList;
+        } else {
+            return null;
+        }
+
+    }
+
+    @Override
     public List<Product> getProducts(ProductQueryParams productQueryParams) {
         String sql = "SELECT * FROM products WHERE 1=1";
 
@@ -59,6 +71,8 @@ public class ProductDaoImpl implements ProductDao {
         List<Product> productList = namedParameterJdbcTemplate.query(sql, map, new ProductRowMapper());
 
         return productList;
+
+
     }
 
     @Override

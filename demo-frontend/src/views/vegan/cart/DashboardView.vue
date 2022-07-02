@@ -1,6 +1,7 @@
 <script setup>
 // 已經宣告但從未使用過的Value (請勿刪除)
 import { reactive, ref } from "vue";
+import axios from "axios";
 
 // vue-chart-3, for more info and examples you can check out https://vue-chart-3.netlify.app/ and http://www.chartjs.org/docs/ -->
 import { LineChart, BarChart } from "vue-chart-3";
@@ -278,6 +279,28 @@ const newCustomersOptions = reactive({
     },
   },
 });
+
+//預設傳值伺服器與[params]
+const url = "localhost:8088";
+const urlParams = "warning";
+//接收的資料ref
+const resData = ref();
+const productsTotal = ref();
+
+const getAxios = function () {
+  axios
+    .get(`http://${url}/products`, { params: { status: urlParams } })
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+      productsTotal.value = res.data.total;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+//執行Axios
+getAxios();
 </script>
 
 <template>
@@ -365,21 +388,21 @@ const newCustomersOptions = reactive({
               class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
             >
               <dl class="mb-0">
-                <dt class="fs-3 fw-bold">30678</dt>
+                <dt class="fs-3 fw-bold">{{ productsTotal }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                  未審核訂單
+                  現有商品總數
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
-                <i class="far fa-gem fs-3 text-primary"></i>
+                <i class="fa-solid fa-basket-shopping fs-3 text-primary"></i>
               </div>
             </div>
             <div class="bg-body-light rounded-bottom">
               <a
                 class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
+                href="#/backend/cart/Productinfo"
               >
-                <span>查看全部訂單</span>
+                <span>查看商品資訊</span>
                 <i
                   class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
                 ></i>

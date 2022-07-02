@@ -1,6 +1,10 @@
 <script setup>
-import { reactive, computed, onMounted } from "vue";
+import { ref, reactive, computed, onMounted } from "vue";
+
 // Vue Dataset, for more info and examples you can check out https://github.com/kouts/vue-dataset/tree/next
+import Swal from "sweetalert2";
+import axios from "axios";
+
 import {
   Dataset,
   DatasetItem,
@@ -10,17 +14,40 @@ import {
   DatasetShow,
 } from "vue-dataset";
 
-// Get example data
-import users from "@/data/usersDataset.json";
+// Set default properties
+let toast = Swal.mixin({
+  buttonsStyling: false,
+  target: "#page-container",
+  customClass: {
+    confirmButton: "btn btn-success m-1",
+    cancelButton: "btn btn-danger m-1",
+    input: "form-control",
+  },
+});
+
+//預設傳值伺服器與[params]
+const url = "localhost:8088";
+//接收的資料ref
+const resData = ref();
+
+const getAxios = function () {
+  axios
+    .get(`http://${url}/order`)
+    .then((res) => {
+      console.log(res);
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+//執行Axios
+getAxios();
 
 // Helper variables
 //在這邊去設定Table :th的欄位名稱
 const cols = reactive([
-  {
-    name: "訂單序號",
-    field: "orderId",
-    sort: "",
-  },
   {
     name: "訂單編號",
     field: "orderUUID",
@@ -47,8 +74,8 @@ const cols = reactive([
     sort: "",
   },
   {
-    name: "訂單創立時間",
-    field: "createTime",
+    name: "訂單日期",
+    field: "createdTime",
     sort: "",
   },
 ]);
@@ -90,7 +117,50 @@ function onSort(event, i) {
 
   sortEl.sort = toset;
 }
+//Delete Order Fuction
+function deleteRestaurant(number) {
+  toast
+    .fire({
+      title: "確定要刪除嗎?",
+      text: "刪除後不能返回",
+      icon: "warning",
+      showCancelButton: true,
+      customClass: {
+        confirmButton: "btn btn-danger m-1",
+        cancelButton: "btn btn-secondary m-1",
+      },
+      confirmButtonText: "刪除資料",
+      cancelButtonText: "取消刪除",
 
+      html: false,
+      preConfirm: () => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 50);
+        });
+      },
+    })
+    .then((result) => {
+      //send request to server
+      if (result.value) {
+        axios
+          .delete(`http://${url}/order/${number}`)
+          .then((res) => {
+            //獲取伺服器的回傳資料
+            console.log(res);
+
+            getAxios();
+            toast.fire("刪除成功!", "", "success");
+          })
+          .catch((error) => {
+            console.log(error, "失敗");
+          });
+      } else if (result.dismiss === "cancel") {
+        toast.fire("刪除失敗", "", "error");
+      }
+    });
+}
 // Apply a few Bootstrap 5 optimizations
 onMounted(() => {
   // Remove labels from
@@ -180,17 +250,9 @@ th.sort {
     <BaseBlock title="訂單後台資料" content-full>
       <Dataset
         v-slot="{ ds }"
-        :ds-data="users"
+        :ds-data="resData"
         :ds-sortby="sortBy"
-        :ds-search-in="[
-          'orderId',
-          'orderUUID',
-          'userId',
-          'payment',
-          'shipping',
-          'status',
-          'updateTime',
-        ]"
+        :ds-search-in="['orderUUID', 'userId', 'payment', 'shipping', 'status']"
       >
         <div class="row" :data-page-count="ds.dsPagecount">
           <div id="datasetLength" class="col-md-8 py-2">
@@ -208,7 +270,6 @@ th.sort {
                 <thead>
                   <tr>
                     <th scope="col" class="text-center">編號</th>
-                    <th scope="col" class="text-center">用戶名稱</th>
                     <th
                       v-for="(th, index) in cols"
                       :key="th.field"
@@ -221,26 +282,38 @@ th.sort {
                   </tr>
                 </thead>
                 <DatasetItem tag="tbody" class="fs-sm">
-                  <template #default="{ row, rowIndex }">
+                  <template #default="{ row }">
                     <tr>
-                      <th scope="row">{{ rowIndex + 1 }}</th>
+                      <th scope="row">{{ row.orderId }}</th>
                       <td class="text-center" style="min-width: 150px">
-                        {{ row.name }}
+                        {{ row.orderUUID }}
                       </td>
                       <td class="d-none d-md-table-cell fs-sm">
-                        {{ row.email }}
+                        {{ row.userId }}
                       </td>
                       <td
                         class="d-none d-sm-table-cell"
-                        style="min-width: 150px"
+                        style="min-width: 110px"
                       >
-                        {{ row.company }}
+                        {{ row.payment }}
                       </td>
                       <td
                         class="d-none d-sm-table-cell"
-                        style="min-width: 150px"
+                        style="min-width: 110px"
                       >
-                        {{ row.birthdate }}
+                        {{ row.shipping }}
+                      </td>
+                      <td
+                        class="d-none d-sm-table-cell"
+                        style="min-width: 110px"
+                      >
+                        {{ row.status }}
+                      </td>
+                      <td
+                        class="d-none d-sm-table-cell"
+                        style="min-width: 110px"
+                      >
+                        {{ row.createdTime }}
                       </td>
                       <td class="text-center">
                         <div class="btn-group">
@@ -253,6 +326,7 @@ th.sort {
                           <button
                             type="button"
                             class="btn btn-sm btn-alt-secondary"
+                            @click="deleteRestaurant(row.orderId)"
                           >
                             <i class="fa fa-fw fa-times"></i>
                           </button>
