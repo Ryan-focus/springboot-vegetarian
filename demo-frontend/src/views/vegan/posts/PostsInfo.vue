@@ -30,18 +30,31 @@ let toast = Swal.mixin({
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
 //接收的資料ref
-const resData = ref();
+var resData = ref();
 
 const resPostId = ref();
 const resPostTitle = ref();
 const resPostText = ref();
+
+const statusClass = [];
 
 const getAxios = function () {
   axios
     .get(`http://${url}/postIndex`)
     .then((res) => {
       // console.log(res);
-      //獲取伺服器的回傳資料
+
+      // 獲取伺服器的回傳資料;
+      res.data.forEach((value) => {
+        let status = value.postStatus;
+        if (status === "待審核") {
+          statusClass.push("warning");
+        } else if (status === "通過") {
+          statusClass.push("success");
+        } else if (status === "未通過") {
+          statusClass.push("danger");
+        }
+      });
       resData.value = res.data;
     })
     .catch((error) => {
@@ -170,7 +183,6 @@ function auditPost(number) {
     .get(`http://${url}/auditPost/${number}`)
     .then((res) => {
       //獲取伺服器的回傳資料
-      console.log(res);
       resPostId.value = res.data.postId;
       resPostTitle.value = res.data.title;
       resPostText.value = res.data.postedText;
@@ -381,7 +393,7 @@ th.sort {
                   </tr>
                 </thead>
                 <DatasetItem tag="tbody" class="fs-sm">
-                  <template #default="{ row }">
+                  <template #default="{ row, rowIndex }">
                     <tr style="line-height: 5px">
                       <th scope="row">{{ row.postId }}</th>
                       <td
@@ -389,7 +401,7 @@ th.sort {
                         style="min-width: 100px"
                       >
                         <span
-                          :class="`fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-${row.variant}-light text-${row.variant}`"
+                          :class="`fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-${statusClass[rowIndex]}-light text-${statusClass[rowIndex]}`"
                           id="combo"
                           >{{ row.postStatus }}</span
                         >

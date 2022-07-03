@@ -130,8 +130,7 @@ CREATE TABLE post(
     postedDate DATETIME NOT NULL,
     postedText NVARCHAR(8192) NOT NULL,
     imgurl NVARCHAR(256),
-    postStatus NVARCHAR(256),
-    variant NVARCHAR(128)
+    postStatus NVARCHAR(256)
 );
 
 -- forum
