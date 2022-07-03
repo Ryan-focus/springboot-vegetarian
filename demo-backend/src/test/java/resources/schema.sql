@@ -142,3 +142,17 @@ CREATE TABLE forum(
 	forumCreateTime TIMESTAMP NOT NULL,
 	forumUpdateTime TIMESTAMP NOT NULL);
 
+-- user
+use veganDB;
+drop table if exists user;
+create table user(
+                      userId int NOT NULL auto_increment primary key,
+                      email varchar(100) not null UNIQUE ,
+                      password nvarchar(50) not null,
+                      userName nvarchar(50) not null,
+                      status nvarchar (20) not null,
+                      userPic nvarchar(50),
+                      registerTime Date not null ,
+                      lastLoginTime TIMESTAMP not null
+    );
+SELECT * FROM vegandb.user;

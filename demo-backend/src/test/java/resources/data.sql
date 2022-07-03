@@ -511,3 +511,17 @@ INSERT INTO forum (forumTitle, forumContent, forumCreateTime, forumUpdateTime) V
 INSERT INTO forum ( forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ( '純素韓式辣拌麵', '超好吃，不敢吃辣的人會太辣，醬包建議不要一次全部加。有附上一個塑膠蓋，泡完麵時把水瀝出更方便', now(), now());
 
 INSERT INTO forum ( forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ('麻醬香拌麵(純素)', '超好吃麻醬香，麵條很Q', now(), now());
+
+-- user
+INSERT INTO user ( email, password, userName, status, userPic, registerTime, lastLoginTime) VALUES ('abc01@mail.com', 'Aa000001', 'Jason', '正常', 'a010', curdate(), now());
+INSERT INTO user ( email, password, userName, status, userPic, registerTime, lastLoginTime) VALUES ('abc02@mail.com', 'Oa0fgh02', 'John', '正常', 'a010', curdate(), now());
+INSERT INTO user ( email, password, userName, status, userPic, registerTime, lastLoginTime) VALUES ('abc03@mail.com', 'Radghg3', 'David', '正常', 'a010', curdate(), now());
+INSERT INTO user ( email, password, userName, status, userPic, registerTime, lastLoginTime) VALUES ('abc04@mail.com', 'Ca00fghfd004', 'Jack', '正常', 'a010', curdate(), now());
+INSERT INTO user ( email, password, userName, status, userPic, registerTime, lastLoginTime) VALUES ('abc05@mail.com', 'Va0dfgh005', 'Anthony', '正常', 'a010', curdate(), now());
+INSERT INTO user ( email, password, userName, status, userPic, registerTime, lastLoginTime) VALUES ('abc06@mail.com', 'Ba0fgh06', 'Michael', '正常', 'a010', curdate(), now());
+INSERT INTO user ( email, password, userName, status, userPic, registerTime, lastLoginTime) VALUES ('abc07@mail.com', 'Naghg007', '傑森', '正常', 'a010', curdate(), now());
+INSERT INTO user ( email, password, userName, status, userPic, registerTime, lastLoginTime) VALUES ('abc08@mail.com', 'Ma0gbng008', '約翰', '正常', 'a010', curdate(), now());
+INSERT INTO user ( email, password, userName, status, userPic, registerTime, lastLoginTime) VALUES ('abc09@mail.com', 'Qa0fgdh009', '大衛', '正常', 'a010', curdate(), now());
+INSERT INTO user ( email, password, userName, status, userPic, registerTime, lastLoginTime) VALUES ('abc10@mail.com', 'La0gngn10', '傑克', '正常', 'a010', curdate(), now());
+INSERT INTO user ( email, password, userName, status, userPic, registerTime, lastLoginTime) VALUES ('abc11@mail.com', 'Pa0fdgdgh011', '安東尼', '正常', 'a010', curdate(), now());
+INSERT INTO user ( email, password, userName, status, userPic, registerTime, lastLoginTime) VALUES ('abc12@mail.com', 'Wafghfh12', '麥可', '正常', 'a010', curdate(), now());
