@@ -15,7 +15,7 @@ public class PostRowMapper implements RowMapper<Post> {
         post.setPostId(rs.getInt("postId"));
         post.setTitle(rs.getString("title"));
         post.setPostedText(rs.getString("postedText"));
-        post.setImgUrl(rs.getString("imgUrl"));
+        post.setImgurl(rs.getString("imgUrl"));
         post.setPostStatus(rs.getString("postStatus"));
 
         //日期處理輸出

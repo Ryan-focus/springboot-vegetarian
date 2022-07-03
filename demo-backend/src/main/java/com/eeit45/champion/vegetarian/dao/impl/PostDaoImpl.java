@@ -31,7 +31,7 @@ public class PostDaoImpl implements PostDao {
 		map.put("title", post.getTitle());
 		map.put("postedDate", post.getPostedDate());
 		map.put("postedText", post.getPostedText());
-		map.put("imgUrl", post.getImgUrl());
+		map.put("imgUrl", post.getImgurl());
 		map.put("postStatus", post.getPostStatus());
 
 		namedParameterJdbcTemplate.update(sql, map);
@@ -56,7 +56,7 @@ public class PostDaoImpl implements PostDao {
 	// 更新文章
 	public boolean updatePost(Post post) {
 
-		String sql = "UPDATE post SET title = :title, postedText = :postedText , imgurl = :imgurl"+
+		String sql = "UPDATE post SET title = :title, postedText = :postedText , imgUrl = :imgUrl"+
 			" WHERE postId = :postId ";   
 
 		Map<String, Object> map = new HashMap<>();
@@ -64,7 +64,7 @@ public class PostDaoImpl implements PostDao {
 		map.put("title", post.getTitle());
 		//map.put("postedDate", post.getPostedDate());
 		map.put("postedText", post.getPostedText());
-		map.put("imgurl", post.getImgUrl());
+		map.put("imgUrl", post.getImgurl());
 		map.put("postStatus", post.getPostStatus());
 
 		namedParameterJdbcTemplate.update(sql, map);
@@ -117,7 +117,7 @@ public class PostDaoImpl implements PostDao {
 	// 搜尋待審核文章
 	public List<Post> findPostByStatus() {
 
-		String sql = "SELECT *  FROM post where postStatus = '待審核' order by postId desc";
+		String sql = "SELECT *  FROM post where 1=1 AND postStatus = '待審核' order by postId desc";
 		List<Post> postList = namedParameterJdbcTemplate.query(sql, new PostRowMapper());
 		return postList;
 

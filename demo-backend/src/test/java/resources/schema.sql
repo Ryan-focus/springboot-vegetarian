@@ -142,7 +142,7 @@ CREATE TABLE post(
                      postedText NVARCHAR(8192) NOT NULL,
                      imgUrl NVARCHAR(256),
                      postStatus NVARCHAR(256),
-                     postAuditDate DATETIME
+                     postAuditDate DATETIME NOT NULL
 );
 
 -- forum
