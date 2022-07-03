@@ -35,7 +35,7 @@ var resData = ref();
 const resPostId = ref();
 const resPostTitle = ref();
 const resPostText = ref();
-
+const resPostStatus = ref();
 const statusClass = [];
 
 const getAxios = function () {
@@ -49,7 +49,7 @@ const getAxios = function () {
         let status = value.postStatus;
         if (status === "待審核") {
           statusClass.push("warning");
-        } else if (status === "通過") {
+        } else if (status === "發布中") {
           statusClass.push("success");
         } else if (status === "未通過") {
           statusClass.push("danger");
@@ -142,8 +142,8 @@ function deletePost(number) {
         confirmButton: "btn btn-danger m-1",
         cancelButton: "btn btn-secondary m-1",
       },
-      confirmButtonText: "幹掉他!",
-      cancelButtonText: "拯救他 !",
+      confirmButtonText: "刪除",
+      cancelButtonText: "取消",
 
       html: false,
       preConfirm: () => {
@@ -164,13 +164,11 @@ function deletePost(number) {
             console.log(res);
 
             getAxios();
-            toast.fire("他被殺死了!", "你殺掉了一個人 ! 殺人犯 !", "success");
+            toast.fire("刪除成功", "", "success");
           })
           .catch((error) => {
             console.log(error, "失敗");
           });
-      } else if (result.dismiss === "cancel") {
-        toast.fire("她活下來了", "你取消了他 ! 他安全了 :)", "error");
       }
     });
 }
@@ -186,6 +184,41 @@ function auditPost(number) {
       resPostId.value = res.data.postId;
       resPostTitle.value = res.data.title;
       resPostText.value = res.data.postedText;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+
+//送出審核文章
+function sendAuditPost(number, status) {
+  // axios({
+  //   method: "put",
+  //   baseURL: "http://localhost:8088",
+  //   url: `http://${url}/auditPost/${number}`,
+  //   headers: {
+  //     "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+  //   },
+  // })
+  //   .then((result) => {
+  //     console.log(result.data);
+  //   })
+  //   .catch((err) => {
+  //     console.error(err);
+  //   });
+
+  let params = new URLSearchParams();
+  params.append("postId", number);
+  params.append("title", "");
+  params.append("postedText", "");
+  params.append("imgurl", "");
+  params.append("postStatus", status);
+  axios
+    .put(`http://${url}/auditPost/${number}`, params)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      console.log(res);
+      getAxios();
     })
     .catch((error) => {
       console.log(error, "失敗");
@@ -488,68 +521,93 @@ th.sort {
           aria-hidden="true"
         >
           <div class="modal-dialog">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">文章審核</h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
-              <div class="modal-body">
-                <div class="mb-3">
-                  <label for="exampleFormControlInput1" class="form-label"
-                    >文章標題</label
-                  >
-                  <textarea
-                    type="textarea"
-                    class="form-control"
-                    id="exampleFormControlInput1"
-                    style="resize: none"
-                    disabled
-                    readonly
-                    rows="1"
-                    v-model="resPostTitle"
-                  ></textarea>
+            <form class="row g-3">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">文章審核</h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
                 </div>
-                <div class="mb-3">
-                  <label for="exampleFormControlTextarea1" class="form-label"
-                    >文章內文</label
-                  >
-                  <textarea
-                    class="form-control"
-                    id="exampleFormControlTextarea1"
-                    rows="12"
-                    style="resize: none"
-                    disabled
-                    readonly
-                    v-model="resPostText"
-                  ></textarea>
+                <div class="modal-body">
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label"
+                      >文章編號</label
+                    ><br />
+                    <textarea
+                      type="textarea"
+                      class="form-control"
+                      id="exampleFormControlInput1"
+                      style="resize: none"
+                      disabled
+                      readonly
+                      rows="1"
+                      v-model="resPostId"
+                    ></textarea>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label"
+                      >文章標題</label
+                    >
+                    <textarea
+                      type="textarea"
+                      class="form-control"
+                      id="exampleFormControlInput1"
+                      style="resize: none"
+                      disabled
+                      readonly
+                      rows="1"
+                      v-model="resPostTitle"
+                    ></textarea>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label"
+                      >文章內文</label
+                    >
+                    <textarea
+                      class="form-control"
+                      id="exampleFormControlTextarea1"
+                      rows="12"
+                      style="resize: none"
+                      disabled
+                      readonly
+                      v-model="resPostText"
+                    ></textarea>
+                  </div>
+                  <div class="auditselect">
+                    <select
+                      class="form-select form-select-lg mb-3"
+                      aria-label=".form-select-lg example"
+                      v-model="resPostStatus"
+                    >
+                      <option value="待審核" selected>待審核</option>
+                      <option value="發布中">發布中</option>
+                      <option value="未通過">未通過</option>
+                    </select>
+                  </div>
                 </div>
-                <div class="auditselect">
-                  <select
-                    class="form-select form-select-lg mb-3"
-                    aria-label=".form-select-lg example"
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
                   >
-                    <option value="待審核" selected>待審核</option>
-                    <option value="通過">通過</option>
-                    <option value="未通過">未通過</option>
-                  </select>
+                    關閉
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    @click.prevent="sendAuditPost(resPostId, resPostStatus)"
+                    data-dismiss="modal"
+                  >
+                    送出審核
+                  </button>
                 </div>
               </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  關閉
-                </button>
-                <button type="submit" class="btn btn-primary">送出審核</button>
-              </div>
-            </div>
+            </form>
           </div>
         </div>
       </Dataset>

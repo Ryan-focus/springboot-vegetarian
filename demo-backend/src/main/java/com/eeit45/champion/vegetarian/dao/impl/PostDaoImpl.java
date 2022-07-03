@@ -76,10 +76,11 @@ public class PostDaoImpl implements PostDao {
 	//更新文章狀態
 	public Post updateCondition(Post post) {
 
-		String sql = "UPDATE post SET postStatus = :postStatus WHERE postId = :postId ";   
+		String sql = "UPDATE post SET postStatus = :postStatus, postAuditDate = :postAuditDate WHERE postId = :postId ";   
 
 			Map<String, Object> map = new HashMap<>();
 			map.put("postStatus", post.getPostStatus());
+			map.put("postAuditDate", post.getPostAuditDate());
 			map.put("postId", post.getPostId());
 
 			namedParameterJdbcTemplate.update(sql, map);

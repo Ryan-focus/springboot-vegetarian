@@ -35,6 +35,11 @@ public class PostController {
 
 	@Autowired
 	private PostService postService;
+	
+	ZoneId zoneId = ZoneId.systemDefault();
+	LocalDateTime localDateTime = LocalDateTime.now();
+	ZonedDateTime zdt = localDateTime.atZone(zoneId);
+	Date date = Date.from(zdt.toInstant());
 
 	//食記發表頁面
 	@GetMapping("/newFoodPost")
@@ -79,10 +84,7 @@ public class PostController {
 			imageUrl = defaultImgurl;
 		}
 
-		ZoneId zoneId = ZoneId.systemDefault();
-		LocalDateTime localDateTime = LocalDateTime.now();
-		ZonedDateTime zdt = localDateTime.atZone(zoneId);
-		Date date = Date.from(zdt.toInstant());
+		
 
 		post.setTitle(title);
 		post.setPostedText(postedText);
@@ -134,7 +136,7 @@ public class PostController {
 
 	}
 	//後台更新審核文章
-	@PutMapping(path = "/auditPost/{id}")
+	@PutMapping(path = "/auditPost/{id}"  )
 	public ResponseEntity<Post> sendauditPost(@PathVariable("id") Integer id,
 			@RequestParam("postStatus") String condition, Post post) {
 		
@@ -144,6 +146,7 @@ public class PostController {
 		}
 		
 		post.setPostStatus(condition);
+		post.setPostAuditDate(date);
 		Post updateCondition = postService.updateCondition(post);
 		return ResponseEntity.status(HttpStatus.CREATED).body(updateCondition);
 		
