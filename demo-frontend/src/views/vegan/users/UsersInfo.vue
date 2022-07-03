@@ -1,7 +1,9 @@
 <script setup>
-import { reactive, computed, onMounted } from "vue";
+import {ref, reactive, computed, onMounted } from "vue";
 
 // Vue Dataset, for more info and examples you can check out https://github.com/kouts/vue-dataset/tree/next
+import Swal from "sweetalert2";
+import axios from "axios";
 import {
   Dataset,
   DatasetItem,
@@ -11,8 +13,36 @@ import {
   DatasetShow,
 } from "vue-dataset";
 
-// Get example data
-import users from "@/data/usersDataset.json";
+// Set default properties
+let toast = Swal.mixin({
+  buttonsStyling: false,
+  target: "#page-container",
+  customClass: {
+    confirmButton: "btn btn-success m-1",
+    cancelButton: "btn btn-danger m-1",
+    input: "form-control",
+  },
+});
+
+//預設傳值伺服器與[params]
+const url = "localhost:8088";
+//接收的資料ref
+const resData = ref();
+
+const getAxios = function () {
+  axios
+    .get(`http://${url}/users/all`)
+    .then((res) => {
+      console.log(res);
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+//執行Axios
+getAxios();
 
 // Helper variables
 //在這邊去設定Table :th的欄位名稱
@@ -23,13 +53,33 @@ const cols = reactive([
     sort: "",
   },
   {
-    name: "公司名稱",
-    field: "company",
+    name: "密碼",
+    field: "password",
     sort: "",
   },
   {
-    name: "森日",
-    field: "birthdate",
+    name: "用戶名稱",
+    field: "userName",
+    sort: "",
+  },
+  {
+    name: "狀態",
+    field: "status",
+    sort: "",
+  },
+  {
+    name: "用戶頭貼",
+    field: "userPic",
+    sort: "",
+  },
+  {
+    name: "註冊時間",
+    field: "registerTime",
+    sort: "",
+  },
+  {
+    name: "最後登入時間",
+    field: "lastLoginTime",
     sort: "",
   },
 ]);
@@ -70,6 +120,51 @@ function onSort(event, i) {
   }
 
   sortEl.sort = toset;
+}
+
+//Delete Order Fuction
+function deleteRestaurant(number) {
+  toast
+    .fire({
+      title: "確定要刪除嗎?",
+      text: "刪除後不能返回",
+      icon: "warning",
+      showCancelButton: true,
+      customClass: {
+        confirmButton: "btn btn-danger m-1",
+        cancelButton: "btn btn-secondary m-1",
+      },
+      confirmButtonText: "刪除資料",
+      cancelButtonText: "取消刪除",
+
+      html: false,
+      preConfirm: () => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 50);
+        });
+      },
+    })
+    .then((result) => {
+      //send request to server
+      if (result.value) {
+        axios
+          .delete(`http://${url}/users/${number}`)
+          .then((res) => {
+            //獲取伺服器的回傳資料
+            console.log(res);
+
+            getAxios();
+            toast.fire("刪除成功!", "", "success");
+          })
+          .catch((error) => {
+            console.log(error, "失敗");
+          });
+      } else if (result.dismiss === "cancel") {
+        toast.fire("刪除失敗", "", "error");
+      }
+    });
 }
 
 // Apply a few Bootstrap 5 optimizations
@@ -143,7 +238,7 @@ th.sort {
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-alt">
           <li class="breadcrumb-item">
-            <a class="link-fx" href="#/backend/cart/dashboard">
+            <a class="link-fx" href="#/backend/users/dashboard">
               <i class="fa fa-users"></i> 會員管理</a
             >
           </li>
@@ -161,9 +256,17 @@ th.sort {
     <BaseBlock title="使用者後台資料" content-full>
       <Dataset
         v-slot="{ ds }"
-        :ds-data="users"
+        :ds-data="resData"
         :ds-sortby="sortBy"
-        :ds-search-in="['name', 'email', 'company', 'birthdate']"
+        :ds-search-in="[
+          'email',
+          'password',
+          'userName',
+          'status',
+          'userPic',
+          'registerTime',
+          'lastLoginTime'
+        ]"
       >
         <div class="row" :data-page-count="ds.dsPagecount">
           <div id="datasetLength" class="col-md-8 py-2">
@@ -181,7 +284,6 @@ th.sort {
                 <thead>
                   <tr>
                     <th scope="col" class="text-center">編號</th>
-                    <th scope="col" class="text-center">用戶名稱</th>
                     <th
                       v-for="(th, index) in cols"
                       :key="th.field"
@@ -194,26 +296,44 @@ th.sort {
                   </tr>
                 </thead>
                 <DatasetItem tag="tbody" class="fs-sm">
-                  <template #default="{ row, rowIndex }">
+                  <template #default="{ row }">
                     <tr>
-                      <th scope="row">{{ rowIndex + 1 }}</th>
-                      <td class="text-center" style="min-width: 150px">
-                        {{ row.name }}
-                      </td>
-                      <td class="d-none d-md-table-cell fs-sm">
+                      <th scope="row">{{ row.userId }}</th>
+                      <td class="text-center" style="min-width: 130px">
                         {{ row.email }}
                       </td>
-                      <td
-                        class="d-none d-sm-table-cell"
-                        style="min-width: 150px"
-                      >
-                        {{ row.company }}
+                      <td class="d-none d-md-table-cell fs-sm">
+                        {{ row.password }}
                       </td>
                       <td
                         class="d-none d-sm-table-cell"
-                        style="min-width: 150px"
+                        style="min-width: 110px"
                       >
-                        {{ row.birthdate }}
+                        {{ row.userName }}
+                      </td>
+                      <td
+                        class="d-none d-sm-table-cell"
+                        style="min-width: 80px"
+                      >
+                        {{ row.status }}
+                      </td>
+                      <td
+                        class="d-none d-sm-table-cell"
+                        style="min-width: 110px"
+                      >
+                        {{ row.userPic }}
+                      </td>
+                      <td
+                        class="d-none d-sm-table-cell"
+                        style="min-width: 110px"
+                      >
+                        {{ row.registerTime }}
+                      </td>
+                      <td
+                        class="d-none d-sm-table-cell"
+                        style="min-width: 140px"
+                      >
+                        {{ row.lastLoginTime }}
                       </td>
                       <td class="text-center">
                         <div class="btn-group">
@@ -226,6 +346,7 @@ th.sort {
                           <button
                             type="button"
                             class="btn btn-sm btn-alt-secondary"
+                            @click="deleteRestaurant(row.userId)"
                           >
                             <i class="fa fa-fw fa-times"></i>
                           </button>

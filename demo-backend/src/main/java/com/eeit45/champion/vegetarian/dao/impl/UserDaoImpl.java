@@ -47,7 +47,7 @@ public class UserDaoImpl implements UserDao {
         sql = filteringSQL(sql, map, userQueryParams);
 
         // 排序
-//        sql = sql + userQueryParams.getSorting();
+        sql = sql + userQueryParams.getSorting();
 
         //分頁
 //        SQL SERVER分頁語法

@@ -36,6 +36,9 @@ public class UserController {
     public ResponseEntity<Page<User>> getUsers(
             //Filtering
             @RequestParam(required = false) String search,
+            
+            //Sorting
+            @RequestParam(defaultValue = "desc") String sorting,
 
             //Pagination
             @RequestParam(defaultValue = "5")@Max(100) @Min(0) Integer limit,
@@ -43,6 +46,7 @@ public class UserController {
     ) {
 		UserQueryParams userQueryParams = new UserQueryParams();
 		userQueryParams.setSearch(search);
+		userQueryParams.setSorting(sorting);
 		userQueryParams.setLimit(limit);
 		userQueryParams.setOffset(offset);
 
