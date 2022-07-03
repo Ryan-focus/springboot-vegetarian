@@ -31,6 +31,10 @@ const url = "localhost:8088";
 //接收的資料ref
 const resData = ref();
 
+const resforumId = ref();
+const resforumTitle = ref();
+const resforumContent = ref();
+
 const getAxios = function () {
   axios
     .get(`http://${url}/forums`)
@@ -114,19 +118,18 @@ function onSort(event, i) {
 }
 
 //Delete Restaurant Fuction
-function deleteRestaurant(number) {
+function deleteForum(number) {
   toast
     .fire({
-      title: "確定要刪除嗎?",
-      text: "刪除之後這筆資料就消失囉~!",
+      title: "確定要刪除這篇文章嗎?",
       icon: "warning",
       showCancelButton: true,
       customClass: {
         confirmButton: "btn btn-danger m-1",
         cancelButton: "btn btn-secondary m-1",
       },
-      confirmButtonText: "幹掉他!",
-      cancelButtonText: "拯救他 !",
+      confirmButtonText: "刪除!",
+      cancelButtonText: "取消!",
 
       html: false,
       preConfirm: () => {
@@ -147,16 +150,34 @@ function deleteRestaurant(number) {
             console.log(res);
 
             getAxios();
-            toast.fire("他被殺死了!", "你殺掉了一個人 ! 殺人犯 !", "success");
+            toast.fire("文章刪除成功", "");
           })
           .catch((error) => {
             console.log(error, "失敗");
           });
       } else if (result.dismiss === "cancel") {
-        toast.fire("她活下來了", "你取消了他 ! 他安全了 :)", "error");
+        toast.fire("文章刪除失敗", "");
       }
     });
 }
+function updateForum(number) {
+  //send request to server
+
+  axios
+    .get(`http://${url}/forums/${number}`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      console.log(res);
+      resforumId.value = res.data.forumId;
+      resforumTitle.value = res.data.forumTitle;
+      resforumContent.value = res.data.forumContent;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+
+
 // Apply a few Bootstrap 5 optimizations
 onMounted(() => {
   // Remove labels from
@@ -311,13 +332,16 @@ th.sort {
                           <button
                             type="button"
                             class="btn btn-sm btn-alt-secondary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#updateForum"
+                            @click="updateForum(row.forumId)"
                           >
                             <i class="fa fa-fw fa-pencil-alt"></i>
                           </button>
                           <button
                             type="button"
                             class="btn btn-sm btn-alt-secondary"
-                            @click="deleteRestaurant(row.forumId)"
+                            @click.prevent="deleteForum(row.forumId)"
                           >
                             <i class="fa fa-fw fa-times"></i>
                           </button>
@@ -335,6 +359,70 @@ th.sort {
         >
           <DatasetInfo class="py-3 fs-sm" />
           <DatasetPager class="flex-wrap py-3 fs-sm" />
+        </div>
+
+         <div
+          class="modal fade"
+          id="updateForum"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">修改文章</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div class="modal-body">
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"
+                    >標題</label
+                  >
+                  <textarea
+                    type="textarea"
+                    class="form-control"
+                    id="exampleFormControlInput1"
+                    style="resize: none"
+                    
+                    
+                    rows="1"
+                    v-model="resforumTitle"
+                  ></textarea>
+                </div>
+                <div class="mb-3">
+                  <label for="exampleFormControlTextarea1" class="form-label"
+                    >內文</label
+                  >
+                  <textarea
+                    class="form-control"
+                    id="exampleFormControlTextarea1"
+                    rows="12"
+                    style="resize: none"
+                    
+                    
+                    v-model="resforumContent"
+                  ></textarea>
+                </div>
+               
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  取消
+                </button>
+                <button type="submit" class="btn btn-primary">送出</button>
+              </div>
+            </div>
+          </div>
         </div>
       </Dataset>
     </BaseBlock>
