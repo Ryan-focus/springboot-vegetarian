@@ -3,12 +3,14 @@ package com.eeit45.champion.vegetarian.dao.shopCart.impl;
 import com.eeit45.champion.vegetarian.dao.shopCart.OrderDao;
 import com.eeit45.champion.vegetarian.dao.shopCart.ProductDao;
 import com.eeit45.champion.vegetarian.dto.shopCart.OrderEntryRequest;
+import com.eeit45.champion.vegetarian.dto.shopCart.OrderQueryParams;
 import com.eeit45.champion.vegetarian.dto.shopCart.OrderRequest;
 import com.eeit45.champion.vegetarian.model.shopCart.Order;
 import com.eeit45.champion.vegetarian.model.shopCart.OrderItem;
 import com.eeit45.champion.vegetarian.rowmapper.shopCart.OrderItemRowMapper;
 import com.eeit45.champion.vegetarian.rowmapper.shopCart.OrderRowMapper;
 import com.eeit45.champion.vegetarian.rowmapper.shopCart.OrdersRowMapper;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -75,6 +77,45 @@ public class OrderDaoImpl implements OrderDao {
 
         return orderItemList;
     }
+
+    @Override
+    public Integer countOrder(OrderQueryParams orderQueryParams) {
+        String sql = "SELECT count(*) FROM `orders` WHERE 1=1 ";
+
+        Map<String , Object> map = new HashMap<>();
+
+        //查詢條件
+        sql = addFilteringSql(sql,map,orderQueryParams);
+
+        Integer total = namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
+
+        return total;
+    }
+
+    @Override
+    public List<Order> getOrders(OrderQueryParams orderQueryParams) {
+        String sql = "SELECT order_id, user_id,total_amount, created_date, last_modified_date FROM `orders` " +
+                "WHERE 1=1";
+
+        Map<String , Object> map = new HashMap<>();
+
+        //查詢條件
+        sql = addFilteringSql(sql,map,orderQueryParams);
+
+        //排序
+        //訂單列表，希望最新的排在最前面
+        sql = sql + " ORDER BY created_date DESC";
+        
+        //分頁 
+        sql = sql  + " LIMIT :limit OFFSET :offset"; 
+        map.put("limit",orderQueryParams.getLimit());
+        map.put("offset",orderQueryParams.getOffset());
+
+        List<Order> orderList = namedParameterJdbcTemplate.query(sql,map,new OrdersRowMapper());
+
+        return orderList;
+    }
+
 
     @Override
     public Integer createOrders(Integer userId, Integer totalAmount) {
@@ -244,4 +285,13 @@ public class OrderDaoImpl implements OrderDao {
         map.put("orderId", orderId);
         namedParameterJdbcTemplate.update(sql, map);
     }
+
+    private String addFilteringSql(String sql, Map<String, Object> map, OrderQueryParams orderQueryParams) {
+        if(orderQueryParams.getUserId() != null) {
+            sql = sql + " AND user_id = :userId";
+            map.put("userId", orderQueryParams.getUserId());
+        }
+        return sql;
+    }
+
 }

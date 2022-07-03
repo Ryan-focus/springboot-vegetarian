@@ -1,6 +1,7 @@
 package com.eeit45.champion.vegetarian.dao.shopCart;
 
 import com.eeit45.champion.vegetarian.dto.shopCart.OrderEntryRequest;
+import com.eeit45.champion.vegetarian.dto.shopCart.OrderQueryParams;
 import com.eeit45.champion.vegetarian.dto.shopCart.OrderRequest;
 import com.eeit45.champion.vegetarian.model.shopCart.Order;
 import com.eeit45.champion.vegetarian.model.shopCart.OrderItem;
@@ -13,6 +14,10 @@ public interface OrderDao {
 
 
      List<OrderItem> getOrderItemsByOrderId(Integer orderId);
+
+     Integer countOrder(OrderQueryParams orderQueryParams);
+
+     List<Order> getOrders(OrderQueryParams orderQueryParams);
 
      Integer createOrders(Integer userId, Integer totalAmount);
 
@@ -38,6 +43,7 @@ public interface OrderDao {
      List<Order> getAllOrder();
 
      void deleteOrderById(Integer orderId);
+
 
 
 }

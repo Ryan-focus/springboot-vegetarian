@@ -1,6 +1,7 @@
 package com.eeit45.champion.vegetarian.service.shopCart;
 
 import com.eeit45.champion.vegetarian.dto.shopCart.CreateOrderRequest;
+import com.eeit45.champion.vegetarian.dto.shopCart.OrderQueryParams;
 import com.eeit45.champion.vegetarian.dto.shopCart.OrderRequest;
 import com.eeit45.champion.vegetarian.model.shopCart.Order;
 
@@ -11,6 +12,11 @@ public interface OrderService {
     Integer createOrder(OrderRequest orderRequest);
 
     Integer createOrders(Integer userId, CreateOrderRequest createOrderRequest);
+
+
+    List<Order> getOrders(OrderQueryParams orderQueryParams);
+
+    Integer countOrder(OrderQueryParams orderQueryParams);
 
     Order getOrderById(Integer orderId);
 
@@ -29,7 +35,6 @@ public interface OrderService {
     List<Order> getAllOrder();
 
     void deleteOrderById(Integer orderId);
-
 
 
 }
