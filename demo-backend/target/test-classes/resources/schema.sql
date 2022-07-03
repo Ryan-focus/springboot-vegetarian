@@ -134,12 +134,12 @@ CREATE TABLE post(
     variant NVARCHAR(128)
 );
 
---forum
+-- forum
 DROP TABLE IF EXISTS forum;
 CREATE TABLE forum(
 	forumId int NOT NULL auto_increment primary key,
-	forumTitle nvarchar(50) NOT NULL,
-	forumContent nvarchar(150) NOT NULL,
+	forumTitle nvarchar(128) NOT NULL,
+	forumContent nvarchar(512) NOT NULL,
 	forumCreateTime TIMESTAMP NOT NULL,
 	forumUpdateTime TIMESTAMP NOT NULL);
 
