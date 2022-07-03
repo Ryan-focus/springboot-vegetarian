@@ -30,8 +30,8 @@ public class BusinessDaoImpl implements BusinessDao {
         Map<String,Object> map = new HashMap<>();
         map.put("email", businessRegisterRequest.getLoginEmail());
         map.put("password", businessRegisterRequest.getPassword());
-        map.put("businessName", businessRegisterRequest.getUserName());
-        map.put("businessPic", businessRegisterRequest.getUserPic());
+        map.put("businessName", businessRegisterRequest.getBusinessName());
+        map.put("businessPic", businessRegisterRequest.getBusinessPic());
 
         map.put("status","未開通");
 

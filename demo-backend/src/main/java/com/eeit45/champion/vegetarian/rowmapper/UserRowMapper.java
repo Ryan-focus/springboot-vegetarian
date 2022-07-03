@@ -22,8 +22,10 @@ public class UserRowMapper implements RowMapper<User> {
 		user.setUserName(rs.getString("userName"));
 		user.setStatus(rs.getString("status"));
 		user.setUserPic(rs.getString("userPic"));
+
 		Date registerTime = rs.getDate("registerTime");
 		user.setRegisterTime(registerTime);
+
 		Timestamp lastLoginTime = rs.getTimestamp("lastLoginTime");
 		user.setLastLoginTime(lastLoginTime);
 		

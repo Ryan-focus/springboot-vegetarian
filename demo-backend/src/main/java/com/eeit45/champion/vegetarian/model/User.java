@@ -1,7 +1,7 @@
 package com.eeit45.champion.vegetarian.model;
 
-import java.sql.Date;
-import java.sql.Timestamp;
+
+import java.util.Date;
 
 public class User {
 	
@@ -19,7 +19,21 @@ public class User {
     
     private Date registerTime;
     
-    private Timestamp lastLoginTime;
+    private Date lastLoginTime;
+
+	public User() {
+	}
+
+	public User(Integer userId, String email, String password, String userName, String status, String userPic, Date registerTime, Date lastLoginTime) {
+		this.userId = userId;
+		this.email = email;
+		this.password = password;
+		this.userName = userName;
+		this.status = status;
+		this.userPic = userPic;
+		this.registerTime = registerTime;
+		this.lastLoginTime = lastLoginTime;
+	}
 
 	public Integer getUserId() {
 		return userId;
@@ -77,12 +91,11 @@ public class User {
 		this.registerTime = registerTime;
 	}
 
-	public Timestamp getLastLoginTime() {
+	public Date getLastLoginTime() {
 		return lastLoginTime;
 	}
 
-	public void setLastLoginTime(Timestamp lastLoginTime) {
+	public void setLastLoginTime(Date lastLoginTime) {
 		this.lastLoginTime = lastLoginTime;
 	}
-
 }

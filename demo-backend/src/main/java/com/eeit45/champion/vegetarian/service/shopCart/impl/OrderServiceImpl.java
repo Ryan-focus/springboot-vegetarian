@@ -1,10 +1,12 @@
 package com.eeit45.champion.vegetarian.service.shopCart.impl;
 
+import com.eeit45.champion.vegetarian.dao.UserDao;
 import com.eeit45.champion.vegetarian.dao.shopCart.OrderDao;
 import com.eeit45.champion.vegetarian.dao.shopCart.ProductDao;
 import com.eeit45.champion.vegetarian.dto.shopCart.BuyItem;
 import com.eeit45.champion.vegetarian.dto.shopCart.CreateOrderRequest;
 import com.eeit45.champion.vegetarian.dto.shopCart.OrderQueryParams;
+import com.eeit45.champion.vegetarian.model.User;
 import com.eeit45.champion.vegetarian.model.shopCart.Order;
 import com.eeit45.champion.vegetarian.model.shopCart.OrderItem;
 import com.eeit45.champion.vegetarian.model.shopCart.Product;
@@ -31,8 +33,8 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private ProductDao productDao;
 
-    //@Autowired
-    //private UserDao userDao;
+    @Autowired
+    private UserDao userDao;
 
 
     @Transactional // 讓兩個table的訂單都是同時新增成功 or 同時新增失敗的狀況
@@ -41,15 +43,15 @@ public class OrderServiceImpl implements OrderService {
         //訂單是帳號功能的附屬品 ， 要先創建帳號才能夠創建訂單
         //先檢查帳號是否存在
 
-//        User user = userDao.getUserById(userId);
+        User user = userDao.getUserById(userId);
 
-//        if(user == null){
-//            log.warn("該userId{}不存在",userId);
-//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-//        }
+        if(user == null){
+            log.warn("該userId{}不存在",userId);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
 
 
-        Integer totalAmount = 0;
+        int totalAmount = 0;
 
         List<OrderItem> orderItemList = new ArrayList<>();
 
@@ -66,16 +68,16 @@ public class OrderServiceImpl implements OrderService {
                 log.warn("商品{}不存在", buyItem.getProductId());
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
             }
-//            else if (product.getStock() < buyItem.getQuantity()){
-//                log.warn("商品{}庫存數量不足，無法購買。 剩餘庫存{}，欲購買數量{}");
-//                   buyItem.getProductId(), product.getStock(),buyItem.getQuantity();
-//                   throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-//            }
+            else if (product.getStock() < buyItem.getQuantity()){
+                log.warn("商品{}庫存數量不足，無法購買。 剩餘庫存{}，欲購買數量{}",
+                   buyItem.getProductId(), product.getStock(),buyItem.getQuantity());
+                   throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+            }
             //扣除商品庫存
-//            productDao.updateStock(product.getProductId(),product.getStock() - buyItem.getQuantity());
+            productDao.updateStock(product.getProductId(),product.getStock() - buyItem.getQuantity());
 
             //計算總金額
-            int amount = buyItem.getQuantity() * product.getPrice();
+            int amount = buyItem.getQuantity() * product.getProductPrice();
             totalAmount = totalAmount + amount;
 
             //Transfer BuyItem To OrderItem

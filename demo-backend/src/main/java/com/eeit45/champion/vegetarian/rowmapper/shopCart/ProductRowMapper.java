@@ -14,8 +14,8 @@ public class ProductRowMapper implements RowMapper<Product> {
     public Product mapRow(ResultSet rs, int rowNum) throws SQLException {
         Product product = new Product();
 
-        product.setProductId(rs.getInt("id"));
-        product.setProductName(rs.getString("name"));
+        product.setProductId(rs.getInt("productId"));
+        product.setProductName(rs.getString("productName"));
 
         String categoryStr = rs.getString("category");
         ProductCategory category = ProductCategory.valueOf(categoryStr);
@@ -25,8 +25,10 @@ public class ProductRowMapper implements RowMapper<Product> {
         VeganCategory veganCategory = VeganCategory.valueOf(veganCategoryStr);
         product.setVeganCategory(veganCategory);
 
-        product.setPrice(rs.getInt("price"));
-        product.setImageUrl(rs.getString("image"));
+        product.setProductPrice(rs.getInt("productPrice"));
+        product.setImage(rs.getString("productImage"));
+
+        product.setStock(rs.getInt("stock"));
 
         product.setDescription(rs.getString("description"));
 

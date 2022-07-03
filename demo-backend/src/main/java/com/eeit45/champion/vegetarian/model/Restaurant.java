@@ -18,7 +18,6 @@ public class Restaurant {
 	private String imageUrl;
 	private Date createdTime;
     private Date updatedTime;
-    private String restaurantMap;
     
     
 	public Integer getRestaurantNumber() {
@@ -86,12 +85,6 @@ public class Restaurant {
 	}
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
-	}
-	public String getRestaurantMap() {
-		return restaurantMap;
-	}
-	public void setRestaurantMap(String restaurantMap) {
-		this.restaurantMap = restaurantMap;
 	}
 
 }

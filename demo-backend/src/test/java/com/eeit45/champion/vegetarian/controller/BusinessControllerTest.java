@@ -54,7 +54,7 @@ class BusinessControllerTest {
                 .andExpect(jsonPath("$.lastModifiedDate", notNullValue()));
 
         // 檢查資料庫中的密碼不為明碼
-        Business business = businessDao.getUserByEmail(businessRegisterRequest.getLoginEmail());
+        Business business = businessDao.getBusinessByEmail(businessRegisterRequest.getLoginEmail());
         //比較從資料庫取得的使用者的密碼，不得與使用者輸入的密碼相同。
         assertNotEquals(businessRegisterRequest.getPassword(), business.getPassword());
     }

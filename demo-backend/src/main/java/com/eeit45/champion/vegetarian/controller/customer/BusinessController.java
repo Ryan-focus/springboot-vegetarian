@@ -27,7 +27,7 @@ public class BusinessController {
         Business business = businessService.login(businessLoginRequest);
 
         LoginVO loginVO = new LoginVO();
-        loginVO.setId(business.getUserId());
+        loginVO.setId(business.getBusinessId());
         loginVO.setToken(UUID.randomUUID().toString());
         loginVO.setUser(business);
 

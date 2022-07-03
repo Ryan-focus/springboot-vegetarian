@@ -47,8 +47,8 @@ public class UserDaoImpl implements UserDao {
         sql = filteringSQL(sql, map, userQueryParams);
 
         // 排序
-        sql = sql + userQueryParams.getSorting();
-
+        sql = sql + " ORDER BY " + userQueryParams.getOrderBy() + " " + userQueryParams.getSorting();
+        System.out.println(sql);
         //分頁
 //        SQL SERVER分頁語法
 //        sql = sql + " OFFSET :limit ROWS FETCH NEXT :offset ROWS ONLY";
@@ -146,7 +146,7 @@ public class UserDaoImpl implements UserDao {
 	private String filteringSQL(String sql, Map<String, Object> map, UserQueryParams userQueryParams) {
 		
 		if (userQueryParams.getSearch() != null) {
-            sql = sql + " AND userid in :search";
+            sql = sql + " AND userId in :search";
             map.put("search", userQueryParams.getSearch());
         }
 		return sql;

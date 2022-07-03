@@ -13,13 +13,23 @@ public class BusinessRegisterRequest {
     @NotBlank
     private String password;
 
-    private String userName;
+    private String businessName;
     private String status;
-    private String userPic;
+    private String businessPic;
     private Date createdTime;
     private Date lastLoginTime;
 
     public BusinessRegisterRequest() {
+    }
+
+    public BusinessRegisterRequest(String loginEmail, String password, String businessName, String status, String businessPic, Date createdTime, Date lastLoginTime) {
+        this.loginEmail = loginEmail;
+        this.password = password;
+        this.businessName = businessName;
+        this.status = status;
+        this.businessPic = businessPic;
+        this.createdTime = createdTime;
+        this.lastLoginTime = lastLoginTime;
     }
 
     public String getLoginEmail() {
@@ -38,12 +48,12 @@ public class BusinessRegisterRequest {
         this.password = password;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getBusinessName() {
+        return businessName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setBusinessName(String businessName) {
+        this.businessName = businessName;
     }
 
     public String getStatus() {
@@ -54,12 +64,12 @@ public class BusinessRegisterRequest {
         this.status = status;
     }
 
-    public String getUserPic() {
-        return userPic;
+    public String getBusinessPic() {
+        return businessPic;
     }
 
-    public void setUserPic(String userPic) {
-        this.userPic = userPic;
+    public void setBusinessPic(String businessPic) {
+        this.businessPic = businessPic;
     }
 
     public Date getCreatedTime() {

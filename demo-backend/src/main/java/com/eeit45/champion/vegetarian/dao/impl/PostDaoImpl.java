@@ -24,14 +24,14 @@ public class PostDaoImpl implements PostDao {
 	//新增文章&圖片
 	public boolean addPostImage(Post post) {
 
-		String sql = "INSERT INTO post ( title, postedDate, postedText, imgurl, postStatus)"
-				+ "VALUES (:title, :postedDate, :postedText, :imgurl, :postStatus)";
+		String sql = "INSERT INTO post ( title, postedDate, postedText, imgUrl, postStatus)"
+				+ "VALUES (:title, :postedDate, :postedText, :imgUrl, :postStatus)";
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("title", post.getTitle());
 		map.put("postedDate", post.getPostedDate());
 		map.put("postedText", post.getPostedText());
-		map.put("imgurl", post.getImgurl());
+		map.put("imgUrl", post.getImgUrl());
 		map.put("postStatus", post.getPostStatus());
 
 		namedParameterJdbcTemplate.update(sql, map);
@@ -64,7 +64,7 @@ public class PostDaoImpl implements PostDao {
 		map.put("title", post.getTitle());
 		//map.put("postedDate", post.getPostedDate());
 		map.put("postedText", post.getPostedText());
-		map.put("imgurl", post.getImgurl());
+		map.put("imgurl", post.getImgUrl());
 		map.put("postStatus", post.getPostStatus());
 
 		namedParameterJdbcTemplate.update(sql, map);
@@ -86,7 +86,6 @@ public class PostDaoImpl implements PostDao {
 			namedParameterJdbcTemplate.update(sql, map);
 			
 			return post;
-
 	}
 
 	// 搜尋一篇文章

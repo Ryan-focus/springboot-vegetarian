@@ -32,9 +32,9 @@ public class OrderDaoImpl implements OrderDao {
     //查詢訂單資料返回Controller 使用 Join Table
     @Override
     public List<OrderItem> getOrderItemsByOrderId(Integer orderId) {
-        String sql = "SELECT oi.order_item_id, oi.order_id, oi.product_id, oi.quantity, oi.amount, p.name " +
+        String sql = "SELECT oi.order_item_id, oi.order_id, oi.product_id, oi.quantity, oi.amount, p.productName " +
                 "FROM order_item as oi " +
-                "LEFT JOIN products as p ON oi.product_id = p.id " +
+                "LEFT JOIN product as p ON oi.product_id = p.productId " +
                 "WHERE oi.order_id = :orderId";
 
         Map<String, Object> map = new HashMap<>();
@@ -48,7 +48,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public Integer countOrder(OrderQueryParams orderQueryParams) {
-        String sql = "SELECT count(*) FROM `orders` WHERE 1=1 ";
+        String sql = "SELECT count(*) FROM `order` WHERE 1=1 ";
 
         Map<String, Object> map = new HashMap<>();
 
@@ -62,7 +62,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Order> getOrders(OrderQueryParams orderQueryParams) {
-        String sql = "SELECT order_id, user_id,total_amount, created_date, last_modified_date FROM `orders` " +
+        String sql = "SELECT orderId, userId,payment, createdTime, updatedTime FROM `order` " +
                 "WHERE 1=1";
 
         Map<String, Object> map = new HashMap<>();
@@ -72,7 +72,7 @@ public class OrderDaoImpl implements OrderDao {
 
         //排序
         //訂單列表，希望最新的排在最前面
-        sql = sql + " ORDER BY created_date DESC";
+        sql = sql + " ORDER BY createdTime DESC";
 
         //分頁 
         sql = sql + " LIMIT :limit OFFSET :offset";
@@ -87,7 +87,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public Integer createOrders(Integer userId, Integer totalAmount) {
-        String sql = "INSERT INTO `orders` (user_id, total_amount, created_date, last_modified_date) " +
+        String sql = "INSERT INTO `order` (userId, payment, createdTime, updatedTime) " +
                 "VALUES (:userId, :totalAmount, :createdDate, :lastModifiedDate)";
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
@@ -133,7 +133,7 @@ public class OrderDaoImpl implements OrderDao {
     //只能留一個方法，決定好記得刪掉。
     @Override
     public Order getOrdersById(Integer orderId) {
-        String sql = "SELECT * FROM orders WHERE order_id = :orderId";
+        String sql = "SELECT * FROM `order` WHERE orderId = :orderId";
 
         Map<String, Object> map = new HashMap<>();
         map.put("orderId", orderId);
@@ -147,7 +147,7 @@ public class OrderDaoImpl implements OrderDao {
 
     private String addFilteringSql(String sql, Map<String, Object> map, OrderQueryParams orderQueryParams) {
         if (orderQueryParams.getUserId() != null) {
-            sql = sql + " AND user_id = :userId";
+            sql = sql + " AND userId = :userId";
             map.put("userId", orderQueryParams.getUserId());
         }
         return sql;

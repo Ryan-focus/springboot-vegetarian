@@ -1,17 +1,15 @@
 package com.eeit45.champion.vegetarian.model.shopCart;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
 public class Order {
     private Integer orderId;
 
-    private String orderUUID;
     private Integer userId;
-    private String shipping;
-    private String payment;
+    private Integer payment;
     private String status;
-
     private Date createdTime;
     private Date updateTime;
 
@@ -21,23 +19,13 @@ public class Order {
     public Order() {
     }
 
-    public Order(Integer orderId, String orderUUID, Integer userId, String shipping, String payment, String status, Date createdTime, Date updateTime) {
+    public Order(Integer orderId, Integer userId, Integer payment, String status, Timestamp createdTime, Timestamp updateTime) {
         this.orderId = orderId;
-        this.orderUUID = orderUUID;
         this.userId = userId;
-        this.shipping = shipping;
         this.payment = payment;
         this.status = status;
         this.createdTime = createdTime;
         this.updateTime = updateTime;
-    }
-
-    public String getOrderUUID() {
-        return orderUUID;
-    }
-
-    public void setOrderUUID(String orderUUID) {
-        this.orderUUID = orderUUID;
     }
 
     public Integer getOrderId() {
@@ -56,19 +44,11 @@ public class Order {
         this.userId = userId;
     }
 
-    public String getShipping() {
-        return shipping;
-    }
-
-    public void setShipping(String shipping) {
-        shipping = shipping;
-    }
-
-    public String getPayment() {
+    public Integer getPayment() {
         return payment;
     }
 
-    public void setPayment(String payment) {
+    public void setPayment(Integer payment) {
         this.payment = payment;
     }
 
