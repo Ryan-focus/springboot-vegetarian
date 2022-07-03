@@ -476,14 +476,14 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,variant) VALU
 
 最後提醒大家，文章內看到的素食餐點，都可以再向《御蓮齋》詢問，是否提供外燴服務
 
-想訂購素食外燴的人，也請記得先打電話確認，以免撲空唷','images/PostsPhoto/1655871979456.jpg','未通過','danger')
+想訂購素食外燴的人，也請記得先打電話確認，以免撲空唷','images/PostsPhoto/1655871979456.jpg','未通過','danger');
 
---forum
-INSERT INTO forum (forumId, forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ('1', '素食炒飯', '天氣熱就吃生菜沙拉，氣溫驟降時又變成炒飯，而且比高麗菜更不容易把飯變濕黏，大家可以試試看！', '2022-01-14', '2022-02-10');
+-- forum
+INSERT INTO forum ( forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ( '素食炒飯', '天氣熱就吃生菜沙拉，氣溫驟降時又變成炒飯，而且比高麗菜更不容易把飯變濕黏，大家可以試試看！', '2022-01-14', '2022-02-10');
 
-INSERT INTO forum (forumId, forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ('2', '西式蔬食料理', '在空檔時間，找到這家評價還不差的歐氏蔬食料理，從前菜，湯品，主食，甜點及飲料烘焙及擺盤均十分用心。用完餐後，可順便參觀日本藝術家的作品，十分值得一訪。', now(), now());
+INSERT INTO forum ( forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ( '西式蔬食料理', '在空檔時間，找到這家評價還不差的歐氏蔬食料理，從前菜，湯品，主食，甜點及飲料烘焙及擺盤均十分用心。用完餐後，可順便參觀日本藝術家的作品，十分值得一訪。', now(), now());
 
-INSERT INTO forum (forumId, forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ('3', '素食義大利麵', '今日帶吃葷的家人來店內聚餐，
+INSERT INTO forum (forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ( '素食義大利麵', '今日帶吃葷的家人來店內聚餐，
 原本以為小樹日和是家葷素餐廳
 後來經店員親切又專業的介紹
 才知道全店皆為蔬食（蛋奶/五辛 ）。
@@ -494,20 +494,20 @@ Pizza到飲品和甜點，
 皆讓吃葷的家人十分驚豔
 ', now(), now());
 
-INSERT INTO forum (forumId, forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ('4', '法國麵包', '淳襄健康廚房~酪梨醬佐法式麵包', now(), now());
+INSERT INTO forum (forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ( '法國麵包', '淳襄健康廚房~酪梨醬佐法式麵包', now(), now());
 
-INSERT INTO forum (forumId, forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ('5', '麻辣皮蛋', '算是道低辣度的涼菜，適合擔任開胃菜角色！', now(), now());
+INSERT INTO forum ( forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ( '麻辣皮蛋', '算是道低辣度的涼菜，適合擔任開胃菜角色！', now(), now());
 
-INSERT INTO forum (forumId, forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ('6', '芋頭椰汁西米露', '綿綿的芋頭，搭配QQ的西谷米，冷冷的天來一碗暖暖的芋頭椰汁西米露吧，一鍵按下，輕鬆搞定。', now(), now());
+INSERT INTO forum ( forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ( '芋頭椰汁西米露', '綿綿的芋頭，搭配QQ的西谷米，冷冷的天來一碗暖暖的芋頭椰汁西米露吧，一鍵按下，輕鬆搞定。', now(), now());
 
-INSERT INTO forum (forumId, forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ('7', '巧克力咖啡餅乾', '這款吃起來是軟餅乾的口感，也是清食材的隨性料理。', now(), now());
+INSERT INTO forum ( forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ( '巧克力咖啡餅乾', '這款吃起來是軟餅乾的口感，也是清食材的隨性料理。', now(), now());
 
-INSERT INTO forum (forumId, forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ('8', '湯種吐司', '湯種吐司～口感特別柔軟，軟綿綿，超Q彈，水分比例特別高，高保水度濕潤口感，毫不乾澀。', now(), now());
+INSERT INTO forum ( forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ( '湯種吐司', '湯種吐司～口感特別柔軟，軟綿綿，超Q彈，水分比例特別高，高保水度濕潤口感，毫不乾澀。', now(), now());
 
-INSERT INTO forum (forumId, forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ('9', '夏天必吃沙拉', '常常讓大家誤會沙拉，進而拒絕沙拉的最主要因素：一大推蔬菜葉類的綠綠的東西，好像牛在吃草喔！是嗎？其實利用視覺顏色的組合，加上自己的創意想像，更重要的是，我們的心態。如果你吃沙拉只是為了減肥，那麼我得說，這或許是最有效的方法，卻不是最好的唯一辦法。吃沙拉，絕對只是因為我們的口腹之慾，因為想多吃蔬果，而以最健康直接的方法來進食。這樣一來，在沙拉配菜的組合上就更有趣，一旦有趣，便增加我們的食慾，吃沙拉就再也不像在吃草啦。', now(), now());
+INSERT INTO forum ( forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ( '夏天必吃沙拉', '常常讓大家誤會沙拉，進而拒絕沙拉的最主要因素：一大推蔬菜葉類的綠綠的東西，好像牛在吃草喔！是嗎？其實利用視覺顏色的組合，加上自己的創意想像，更重要的是，我們的心態。如果你吃沙拉只是為了減肥，那麼我得說，這或許是最有效的方法，卻不是最好的唯一辦法。吃沙拉，絕對只是因為我們的口腹之慾，因為想多吃蔬果，而以最健康直接的方法來進食。這樣一來，在沙拉配菜的組合上就更有趣，一旦有趣，便增加我們的食慾，吃沙拉就再也不像在吃草啦。', now(), now());
 
-INSERT INTO forum (forumId, forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ('10', '海帶芽豆腐味噌湯', '經典的日式味噌湯，可以依個人喜好添加食材的一鍋好湯，暖身暖心。', now(), now());
+INSERT INTO forum (forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ( '海帶芽豆腐味噌湯', '經典的日式味噌湯，可以依個人喜好添加食材的一鍋好湯，暖身暖心。', now(), now());
 
-INSERT INTO forum (forumId, forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ('11', '純素韓式辣拌麵', '超好吃，不敢吃辣的人會太辣，醬包建議不要一次全部加。有附上一個塑膠蓋，泡完麵時把水瀝出更方便', now(), now());
+INSERT INTO forum ( forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ( '純素韓式辣拌麵', '超好吃，不敢吃辣的人會太辣，醬包建議不要一次全部加。有附上一個塑膠蓋，泡完麵時把水瀝出更方便', now(), now());
 
-INSERT INTO forum (forumId, forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ('12', '麻醬香拌麵(純素)', '超好吃麻醬香，麵條很Q', now(), now());
+INSERT INTO forum ( forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES ('麻醬香拌麵(純素)', '超好吃麻醬香，麵條很Q', now(), now());
