@@ -4,9 +4,9 @@ import com.eeit45.champion.vegetarian.dto.customer.BusinessRegisterRequest;
 import com.eeit45.champion.vegetarian.model.customer.Business;
 
 public interface BusinessDao {
-    Integer createUser(BusinessRegisterRequest businessRegisterRequest);
+    Integer createBusiness(BusinessRegisterRequest businessRegisterRequest);
 
-    Business getUserById(Integer userId);
+    Business getBusinessById(Integer userId);
 
-    Business getUserByEmail(String loginEmail);
+    Business getBusinessByEmail(String loginEmail);
 }

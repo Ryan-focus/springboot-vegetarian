@@ -125,33 +125,32 @@ public class PostDaoImpl implements PostDao {
 	
 	//新增收藏文章
 	public void addFavPost(int pid,int uid) {
-		
-		String sql = "INSERT INTO fav_post ( userId, favDate, postId )"+
-				"VALUES (:userId, :favDate, :postId)";
-				
-				Map<String, Object> map = new HashMap<>();
-				map.put("userId", uid);
-				map.put("favDate",new Date());
-				map.put("postId", pid);
-				
-				namedParameterJdbcTemplate.update(sql, map);
-		
+//
+//		String sql = "INSERT INTO fav_post ( userId, favDate, postId )"+
+//				"VALUES (:userId, :favDate, :postId)";
+//
+//				Map<String, Object> map = new HashMap<>();
+//				map.put("userId", uid);
+//				map.put("favDate",new Date());
+//				map.put("postId", pid);
+//
+//				namedParameterJdbcTemplate.update(sql, map);
+//
 	}
+
 	//搜尋收藏文章
-	
 	public PostFavorite findByFavorite(int pid , int uid) {
-		
-		String sql = "SELECT * FROM fav_post where postId = :postId and userId = :userId ";
-		Map<String, Object> map = new HashMap<>();
-		map.put("postId", pid);
-		map.put("userId", uid);
-		
-		//List<Post> favPost = namedParameterJdbcTemplate.query(sql,map ,new PostRowMapper());
-		PostFavorite pFavorite = namedParameterJdbcTemplate.queryForObject(sql,map ,new BeanPropertyRowMapper<PostFavorite>(PostFavorite.class));
-		
-		return pFavorite;
-		
-		
+//
+//		String sql = "SELECT * FROM fav_post where postId = :postId and userId = :userId ";
+//		Map<String, Object> map = new HashMap<>();
+//		map.put("postId", pid);
+//		map.put("userId", uid);
+//
+//		//List<Post> favPost = namedParameterJdbcTemplate.query(sql,map ,new PostRowMapper());
+//		PostFavorite pFavorite = namedParameterJdbcTemplate.queryForObject(sql,map ,new BeanPropertyRowMapper<PostFavorite>(PostFavorite.class));
+//
+//		return pFavorite;
+		return null;
 	}
 
 }

@@ -24,7 +24,7 @@ public class BusinessServiceImpl implements BusinessService {
 
     @Override
     public Business login(BusinessLoginRequest businessLoginRequest) {
-        Business business = businessDao.getUserByEmail(businessLoginRequest.getLoginEmail());
+        Business business = businessDao.getBusinessByEmail(businessLoginRequest.getLoginEmail());
 
         // checking user exists or not
         if(business == null) {
@@ -47,7 +47,7 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     public Integer register(BusinessRegisterRequest businessRegisterRequest) {
         // Checking Email exists or not
-        Business business =  businessDao.getUserByEmail(businessRegisterRequest.getLoginEmail());
+        Business business =  businessDao.getBusinessByEmail(businessRegisterRequest.getLoginEmail());
         if (business != null){
             //set error comment log in console
             log.warn("該 E-mail :{} 已經被註冊了 ! ", businessRegisterRequest.getLoginEmail());
@@ -59,11 +59,11 @@ public class BusinessServiceImpl implements BusinessService {
 
 
         //creat Account
-        return businessDao.createUser(businessRegisterRequest);
+        return businessDao.createBusiness(businessRegisterRequest);
     }
 
     @Override
-    public Business getUserById(Integer userId) {
-        return businessDao.getUserById(userId);
+    public Business getBusinessId(Integer businessId) {
+        return businessDao.getBusinessById(businessId);
     }
 }

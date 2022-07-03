@@ -97,8 +97,7 @@ public class ForumDaoImpl implements ForumDao {
 		Map<String, Object> map = new HashMap<>();
 		map.put("forumId", forumId);
 		namedParameterJdbcTemplate.update(sql, map);
-		
-		
+
 	}
 
 

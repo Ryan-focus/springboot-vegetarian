@@ -37,11 +37,11 @@ public class BusinessController {
     }
 
 
-    @PostMapping("/users/register")
+    @PostMapping("/business/register")
     public ResponseEntity<Business> register(@RequestBody @Valid BusinessRegisterRequest businessRegisterRequest){
-        Integer userId = businessService.register(businessRegisterRequest);
+        Integer businessId = businessService.register(businessRegisterRequest);
 
-        Business business = businessService.getUserById(userId);
+        Business business = businessService.getBusinessId(businessId);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(business);
     }
