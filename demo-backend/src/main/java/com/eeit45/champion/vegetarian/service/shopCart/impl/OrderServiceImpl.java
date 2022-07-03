@@ -1,13 +1,11 @@
 package com.eeit45.champion.vegetarian.service.shopCart.impl;
 
-import com.eeit45.champion.vegetarian.dao.UsersDao;
 import com.eeit45.champion.vegetarian.dao.shopCart.OrderDao;
 import com.eeit45.champion.vegetarian.dao.shopCart.ProductDao;
 import com.eeit45.champion.vegetarian.dto.shopCart.BuyItem;
 import com.eeit45.champion.vegetarian.dto.shopCart.CreateOrderRequest;
 import com.eeit45.champion.vegetarian.dto.shopCart.OrderQueryParams;
 import com.eeit45.champion.vegetarian.dto.shopCart.OrderRequest;
-import com.eeit45.champion.vegetarian.model.Users;
 import com.eeit45.champion.vegetarian.model.shopCart.Order;
 import com.eeit45.champion.vegetarian.model.shopCart.OrderItem;
 import com.eeit45.champion.vegetarian.model.shopCart.Product;
