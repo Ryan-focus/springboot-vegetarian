@@ -32,11 +32,15 @@ const url = "localhost:8088";
 //接收的資料ref
 const resData = ref();
 
+const resPostId = ref();
+const resPostTitle = ref();
+const resPostText = ref();
+
 const getAxios = function () {
   axios
     .get(`http://${url}/postIndex`)
     .then((res) => {
-      console.log(res);
+      // console.log(res);
       //獲取伺服器的回傳資料
       resData.value = res.data;
     })
@@ -167,8 +171,9 @@ function auditPost(number) {
     .then((res) => {
       //獲取伺服器的回傳資料
       console.log(res);
-
-      getAxios();
+      resPostId.value = res.data.postId;
+      resPostTitle.value = res.data.title;
+      resPostText.value = res.data.postedText;
     })
     .catch((error) => {
       console.log(error, "失敗");
@@ -176,24 +181,25 @@ function auditPost(number) {
 }
 
 //互動視窗modal
-var exampleModal = document.getElementById("exampleModal");
-exampleModal.addEventListener("show.bs.modal", function (event) {
-  // Button that triggered the modal
-  var button = event.relatedTarget;
-  // Extract info from data-bs-* attributes
-  var recipient = button.getAttribute("data-bs-whatever");
-  // If necessary, you could initiate an AJAX request here
-  // and then do the updating in a callback.
-  //
-  // Update the modal's content.
-  var modalTitle = exampleModal.querySelector(".modal-title");
-  var modalBodyInput = exampleModal.querySelector(".modal-body input");
+// var exampleModal = document.getElementById("exampleModal");
+// exampleModal.addEventListener("show.bs.modal", function (event) {
+//   // Button that triggered the modal
+//   var button = event.relatedTarget;
+//   // Extract info from data-bs-* attributes
+//   var recipient = button.getAttribute("data-bs-whatever");
+//   // If necessary, you could initiate an AJAX request here
+//   // and then do the updating in a callback.
+//   //
+//   // Update the modal's content.
+//   var modalTitle = exampleModal.querySelector(".modal-title");
+//   var modalBodyInput = exampleModal.querySelector(".modal-body input");
 
-  modalTitle.textContent = "New message to " + recipient;
-  modalBodyInput.value = recipient;
-});
+//   modalTitle.textContent = "New message to " + recipient;
+//   modalBodyInput.value = recipient;
+// });
 
 // Apply a few Bootstrap 5 optimizations
+
 onMounted(() => {
   // Remove labels from
   document.querySelectorAll("#datasetLength label").forEach((el) => {
@@ -351,6 +357,7 @@ th.sort {
             <DatasetShow />
           </div>
         </div>
+
         <hr />
         <div class="row">
           <div class="col-md-12">
@@ -366,7 +373,7 @@ th.sort {
                       v-for="(th, index) in cols"
                       :key="th.field"
                       :class="['sort', th.sort] && `d-none d-sm-table-cell`"
-                      @click="onSort($event, index)"
+                      @click.prevent="onSort($event, index)"
                     >
                       {{ th.name }} <i class="gg-select float-end"></i>
                     </th>
@@ -386,13 +393,6 @@ th.sort {
                           id="combo"
                           >{{ row.postStatus }}</span
                         >
-                        <!-- <td class="d-none d-sm-table-cell">
-                          <span
-                            :class="`fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-${user.labelVariant}-light text-${user.labelVariant}`"
-                          >
-                            {{ user.labelText }}
-                          </span>
-                        </td> -->
                       </td>
                       <td
                         class="text-center"
@@ -448,7 +448,7 @@ th.sort {
                           <button
                             type="button"
                             class="btn btn-sm btn-alt-secondary"
-                            @click="deletePost(row.postId)"
+                            @click.prevent="deletePost(row.postId)"
                           >
                             <i class="fa fa-fw fa-times"></i>
                           </button>
@@ -495,11 +495,11 @@ th.sort {
                     type="textarea"
                     class="form-control"
                     id="exampleFormControlInput1"
-                    placeholder="這裡是標題"
                     style="resize: none"
                     disabled
                     readonly
                     rows="1"
+                    v-model="resPostTitle"
                   ></textarea>
                 </div>
                 <div class="mb-3">
@@ -511,9 +511,9 @@ th.sort {
                     id="exampleFormControlTextarea1"
                     rows="12"
                     style="resize: none"
-                    placeholder="這裡是內文"
                     disabled
                     readonly
+                    v-model="resPostText"
                   ></textarea>
                 </div>
                 <div class="auditselect">
