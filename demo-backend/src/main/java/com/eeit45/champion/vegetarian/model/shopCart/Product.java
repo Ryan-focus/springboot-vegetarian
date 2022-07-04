@@ -13,7 +13,7 @@ public class Product {
     private ProductCategory productCategory;
     private VeganCategory veganCategory;
     private Integer productPrice;
-    private String image;
+    private String productImage;
     private Integer stock;
     private Date createdTime;
     private Date updatedTime;
@@ -23,16 +23,17 @@ public class Product {
     public Product() {
     }
 
-    public Product(Integer productId, String productName, ProductCategory productCategory, VeganCategory veganCategory, Integer productPrice, String image, Integer stock, Timestamp createdTime, Timestamp updatedTime) {
+    public Product(Integer productId, String productName, ProductCategory productCategory, VeganCategory veganCategory, Integer productPrice, String productImage, Integer stock, Date createdTime, Date updatedTime, String description) {
         this.productId = productId;
         this.productName = productName;
         this.productCategory = productCategory;
         this.veganCategory = veganCategory;
         this.productPrice = productPrice;
-        this.image = image;
+        this.productImage = productImage;
         this.stock = stock;
         this.createdTime = createdTime;
         this.updatedTime = updatedTime;
+        this.description = description;
     }
 
     public Integer getProductId() {
@@ -75,13 +76,14 @@ public class Product {
         this.productPrice = productPrice;
     }
 
-    public String getImage() {
-        return image;
+    public String getProductImage() {
+        return productImage;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
     }
+
 
     public Integer getStock() {
         return stock;
