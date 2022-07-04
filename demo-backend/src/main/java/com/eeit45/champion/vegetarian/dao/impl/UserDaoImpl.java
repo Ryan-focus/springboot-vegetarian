@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.eeit45.champion.vegetarian.dao.UserDao;
@@ -96,7 +97,8 @@ public class UserDaoImpl implements UserDao {
 
         Map<String, Object> map = new HashMap<>();
         map.put("email", userRequest.getEmail());
-        map.put("password", userRequest.getPassword());
+        //springsecurity 的 BCryptPasswordEncoder 加密, 解密(回傳boolean): bcryptPasswordEncoder.matches("使用者輸入密碼",存入資料庫密碼)
+        map.put("password", new BCryptPasswordEncoder().encode(userRequest.getPassword()));
         map.put("userName", userRequest.getUserName());
         map.put("status", userRequest.getStatus());
         map.put("userPic", userRequest.getUserPic());
@@ -140,6 +142,19 @@ public class UserDaoImpl implements UserDao {
         map.put("userId", userId);
 
         namedParameterJdbcTemplate.update(sql, map);
+		
+	}
+	
+	@Override
+	public int updateUserStatus(Integer userId) {
+		
+		String sql = "UPDATE vegandb.user SET status"
+				+ " = if(status = '禁用', '正常', '禁用') WHERE userId= :userId";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+
+        return namedParameterJdbcTemplate.update(sql, map);
 		
 	}
 	

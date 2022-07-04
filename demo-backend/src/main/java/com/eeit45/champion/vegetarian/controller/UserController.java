@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -98,13 +99,12 @@ public class UserController {
 	@PutMapping("/users/{userId}")
     public ResponseEntity<User> updateUser(@PathVariable Integer userId,
                                                  @RequestBody @Valid UserRequest userRequest){
-        //Check Product 是否存在
+		
 		User checkUser = userService.getUserById(userId);
         if( checkUser == null ) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-       // 修改商品的數據
         userService.updateUser(userId,userRequest);
 
         User updateUser = userService.getUserById(userId);
@@ -117,6 +117,21 @@ public class UserController {
     	userService.deleteUserById(userId);
 
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+    
+    @PatchMapping("/users/{userId}")
+    public ResponseEntity<User> updateUserStatus(@PathVariable Integer userId){
+    	
+		User checkUser = userService.getUserById(userId);
+        if( checkUser == null ) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        userService.updateUserStatus(userId);
+
+        User updateUserStatus = userService.getUserById(userId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(updateUserStatus);
     }
 
 }

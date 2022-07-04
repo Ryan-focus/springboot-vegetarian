@@ -167,6 +167,50 @@ function deleteRestaurant(number) {
     });
 }
 
+function updateUserStatus(number) {
+  toast
+    .fire({
+      title: "確定要變更使用者狀態嗎?",
+      text: "",
+      icon: "warning",
+      showCancelButton: true,
+      customClass: {
+        confirmButton: "btn btn-danger m-1",
+        cancelButton: "btn btn-secondary m-1",
+      },
+      confirmButtonText: "變更資料",
+      cancelButtonText: "取消變更",
+
+      html: false,
+      preConfirm: () => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 50);
+        });
+      },
+    })
+    .then((result) => {
+      //send request to server
+      if (result.value) {
+        axios
+          .patch(`http://${url}/users/${number}`)
+          .then((res) => {
+            //獲取伺服器的回傳資料
+            console.log(res);
+
+            getAxios();
+            toast.fire("變更成功!", "", "success");
+          })
+          .catch((error) => {
+            console.log(error, "失敗");
+          });
+      } else if (result.dismiss === "cancel") {
+        toast.fire("已取消", "", "error");
+      }
+    });
+}
+
 // Apply a few Bootstrap 5 optimizations
 onMounted(() => {
   // Remove labels from
@@ -340,8 +384,9 @@ th.sort {
                           <button
                             type="button"
                             class="btn btn-sm btn-alt-secondary"
+                            @click="updateUserStatus(row.userId)"
                           >
-                            <i class="fa fa-fw fa-pencil-alt"></i>
+                            <i class="fa fa-fw fa-user-pen"></i>
                           </button>
                           <button
                             type="button"
