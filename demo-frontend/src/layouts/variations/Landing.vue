@@ -26,7 +26,7 @@ store.mainContent({ mode: "boxed" });
     <template #header-content-left>
       <!-- Logo -->
       <RouterLink
-        :to="{ name: 'landing' }"
+        :to="{ name: 'index' }"
         class="fw-bold fs-lg tracking-wider text-dual me-2"
       >
         愛蔬網
@@ -110,11 +110,17 @@ store.mainContent({ mode: "boxed" });
         </div>
       </div>
       <!-- END Options -->
-
+      <RouterLink
+        :to="{ name: 'login' }"
+        class="btn btn-warning"
+        v-click-ripple
+      >
+        <i class="fa fa-fw fa-user opacity-50"></i>
+      </RouterLink>
       <!-- Purchase Link -->
-      <a class="btn btn-success" href="/" v-click-ripple>
+      <a class="btn btn-success" href="#" v-click-ripple>
         <i class="fa fa-fw fa-shopping-cart opacity-50"></i>
-        <span class="d-none d-sm-inline-block ms-2">購物車</span>
+        <!-- <span class="d-none d-sm-inline-block ms-2">購物車</span> -->
       </a>
       <!-- END Purchase Link -->
     </template>
