@@ -114,10 +114,10 @@ public class PostDaoImpl implements PostDao {
 		return postList;
 	}
 
-	// 搜尋待審核文章
+	// 搜尋發布中文章(前台)
 	public List<Post> findPostByStatus() {
 
-		String sql = "SELECT *  FROM post where 1=1 AND postStatus = '待審核' order by postId desc";
+		String sql = "SELECT *  FROM post where 1=1 AND postStatus = '發布中' order by postId desc";
 		List<Post> postList = namedParameterJdbcTemplate.query(sql, new PostRowMapper());
 		return postList;
 

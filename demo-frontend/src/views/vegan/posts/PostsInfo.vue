@@ -4,6 +4,7 @@ import { ref, reactive, computed, onMounted } from "vue";
 import Swal from "sweetalert2";
 
 import axios from "axios";
+import $ from 'jquery';
 
 // Vue Dataset, for more info and examples you can check out https://github.com/kouts/vue-dataset/tree/next
 import {
@@ -47,6 +48,7 @@ const getAxios = function () {
       // 獲取伺服器的回傳資料;
       res.data.forEach((value) => {
         let status = value.postStatus;
+        // console.log(status);
         if (status === "待審核") {
           statusClass.push("warning");
         } else if (status === "發布中") {
@@ -160,6 +162,7 @@ function deletePost(number) {
         axios
           .get(`http://${url}/deletePost/${number}`)
           .then((res) => {
+            
             //獲取伺服器的回傳資料
             console.log(res);
 
@@ -192,6 +195,7 @@ function auditPost(number) {
 
 //送出審核文章
 function sendAuditPost(number, status) {
+  // var data = {postStatus = status};
   // axios({
   //   method: "put",
   //   baseURL: "http://localhost:8088",
@@ -214,34 +218,21 @@ function sendAuditPost(number, status) {
   params.append("imgurl", "");
   params.append("postStatus", status);
   axios
-    .put(`http://${url}/auditPost/${number}`, params)
+    .put(`http://${url}/auditPost/${number}` , params)
     .then((res) => {
-      //獲取伺服器的回傳資料
+      
       console.log(res);
       getAxios();
     })
     .catch((error) => {
       console.log(error, "失敗");
     });
+     
 }
 
-//互動視窗modal
-// var exampleModal = document.getElementById("exampleModal");
-// exampleModal.addEventListener("show.bs.modal", function (event) {
-//   // Button that triggered the modal
-//   var button = event.relatedTarget;
-//   // Extract info from data-bs-* attributes
-//   var recipient = button.getAttribute("data-bs-whatever");
-//   // If necessary, you could initiate an AJAX request here
-//   // and then do the updating in a callback.
-//   //
-//   // Update the modal's content.
-//   var modalTitle = exampleModal.querySelector(".modal-title");
-//   var modalBodyInput = exampleModal.querySelector(".modal-body input");
 
-//   modalTitle.textContent = "New message to " + recipient;
-//   modalBodyInput.value = recipient;
-// });
+
+
 
 // Apply a few Bootstrap 5 optimizations
 
@@ -257,6 +248,15 @@ onMounted(() => {
   selectLength.classList = "";
   selectLength.classList.add("form-select");
   selectLength.style.width = "80px";
+
+
+  //送出互動視窗表單後關閉
+//  $('#auditform').submit(function(e) {
+//     e.preventDefault();
+//     // Coding
+//     $('#modalAudit').modal('toggle'); //or  $('#IDModal').modal('hide');
+//     return false;
+// });
 });
 </script>
 
@@ -427,6 +427,7 @@ th.sort {
                 </thead>
                 <DatasetItem tag="tbody" class="fs-sm">
                   <template #default="{ row, rowIndex }">
+ 
                     <tr style="line-height: 5px">
                       <th scope="row">{{ row.postId }}</th>
                       <td
@@ -520,8 +521,8 @@ th.sort {
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
         >
-          <div class="modal-dialog">
-            <form class="row g-3">
+          <div class="modal-dialog" id="modalAudit" >
+            <form class="row g-3" id="auditform" @submit.prevent="sendAuditPost(resPostId, resPostStatus)">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">文章審核</h5>
@@ -600,8 +601,8 @@ th.sort {
                   <button
                     type="submit"
                     class="btn btn-primary"
-                    @click.prevent="sendAuditPost(resPostId, resPostStatus)"
                     data-dismiss="modal"
+               
                   >
                     送出審核
                   </button>
