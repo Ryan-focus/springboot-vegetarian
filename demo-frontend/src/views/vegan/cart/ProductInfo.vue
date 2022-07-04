@@ -319,13 +319,13 @@ th.sort {
                         class="d-none d-sm-table-cell fs-sm"
                         style="min-width: 110px"
                       >
-                        {{ row.price }}
+                        {{ row.productPrice }}
                       </td>
                       <td
                         class="d-none d-sm-table-cell fs-sm"
                         style="min-width: 110px"
                       >
-                        {{ row.imageUrl }}
+                        {{ row.image }}
                       </td>
                       <td
                         class="d-none d-sm-table-cell fs-sm"
