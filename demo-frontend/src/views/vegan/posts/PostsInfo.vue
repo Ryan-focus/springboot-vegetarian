@@ -30,14 +30,31 @@ let toast = Swal.mixin({
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
 //接收的資料ref
-const resData = ref();
+var resData = ref();
+
+const resPostId = ref();
+const resPostTitle = ref();
+const resPostText = ref();
+const resPostStatus = ref();
+const statusClass = [];
 
 const getAxios = function () {
   axios
     .get(`http://${url}/postIndex`)
     .then((res) => {
-      console.log(res);
-      //獲取伺服器的回傳資料
+      // console.log(res);
+
+      // 獲取伺服器的回傳資料;
+      res.data.forEach((value) => {
+        let status = value.postStatus;
+        if (status === "待審核") {
+          statusClass.push("warning");
+        } else if (status === "發布中") {
+          statusClass.push("success");
+        } else if (status === "未通過") {
+          statusClass.push("danger");
+        }
+      });
       resData.value = res.data;
     })
     .catch((error) => {
@@ -113,7 +130,121 @@ function onSort(event, i) {
   sortEl.sort = toset;
 }
 
+//Delete Restaurant Fuction
+function deletePost(number) {
+  toast
+    .fire({
+      title: "確定要刪除嗎?",
+      text: "刪除之後這筆資料就消失囉~!",
+      icon: "warning",
+      showCancelButton: true,
+      customClass: {
+        confirmButton: "btn btn-danger m-1",
+        cancelButton: "btn btn-secondary m-1",
+      },
+      confirmButtonText: "刪除",
+      cancelButtonText: "取消",
+
+      html: false,
+      preConfirm: () => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 50);
+        });
+      },
+    })
+    .then((result) => {
+      //send request to server
+      if (result.value) {
+        axios
+          .get(`http://${url}/deletePost/${number}`)
+          .then((res) => {
+            //獲取伺服器的回傳資料
+            console.log(res);
+
+            getAxios();
+            toast.fire("刪除成功", "", "success");
+          })
+          .catch((error) => {
+            console.log(error, "失敗");
+          });
+      }
+    });
+}
+
+//審核文章
+function auditPost(number) {
+  //send request to server
+
+  axios
+    .get(`http://${url}/auditPost/${number}`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resPostId.value = res.data.postId;
+      resPostTitle.value = res.data.title;
+      resPostText.value = res.data.postedText;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+
+//送出審核文章
+function sendAuditPost(number, status) {
+  // axios({
+  //   method: "put",
+  //   baseURL: "http://localhost:8088",
+  //   url: `http://${url}/auditPost/${number}`,
+  //   headers: {
+  //     "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+  //   },
+  // })
+  //   .then((result) => {
+  //     console.log(result.data);
+  //   })
+  //   .catch((err) => {
+  //     console.error(err);
+  //   });
+
+  let params = new URLSearchParams();
+  params.append("postId", number);
+  params.append("title", "");
+  params.append("postedText", "");
+  params.append("imgurl", "");
+  params.append("postStatus", status);
+  axios
+    .put(`http://${url}/auditPost/${number}`, params)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      console.log(res);
+      getAxios();
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+
+//互動視窗modal
+// var exampleModal = document.getElementById("exampleModal");
+// exampleModal.addEventListener("show.bs.modal", function (event) {
+//   // Button that triggered the modal
+//   var button = event.relatedTarget;
+//   // Extract info from data-bs-* attributes
+//   var recipient = button.getAttribute("data-bs-whatever");
+//   // If necessary, you could initiate an AJAX request here
+//   // and then do the updating in a callback.
+//   //
+//   // Update the modal's content.
+//   var modalTitle = exampleModal.querySelector(".modal-title");
+//   var modalBodyInput = exampleModal.querySelector(".modal-body input");
+
+//   modalTitle.textContent = "New message to " + recipient;
+//   modalBodyInput.value = recipient;
+// });
+
 // Apply a few Bootstrap 5 optimizations
+
 onMounted(() => {
   // Remove labels from
   document.querySelectorAll("#datasetLength label").forEach((el) => {
@@ -127,29 +258,6 @@ onMounted(() => {
   selectLength.classList.add("form-select");
   selectLength.style.width = "80px";
 });
-//格式化時間
-
-// function formatTime(postedDate, row, index) {
-//   var date = new Date();
-//   date.setTime(postedDate);
-//   var month = date.getMonth() + 1;
-//   var hours = date.getHours();
-//   if (hours < 10) hours = "0" + hours;
-//   var minutes = date.getMinutes();
-//   if (minutes < 10) minutes = "0" + minutes;
-//   var time =
-//     date.getFullYear() +
-//     "-" +
-//     month +
-//     "-" +
-//     date.getDate() +
-//     " " +
-//     hours +
-//     ":" +
-//     minutes;
-//   return time;
-// }
-//
 </script>
 
 <style lang="scss" scoped>
@@ -246,28 +354,32 @@ th.sort {
             >
               <a
                 class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
+                href=""
+                data-rel="notaudit"
               >
-                未審核
+                待審核
                 <span class="badge bg-primary rounded-pill">20</span>
               </a>
               <a
                 class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
+                href=""
+                data-rel="pass"
               >
-                審核中
+                通過審核
                 <span class="badge bg-primary rounded-pill">72</span>
               </a>
               <a
                 class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
+                href=""
+                data-rel="fail"
               >
-                已完成
+                未通過審核
                 <span class="badge bg-primary rounded-pill">890</span>
               </a>
               <a
                 class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
+                href=""
+                data-rel="all"
               >
                 全部
                 <span class="badge bg-primary rounded-pill">997</span>
@@ -290,6 +402,7 @@ th.sort {
             <DatasetShow />
           </div>
         </div>
+
         <hr />
         <div class="row">
           <div class="col-md-12">
@@ -305,7 +418,7 @@ th.sort {
                       v-for="(th, index) in cols"
                       :key="th.field"
                       :class="['sort', th.sort] && `d-none d-sm-table-cell`"
-                      @click="onSort($event, index)"
+                      @click.prevent="onSort($event, index)"
                     >
                       {{ th.name }} <i class="gg-select float-end"></i>
                     </th>
@@ -313,7 +426,7 @@ th.sort {
                   </tr>
                 </thead>
                 <DatasetItem tag="tbody" class="fs-sm">
-                  <template #default="{ row }">
+                  <template #default="{ row, rowIndex }">
                     <tr style="line-height: 5px">
                       <th scope="row">{{ row.postId }}</th>
                       <td
@@ -321,16 +434,10 @@ th.sort {
                         style="min-width: 100px"
                       >
                         <span
-                          :class="`fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-${row.variant}-light text-${row.variant}`"
+                          :class="`fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-${statusClass[rowIndex]}-light text-${statusClass[rowIndex]}`"
+                          id="combo"
                           >{{ row.postStatus }}</span
                         >
-                        <!-- <td class="d-none d-sm-table-cell">
-                          <span
-                            :class="`fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-${user.labelVariant}-light text-${user.labelVariant}`"
-                          >
-                            {{ user.labelText }}
-                          </span>
-                        </td> -->
                       </td>
                       <td
                         class="text-center"
@@ -377,12 +484,16 @@ th.sort {
                           <button
                             type="button"
                             class="btn btn-sm btn-alt-secondary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#auditPost"
+                            @click="auditPost(row.postId)"
                           >
                             <i class="fa fa-fw fa-pencil-alt"></i>
                           </button>
                           <button
                             type="button"
                             class="btn btn-sm btn-alt-secondary"
+                            @click.prevent="deletePost(row.postId)"
                           >
                             <i class="fa fa-fw fa-times"></i>
                           </button>
@@ -400,6 +511,104 @@ th.sort {
         >
           <DatasetInfo class="py-3 fs-sm" />
           <DatasetPager class="flex-wrap py-3 fs-sm" />
+        </div>
+
+        <div
+          class="modal fade"
+          id="auditPost"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <form class="row g-3">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">文章審核</h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+                <div class="modal-body">
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label"
+                      >文章編號</label
+                    ><br />
+                    <textarea
+                      type="textarea"
+                      class="form-control"
+                      id="exampleFormControlInput1"
+                      style="resize: none"
+                      disabled
+                      readonly
+                      rows="1"
+                      v-model="resPostId"
+                    ></textarea>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label"
+                      >文章標題</label
+                    >
+                    <textarea
+                      type="textarea"
+                      class="form-control"
+                      id="exampleFormControlInput1"
+                      style="resize: none"
+                      disabled
+                      readonly
+                      rows="1"
+                      v-model="resPostTitle"
+                    ></textarea>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label"
+                      >文章內文</label
+                    >
+                    <textarea
+                      class="form-control"
+                      id="exampleFormControlTextarea1"
+                      rows="12"
+                      style="resize: none"
+                      disabled
+                      readonly
+                      v-model="resPostText"
+                    ></textarea>
+                  </div>
+                  <div class="auditselect">
+                    <select
+                      class="form-select form-select-lg mb-3"
+                      aria-label=".form-select-lg example"
+                      v-model="resPostStatus"
+                    >
+                      <option value="待審核" selected>待審核</option>
+                      <option value="發布中">發布中</option>
+                      <option value="未通過">未通過</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    關閉
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    @click.prevent="sendAuditPost(resPostId, resPostStatus)"
+                    data-dismiss="modal"
+                  >
+                    送出審核
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
       </Dataset>
     </BaseBlock>

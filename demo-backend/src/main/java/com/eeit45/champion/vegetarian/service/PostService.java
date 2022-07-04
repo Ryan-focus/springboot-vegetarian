@@ -16,21 +16,21 @@ boolean addPostImage(Post post);
 	
 	boolean deletePost(int id);
 	
-	public boolean updatePost(Post post);
+	boolean updatePost(Post post);
 	
-	public Post findPost(int id);
+	Post findPost(int id);
 	
-	public List<Post> findallPost();
+	List<Post> findallPost();
 	
-	public Post updateCondition(Post post);
+	Post updateCondition(Post post);
 	
-	public List<Post> findPostByStatus() ;
+	List<Post> findPostByStatus() ;
 	
 	void addFavPost(int pid,int uid);
 	
 	PostFavorite findByFavorite(int pid , int uid);
 	
-	public boolean isFavorite(int pid, int uid);
+	boolean isFavorite(int pid, int uid);
 	
 
 }

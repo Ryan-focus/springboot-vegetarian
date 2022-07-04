@@ -129,15 +129,15 @@ function deleteRestaurant(number) {
   toast
     .fire({
       title: "確定要刪除嗎?",
-      text: "刪除之後這筆資料就消失囉~!",
+      text: "刪除之後就無法回復囉",
       icon: "warning",
       showCancelButton: true,
       customClass: {
         confirmButton: "btn btn-danger m-1",
         cancelButton: "btn btn-secondary m-1",
       },
-      confirmButtonText: "幹掉他!",
-      cancelButtonText: "拯救他 !",
+      confirmButtonText: "確定刪除",
+      cancelButtonText: "取消刪除",
 
       html: false,
       preConfirm: () => {
@@ -158,13 +158,13 @@ function deleteRestaurant(number) {
             console.log(res);
 
             getAxios();
-            toast.fire("他被殺死了!", "你殺掉了一個人 ! 殺人犯 !", "success");
+            toast.fire("刪除成功", "", "success");
           })
           .catch((error) => {
             console.log(error, "失敗");
           });
       } else if (result.dismiss === "cancel") {
-        toast.fire("她活下來了", "你取消了他 ! 他安全了 :)", "error");
+        toast.fire("刪除失敗", "", "error");
       }
     });
 }
@@ -242,13 +242,13 @@ th.sort {
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-alt">
           <li class="breadcrumb-item">
-            <a class="link-fx" href="#/backend/cart/dashboard">
+            <a class="link-fx" href="#/backend/restaurant/dashboard">
               <i class="fa fa-burger"></i> 餐廳管理</a
             >
           </li>
 
           <li class="breadcrumb-item" aria-current="page">
-            <i class="fa fa-leaf"></i> 餐廳資訊
+            <i class="fa fa-store"></i> 餐廳資訊
           </li>
         </ol>
       </nav>
@@ -280,6 +280,14 @@ th.sort {
           <div class="col-md-4 py-2">
             <DatasetSearch ds-search-placeholder="資料搜尋..." />
           </div>
+        </div>
+        <div class="col-sm-6 col-xl-4">
+          <br />
+          <a href="#/backend/restaurant/InsertRestaurant">
+            <button type="button" class="btn rounded-pill btn-outline-success">
+              新增餐廳
+            </button>
+          </a>
         </div>
         <hr />
         <div class="row">

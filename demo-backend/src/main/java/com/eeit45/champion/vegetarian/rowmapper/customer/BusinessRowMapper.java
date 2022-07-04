@@ -6,19 +6,20 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+
 public class BusinessRowMapper implements RowMapper<Business> {
 
-    //將資料庫的結果轉換成User Object
+    //將資料庫的結果轉換成Business Object
     @Override
     public Business mapRow(ResultSet rs, int rowNum) throws SQLException {
         Business business = new Business();
 
-        business.setUserId(rs.getInt("userId"));
+        business.setBusinessId(rs.getInt("businessId"));
         business.setEmail(rs.getString("email"));
         business.setPassword(rs.getString("password"));
-        business.setUserName(rs.getString("userName"));
+        business.setBusinessName(rs.getString("businessName"));
         business.setStatus(rs.getString("status"));
-        business.setUserPic(rs.getString("userPic"));
+        business.setBusinessPic(rs.getString("businessPic"));
         business.setCreatedTime(rs.getTimestamp("createdTime"));
         business.setLastLoginTime(rs.getTimestamp("lastLoginTime"));
 

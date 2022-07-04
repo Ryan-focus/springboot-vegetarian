@@ -2,22 +2,16 @@ package com.eeit45.champion.vegetarian.controller;
 
 import java.io.*;
 
+import com.eeit45.champion.vegetarian.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.eeit45.champion.vegetarian.model.Post;
 import com.eeit45.champion.vegetarian.model.PostFavorite;
-import com.eeit45.champion.vegetarian.model.customer.Business;
 import com.eeit45.champion.vegetarian.service.PostService;
 
 import java.time.LocalDateTime;
@@ -34,15 +28,24 @@ public class PostController {
 
 	@Autowired
 	private PostService postService;
+	
+	ZoneId zoneId = ZoneId.systemDefault();
+	LocalDateTime localDateTime = LocalDateTime.now();
+	ZonedDateTime zdt = localDateTime.atZone(zoneId);
+	Date date = Date.from(zdt.toInstant());
+
+
+	//@RestController 沒有辦法返回View-model視圖給使用者
+	//且前後端分離，也不需在後端編寫前端頁面。
 
 	//食記發表頁面
-	@GetMapping("/newFoodPost")
-	public String processMainAction(Model m) {
-
-		Post post = new Post();
-		m.addAttribute("posts", post);
-		return "createPost";
-	}
+//	@GetMapping("/newFoodPost")
+//	public String processMainAction(Model m) {
+//
+//		Post post = new Post();
+//		m.addAttribute("posts", post);
+//		return "createPost";
+//	}
 
 	//發表食記
 	@PostMapping("/PostNew")
@@ -78,10 +81,7 @@ public class PostController {
 			imageUrl = defaultImgurl;
 		}
 
-		ZoneId zoneId = ZoneId.systemDefault();
-		LocalDateTime localDateTime = LocalDateTime.now();
-		ZonedDateTime zdt = localDateTime.atZone(zoneId);
-		Date date = Date.from(zdt.toInstant());
+		
 
 		post.setTitle(title);
 		post.setPostedText(postedText);
@@ -107,22 +107,23 @@ public class PostController {
 
 	}
 
+	//GET Mapping QueryAllPostList 方法重複
 	//前台食記文章總覽
-	@GetMapping(path = "/postStatusList")
-	public ResponseEntity<List<Post>> showPost2(Model model) {
-		List<Post> findallPost = postService.findPostByStatus();
-
-		if (findallPost != null) {
-			return ResponseEntity.status(HttpStatus.OK).body(findallPost);
-		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-		}
-
-	}
+//	@GetMapping(path = "/postStatusList")
+//	public ResponseEntity<List<Post>> showPost2(Model model) {
+//		List<Post> findallPost = postService.findPostByStatus();
+//
+//		if (findallPost != null) {
+//			return ResponseEntity.status(HttpStatus.OK).body(findallPost);
+//		} else {
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//		}
+//
+//	}
 
 	//後台審核食記
-	@GetMapping(path = "/auditPost/{id}")
-	public ResponseEntity<Post> auditPost(@PathVariable("id") int id, Model model) {
+	@GetMapping("/auditPost/{id}")
+	public ResponseEntity<Post> auditPost(@PathVariable("id") Integer id) {
 		
 		Post post = postService.findPost(id);
 		if (post != null) {
@@ -132,32 +133,37 @@ public class PostController {
 		}
 
 	}
+	//後台更新審核文章
+	@PutMapping("/auditPost/{id}")
+	public ResponseEntity<Post> sendauditPost(@PathVariable("id") Integer id,
+											  @RequestBody Post post) {
+		
+		Post checkPost = postService.findPost(id);
+		if (checkPost == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
 
-	@PostMapping(path = "/auditPost/{id}")
-	public ResponseEntity<Post> sendauditPost(@PathVariable("id") int id,
-			@RequestParam("cd") String condition, Post post) {
+		checkPost.setPostStatus(post.getPostStatus());
+		checkPost.setPostAuditDate(date);
 
-		post.setPostStatus(condition);
-		post.setPostId(id);
-		Post updateCondition = postService.updateCondition(post);
+		Post updateCondition = postService.updateCondition(checkPost);
+
 		return ResponseEntity.status(HttpStatus.CREATED).body(updateCondition);
 		
 	}
 
+	//與@GetMapping("/auditPost/{id}") 方法重複
 	//查詢單筆文章
-	@GetMapping(value = "/showPost/{id}")
-	public ResponseEntity<Post> showPost(@PathVariable("id") int id,HttpServletRequest request) {
-
-		Post post = postService.findPost(id);
-		if (post != null) {
-			return ResponseEntity.status(HttpStatus.OK).body(post);
-		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-		}
-
-		
-
-	}
+//	@GetMapping(value = "/showPost/{id}")
+//	public ResponseEntity<Post> showPost(@PathVariable("id") int id,HttpServletRequest request) {
+//
+//		Post post = postService.findPost(id);
+//		if (post != null) {
+//			return ResponseEntity.status(HttpStatus.OK).body(post);
+//		} else {
+//			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+//		}
+//	}
 
 	//刪除文章
 	@GetMapping(value = "/deletePost/{id}")
@@ -236,16 +242,16 @@ public class PostController {
 	@GetMapping(value = "/favtest/{id}")
 	public ResponseEntity<PostFavorite> showfav(@PathVariable("id") Integer id,HttpServletRequest request) {
 
-		 Business business = (Business) request.getSession().getAttribute("user");
+		 User user = (User) request.getSession().getAttribute("user");
 	//String userId2 = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
 		
 //		System.out.println(userId2);
 		 
 		 Integer userId;//用户id
-	        if(business == null){
+	        if(user == null){
 	            return null;
 	        }else{
-	            userId = business.getUserId();
+	            userId = user.getUserId();
 	        }
 		//Integer userId = 1564;
 		PostFavorite post = postService.findByFavorite(id,userId);
@@ -270,13 +276,13 @@ public class PostController {
 		Date date = Date.from(zdt.toInstant());
 
 		
-		Business business = null;
-		business.getUserId();
+		User user = null;
+		user.getUserId();
 		 Integer userId;//用户id
-	        if(business == null){
+	        if(user == null){
 	            return null;
 	        }else{
-	            userId = business.getUserId();
+	            userId = user.getUserId();
 	        }
 		//Integer userId = user.getUserId();
 		//Integer userId = 1564;

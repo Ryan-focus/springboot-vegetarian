@@ -3,6 +3,7 @@ package com.eeit45.champion.vegetarian.model.shopCart;
 import com.eeit45.champion.vegetarian.constant.ProductCategory;
 import com.eeit45.champion.vegetarian.constant.VeganCategory;
 
+import java.sql.Timestamp;
 import java.util.Date;
 
 
@@ -11,18 +12,28 @@ public class Product {
     private String productName;
     private ProductCategory productCategory;
     private VeganCategory veganCategory;
-    private Integer price;
-    private String imageUrl;
-
+    private Integer productPrice;
+    private String image;
+    private Integer stock;
     private Date createdTime;
-
     private Date updatedTime;
 
     private String description;
 
-    public String getDescription() {return description;}
+    public Product() {
+    }
 
-    public void setDescription(String description) {this.description = description;}
+    public Product(Integer productId, String productName, ProductCategory productCategory, VeganCategory veganCategory, Integer productPrice, String image, Integer stock, Timestamp createdTime, Timestamp updatedTime) {
+        this.productId = productId;
+        this.productName = productName;
+        this.productCategory = productCategory;
+        this.veganCategory = veganCategory;
+        this.productPrice = productPrice;
+        this.image = image;
+        this.stock = stock;
+        this.createdTime = createdTime;
+        this.updatedTime = updatedTime;
+    }
 
     public Integer getProductId() {
         return productId;
@@ -40,7 +51,6 @@ public class Product {
         this.productName = productName;
     }
 
-
     public ProductCategory getProductCategory() {
         return productCategory;
     }
@@ -48,6 +58,7 @@ public class Product {
     public void setProductCategory(ProductCategory productCategory) {
         this.productCategory = productCategory;
     }
+
     public VeganCategory getVeganCategory() {
         return veganCategory;
     }
@@ -56,20 +67,28 @@ public class Product {
         this.veganCategory = veganCategory;
     }
 
-    public Integer getPrice() {
-        return price;
+    public Integer getProductPrice() {
+        return productPrice;
     }
 
-    public void setPrice(Integer price) {
-        this.price = price;
+    public void setProductPrice(Integer productPrice) {
+        this.productPrice = productPrice;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImage() {
+        return image;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Integer getStock() {
+        return stock;
+    }
+
+    public void setStock(Integer stock) {
+        this.stock = stock;
     }
 
     public Date getCreatedTime() {
@@ -86,5 +105,13 @@ public class Product {
 
     public void setUpdatedTime(Date updatedTime) {
         this.updatedTime = updatedTime;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

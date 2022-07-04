@@ -23,17 +23,17 @@ public class BusinessDaoImpl implements BusinessDao {
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Override
-    public Integer createUser(BusinessRegisterRequest businessRegisterRequest) {
-        String sql = "INSERT INTO users ( email, password, userName, status, userPic, createdTime , lastLoginTime)" +
-                "VALUES (:email, :password, :userName, :status, :userPic, :createdTime , :lastLoginTime)";
+    public Integer createBusiness(BusinessRegisterRequest businessRegisterRequest) {
+        String sql = "INSERT INTO business ( email, password, businessName, status, businessPic, createdTime , lastLoginTime)" +
+                "VALUES (:email, :password, :businessName, :status, :businessPic, :createdTime , :lastLoginTime)";
 
         Map<String,Object> map = new HashMap<>();
         map.put("email", businessRegisterRequest.getLoginEmail());
         map.put("password", businessRegisterRequest.getPassword());
-        map.put("userName", businessRegisterRequest.getUserName());
-        map.put("userPic", businessRegisterRequest.getUserPic());
+        map.put("businessName", businessRegisterRequest.getBusinessName());
+        map.put("businessPic", businessRegisterRequest.getBusinessPic());
 
-        map.put("status","未審核");
+        map.put("status","未開通");
 
         //TimeStamp
         Date now = new Date();
@@ -45,17 +45,17 @@ public class BusinessDaoImpl implements BusinessDao {
         namedParameterJdbcTemplate.update(sql,new MapSqlParameterSource(map), keyHolder);
 
         //接住MySQL自動生成的ID
-        int userId = keyHolder.getKey().intValue();
+        Integer businessId = keyHolder.getKey().intValue();
 
-        return userId;
+        return businessId;
     }
 
     @Override
-    public Business getUserById(Integer userId) {
-        String sql = "SELECT * FROM users WHERE userId = :userId";
+    public Business getBusinessById(Integer businessId) {
+        String sql = "SELECT * FROM business WHERE businessId = :businessId";
 
         Map<String,Object> map = new HashMap<>();
-        map.put("userId" , userId);
+        map.put("businessId" , businessId);
 
         List<Business> businessList = namedParameterJdbcTemplate.query(sql, map, new BusinessRowMapper());
         if(businessList.size() > 0){
@@ -66,11 +66,11 @@ public class BusinessDaoImpl implements BusinessDao {
     }
 
     @Override
-    public Business getUserByEmail(String loginEmail) {
-        String sql = "SELECT * FROM users WHERE email = :userEmail";
+    public Business getBusinessByEmail(String loginEmail) {
+        String sql = "SELECT * FROM business WHERE email = :businessEmail";
 
         Map<String,Object> map = new HashMap<>();
-        map.put("userEmail" , loginEmail);
+        map.put("businessEmail" , loginEmail);
 
         List<Business> businessList = namedParameterJdbcTemplate.query(sql, map, new BusinessRowMapper());
         if(businessList.size() > 0){

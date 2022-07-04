@@ -28,7 +28,7 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public Integer totalProduct(ProductQueryParams productQueryParams) {
-        String sql = "SELECT count(*) FROM products WHERE 1=1";
+        String sql = "SELECT count(*) FROM product WHERE 1=1";
 
         Map<String, Object> map = new HashMap<>();
 
@@ -40,7 +40,7 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public List<Product> getAllProduct() {
-        String sql = "SELECT * FROM veganDB.products";
+        String sql = "SELECT * FROM product";
         List<Product> productList = namedParameterJdbcTemplate.query(sql,new ProductRowMapper());
         if (productList!=null) {
             return productList;
@@ -52,7 +52,7 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public List<Product> getProducts(ProductQueryParams productQueryParams) {
-        String sql = "SELECT * FROM products WHERE 1=1";
+        String sql = "SELECT * FROM product WHERE 1=1";
 
         Map<String, Object> map = new HashMap<>();
 
@@ -77,7 +77,7 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public Product getProductById(Integer productId) {
-        String sql = "SELECT * FROM products WHERE id = :productId";
+        String sql = "SELECT * FROM product WHERE productId = :productId";
 
         Map<String, Object> map = new HashMap<>();
         map.put("productId", productId);
@@ -92,7 +92,7 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public Integer createProduct(ProductRequest productRequest) {
-        String sql = "INSERT INTO products ( name, category, veganCategory, price, image, createdTime , updatedTime, description)" +
+        String sql = "INSERT INTO product ( productName, category, veganCategory, productPrice, productImage, createdTime , updatedTime, description)" +
                 "VALUES (:productName, :productCategory, :veganCategory, :price, :imageUrl, :createdTime , :updatedTime, :description)";
 
         Map<String, Object> map = new HashMap<>();
@@ -122,8 +122,8 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public void updateProduct(Integer productId, ProductRequest productRequest) {
-        String sql = "UPDATE products SET name = :productName, category = :productCategory," +
-                " price = :price,image= :imageUrl,updatedTime = :updatedTime,description = :description  WHERE id = :productId";
+        String sql = "UPDATE product SET productName = :productName, category = :productCategory," +
+                " productPrice = :price, productImage= :imageUrl,updatedTime = :updatedTime,description = :description  WHERE productId = :productId";
 
         Map<String, Object> map = new HashMap<>();
         map.put("productId", productId);
@@ -144,8 +144,21 @@ public class ProductDaoImpl implements ProductDao {
     }
 
     @Override
+    public void updateStock(Integer productId, Integer stock) {
+        //更新 products 的Stock 的值 ， 還有更新 UpdateTime
+//        String sql = "UPDATE products SET stock = :stock, last_modified_date = :lastModifiedDate " +
+//                "WHERE product_id = :productId";
+        Map<String , Object> map = new HashMap<>();
+        map.put("productId", productId);
+        map.put("stock", stock);
+        map.put("lastModifiedDate" , new Date());
+
+//        namedParameterJdbcTemplate.update(sql,map);
+    }
+
+    @Override
     public void deleteProductById(Integer productId) {
-        String sql = "DELETE FROM products WHERE id= :productId";
+        String sql = "DELETE FROM product WHERE productId= :productId";
 
         Map<String, Object> map = new HashMap<>();
         map.put("productId", productId);
@@ -168,7 +181,7 @@ public class ProductDaoImpl implements ProductDao {
         }
 
         if (productQueryParams.getSearch() != null) {
-            sql = sql + " AND name LIKE :search";
+            sql = sql + " AND productName LIKE :search";
             map.put("search", "%" + productQueryParams.getSearch() + "%");
         }
         return sql;

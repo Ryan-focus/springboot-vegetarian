@@ -130,16 +130,29 @@ CREATE TABLE post(
     postedDate DATETIME NOT NULL,
     postedText NVARCHAR(8192) NOT NULL,
     imgurl NVARCHAR(256),
-    postStatus NVARCHAR(256),
-    variant NVARCHAR(128)
+    postStatus NVARCHAR(256)
 );
 
---forum
+-- forum
 DROP TABLE IF EXISTS forum;
 CREATE TABLE forum(
 	forumId int NOT NULL auto_increment primary key,
-	forumTitle nvarchar(50) NOT NULL,
-	forumContent nvarchar(150) NOT NULL,
+	forumTitle nvarchar(128) NOT NULL,
+	forumContent nvarchar(512) NOT NULL,
 	forumCreateTime TIMESTAMP NOT NULL,
 	forumUpdateTime TIMESTAMP NOT NULL);
 
+-- user
+use veganDB;
+drop table if exists user;
+create table user(
+                      userId int NOT NULL auto_increment primary key,
+                      email varchar(100) not null UNIQUE ,
+                      password nvarchar(61) not null,
+                      userName nvarchar(50) not null,
+                      status nvarchar (20) not null,
+                      userPic nvarchar(50),
+                      registerTime Date not null ,
+                      lastLoginTime TIMESTAMP not null
+    );
+SELECT * FROM vegandb.user;

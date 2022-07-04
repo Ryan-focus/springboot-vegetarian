@@ -15,25 +15,12 @@ public class PostRowMapper implements RowMapper<Post> {
         post.setPostId(rs.getInt("postId"));
         post.setTitle(rs.getString("title"));
         post.setPostedText(rs.getString("postedText"));
-        post.setImgurl(rs.getString("imgurl"));
+        post.setImgurl(rs.getString("imgUrl"));
         post.setPostStatus(rs.getString("postStatus"));
-        post.setVariant(rs.getString("variant"));
-
-//        String categoryStr = rs.getString("category");
-//        ProductCategory category = ProductCategory.valueOf(categoryStr);
-//        product.setProductCategory(category);
-//
-//        String veganCategoryStr = rs.getString("veganCategory");
-//        VeganCategory veganCategory = VeganCategory.valueOf(veganCategoryStr);
-//        product.setVeganCategory(veganCategory);
-
 
         //日期處理輸出
         Timestamp createdTime = rs.getTimestamp("postedDate");
         post.setPostedDate(createdTime);
-
-//        Timestamp updatedTime = rs.getTimestamp("updatedTime");
-//        product.setUpdatedTime(updatedTime);
 
         return post;
     }
