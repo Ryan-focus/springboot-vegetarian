@@ -32,13 +32,15 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
-	
+
+    //有分頁的GetMapping List
 	@GetMapping("/users")
     public ResponseEntity<Page<User>> getUsers(
             //Filtering
             @RequestParam(required = false) String search,
             
             //Sorting
+            @RequestParam(defaultValue = "lastLoginTime") String orderBy,
             @RequestParam(defaultValue = "desc") String sorting,
 
             //Pagination
@@ -47,6 +49,7 @@ public class UserController {
     ) {
 		UserQueryParams userQueryParams = new UserQueryParams();
 		userQueryParams.setSearch(search);
+        userQueryParams.setOrderBy(orderBy);
 		userQueryParams.setSorting(sorting);
 		userQueryParams.setLimit(limit);
 		userQueryParams.setOffset(offset);
@@ -66,9 +69,10 @@ public class UserController {
         
         return ResponseEntity.status(HttpStatus.OK).body(page);
 	}
-	
+
+    //無分頁的GetMapping List
 	@GetMapping("/users/all")
-    public ResponseEntity<List<User>> getAllIsers(){
+    public ResponseEntity<List<User>> getAllUsers(){
         List<User> userList =userService.getAllUser();
         if (userList!=null){
             return ResponseEntity.status(HttpStatus.OK).body(userList);

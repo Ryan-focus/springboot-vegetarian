@@ -24,8 +24,7 @@ public class ForumRowMapper implements RowMapper<Forum> {
 		
 		forum.setForumTitle(rs.getString("forumTitle"));
 		forum.setForumContent(rs.getString("forumContent"));
-		
-		
+
 		
 		return forum;
 	}

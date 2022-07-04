@@ -29,7 +29,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public Integer totalUser(UserQueryParams userQueryParams) {
 		
-		String sql = "SELECT count(*) FROM vegandb.user WHERE 1=1";
+		String sql = "SELECT count(*) FROM `user` WHERE 1=1";
 		
 		Map<String, Object> map = new HashMap<>();
 
@@ -41,15 +41,15 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public List<User> getUsers(UserQueryParams userQueryParams) {
-		String sql = "SELECT * FROM vegandb.user WHERE 1=1";
+		String sql = "SELECT * FROM `user` WHERE 1=1";
 		
 		Map<String, Object> map = new HashMap<>();
 
         sql = filteringSQL(sql, map, userQueryParams);
 
         // 排序
-        sql = sql + userQueryParams.getSorting();
-
+        sql = sql + " ORDER BY " + userQueryParams.getOrderBy() + " " + userQueryParams.getSorting();
+        System.out.println(sql);
         //分頁
 //        SQL SERVER分頁語法
 //        sql = sql + " OFFSET :limit ROWS FETCH NEXT :offset ROWS ONLY";
@@ -65,7 +65,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public List<User> getAllUser() {
-		String sql = "SELECT * FROM vegandb.user";
+		String sql = "SELECT * FROM `user`";
 		
 		List<User> userList = namedParameterJdbcTemplate.query(sql,new UserRowMapper());
         if (userList!=null) {
@@ -118,7 +118,7 @@ public class UserDaoImpl implements UserDao {
 
 	@Override
 	public int updateUser(Integer userId, UserRequest userRequest) {
-		String sql = "UPDATE vegandb.user SET email = :email, password = :password," +
+		String sql = "UPDATE `user` SET email = :email, password = :password," +
                 " userName = :userName,status= :status,userPic = :userPic WHERE userId = :userId";
 
         Map<String, Object> map = new HashMap<>();
@@ -136,7 +136,7 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public void deleteUserById(Integer userId) {
 		
-		String sql = "DELETE FROM vegandb.user WHERE userId= :userId";
+		String sql = "DELETE FROM `user` WHERE userId= :userId";
 
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
@@ -161,7 +161,7 @@ public class UserDaoImpl implements UserDao {
 	private String filteringSQL(String sql, Map<String, Object> map, UserQueryParams userQueryParams) {
 		
 		if (userQueryParams.getSearch() != null) {
-            sql = sql + " AND userid in :search";
+            sql = sql + " AND userId in :search";
             map.put("search", userQueryParams.getSearch());
         }
 		return sql;

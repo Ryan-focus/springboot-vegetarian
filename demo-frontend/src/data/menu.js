@@ -100,7 +100,7 @@ export default {
         },
         {
           name: "餐廳資訊",
-          icon: "fa fa-leaf",
+          icon: "fa fa-store",
           to: "backend-restaurants-restaurant-info",
         },
       ],

@@ -9,5 +9,5 @@ public interface BusinessService {
 
     Integer register(BusinessRegisterRequest businessRegisterRequest);
 
-    Business getUserById(Integer userId);
+    Business getBusinessId(Integer businessId);
 }

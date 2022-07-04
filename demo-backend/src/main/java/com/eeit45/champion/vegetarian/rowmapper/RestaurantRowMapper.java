@@ -33,7 +33,6 @@ public class RestaurantRowMapper implements RowMapper<Restaurant>{
 		restaurant.setRestaurantBusinessHours(rs.getString("restaurantBusinessHours"));
 		restaurant.setRestaurantScore(rs.getString("restaurantScore"));
 		restaurant.setImageUrl(rs.getString("imageUrl"));
-		restaurant.setRestaurantMap(rs.getString("restaurantMap"));
 		
 		//日期處理輸出
         Timestamp createdTime = rs.getTimestamp("createdTime");

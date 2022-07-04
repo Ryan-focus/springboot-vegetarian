@@ -18,10 +18,10 @@ public class OrderItemRowMapper implements RowMapper<OrderItem> {
         orderItem.setProductId(rs.getInt("product_id"));
         orderItem.setQuantity(rs.getInt("quantity"));
         orderItem.setAmount(rs.getInt("amount"));
-
+        
         //可以選擇使用擴充原有的class 去接這個variable
         //或者可以選擇創建新的Class 去接這些值
-        orderItem.setProductName(rs.getString("name"));
+//        orderItem.setProductName(rs.getString("name"));
 //        orderItem.setImage(rs.getString("image"));
 
         return orderItem;

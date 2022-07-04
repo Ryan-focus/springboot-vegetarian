@@ -6,23 +6,35 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Date;
 
 public class Business {
-    private Integer userId;
-    @JsonProperty("E-mail")
+    private Integer businessId;
     private String email;
-    @JsonIgnore
     private String password;
-    private String userName;
+    private String businessName;
     private String status;
-    private String userPic;
+    private String businessPic;
     private Date createdTime;
     private Date lastLoginTime;
 
-    public Integer getUserId() {
-        return userId;
+    public Business() {
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public Business(Integer businessId, String email, String password, String businessName, String status, String businessPic, Date createdTime, Date lastLoginTime) {
+        this.businessId = businessId;
+        this.email = email;
+        this.password = password;
+        this.businessName = businessName;
+        this.status = status;
+        this.businessPic = businessPic;
+        this.createdTime = createdTime;
+        this.lastLoginTime = lastLoginTime;
+    }
+
+    public Integer getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessId(Integer businessId) {
+        this.businessId = businessId;
     }
 
     public String getEmail() {
@@ -41,12 +53,12 @@ public class Business {
         this.password = password;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getBusinessName() {
+        return businessName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setBusinessName(String businessName) {
+        this.businessName = businessName;
     }
 
     public String getStatus() {
@@ -57,12 +69,12 @@ public class Business {
         this.status = status;
     }
 
-    public String getUserPic() {
-        return userPic;
+    public String getBusinessPic() {
+        return businessPic;
     }
 
-    public void setUserPic(String userPic) {
-        this.userPic = userPic;
+    public void setBusinessPic(String businessPic) {
+        this.businessPic = businessPic;
     }
 
     public Date getCreatedTime() {
