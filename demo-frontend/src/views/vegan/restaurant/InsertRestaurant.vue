@@ -13,19 +13,7 @@ import {
   url,
   sameAs,
 } from "@vuelidate/validators";
-// CKEditor 5, for more info and examples you can check out https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/vuejs-v3.html
-import CKEditor from "@ckeditor/ckeditor5-vue";
 
-// You can import one of the following CKEditor variation (only one at a time)
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-//import InlineEditor from '@ckeditor/ckeditor5-build-inline'
-//import BalloonEditor from '@ckeditor/ckeditor5-build-balloon'
-//import BalloonBlockEditor from '@ckeditor/ckeditor5-build-balloon-block'
-
-// CKEditor 5 variables
-let ckeditor = CKEditor.component;
-
-const editorData = ref("<p>Hello CKEditor5!</p>");
 const editorConfig = ref({});
 
 // Example options for select
@@ -136,12 +124,12 @@ async function onSubmit() {
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-alt">
           <li class="breadcrumb-item">
-            <a class="link-fx" href="#/backend/restaurant/dashboard">
+            <a class="link-fx" href="#/backend/restaurants/dashboard">
               <i class="fa fa-burger"></i> 餐廳管理</a
             >
           </li>
           <li class="breadcrumb-item" aria-current="page">
-            <a class="link-fx" href="#/backend/restaurant/restaurantInfo">
+            <a class="link-fx" href="#/backend/restaurants/restaurantInfo">
               <i class="fa fa-leaf"></i> 餐廳資訊</a
             >
           </li>
@@ -158,37 +146,39 @@ async function onSubmit() {
   <div class="content">
     <!-- Basic -->
     <form @submit.prevent="onSubmit">
-      <BaseBlock title="Validation Form" content-full>
+      <BaseBlock title="新增餐廳表單" content-full>
         <div class="row push">
           <div class="col-lg-4">
-            <p class="fs-sm text-muted">請盡量填寫完整資訊</p>
+            <p class="fs-sm text-muted">請填寫完整資訊</p>
           </div>
           <div class="col-lg-8 col-xl-5">
-            <!-- 商品名稱開始 -->
+            <!-- 餐廳名稱開始 -->
             <div class="mb-4">
               <label class="form-label" for="val-restaurantName"
-                >餐廳名稱 <span class="text-danger">*</span></label
+                >餐廳名稱</label
               >
-              <input
-                type="text"
-                id="val-restaurantName"
-                class="form-control"
-                :class="{
-                  'is-invalid': v$.restaurantName.$errors.length,
-                }"
-                v-model="state.restaurantName"
-                @blur="v$.restaurantName.$touch"
-                placeholder="請輸入餐廳名稱.."
-              />
-              <div
-                v-if="v$.restaurantName.$errors.length"
-                class="invalid-feedback animated fadeIn"
-              >
-                請輸入餐廳名稱
-              </div>
+              <input type="text" id="val-restaurantName" class="form-control" />
             </div>
             <!-- 電話開始 -->
+            <div class="mb-4">
+              <label class="form-label" for="val-restaurantTel">電話</label>
+              <input
+                type="text"
+                id="val-restaurantTel"
+                class="form-control"
+                placeholder="02-23448743"
+              />
+            </div>
             <!-- 地址開始 -->
+            <div class="mb-4">
+              <label class="form-label" for="val-restaurantAddress">地址</label>
+              <input
+                type="text"
+                id="val-restaurantAddress"
+                class="form-control"
+                placeholder="桃園市中壢區.."
+              />
+            </div>
             <!-- 餐廳類型開始 -->
             <div class="mb-4">
               <label class="form-label" for="example-select"
@@ -232,36 +222,28 @@ async function onSubmit() {
             <!-- 營業時間 -->
             <div class="mb-4">
               <label class="form-label" for="example-select">營業時間</label>
+              <input
+                type="textarea"
+                id="val-restaurantBusinessHours"
+                class="form-control"
+              />
             </div>
             <!-- 評分開始 -->
             <div class="mb-4">
-              <label class="form-label" for="val-score"
-                >台幣 (NTD) <span class="text-danger">*</span></label
-              >
+              <label class="form-label" for="val-score">評分</label>
               <input
                 type="text"
                 id="val-score"
                 class="form-control"
-                :class="{
-                  'is-invalid': v$.score.$errors.length,
-                }"
-                v-model="state.score"
-                @blur="v$.score.$touch"
                 placeholder="0.0-5.0"
               />
-              <div
-                v-if="v$.currency.$errors.length"
-                class="invalid-feedback animated fadeIn"
-              >
-                請輸入數字
-              </div>
             </div>
             <!-- 圖片上傳開始-->
-            <div class="row push">
+            <!-- <div class="row push">
               <div class="col-lg-8 col-xl-5 overflow-hidden">
                 <div class="mb-4">
                   <label class="form-label" for="example-file-input"
-                    >圖片上傳（一張）</label
+                    >圖片上傳</label
                   >
                   <input
                     class="form-control"
@@ -270,13 +252,11 @@ async function onSubmit() {
                   />
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <div class="row items-push">
               <div class="col-lg-7 offset-lg-4">
-                <button type="submit" class="btn btn-alt-primary">
-                  Submit
-                </button>
+                <button type="submit" class="btn btn-alt-primary">送出</button>
               </div>
             </div>
           </div>

@@ -38,7 +38,8 @@ const VeganRestaurantDashboard = () =>
   import("@/views/vegan/restaurant/DashboardView.vue");
 const VeganRestaurantInfo = () =>
   import("@/views/vegan/restaurant/RestaurantInfo.vue");
-
+const VeganRestaurantInsertRestaurant = () =>
+  import("@/views/vegan/restaurant/InsertRestaurant.vue");
 //愛蔬網後台: forums
 const VeganForumsDashboard = () =>
   import("@/views/vegan/forums/DashboardView.vue");
@@ -397,6 +398,11 @@ const routes = [
             path: "restaurantinfo",
             name: "backend-restaurants-restaurant-info",
             component: VeganRestaurantInfo,
+          },
+          {
+            path: "insertRestaurant",
+            name: "backend-restaurants-insert-restaurant",
+            component: VeganRestaurantInsertRestaurant,
           },
         ],
       },

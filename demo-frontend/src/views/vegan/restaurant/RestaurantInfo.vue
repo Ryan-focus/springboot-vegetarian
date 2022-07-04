@@ -237,18 +237,18 @@ th.sort {
 
 <template>
   <!-- Hero -->
-  <BasePageHeading title="餐廳管理" subtitle="現在可以查閱所有餐廳資訊..">
+  <BasePageHeading title="餐廳資訊">
     <template #extra>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-alt">
           <li class="breadcrumb-item">
-            <a class="link-fx" href="#/backend/restaurant/dashboard">
-              <i class="fa fa-burger"></i> 餐廳管理</a
-            >
+            <a> <i class="fa fa-burger"></i> 餐廳管理</a>
           </li>
 
           <li class="breadcrumb-item" aria-current="page">
-            <i class="fa fa-store"></i> 餐廳資訊
+            <a class="link-fx" href="#/backend/restaurants/restaurantinfo">
+              <i class="fa fa-store"></i> 餐廳資訊</a
+            >
           </li>
         </ol>
       </nav>
@@ -278,18 +278,19 @@ th.sort {
             <DatasetShow />
           </div>
           <div class="col-md-4 py-2">
-            <DatasetSearch ds-search-placeholder="資料搜尋..." />
+            <DatasetSearch ds-search-placeholder="搜尋：中式/日式/全素.." />
           </div>
         </div>
         <div class="col-sm-6 col-xl-4">
           <br />
-          <a href="#/backend/restaurant/InsertRestaurant">
+          <a href="#/backend/restaurants/InsertRestaurant">
             <button type="button" class="btn rounded-pill btn-outline-success">
               新增餐廳
             </button>
           </a>
         </div>
-        <hr />
+        <br />
+
         <div class="row">
           <div class="col-md-12">
             <div class="table-responsive">
@@ -317,6 +318,7 @@ th.sort {
                     <th class="text-center" style="width: 80px">動作</th>
                   </tr>
                 </thead>
+
                 <DatasetItem tag="tbody" class="fs-sm">
                   <template #default="{ row }">
                     <tr>
@@ -386,6 +388,7 @@ th.sort {
                           <button
                             type="button"
                             class="btn btn-sm btn-alt-secondary"
+                            @click="updateRestaurant(row.restaurantNumber)"
                           >
                             <i class="fa fa-fw fa-pencil-alt"></i>
                           </button>
