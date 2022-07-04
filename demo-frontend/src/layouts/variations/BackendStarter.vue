@@ -47,8 +47,8 @@ store.mainContent({ mode: "narrow" });
               heading: ture,
             },
             {
-              name: 'Landing',
-              to: 'landing',
+              name: 'Index',
+              to: 'index',
               icon: 'si si-rocket',
             },
           ]"

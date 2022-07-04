@@ -148,7 +148,7 @@ drop table if exists user;
 create table user(
                       userId int NOT NULL auto_increment primary key,
                       email varchar(100) not null UNIQUE ,
-                      password nvarchar(50) not null,
+                      password nvarchar(61) not null,
                       userName nvarchar(50) not null,
                       status nvarchar (20) not null,
                       userPic nvarchar(50),

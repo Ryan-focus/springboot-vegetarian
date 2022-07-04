@@ -16,14 +16,11 @@ import javax.validation.constraints.Min;
 import java.util.List;
 
 @RestController
-@RequestMapping("/order")
 public class OrderController {
 
     @Autowired
     private OrderService orderService;
-
-
-    @GetMapping("{userId}/orders")
+    @GetMapping("{userId}/order")
     public ResponseEntity<Page<Order>> getOrders(
             @PathVariable Integer userId,
             @RequestParam(defaultValue = "10") @Max(1000) @Min(0) Integer limit,
@@ -49,11 +46,20 @@ public class OrderController {
 
         return ResponseEntity.status(HttpStatus.OK).body(page);
     }
+    @GetMapping("order")
+    public  ResponseEntity<List<Order>> getAllOrder(){
+        List<Order> orderList = orderService.getAllOrders();
+        if (orderList!=null){
+            return ResponseEntity.status(HttpStatus.OK).body(orderList);
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 
     //表示前端送一個已經存在的User所購買的訂單
     // JsonObject : {"buyItemList:[{"productId":9,"quantity:1},{"productId":10,"quantity:18}]}
     //表示前端送了一個 購物車的List 內容物是 數量1個的productID=9的東西  + 數量18個的productID=10的東西
-    @PostMapping("{userId}/orders")
+    @PostMapping("{userId}/order")
     public ResponseEntity<?> createOrders(@PathVariable Integer userId,
                                           @RequestBody @Valid CreateOrderRequest createOrderRequest) {
 
@@ -64,6 +70,8 @@ public class OrderController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
+
+
 
 
 }

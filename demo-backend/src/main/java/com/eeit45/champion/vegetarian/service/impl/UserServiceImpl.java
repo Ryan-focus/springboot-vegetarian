@@ -52,4 +52,9 @@ public class UserServiceImpl implements UserService {
 		userDao.deleteUserById(userId);
 	}
 
+	@Override
+	public int updateUserStatus(Integer userId) {
+		return userDao.updateUserStatus(userId);
+	}
+
 }
