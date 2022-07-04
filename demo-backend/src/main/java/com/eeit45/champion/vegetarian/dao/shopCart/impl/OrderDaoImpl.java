@@ -62,7 +62,7 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public List<Order> getOrders(OrderQueryParams orderQueryParams) {
-        String sql = "SELECT orderId, userId,payment, createdTime, updatedTime FROM `order` " +
+        String sql = "SELECT orderId, userId,payment,status, createdTime, updatedTime FROM `order` " +
                 "WHERE 1=1";
 
         Map<String, Object> map = new HashMap<>();
@@ -153,4 +153,15 @@ public class OrderDaoImpl implements OrderDao {
         return sql;
     }
 
+    @Override
+    public List<Order> getAllOrders() {
+        String sql = "select * from veganDB.order";
+
+        List<Order> orderList = namedParameterJdbcTemplate.query(sql,new OrdersRowMapper());
+        if (orderList!=null){
+            return orderList;
+        }else {
+            return null;
+        }
+    }
 }

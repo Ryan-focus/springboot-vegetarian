@@ -17,6 +17,9 @@ public interface OrderDao {
 
      List<Order> getOrders(OrderQueryParams orderQueryParams);
 
+     //取全部的資料給後台用
+     List<Order> getAllOrders();
+
      Integer createOrders(Integer userId, Integer totalAmount);
 
      void createOrderItems(Integer orderId, List<OrderItem> orderItemList);
