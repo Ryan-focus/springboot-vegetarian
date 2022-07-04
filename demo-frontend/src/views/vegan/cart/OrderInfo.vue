@@ -49,23 +49,13 @@ getAxios();
 //在這邊去設定Table :th的欄位名稱
 const cols = reactive([
   {
-    name: "訂單編號",
-    field: "orderUUID",
-    sort: "",
-  },
-  {
     name: "使用者編號",
     field: "userId",
     sort: "",
   },
   {
-    name: "付款狀態",
+    name: "訂單金額",
     field: "payment",
-    sort: "",
-  },
-  {
-    name: "運送狀態",
-    field: "shipping",
     sort: "",
   },
   {
@@ -252,7 +242,7 @@ th.sort {
         v-slot="{ ds }"
         :ds-data="resData"
         :ds-sortby="sortBy"
-        :ds-search-in="['orderUUID', 'userId', 'payment', 'shipping', 'status']"
+        :ds-search-in="['userId', 'payment', 'status']"
       >
         <div class="row" :data-page-count="ds.dsPagecount">
           <div id="datasetLength" class="col-md-8 py-2">
@@ -269,7 +259,7 @@ th.sort {
               <table class="table table-bordered table-hover table-vcenter">
                 <thead>
                   <tr>
-                    <th scope="col" class="text-center">編號</th>
+                    <th scope="col" class="text-center">訂單編號</th>
                     <th
                       v-for="(th, index) in cols"
                       :key="th.field"
@@ -278,16 +268,13 @@ th.sort {
                     >
                       {{ th.name }} <i class="gg-select float-end"></i>
                     </th>
-                    <th class="text-center" style="width: 100px">動作</th>
+                    <th class="text-center" style="width: 100px">編輯</th>
                   </tr>
                 </thead>
                 <DatasetItem tag="tbody" class="fs-sm">
                   <template #default="{ row }">
                     <tr>
                       <th scope="row">{{ row.orderId }}</th>
-                      <td class="text-center" style="min-width: 150px">
-                        {{ row.orderUUID }}
-                      </td>
                       <td class="d-none d-md-table-cell fs-sm">
                         {{ row.userId }}
                       </td>
@@ -296,12 +283,6 @@ th.sort {
                         style="min-width: 110px"
                       >
                         {{ row.payment }}
-                      </td>
-                      <td
-                        class="d-none d-sm-table-cell"
-                        style="min-width: 110px"
-                      >
-                        {{ row.shipping }}
                       </td>
                       <td
                         class="d-none d-sm-table-cell"
@@ -322,13 +303,6 @@ th.sort {
                             class="btn btn-sm btn-alt-secondary"
                           >
                             <i class="fa fa-fw fa-pencil-alt"></i>
-                          </button>
-                          <button
-                            type="button"
-                            class="btn btn-sm btn-alt-secondary"
-                            @click="deleteRestaurant(row.orderId)"
-                          >
-                            <i class="fa fa-fw fa-times"></i>
                           </button>
                         </div>
                       </td>
