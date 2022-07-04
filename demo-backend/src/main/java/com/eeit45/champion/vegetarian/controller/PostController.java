@@ -95,7 +95,7 @@ public class PostController {
 
 	}
 
-	//後台食記文章總覽
+	//後台食記文章總覽(全部文章)
 	@GetMapping(path = "/postIndex")
 	public ResponseEntity<List<Post>> showAllPost() {
 		List<Post> findallPost = postService.findallPost();
@@ -108,11 +108,11 @@ public class PostController {
 
 	}
 
-	//GET Mapping QueryAllPostList 方法重複
-	//前台食記文章總覽
-	@GetMapping(path = "/postStatusList")
-	public ResponseEntity<List<Post>> showAllPostFront() {
-		List<Post> findallPost = postService.findPostByStatus();
+
+	//後台食記文章(待審核文章)
+	@GetMapping(path = "/postNoAudit")
+	public ResponseEntity<List<Post>> showAllNoAuditPost() {
+		List<Post> findallPost = postService.findPostByNoAudit();
 
 		if (findallPost != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(findallPost);
@@ -121,6 +121,32 @@ public class PostController {
 		}
 
 	}
+	
+	//後台食記文章(待審核文章)
+		@GetMapping(path = "/postNoPass")
+		public ResponseEntity<List<Post>> showAllNoPassPost() {
+			List<Post> findallPost = postService.findPostByNoPass();
+
+			if (findallPost != null) {
+				return ResponseEntity.status(HttpStatus.OK).body(findallPost);
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}
+
+		}
+	
+	//前台食記文章總覽(發布中文章)
+		@GetMapping(path = "/postStatusList")
+		public ResponseEntity<List<Post>> showAllPostFront() {
+			List<Post> findallPost = postService.findPostByStatus();
+
+			if (findallPost != null) {
+				return ResponseEntity.status(HttpStatus.OK).body(findallPost);
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}
+
+		}
 
 	//後台審核食記
 	@GetMapping("/auditPost/{id}")
