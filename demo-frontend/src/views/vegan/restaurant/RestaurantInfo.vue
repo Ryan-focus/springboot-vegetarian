@@ -65,7 +65,7 @@ const cols = reactive([
     sort: "",
   },
   {
-    name: "素食分類",
+    name: "素食種類",
     field: "restaurantType",
     sort: "",
   },
@@ -124,7 +124,9 @@ function onSort(event, i) {
   sortEl.sort = toset;
 }
 
-//Delete Restaurant Fuction
+//更新餐廳的方法
+
+//刪除餐廳的方法
 function deleteRestaurant(number) {
   toast
     .fire({
@@ -389,6 +391,7 @@ th.sort {
                             type="button"
                             class="btn btn-sm btn-alt-secondary"
                             @click="updateRestaurant(row.restaurantNumber)"
+                            onclick="location.href='#/backend/restaurants/UpdateRestaurant'"
                           >
                             <i class="fa fa-fw fa-pencil-alt"></i>
                           </button>
