@@ -26,7 +26,7 @@ public class ProductRowMapper implements RowMapper<Product> {
         product.setVeganCategory(veganCategory);
 
         product.setProductPrice(rs.getInt("productPrice"));
-        product.setImage(rs.getString("productImage"));
+        product.setProductImage(rs.getString("productImage"));
 
         product.setStock(rs.getInt("stock"));
 

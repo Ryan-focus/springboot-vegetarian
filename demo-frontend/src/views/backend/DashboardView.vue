@@ -1,5 +1,6 @@
 <script setup>
 // 已經宣告但從未使用過的Value (請勿刪除)
+// eslint-disable-next-line no-unused-vars
 import { reactive, ref } from "vue";
 
 // vue-chart-3, for more info and examples you can check out https://vue-chart-3.netlify.app/ and http://www.chartjs.org/docs/ -->

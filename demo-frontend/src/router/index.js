@@ -3,14 +3,16 @@ import { createRouter, createWebHashHistory, RouterView } from "vue-router";
 import NProgress from "nprogress/nprogress.js";
 
 // Main layout variations
+//設定Layout模板
 import LayoutSimple from "@/layouts/variations/Simple.vue";
 import LayoutLanding from "@/layouts/variations/Landing.vue";
 import LayoutBackend from "@/layouts/variations/Backend.vue";
 import LayoutBackendBoxed from "@/layouts/variations/BackendBoxed.vue";
 import LayoutBackendMegaMenu from "@/layouts/variations/BackendMegaMenu.vue";
 
-// Frontend: Landing
-const Landing = () => import("@/views/landing/LandingView.vue");
+// Frontend: Index
+const Index = () => import("@/views/frontend/Index.vue");
+const Login = () => import("@/views/frontend/Login.vue");
 
 // Backend Boxed: Dashboard
 const BackendBoxedDashboard = () =>
@@ -266,8 +268,13 @@ const routes = [
     children: [
       {
         path: "",
-        name: "landing",
-        component: Landing,
+        name: "index",
+        component: Index,
+      },
+      {
+        path: "/signin",
+        name: "login",
+        component: Login,
       },
     ],
   },

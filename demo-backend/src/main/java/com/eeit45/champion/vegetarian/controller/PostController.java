@@ -29,10 +29,7 @@ public class PostController {
 	@Autowired
 	private PostService postService;
 	
-	ZoneId zoneId = ZoneId.systemDefault();
-	LocalDateTime localDateTime = LocalDateTime.now();
-	ZonedDateTime zdt = localDateTime.atZone(zoneId);
-	Date date = Date.from(zdt.toInstant());
+	
 
 
 	//@RestController 沒有辦法返回View-model視圖給使用者
@@ -82,6 +79,10 @@ public class PostController {
 		}
 
 		
+		ZoneId zoneId = ZoneId.systemDefault();
+		LocalDateTime localDateTime = LocalDateTime.now();
+		ZonedDateTime zdt = localDateTime.atZone(zoneId);
+		Date date = Date.from(zdt.toInstant());
 
 		post.setTitle(title);
 		post.setPostedText(postedText);
@@ -94,7 +95,7 @@ public class PostController {
 
 	}
 
-	//後台食記文章總覽
+	//後台食記文章總覽(全部文章)
 	@GetMapping(path = "/postIndex")
 	public ResponseEntity<List<Post>> showAllPost() {
 		List<Post> findallPost = postService.findallPost();
@@ -107,19 +108,45 @@ public class PostController {
 
 	}
 
-	//GET Mapping QueryAllPostList 方法重複
-	//前台食記文章總覽
-//	@GetMapping(path = "/postStatusList")
-//	public ResponseEntity<List<Post>> showPost2(Model model) {
-//		List<Post> findallPost = postService.findPostByStatus();
-//
-//		if (findallPost != null) {
-//			return ResponseEntity.status(HttpStatus.OK).body(findallPost);
-//		} else {
-//			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-//		}
-//
-//	}
+
+	//後台食記文章(待審核文章)
+	@GetMapping(path = "/postNoAudit")
+	public ResponseEntity<List<Post>> showAllNoAuditPost() {
+		List<Post> findallPost = postService.findPostByNoAudit();
+
+		if (findallPost != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(findallPost);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+
+	}
+	
+	//後台食記文章(待審核文章)
+		@GetMapping(path = "/postNoPass")
+		public ResponseEntity<List<Post>> showAllNoPassPost() {
+			List<Post> findallPost = postService.findPostByNoPass();
+
+			if (findallPost != null) {
+				return ResponseEntity.status(HttpStatus.OK).body(findallPost);
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}
+
+		}
+	
+	//前台食記文章總覽(發布中文章)
+		@GetMapping(path = "/postStatusList")
+		public ResponseEntity<List<Post>> showAllPostFront() {
+			List<Post> findallPost = postService.findPostByStatus();
+
+			if (findallPost != null) {
+				return ResponseEntity.status(HttpStatus.OK).body(findallPost);
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}
+
+		}
 
 	//後台審核食記
 	@GetMapping("/auditPost/{id}")
@@ -133,17 +160,22 @@ public class PostController {
 		}
 
 	}
+	
+	@PutMapping(path = "/auditPost/{id}"  )
 	//後台更新審核文章
-	@PutMapping("/auditPost/{id}")
 	public ResponseEntity<Post> sendauditPost(@PathVariable("id") Integer id,
-											  @RequestBody Post post) {
+			@RequestParam("postStatus") String condition, Post post) {
 		
 		Post checkPost = postService.findPost(id);
 		if (checkPost == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
+		ZoneId zoneId = ZoneId.systemDefault();
+		LocalDateTime localDateTime = LocalDateTime.now();
+		ZonedDateTime zdt = localDateTime.atZone(zoneId);
+		Date date = Date.from(zdt.toInstant());
 
-		checkPost.setPostStatus(post.getPostStatus());
+		checkPost.setPostStatus(condition);
 		checkPost.setPostAuditDate(date);
 
 		Post updateCondition = postService.updateCondition(checkPost);
@@ -221,12 +253,12 @@ public class PostController {
 		} else {
 			imageUrl = defaultImgurl;
 		}
-
 		ZoneId zoneId = ZoneId.systemDefault();
 		LocalDateTime localDateTime = LocalDateTime.now();
 		ZonedDateTime zdt = localDateTime.atZone(zoneId);
 		Date date = Date.from(zdt.toInstant());
-
+		
+		
 		post.setPostId(id);
 		post.setTitle(title);
 		post.setPostedText(postedText);
@@ -243,9 +275,6 @@ public class PostController {
 	public ResponseEntity<PostFavorite> showfav(@PathVariable("id") Integer id,HttpServletRequest request) {
 
 		 User user = (User) request.getSession().getAttribute("user");
-	//String userId2 = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
-		
-//		System.out.println(userId2);
 		 
 		 Integer userId;//用户id
 	        if(user == null){
@@ -269,15 +298,7 @@ public class PostController {
 	public ResponseEntity<Boolean> addfav(@PathVariable("id") int id, Post post,HttpServletRequest request)
 			throws IOException {
 
-	
-		ZoneId zoneId = ZoneId.systemDefault();
-		LocalDateTime localDateTime = LocalDateTime.now();
-		ZonedDateTime zdt = localDateTime.atZone(zoneId);
-		Date date = Date.from(zdt.toInstant());
-
-		
-		User user = null;
-		user.getUserId();
+		User user = (User) request.getSession().getAttribute("user");
 		 Integer userId;//用户id
 	        if(user == null){
 	            return null;

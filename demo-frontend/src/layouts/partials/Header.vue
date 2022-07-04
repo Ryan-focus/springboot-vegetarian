@@ -101,6 +101,20 @@ onUnmounted(() => {
           </div>
           <!-- END Left Section -->
 
+          <!-- Middle Section -->
+          <div class="d-flex align-items-center">
+            <slot name="content-middle">
+              <!-- Open Search Section (visible on smaller screens) -->
+              <button
+                type="button"
+                class="btn btn-sm btn-alt-secondary d-md-none"
+                @click="store.headerSearch({ mode: 'on' })"
+              >
+                <i class="fa fa-fw fa-search"></i>
+              </button>
+              <!-- END Open Search Section -->
+            </slot>
+          </div>
           <!-- Right Section -->
           <div class="d-flex align-items-center">
             <slot name="content-right">
