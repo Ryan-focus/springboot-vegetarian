@@ -1,13 +1,13 @@
 package com.eeit45.champion.vegetarian.interceptor;
 
-import com.eeit45.champion.vegetarian.model.User;
+import com.eeit45.champion.vegetarian.model.customer.Business;
 
 import java.io.Serializable;
 
 public class LoginVO implements Serializable {
     private Integer id;
     private String token;
-    private User user;
+    private Business business;
 
     public Integer getId() {
         return id;
@@ -25,11 +25,11 @@ public class LoginVO implements Serializable {
         this.token = token;
     }
 
-    public User getUser() {
-        return user;
+    public Business getUser() {
+        return business;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(Business business) {
+        this.business = business;
     }
 }

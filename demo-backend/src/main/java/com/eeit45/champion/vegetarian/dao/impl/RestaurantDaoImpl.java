@@ -28,7 +28,7 @@ public class RestaurantDaoImpl implements RestaurantDao{
 	public Integer countRestaurant(RestaurantQueryParams restaurantQueryParams) {
 		String sql = "SELECT count(*) FROM restaurant WHERE 1=1";
 		
-Map<String, Object> map = new HashMap<>();
+		Map<String, Object> map = new HashMap<>();
 		
 		//查詢條件,判斷前端是否有傳這些參數過來,有的話才加上sql指令
 		if(restaurantQueryParams.getRestaurantCategory() != null) {

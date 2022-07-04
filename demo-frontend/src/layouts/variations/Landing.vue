@@ -1,0 +1,130 @@
+<script setup>
+import { useTemplateStore } from "@/stores/template";
+
+import BaseLayout from "@/layouts/BaseLayout.vue";
+
+// Main store
+const store = useTemplateStore();
+
+// Set default elements for this layout
+store.setLayout({
+  header: true,
+  sidebar: false,
+  sideOverlay: false,
+  footer: false,
+});
+
+// Set various template options for this layout variation
+store.headerStyle({ mode: "light" });
+store.mainContent({ mode: "boxed" });
+</script>
+
+<template>
+  <BaseLayout>
+    <!-- Header Content Left -->
+    <!-- Using the available v-slot, we can override the default Side Overlay content from layouts/partials/Header.vue -->
+    <template #header-content-left>
+      <!-- Logo -->
+      <RouterLink
+        :to="{ name: 'index' }"
+        class="fw-bold fs-lg tracking-wider text-dual me-2"
+      >
+        愛蔬網
+        <!-- <span class="fw-normal"></span> -->
+      </RouterLink>
+      <!-- END Logo -->
+    </template>
+    <!-- END Header Content Left -->
+
+    <!-- Header Content Right -->
+    <!-- Using the available v-slot, we can override the default Side Overlay content from layouts/partials/Header.vue -->
+    <template #header-content-right>
+      <!-- Options -->
+      <div class="dropdown">
+        <button
+          type="button"
+          class="btn btn-alt-secondary me-2"
+          id="sidebar-themes-dropdown"
+          data-bs-toggle="dropdown"
+          data-bs-auto-close="outside"
+          aria-haspopup="true"
+          aria-expanded="false"
+        >
+          <i class="far fa-circle"></i>
+        </button>
+        <div
+          class="dropdown-menu dropdown-menu-end fs-sm smini-hide border-0"
+          aria-labelledby="sidebar-themes-dropdown"
+        >
+          <!-- Color Themes -->
+          <!-- 對應首頁上方nav的切換按鈕 -->
+          <button
+            type="button"
+            class="dropdown-item d-flex align-items-center justify-content-between fw-medium"
+            @click.prevent="store.setColorTheme({ theme: '' })"
+          >
+            <span>Default</span>
+            <i class="fa fa-circle text-default"></i>
+          </button>
+          <button
+            type="buttbuttonn"
+            class="dropdown-item d-flex align-items-center justify-content-between fw-medium"
+            @click.prevent="store.setColorTheme({ theme: 'amethyst' })"
+          >
+            <span>Amethyst</span>
+            <i class="fa fa-circle text-amethyst"></i>
+          </button>
+          <button
+            type="button"
+            class="dropdown-item d-flex align-items-center justify-content-between fw-medium"
+            @click.prevent="store.setColorTheme({ theme: 'city' })"
+          >
+            <span>City</span>
+            <i class="fa fa-circle text-city"></i>
+          </button>
+          <button
+            type="button"
+            class="dropdown-item d-flex align-items-center justify-content-between fw-medium"
+            @click.prevent="store.setColorTheme({ theme: 'flat' })"
+          >
+            <span>Flat</span>
+            <i class="fa fa-circle text-flat"></i>
+          </button>
+          <button
+            type="button"
+            class="dropdown-item d-flex align-items-center justify-content-between fw-medium"
+            @click.prevent="store.setColorTheme({ theme: 'modern' })"
+          >
+            <span>Modern</span>
+            <i class="fa fa-circle text-modern"></i>
+          </button>
+          <button
+            type="button"
+            class="dropdown-item d-flex align-items-center justify-content-between fw-medium"
+            @click.prevent="store.setColorTheme({ theme: 'smooth' })"
+          >
+            <span>Smooth</span>
+            <i class="fa fa-circle text-smooth"></i>
+          </button>
+          <!-- END Color Themes -->
+        </div>
+      </div>
+      <!-- END Options -->
+
+      <RouterLink
+        :to="{ name: 'login' }"
+        class="btn btn-warning"
+        v-click-ripple
+      >
+        <i class="fa fa-fw fa-user opacity-50"></i>
+      </RouterLink>
+      <!-- Purchase Link -->
+      <a class="btn btn-success" href="#" v-click-ripple>
+        <i class="fa fa-fw fa-shopping-cart opacity-50"></i>
+        <!-- <span class="d-none d-sm-inline-block ms-2">購物車</span> -->
+      </a>
+      <!-- END Purchase Link -->
+    </template>
+    <!-- END Header Content Right -->
+  </BaseLayout>
+</template>

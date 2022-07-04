@@ -2,7 +2,7 @@ use veganDB;
 -- products
 drop table if exists products;
 
-CREATE TABLE products (
+create TABLE products (
                           id int NOT NULL auto_increment primary key,
                           name nvarchar(50) NOT NULL,
                           category nvarchar(50) NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE products (
 -- reserve
 drop table if exists reserve;
 
-CREATE TABLE reserve (
+create TABLE reserve (
                          reserveId int NOT NULL auto_increment primary key,
                          reserveDate DATETIME not null ,
                          count int not null ,
@@ -37,8 +37,21 @@ create table users(
                       lastLoginTime TIMESTAMP not null
     );
 
--- Orders
-DROP TABLE IF EXISTS orders;
+-- Order
+drop table IF EXISTS `order`;
+create TABLE `order`
+(
+    orderId       INT           NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    orderUUID     VARCHAR(45)   NOT NULL,
+    userId        INT           NOT NULL,
+    payment       VARCHAR(50)   NOT NULL, -- 訂單總花費
+    shipping      VARCHAR(50)   NOT NULL,
+    status        VARCHAR(50)   NOT NULL,
+    createdTime   TIMESTAMP     NOT NULL,
+    updatedTime   TIMESTAMP     NOT NULL
+);
+
+drop table IF EXISTS `orders`;
 CREATE TABLE `orders`
 (
     order_id           INT       NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -48,6 +61,8 @@ CREATE TABLE `orders`
     last_modified_date TIMESTAMP NOT NULL
 );
 
+
+drop table IF EXISTS order_item;
 CREATE TABLE order_item
 (
     order_item_id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -57,7 +72,39 @@ CREATE TABLE order_item
     amount        INT NOT NULL  -- 商品花費
 );
 
---restaurant
+
+
+
+drop table IF EXISTS orderEntry;
+create TABLE orderEntry
+(
+    orderEntryId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    orderUUID     VARCHAR(36) NOT NULL,
+    productid    INT NOT NULL,
+    quantity      INT NOT NULL,
+    entryPrice    INT NOT NULL
+);
+
+drop table IF EXISTS cart;
+create TABLE cart
+(
+    id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    userId     VARCHAR(36) NOT NULL,
+    cartUUID    VARCHAR(36) NOT NULL,
+    createdTime   TIMESTAMP NOT NULL, -- 商品數量
+    updatedTime    TIMESTAMP  -- 商品花費
+);
+drop table IF EXISTS cartEntry;
+create TABLE cartEntry
+(
+    cartEntryId INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    cartUUID     VARCHAR(36) NOT NULL,
+    productId    INT NOT NULL,
+    quantity      INT NOT NULL, -- 商品數量
+    entryPrice    INT NOT NULL  -- 商品花費
+);
+
+-- restaurant
 drop table if exists restaurant;
 
 create table restaurant(
@@ -75,3 +122,37 @@ create table restaurant(
 	restaurantMap nvarchar(500)
 );
 
+-- post
+drop table if exists post;
+CREATE TABLE post(
+    postId INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    title NVARCHAR(256) NOT NULL,
+    postedDate DATETIME NOT NULL,
+    postedText NVARCHAR(8192) NOT NULL,
+    imgurl NVARCHAR(256),
+    postStatus NVARCHAR(256)
+);
+
+-- forum
+DROP TABLE IF EXISTS forum;
+CREATE TABLE forum(
+	forumId int NOT NULL auto_increment primary key,
+	forumTitle nvarchar(128) NOT NULL,
+	forumContent nvarchar(512) NOT NULL,
+	forumCreateTime TIMESTAMP NOT NULL,
+	forumUpdateTime TIMESTAMP NOT NULL);
+
+-- user
+use veganDB;
+drop table if exists user;
+create table user(
+                      userId int NOT NULL auto_increment primary key,
+                      email varchar(100) not null UNIQUE ,
+                      password nvarchar(61) not null,
+                      userName nvarchar(50) not null,
+                      status nvarchar (20) not null,
+                      userPic nvarchar(50),
+                      registerTime Date not null ,
+                      lastLoginTime TIMESTAMP not null
+    );
+SELECT * FROM vegandb.user;

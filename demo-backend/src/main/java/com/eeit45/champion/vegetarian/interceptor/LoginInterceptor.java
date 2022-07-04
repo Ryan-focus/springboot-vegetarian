@@ -1,6 +1,6 @@
 package com.eeit45.champion.vegetarian.interceptor;
 
-import com.eeit45.champion.vegetarian.service.impl.UserServiceImpl;
+import com.eeit45.champion.vegetarian.service.customer.impl.BusinessServiceImpl;
 import com.eeit45.champion.vegetarian.util.HttpContextUtil;
 import com.eeit45.champion.vegetarian.util.Result;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -23,7 +23,7 @@ import java.io.IOException;
 @Component
 public class LoginInterceptor implements HandlerInterceptor {
 
-    private final static Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
+    private final static Logger log = LoggerFactory.getLogger(BusinessServiceImpl.class);
 
     // This method run on the requesting send into Controller before.
     @Override

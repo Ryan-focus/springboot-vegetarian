@@ -1,85 +1,170 @@
 package com.eeit45.champion.vegetarian.dao.impl;
 
-import com.eeit45.champion.vegetarian.dao.UserDao;
-import com.eeit45.champion.vegetarian.dto.UserLoginRequest;
-import com.eeit45.champion.vegetarian.dto.UserRegisterRequest;
-import com.eeit45.champion.vegetarian.model.User;
-import com.eeit45.champion.vegetarian.rowmapper.UserRowMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
-import org.springframework.stereotype.Component;
-
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
+
+import com.eeit45.champion.vegetarian.dao.UserDao;
+import com.eeit45.champion.vegetarian.dto.UserQueryParams;
+import com.eeit45.champion.vegetarian.dto.UserRequest;
+import com.eeit45.champion.vegetarian.model.User;
+import com.eeit45.champion.vegetarian.rowmapper.UserRowMapper;
+
 @Component
 public class UserDaoImpl implements UserDao {
-
-    @Autowired
+	
+	@Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    @Override
-    public Integer createUser(UserRegisterRequest userRegisterRequest) {
-        String sql = "INSERT INTO users ( email, password, userName, status, userPic, createdTime , lastLoginTime)" +
-                "VALUES (:email, :password, :userName, :status, :userPic, :createdTime , :lastLoginTime)";
+	@Override
+	public Integer totalUser(UserQueryParams userQueryParams) {
+		
+		String sql = "SELECT count(*) FROM `user` WHERE 1=1";
+		
+		Map<String, Object> map = new HashMap<>();
 
-        Map<String,Object> map = new HashMap<>();
-        map.put("email",userRegisterRequest.getLoginEmail());
-        map.put("password",userRegisterRequest.getPassword());
-        map.put("userName",userRegisterRequest.getUserName());
-        map.put("userPic",userRegisterRequest.getUserPic());
+        sql = filteringSQL(sql, map, userQueryParams);
 
-        map.put("status","未審核");
+        Integer total = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+        return total;
+	}
 
-        //TimeStamp
-        Date now = new Date();
-        map.put("createdTime",now);
-        map.put("lastLoginTime",now);
+	@Override
+	public List<User> getUsers(UserQueryParams userQueryParams) {
+		String sql = "SELECT * FROM `user` WHERE 1=1";
+		
+		Map<String, Object> map = new HashMap<>();
+
+        sql = filteringSQL(sql, map, userQueryParams);
+
+        // 排序
+        sql = sql + " ORDER BY " + userQueryParams.getOrderBy() + " " + userQueryParams.getSorting();
+        System.out.println(sql);
+        //分頁
+//        SQL SERVER分頁語法
+//        sql = sql + " OFFSET :limit ROWS FETCH NEXT :offset ROWS ONLY";
+        sql = sql + " LIMIT :limit OFFSET :offset";
+        map.put("limit", userQueryParams.getLimit());
+        map.put("offset", userQueryParams.getOffset());
+
+        List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
+
+        return userList;
+		
+	}
+
+	@Override
+	public List<User> getAllUser() {
+		String sql = "SELECT * FROM `user`";
+		
+		List<User> userList = namedParameterJdbcTemplate.query(sql,new UserRowMapper());
+        if (userList!=null) {
+            return userList;
+        } else {
+            return null;
+        }
+	}
+
+	@Override
+	public User getUserById(Integer userId) {
+		String sql = "SELECT * FROM vegandb.user WHERE userId = :userId";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+
+        List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
+        if (userList.size() > 0) {
+            return userList.get(0);
+        } else {
+            return null;
+        }
+	}
+
+	@Override
+	public Integer createUser(UserRequest userRequest) {
+		String sql = "INSERT INTO vegandb.user ( email, password, userName, status, userPic, registerTime , lastLoginTime)" +
+                "VALUES (:email, :password, :userName, :status, :userPic, :registerTime , :lastLoginTime)";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("email", userRequest.getEmail());
+        //springsecurity 的 BCryptPasswordEncoder 加密, 解密(回傳boolean): bcryptPasswordEncoder.matches("使用者輸入密碼",存入資料庫密碼)
+        map.put("password", new BCryptPasswordEncoder().encode(userRequest.getPassword()));
+        map.put("userName", userRequest.getUserName());
+        map.put("status", userRequest.getStatus());
+        map.put("userPic", userRequest.getUserPic());
+        
+        //日期處理
+        map.put("registerTime", new Date(System.currentTimeMillis()));
+        map.put("lastLoginTime", new Timestamp(System.currentTimeMillis()));
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        namedParameterJdbcTemplate.update(sql,new MapSqlParameterSource(map), keyHolder);
+        namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
 
-        //接住MySQL自動生成的ID
         int userId = keyHolder.getKey().intValue();
 
         return userId;
-    }
+	}
 
-    @Override
-    public User getUserById(Integer userId) {
-        String sql = "SELECT * FROM users WHERE userId = :userId";
+	@Override
+	public int updateUser(Integer userId, UserRequest userRequest) {
+		String sql = "UPDATE `user` SET email = :email, password = :password," +
+                " userName = :userName,status= :status,userPic = :userPic WHERE userId = :userId";
 
-        Map<String,Object> map = new HashMap<>();
-        map.put("userId" , userId);
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
 
-        List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
-        if(userList.size() > 0){
-            return userList.get(0);
-        }else{
-            return null;
+        map.put("email", userRequest.getEmail());
+        map.put("password", userRequest.getPassword());
+        map.put("userName", userRequest.getUserName());
+        map.put("status", userRequest.getStatus());
+        map.put("userPic", userRequest.getUserPic());
+
+        return namedParameterJdbcTemplate.update(sql, map);
+	}
+
+	@Override
+	public void deleteUserById(Integer userId) {
+		
+		String sql = "DELETE FROM `user` WHERE userId= :userId";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+
+        namedParameterJdbcTemplate.update(sql, map);
+		
+	}
+	
+	@Override
+	public int updateUserStatus(Integer userId) {
+		
+		String sql = "UPDATE vegandb.user SET status"
+				+ " = if(status = '禁用', '正常', '禁用') WHERE userId= :userId";
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("userId", userId);
+
+        return namedParameterJdbcTemplate.update(sql, map);
+		
+	}
+	
+	private String filteringSQL(String sql, Map<String, Object> map, UserQueryParams userQueryParams) {
+		
+		if (userQueryParams.getSearch() != null) {
+            sql = sql + " AND userId in :search";
+            map.put("search", userQueryParams.getSearch());
         }
-    }
-
-    @Override
-    public User getUserByEmail(String loginEmail) {
-        String sql = "SELECT * FROM users WHERE email = :userEmail";
-
-        Map<String,Object> map = new HashMap<>();
-        map.put("userEmail" , loginEmail);
-
-        List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
-        if(userList.size() > 0){
-            return userList.get(0);
-        }else{
-            return null;
-        }
-    }
-
+		return sql;
+	}
 
 }

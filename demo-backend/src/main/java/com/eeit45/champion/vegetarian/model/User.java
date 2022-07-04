@@ -1,83 +1,101 @@
 package com.eeit45.champion.vegetarian.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Date;
 
 public class User {
-    private Integer userId;
-    @JsonProperty("E-mail")
+	
+	private Integer userId;
+	
     private String email;
-    @JsonIgnore
+	
     private String password;
+	
     private String userName;
+	
     private String status;
+	
     private String userPic;
-    private Date createdTime;
+    
+    private Date registerTime;
+    
     private Date lastLoginTime;
 
-    public Integer getUserId() {
-        return userId;
-    }
+	public User() {
+	}
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
-    }
+	public User(Integer userId, String email, String password, String userName, String status, String userPic, Date registerTime, Date lastLoginTime) {
+		this.userId = userId;
+		this.email = email;
+		this.password = password;
+		this.userName = userName;
+		this.status = status;
+		this.userPic = userPic;
+		this.registerTime = registerTime;
+		this.lastLoginTime = lastLoginTime;
+	}
 
-    public String getEmail() {
-        return email;
-    }
+	public Integer getUserId() {
+		return userId;
+	}
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public String getUserName() {
-        return userName;
-    }
+	public String getPassword() {
+		return password;
+	}
 
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
+	public void setPassword(String password) {
+		this.password = password;
+	}
 
-    public String getStatus() {
-        return status;
-    }
+	public String getUserName() {
+		return userName;
+	}
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
-    public String getUserPic() {
-        return userPic;
-    }
+	public String getStatus() {
+		return status;
+	}
 
-    public void setUserPic(String userPic) {
-        this.userPic = userPic;
-    }
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
-    public Date getCreatedTime() {
-        return createdTime;
-    }
+	public String getUserPic() {
+		return userPic;
+	}
 
-    public void setCreatedTime(Date createdTime) {
-        this.createdTime = createdTime;
-    }
+	public void setUserPic(String userPic) {
+		this.userPic = userPic;
+	}
 
-    public Date getLastLoginTime() {
-        return lastLoginTime;
-    }
+	public Date getRegisterTime() {
+		return registerTime;
+	}
 
-    public void setLastLoginTime(Date lastLoginTime) {
-        this.lastLoginTime = lastLoginTime;
-    }
+	public void setRegisterTime(Date registerTime) {
+		this.registerTime = registerTime;
+	}
+
+	public Date getLastLoginTime() {
+		return lastLoginTime;
+	}
+
+	public void setLastLoginTime(Date lastLoginTime) {
+		this.lastLoginTime = lastLoginTime;
+	}
 }
