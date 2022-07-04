@@ -1,6 +1,7 @@
 package com.eeit45.champion.vegetarian.dao.customer.impl;
 
 import com.eeit45.champion.vegetarian.dao.customer.ReserveDao;
+import com.eeit45.champion.vegetarian.dto.customer.ReserveQueryParams;
 import com.eeit45.champion.vegetarian.dto.customer.ReserveRequest;
 import com.eeit45.champion.vegetarian.model.customer.Reserve;
 import com.eeit45.champion.vegetarian.rowmapper.customer.ReserveRowMapper;
@@ -23,6 +24,46 @@ public class ReserveDaoImpl implements ReserveDao {
 
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Override
+    public Integer getTotal(ReserveRequest reserveRequest) {
+        String sql = "SELECT * FROM reserve WHERE 1=1 ";
+
+        Map<String, Object > map = new HashMap<>();
+
+        Integer total = namedParameterJdbcTemplate.queryForObject(sql, map , Integer.class);
+        return total;
+    }
+
+    @Override
+    public List<Reserve> getReserves(ReserveQueryParams reserveQueryParams) {
+        String sql = "SELECT * FROM reserve WHERE 1=1";
+
+        Map<String, Object> map = new HashMap<>();
+
+        // 排序
+        sql = sql + " ORDER BY " + reserveQueryParams.getOrderBy() + " " + reserveQueryParams.getSorting();
+
+        //分頁
+        sql = sql + " LIMIT :limit OFFSET :offset";
+        map.put("limit", reserveQueryParams.getLimit());
+        map.put("offset", reserveQueryParams.getOffset());
+
+        List<Reserve> reserveList = namedParameterJdbcTemplate.query(sql,map,new ReserveRowMapper());
+
+        return reserveList;
+    }
+
+
+    @Override
+    public List<Reserve> getAllReserve() {
+        String sql = "SELECT * FROM reserve";
+        List<Reserve> reserveList = namedParameterJdbcTemplate.query(sql , new ReserveRowMapper());
+
+        if(reserveList != null){
+            return reserveList;
+        }else return null;
+    }
 
     @Override
     public Reserve getReserveById(Integer reserveId) {
@@ -67,4 +108,16 @@ public class ReserveDaoImpl implements ReserveDao {
 
         return reserveId;
     }
+
+    @Override
+    public void updateReserve(Integer reserveId, ReserveRequest reserveRequest) {
+//        String sql =  "UPDATE reserve SET "
+    }
+
+    @Override
+    public void deleteReserveById(Integer reserveId) {
+
+    }
+
+
 }
