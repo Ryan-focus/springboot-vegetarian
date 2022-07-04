@@ -16,9 +16,11 @@ public class ProductRequest {
     @NotNull
     private VeganCategory veganCategory;
     @NotNull
-    private Integer price;
+    private Integer productPrice;
 
-    private String imageUrl;
+    private String productImage;
+
+    private String stock;
 
     private DateTimeFormatter createdTime;
 
@@ -54,21 +56,27 @@ public class ProductRequest {
         this.productCategory = productCategory;
     }
 
-    public Integer getPrice() {
-        return price;
+    public Integer getProductPrice() {
+        return productPrice;
     }
 
-    public void setPrice(Integer price) {
-        this.price = price;
+    public void setProductPrice(Integer productPrice) {
+        this.productPrice = productPrice;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getProductImage() {
+        return productImage;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setProductImage(String productImage) {
+        this.productImage = productImage;
     }
 
+    public String getStock() {
+        return stock;
+    }
 
+    public void setStock(String stock) {
+        this.stock = stock;
+    }
 }

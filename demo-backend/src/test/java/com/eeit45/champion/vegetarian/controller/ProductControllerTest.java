@@ -77,8 +77,8 @@ public class ProductControllerTest {
         productRequest.setProductName("test product");
         productRequest.setProductCategory(ProductCategory.飾品);
         productRequest.setVeganCategory(VeganCategory.VEGAN);
-        productRequest.setPrice(30678);
-        productRequest.setImageUrl("30678.jpg");
+        productRequest.setProductPrice(30678);
+        productRequest.setProductImage("30678.jpg");
 
         String json = objectMapper.writeValueAsString(productRequest);
 
