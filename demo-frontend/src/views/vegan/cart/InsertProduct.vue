@@ -255,9 +255,7 @@ async function onSubmit() {
             </div>
             <div class="row items-push">
               <div class="col-lg-7 offset-lg-4">
-                <button v-on:click="submit()" class="btn btn-alt-primary">
-                  Submit
-                </button>
+                <button class="btn btn-alt-primary">Submit</button>
               </div>
             </div>
           </div>
