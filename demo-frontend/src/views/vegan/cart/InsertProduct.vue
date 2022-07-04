@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, toRefs } from "vue";
 
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
 import useVuelidate from "@vuelidate/core";
@@ -18,6 +18,8 @@ import CKEditor from "@ckeditor/ckeditor5-vue";
 
 // You can import one of the following CKEditor variation (only one at a time)
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import axios from "axios";
+import path from "path";
 //import InlineEditor from '@ckeditor/ckeditor5-build-inline'
 //import BalloonEditor from '@ckeditor/ckeditor5-build-balloon'
 //import BalloonBlockEditor from '@ckeditor/ckeditor5-build-balloon-block'
@@ -25,89 +27,30 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 // CKEditor 5 variables
 let ckeditor = CKEditor.component;
 
-const editorData = ref("<p>Hello CKEditor5!</p>");
+const editorData = ref("<p>請在這邊輸入對商品的詳細描述</p>");
 const editorConfig = ref({});
-
-// Example options for select
-const options = reactive([
-  { value: null, text: "Please select" },
-  { value: "html", text: "HTML" },
-  { value: "css", text: "CSS" },
-  { value: "javascript", text: "JavaScript" },
-  { value: "angular", text: "Angular" },
-  { value: "react", text: "React" },
-  { value: "vuejs", text: "Vue.js" },
-  { value: "ruby", text: "Ruby" },
-  { value: "php", text: "PHP" },
-  { value: "asp", text: "ASP.NET" },
-  { value: "python", text: "Python" },
-  { value: "mysql", text: "MySQL" },
-]);
 
 // Input state variables
 const state = reactive({
-  username: null,
-  email: null,
-  password: null,
-  confirmPassword: null,
-  suggestions: null,
-  skill: null,
-  currency: null,
-  website: null,
-  digits: null,
-  number: null,
-  range: null,
-  terms: null,
+  productName: null,
+  productPrice: null,
+  stock: null,
 });
 
 // Validation rules
 const rules = computed(() => {
   return {
-    username: {
+    productName: {
       required,
       minLength: minLength(1),
     },
-    email: {
-      required,
-      email,
-    },
-    password: {
-      required,
-      minLength: minLength(5),
-    },
-    confirmPassword: {
-      required,
-      sameAs: sameAs(state.password),
-    },
-    suggestions: {
-      required,
-      minLength: minLength(3),
-    },
-    skill: {
-      required,
-    },
-    currency: {
+    productPrice: {
       required,
       decimal,
     },
-    website: {
-      required,
-      url,
-    },
-    digits: {
-      required,
-      integer,
-    },
-    number: {
+    stock: {
       required,
       decimal,
-    },
-    range: {
-      required,
-      between: between(1, 5),
-    },
-    terms: {
-      sameAs: sameAs(true),
     },
   };
 });
@@ -157,7 +100,7 @@ async function onSubmit() {
   <!-- Page Content -->
   <div class="content">
     <!-- Basic -->
-    <form @submit.prevent="onSubmit">
+    <form @submit.prevent="onSubmit" @submit="createProduct" id="forms">
       <BaseBlock title="Validation Form" content-full>
         <div class="row push">
           <div class="col-lg-4">
@@ -166,27 +109,28 @@ async function onSubmit() {
           <div class="col-lg-8 col-xl-5">
             <!-- 商品名稱開始 -->
             <div class="mb-4">
-              <label class="form-label" for="val-username"
+              <label class="form-label" for="val-productName"
                 >商品名稱 <span class="text-danger">*</span></label
               >
               <input
                 type="text"
-                id="val-username"
+                id="val-productName"
                 class="form-control"
                 :class="{
-                  'is-invalid': v$.username.$errors.length,
+                  'is-invalid': v$.productName.$errors.length,
                 }"
-                v-model="state.username"
-                @blur="v$.username.$touch"
-                placeholder="Enter a username.."
+                v-model="productName"
+                @blur="v$.productName.$touch"
+                placeholder="請輸入產品名稱"
               />
               <div
-                v-if="v$.username.$errors.length"
+                v-if="v$.productName.$errors.length"
                 class="invalid-feedback animated fadeIn"
               >
                 請輸入商品名稱
               </div>
             </div>
+
             <!-- 商品分類開始 -->
             <div class="mb-4">
               <label class="form-label" for="example-select"
@@ -196,6 +140,7 @@ async function onSubmit() {
                 class="form-select"
                 id="example-select"
                 name="example-select"
+                v-model="category"
               >
                 <option selected>按我選擇</option>
                 <option value="生鮮">生鮮</option>
@@ -218,6 +163,7 @@ async function onSubmit() {
                 class="form-select"
                 id="example-select"
                 name="example-select"
+                v-model="veganCategory"
               >
                 <option selected>按我選擇</option>
                 <option value="全素">全素</option>
@@ -231,31 +177,57 @@ async function onSubmit() {
                 <option value="量販批發">量販批發</option>
               </select>
             </div>
+
             <!-- 價格開始 -->
             <div class="mb-4">
-              <label class="form-label" for="val-currency"
+              <label class="form-label" for="val-productPrice"
                 >台幣 (NTD) <span class="text-danger">*</span></label
               >
               <input
                 type="text"
-                id="val-currency"
+                id="val-productPrice"
                 class="form-control"
                 :class="{
-                  'is-invalid': v$.currency.$errors.length,
+                  'is-invalid': v$.productPrice.$errors.length,
                 }"
-                v-model="state.currency"
-                @blur="v$.currency.$touch"
+                v-model="productPrice"
+                @blur="v$.productPrice.$touch"
                 placeholder="200"
               />
               <div
-                v-if="v$.currency.$errors.length"
+                v-if="v$.productPrice.$errors.length"
                 class="invalid-feedback animated fadeIn"
               >
                 請輸入數字!
               </div>
             </div>
+
+            <!-- 庫存開始 -->
+            <div class="mb-4">
+              <label class="form-label" for="val-stock"
+                >庫存 <span class="text-danger">*</span></label
+              >
+              <input
+                type="text"
+                id="val-stock"
+                class="form-control"
+                :class="{
+                  'is-invalid': v$.stock.$errors.length,
+                }"
+                v-model="stock"
+                @blur="v$.stock.$touch"
+                placeholder="200"
+              />
+              <div
+                v-if="v$.stock.$errors.length"
+                class="invalid-feedback animated fadeIn"
+              >
+                請輸入數字!
+              </div>
+            </div>
+
             <!-- 圖片上傳開始-->
-            <div class="row push">
+            <!-- <div class="row push">
               <div class="col-lg-8 col-xl-5 overflow-hidden">
                 <div class="mb-4">
                   <label class="form-label" for="example-file-input"
@@ -265,10 +237,11 @@ async function onSubmit() {
                     class="form-control"
                     type="file"
                     id="example-file-input"
+                    @change="onFileUpload"
                   />
                 </div>
               </div>
-            </div>
+            </div> -->
             <!-- 產品CK editor -->
             <div class="mb-4">
               <label class="form-label" for="example-select"
@@ -277,12 +250,12 @@ async function onSubmit() {
               <ckeditor
                 :editor="ClassicEditor"
                 :config="editorConfig"
-                v-model="editorData"
+                v-model="description"
               />
             </div>
             <div class="row items-push">
               <div class="col-lg-7 offset-lg-4">
-                <button type="submit" class="btn btn-alt-primary">
+                <button v-on:click="submit()" class="btn btn-alt-primary">
                   Submit
                 </button>
               </div>
@@ -294,3 +267,32 @@ async function onSubmit() {
     <!-- END Basic -->
   </div>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      productName: null,
+      category: null,
+      veganCategory: null,
+      productPrice: null,
+      stock: null,
+      description: null,
+    };
+  },
+  methods: {
+    createProduct() {
+      const product = {
+        productName: this.productName,
+        category: this.category,
+        veganCategory: this.veganCategory,
+        productPrice: this.productPrice,
+        stock: this.stock,
+        description: this.description,
+      };
+      axios.post("http://localhost:8088/products", product).then(() => {
+        this.$router.replace("/backend/cart/productInfo");
+      });
+    },
+  },
+};
+</script>

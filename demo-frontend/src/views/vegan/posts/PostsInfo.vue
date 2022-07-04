@@ -4,7 +4,6 @@ import { ref, reactive, computed, onMounted } from "vue";
 import Swal from "sweetalert2";
 
 import axios from "axios";
-import $ from 'jquery';
 
 // Vue Dataset, for more info and examples you can check out https://github.com/kouts/vue-dataset/tree/next
 import {
@@ -162,7 +161,6 @@ function deletePost(number) {
         axios
           .get(`http://${url}/deletePost/${number}`)
           .then((res) => {
-            
             //獲取伺服器的回傳資料
             console.log(res);
 
@@ -217,33 +215,72 @@ function sendAuditPost(number, status) {
   params.append("postedText", "");
   params.append("imgurl", "");
   params.append("postStatus", status);
-  
+
   axios
-    .put(`http://${url}/auditPost/${number}` , params)
+    .put(`http://${url}/auditPost/${number}`, params)
     .then((res) => {
-      
       console.log(res);
-      
+
       getAxios();
     })
-    
+
     .catch((error) => {
       console.log(error, "失敗");
     });
 
   //重整頁面(先解決審核的顏色一定要刷新頁面才會更改的問題&不能自己關的modal)
-   window.setTimeout(function(){location.reload()},2000)
-    
-//毫無反應
-  $('#auditform').submit(function(e) {
+  window.setTimeout(function () {
+    location.reload();
+  }, 2000);
+
+  //毫無反應
+  $("#auditform").submit(function (e) {
     //e.preventDefault();
-    
-    $('#auditPost').modal('hide'); //or  $('#IDModal').modal('hide');
-    //return false;    
-});
+
+    $("#auditPost").modal("hide"); //or  $('#IDModal').modal('hide');
+    //return false;
+  });
 }
 
+//發布中文章(篩選器)
+function frontPost() {
+  //send request to server
 
+  axios
+    .get(`http://${url}/postStatusList`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+
+function notaudit() {
+  //send request to server
+  axios
+    .get(`http://${url}/postNoAudit`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+
+function notPassPost() {
+  axios
+    .get(`http://${url}/postNoPass`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
 
 // Apply a few Bootstrap 5 optimizations
 
@@ -259,12 +296,7 @@ onMounted(() => {
   selectLength.classList = "";
   selectLength.classList.add("form-select");
   selectLength.style.width = "80px";
-
 });
-
-
-
- 
 </script>
 
 <style lang="scss" scoped>
@@ -362,7 +394,6 @@ th.sort {
               <a
                 class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
                 href="#"
-                data-rel="notaudit"
                 @click.prevent="notaudit()"
               >
                 待審核
@@ -370,18 +401,18 @@ th.sort {
               </a>
               <a
                 class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-                href=""
-                data-rel="pass"
+                href="#"
+                @click.prevent="frontPost()"
               >
-                通過審核
+                發布中
                 <span class="badge bg-primary rounded-pill">72</span>
               </a>
               <a
                 class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-                href=""
-                data-rel="fail"
+                href="#"
+                @click.prevent="notPassPost()"
               >
-                未通過審核
+                未通過
                 <span class="badge bg-primary rounded-pill">890</span>
               </a>
               <a
@@ -435,7 +466,6 @@ th.sort {
                 </thead>
                 <DatasetItem tag="tbody" class="fs-sm">
                   <template #default="{ row, rowIndex }">
- 
                     <tr style="line-height: 5px">
                       <th scope="row">{{ row.postId }}</th>
                       <td
@@ -529,8 +559,8 @@ th.sort {
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
         >
-          <div class="modal-dialog"  >
-            <form class="row g-3" id="auditform" >
+          <div class="modal-dialog">
+            <form class="row g-3" id="auditform">
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">文章審核</h5>
@@ -603,15 +633,13 @@ th.sort {
                     type="button"
                     class="btn btn-secondary"
                     data-bs-dismiss="modal"
-                   
                   >
                     關閉
                   </button>
                   <button
                     type="submit"
                     class="btn btn-primary"
-                    
-                @click.prevent="sendAuditPost(resPostId, resPostStatus)"
+                    @click.prevent="sendAuditPost(resPostId, resPostStatus)"
                   >
                     送出審核
                   </button>

@@ -66,6 +66,16 @@ public class PostServiceImpl implements PostService {
         return favorite != null;//如果对象有值，则为true，反之，则为false
     }
 
+	@Override
+	public List<Post> findPostByNoAudit() {
+		return postDao.findPostByNoAudit();
+	}
+
+	@Override
+	public List<Post> findPostByNoPass() {
+		return postDao.findPostByNoPass();
+	}
+
 
 
 }
