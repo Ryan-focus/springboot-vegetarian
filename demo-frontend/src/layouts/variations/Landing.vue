@@ -110,6 +110,7 @@ store.mainContent({ mode: "boxed" });
         </div>
       </div>
       <!-- END Options -->
+
       <RouterLink
         :to="{ name: 'login' }"
         class="btn btn-warning"
