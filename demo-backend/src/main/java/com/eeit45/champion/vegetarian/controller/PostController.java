@@ -29,10 +29,7 @@ public class PostController {
 	@Autowired
 	private PostService postService;
 	
-	ZoneId zoneId = ZoneId.systemDefault();
-	LocalDateTime localDateTime = LocalDateTime.now();
-	ZonedDateTime zdt = localDateTime.atZone(zoneId);
-	Date date = Date.from(zdt.toInstant());
+	
 
 
 	//@RestController 沒有辦法返回View-model視圖給使用者
@@ -82,6 +79,10 @@ public class PostController {
 		}
 
 		
+		ZoneId zoneId = ZoneId.systemDefault();
+		LocalDateTime localDateTime = LocalDateTime.now();
+		ZonedDateTime zdt = localDateTime.atZone(zoneId);
+		Date date = Date.from(zdt.toInstant());
 
 		post.setTitle(title);
 		post.setPostedText(postedText);
@@ -143,6 +144,10 @@ public class PostController {
 		if (checkPost == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
+		ZoneId zoneId = ZoneId.systemDefault();
+		LocalDateTime localDateTime = LocalDateTime.now();
+		ZonedDateTime zdt = localDateTime.atZone(zoneId);
+		Date date = Date.from(zdt.toInstant());
 
 		checkPost.setPostStatus(condition);
 		checkPost.setPostAuditDate(date);
@@ -222,7 +227,12 @@ public class PostController {
 		} else {
 			imageUrl = defaultImgurl;
 		}
-
+		ZoneId zoneId = ZoneId.systemDefault();
+		LocalDateTime localDateTime = LocalDateTime.now();
+		ZonedDateTime zdt = localDateTime.atZone(zoneId);
+		Date date = Date.from(zdt.toInstant());
+		
+		
 		post.setPostId(id);
 		post.setTitle(title);
 		post.setPostedText(postedText);
@@ -262,9 +272,7 @@ public class PostController {
 	public ResponseEntity<Boolean> addfav(@PathVariable("id") int id, Post post,HttpServletRequest request)
 			throws IOException {
 
-
-		User user = null;
-		user.getUserId();
+		User user = (User) request.getSession().getAttribute("user");
 		 Integer userId;//用户id
 	        if(user == null){
 	            return null;

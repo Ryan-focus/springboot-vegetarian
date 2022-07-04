@@ -217,20 +217,31 @@ function sendAuditPost(number, status) {
   params.append("postedText", "");
   params.append("imgurl", "");
   params.append("postStatus", status);
+  
   axios
     .put(`http://${url}/auditPost/${number}` , params)
     .then((res) => {
       
       console.log(res);
+      
       getAxios();
     })
+    
     .catch((error) => {
       console.log(error, "失敗");
     });
-     
+
+  //重整頁面(先解決審核的顏色一定要刷新頁面才會更改的問題&不能自己關的modal)
+   window.setTimeout(function(){location.reload()},2000)
+    
+//毫無反應
+  $('#auditform').submit(function(e) {
+    //e.preventDefault();
+    
+    $('#auditPost').modal('hide'); //or  $('#IDModal').modal('hide');
+    //return false;    
+});
 }
-
-
 
 
 
@@ -249,15 +260,11 @@ onMounted(() => {
   selectLength.classList.add("form-select");
   selectLength.style.width = "80px";
 
-
-  //送出互動視窗表單後關閉
-//  $('#auditform').submit(function(e) {
-//     e.preventDefault();
-//     // Coding
-//     $('#modalAudit').modal('toggle'); //or  $('#IDModal').modal('hide');
-//     return false;
-// });
 });
+
+
+
+ 
 </script>
 
 <style lang="scss" scoped>
@@ -354,8 +361,9 @@ th.sort {
             >
               <a
                 class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-                href=""
+                href="#"
                 data-rel="notaudit"
+                @click.prevent="notaudit()"
               >
                 待審核
                 <span class="badge bg-primary rounded-pill">20</span>
@@ -521,8 +529,8 @@ th.sort {
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
         >
-          <div class="modal-dialog" id="modalAudit" >
-            <form class="row g-3" id="auditform" @submit.prevent="sendAuditPost(resPostId, resPostStatus)">
+          <div class="modal-dialog"  >
+            <form class="row g-3" id="auditform" >
               <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">文章審核</h5>
@@ -595,14 +603,15 @@ th.sort {
                     type="button"
                     class="btn btn-secondary"
                     data-bs-dismiss="modal"
+                   
                   >
                     關閉
                   </button>
                   <button
                     type="submit"
                     class="btn btn-primary"
-                    data-dismiss="modal"
-               
+                    
+                @click.prevent="sendAuditPost(resPostId, resPostStatus)"
                   >
                     送出審核
                   </button>
