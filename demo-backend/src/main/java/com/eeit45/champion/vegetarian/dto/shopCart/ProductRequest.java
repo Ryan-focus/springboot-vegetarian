@@ -11,16 +11,16 @@ public class ProductRequest {
     @NotNull
     private String productName;
     @NotNull
-    private ProductCategory productCategory;
+    private ProductCategory category;
 
     @NotNull
     private VeganCategory veganCategory;
     @NotNull
     private Integer productPrice;
 
+    private String stock;
     private String productImage;
 
-    private String stock;
 
     private DateTimeFormatter createdTime;
 
@@ -48,12 +48,12 @@ public class ProductRequest {
         this.veganCategory = veganCategory;
     }
 
-    public ProductCategory getProductCategory() {
-        return productCategory;
+    public ProductCategory getCategory() {
+        return category;
     }
 
-    public void setProductCategory(ProductCategory productCategory) {
-        this.productCategory = productCategory;
+    public void setCategory(ProductCategory category) {
+        this.category = category;
     }
 
     public Integer getProductPrice() {

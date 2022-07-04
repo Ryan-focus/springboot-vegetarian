@@ -92,15 +92,15 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public Integer createProduct(ProductRequest productRequest) {
-        String sql = "INSERT INTO product ( productName, category, veganCategory, productPrice, productImage, stock,createdTime , updatedTime, description)" +
-                "VALUES (:productName, :productCategory, :veganCategory, :price, :imageUrl, :createdTime , :updatedTime, :description)";
+        String sql = "INSERT INTO veganDB.product ( productName, category, veganCategory, productPrice, productImage, stock,createdTime , updatedTime, description)" +
+                "VALUES (:productName, :category, :veganCategory, :productPrice, :productImage,:stock, :createdTime , :updatedTime, :description)";
 
         Map<String, Object> map = new HashMap<>();
         map.put("productName", productRequest.getProductName());
-        map.put("productCategory", productRequest.getProductCategory().toString());
+        map.put("category", productRequest.getCategory().toString());
         map.put("veganCategory", productRequest.getVeganCategory().toString());
-        map.put("price", productRequest.getProductPrice());
-        map.put("imageUrl", productRequest.getProductImage());
+        map.put("productPrice", productRequest.getProductPrice());
+        map.put("productImage", productRequest.getProductImage());
         map.put("stock",productRequest.getStock());
         map.put("description", productRequest.getDescription());
 
@@ -123,15 +123,15 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public void updateProduct(Integer productId, ProductRequest productRequest) {
-        String sql = "UPDATE product SET productName = :productName, category = :productCategory," +
-                " productPrice = :price, productImage= :productImage,updatedTime = :updatedTime,description = :description  WHERE productId = :productId";
+        String sql = "UPDATE product SET productName = :productName, category = :category," +
+                " productPrice = :productPrice, productImage= :productImage,updatedTime = :updatedTime,description = :description  WHERE productId = :productId";
 
         Map<String, Object> map = new HashMap<>();
         map.put("productId", productId);
 
         map.put("productName", productRequest.getProductName());
-        map.put("productCategory", productRequest.getProductCategory().toString());
-        map.put("price", productRequest.getProductPrice());
+        map.put("category", productRequest.getCategory().toString());
+        map.put("productPrice", productRequest.getProductPrice());
         map.put("productImage", productRequest.getProductImage());
         map.put("description", productRequest.getDescription());
 
