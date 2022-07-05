@@ -134,17 +134,6 @@ function onSort(event, i) {
 }
 
 //更新餐廳的方法--取值
-// const data = {
-//   restaurantNumber: this.restaurantNumber,
-//   restaurantName: this.restaurantName,
-//   restaurantTel: this.restaurantTel,
-//   restaurantAddress: this.restaurantAddress,
-//   restaurantCategory: this.restaurantCategory,
-//   restaurantType: this.restaurantType,
-//   restaurantBusinessHours: this.restaurantBusinessHours,
-//   restaurantScore: this.restaurantScore,
-// };
-
 function updateRestaurant(number) {
   axios
     .get(`http://${url}/restaurants/${number}`)
@@ -164,40 +153,33 @@ function updateRestaurant(number) {
     });
 }
 
-//更新後送出
+//更新後送出餐廳表單
 function sendRestaurant(number, name, tel, add, category, type, hours, score) {
-  let params = new URLSearchParams();
-  params.append("restaurantNumber", number);
-  params.append("restaurantName", name);
-  params.append("restaurantTel", tel);
-  params.append("restaurantAddress", add);
-  params.append("restaurantCategory", category);
-  params.append("restaurantType", type);
-  params.append("restaurantBusinessHours", hours);
-  params.append("restaurantScore", score);
-
-  const headers = {
-    "Content-Type": "application/json",
+  var data = {
+    restaurantNumber: number,
+    restaurantName: name,
+    restaurantTel: tel,
+    restaurantAddress: add,
+    restaurantCategory: category,
+    restaurantType: type,
+    restaurantBusinessHours: hours,
+    restaurantScore: score,
   };
 
   axios
-
-    .put(`http://${url}/restaurants/${number}`, JSON.stringify(params), headers)
+    .put(`http://${url}/restaurants/${number}`, data)
     .then((res) => {
       console.log(res);
-
       getAxios();
+      window.setTimeout(function () {
+        location.reload();
+      }, 100);
     })
 
     .catch((error) => {
       console.log(error, "失敗");
     });
 }
-
-//重整頁面
-// window.setTimeout(function () {
-//   location.reload();
-// }, 1000);
 
 //刪除餐廳的方法
 function deleteRestaurant(number) {
