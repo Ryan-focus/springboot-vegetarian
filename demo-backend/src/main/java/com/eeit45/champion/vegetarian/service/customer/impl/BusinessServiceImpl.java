@@ -49,10 +49,10 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     public Integer register(BusinessRegisterRequest businessRegisterRequest) {
         // Checking Email exists or not
-        Business business =  businessDao.getBusinessByEmail(businessRegisterRequest.getLoginEmail());
+        Business business =  businessDao.getBusinessByEmail(businessRegisterRequest.getAccount());
         if (business != null){
             //set error comment log in console
-            log.warn("該商家帳號 ! ", businessRegisterRequest.getLoginEmail());
+            log.warn("該商家帳號 ! ", businessRegisterRequest.getAccount());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
         // MD5 Hash Value

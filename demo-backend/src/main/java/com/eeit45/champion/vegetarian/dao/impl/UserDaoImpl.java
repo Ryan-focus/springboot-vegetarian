@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.eeit45.champion.vegetarian.dto.LoginRequest;
+import com.eeit45.champion.vegetarian.model.customer.Business;
+import com.eeit45.champion.vegetarian.rowmapper.customer.BusinessRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -90,7 +93,22 @@ public class UserDaoImpl implements UserDao {
         }
 	}
 
-	@Override
+    @Override
+    public User getUserByEmail(String loginEmail) {
+        String sql = "SELECT * FROM `user` WHERE email = :userEmail";
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("userEmail" , loginEmail);
+
+        List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
+        if(userList.size() > 0){
+            return userList.get(0);
+        }else{
+            return null;
+        }
+    }
+
+    @Override
 	public Integer createUser(UserRequest userRequest) {
 		String sql = "INSERT INTO vegandb.user ( email, password, userName, status, userPic, registerTime , lastLoginTime)" +
                 "VALUES (:email, :password, :userName, :status, :userPic, :registerTime , :lastLoginTime)";
@@ -100,7 +118,7 @@ public class UserDaoImpl implements UserDao {
         //springsecurity 的 BCryptPasswordEncoder 加密, 解密(回傳boolean): bcryptPasswordEncoder.matches("使用者輸入密碼",存入資料庫密碼)
         map.put("password", new BCryptPasswordEncoder().encode(userRequest.getPassword()));
         map.put("userName", userRequest.getUserName());
-        map.put("status", userRequest.getStatus());
+        map.put("status", "正常");
         map.put("userPic", userRequest.getUserPic());
         
         //日期處理
@@ -161,13 +179,13 @@ public class UserDaoImpl implements UserDao {
 	@Override
 	public User login(UserRequest userRequest) {
 		
-		String sql = "select * from `user` where email= :email";
+		String sql = "select * from `user` where email= :email ";
 		
 		Map<String, Object> map = new HashMap<>();
         map.put("email", userRequest.getEmail());
-		  
+
         List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
-        
+
         if (userList.size() > 0) {
             return userList.get(0);
         }
@@ -175,12 +193,12 @@ public class UserDaoImpl implements UserDao {
 	}
 
 	@Override
-	public boolean isBanned(UserRequest userRequest) {
+	public boolean isBanned(String loginEmail) {
 		
 		String sql = "select * from `user` where email= :email and status='禁用'";
 		
 		Map<String, Object> map = new HashMap<>();
-        map.put("email", userRequest.getEmail());
+        map.put("email", loginEmail);
 		  
         List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
         

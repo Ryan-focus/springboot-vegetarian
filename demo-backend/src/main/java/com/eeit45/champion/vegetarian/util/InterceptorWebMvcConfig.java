@@ -21,6 +21,6 @@ public class InterceptorWebMvcConfig implements WebMvcConfigurer {
         //需經過Interceptor的url
         registry.addInterceptor(loginInterceptor).addPathPatterns("/product/*")
         //放行路徑，可以新增多個
-                .excludePathPatterns("/users/*");
+                .excludePathPatterns("/user/*");
     }
 }

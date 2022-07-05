@@ -6,6 +6,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
+import com.eeit45.champion.vegetarian.dto.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -138,17 +139,18 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.OK).body(updateUserStatus);
     }
-    
-    @PostMapping("/user/login")
-    public ResponseEntity<User> login(@RequestBody UserRequest userRequest){
-    	
-    	User user =  userService.login(userRequest);;
 
+    @PostMapping("/user/login")
+    public ResponseEntity<User> login(@RequestBody LoginRequest loginRequest){
+
+    	User user =  userService.login(loginRequest);
+
+        System.out.println(1);
 		if(user != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(user); //登入成功
 		}
+
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); //沒註冊
-    	
     }
 
 }

@@ -34,7 +34,7 @@ public class LoginController {
 
 
         //先判定user 是否存在 ， 只要不為null 即返回 user 數據 以及 Token
-        User user  = null ;
+        User user  = userService.login(loginRequest) ;
 
         if(user != null ) {
             loginVO.setId(user.getUserId());

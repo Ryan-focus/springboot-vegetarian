@@ -2,9 +2,11 @@ package com.eeit45.champion.vegetarian.service;
 
 import java.util.List;
 
+import com.eeit45.champion.vegetarian.dto.LoginRequest;
 import com.eeit45.champion.vegetarian.dto.UserQueryParams;
 import com.eeit45.champion.vegetarian.dto.UserRequest;
 import com.eeit45.champion.vegetarian.model.User;
+import com.mysql.cj.log.Log;
 
 public interface UserService {
 	
@@ -22,8 +24,9 @@ public interface UserService {
 	
 	int updateUserStatus(Integer userId);
 	
-	User login(UserRequest userRequest);
-	
+	User login(LoginRequest loginRequest);
+
+
 //	boolean isBanned(UserRequest userRequest);
 
 }

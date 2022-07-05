@@ -8,36 +8,30 @@ import java.util.Date;
 public class BusinessRegisterRequest {
     @NotBlank
     @Email
-    private String loginEmail;
+    private String account;
 
     @NotBlank
     private String password;
 
+    @NotBlank
+    private String principalName;
+    @NotBlank
+    private String principalPhone;
+    @NotBlank
     private String businessName;
-    private String status;
+    @NotBlank
+    private String located;
     private String businessPic;
+    private String status;
     private Date createdTime;
     private Date lastLoginTime;
 
-    public BusinessRegisterRequest() {
+    public String getAccount() {
+        return account;
     }
 
-    public BusinessRegisterRequest(String loginEmail, String password, String businessName, String status, String businessPic, Date createdTime, Date lastLoginTime) {
-        this.loginEmail = loginEmail;
-        this.password = password;
-        this.businessName = businessName;
-        this.status = status;
-        this.businessPic = businessPic;
-        this.createdTime = createdTime;
-        this.lastLoginTime = lastLoginTime;
-    }
-
-    public String getLoginEmail() {
-        return loginEmail;
-    }
-
-    public void setLoginEmail(String loginEmail) {
-        this.loginEmail = loginEmail;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getPassword() {
@@ -48,6 +42,22 @@ public class BusinessRegisterRequest {
         this.password = password;
     }
 
+    public String getPrincipalName() {
+        return principalName;
+    }
+
+    public void setPrincipalName(String principalName) {
+        this.principalName = principalName;
+    }
+
+    public String getPrincipalPhone() {
+        return principalPhone;
+    }
+
+    public void setPrincipalPhone(String principalPhone) {
+        this.principalPhone = principalPhone;
+    }
+
     public String getBusinessName() {
         return businessName;
     }
@@ -56,12 +66,12 @@ public class BusinessRegisterRequest {
         this.businessName = businessName;
     }
 
-    public String getStatus() {
-        return status;
+    public String getLocated() {
+        return located;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setLocated(String located) {
+        this.located = located;
     }
 
     public String getBusinessPic() {
@@ -70,6 +80,14 @@ public class BusinessRegisterRequest {
 
     public void setBusinessPic(String businessPic) {
         this.businessPic = businessPic;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Date getCreatedTime() {
