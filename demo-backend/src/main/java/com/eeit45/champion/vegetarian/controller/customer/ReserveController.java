@@ -19,15 +19,6 @@ public class ReserveController {
     @Autowired
     private ReserveService reserveService;
 
-//    @GetMapping("/reserves")
-//    public ResponseEntity<Reserve> getReserveList(
-//
-//    ){
-//
-//        return ResponseEntity.status(HttpStatus.OK).body(1);
-//    }
-
-
     @GetMapping("/reserves/{reserveId}")
     public ResponseEntity<Reserve> getProduct(@PathVariable Integer reserveId){
         Reserve reserve = reserveService.getReserveById(reserveId);
@@ -41,6 +32,9 @@ public class ReserveController {
 
     @PostMapping("/reserves")
     public ResponseEntity<Reserve> newReserve(@RequestBody @Valid ReserveRequest reserveRequest){
+        if(reserveRequest.getChild() == null) reserveRequest.setChild(0);
+        if(reserveRequest.getBaby() == null) reserveRequest.setBaby(0);
+
         Integer reserveId = reserveService.createReserve(reserveRequest);
 
         Reserve reserve = reserveService.getReserveById(reserveId);

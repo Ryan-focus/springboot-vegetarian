@@ -1,7 +1,6 @@
 package com.eeit45.champion.vegetarian.controller;
 
 import com.eeit45.champion.vegetarian.dao.customer.BusinessDao;
-import com.eeit45.champion.vegetarian.dto.customer.BusinessLoginRequest;
 import com.eeit45.champion.vegetarian.dto.customer.BusinessRegisterRequest;
 import com.eeit45.champion.vegetarian.model.customer.Business;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,7 +31,7 @@ class BusinessControllerTest {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    // 註冊新帳號
+    // 商家註冊新帳號
     @Test
     public void register_success() throws Exception {
         BusinessRegisterRequest businessRegisterRequest = new BusinessRegisterRequest();
@@ -98,100 +97,13 @@ class BusinessControllerTest {
                 .andExpect(status().is(400));
     }
 
-    // 登入
-    @Test
-    public void login_success() throws Exception {
-        // 先註冊新帳號
-        BusinessRegisterRequest businessRegisterRequest = new BusinessRegisterRequest();
-        businessRegisterRequest.setLoginEmail("test3@gmail.com");
-        businessRegisterRequest.setPassword("123");
 
-        register(businessRegisterRequest);
-
-        // 再測試登入功能
-        BusinessLoginRequest businessLoginRequest = new BusinessLoginRequest();
-        businessLoginRequest.setLoginEmail(businessRegisterRequest.getLoginEmail());
-        businessLoginRequest.setPassword(businessRegisterRequest.getPassword());
-
-        String json = objectMapper.writeValueAsString(businessRegisterRequest);
-
-        RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/users/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json);
-
-        mockMvc.perform(requestBuilder)
-                .andExpect(status().is(200))
-                .andExpect(jsonPath("$.userId", notNullValue()))
-                .andExpect(jsonPath("$.email", equalTo(businessRegisterRequest.getLoginEmail())))
-                .andExpect(jsonPath("$.createdDate", notNullValue()))
-                .andExpect(jsonPath("$.lastModifiedDate", notNullValue()));
-    }
-
-    @Test
-    public void login_invalidEmailFormat() throws Exception {
-        BusinessLoginRequest businessLoginRequest = new BusinessLoginRequest();
-        businessLoginRequest.setLoginEmail("hkbudsr324");
-        businessLoginRequest.setPassword("123");
-
-        String json = objectMapper.writeValueAsString(businessLoginRequest);
-
-        RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/users/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json);
-
-        mockMvc.perform(requestBuilder)
-                .andExpect(status().is(400));
-    }
-
-    @Test
-    public void login_emailNotExist() throws Exception {
-        BusinessLoginRequest businessLoginRequest = new BusinessLoginRequest();
-        businessLoginRequest.setLoginEmail("unknown@gmail.com");
-        businessLoginRequest.setPassword("123");
-
-        String json = objectMapper.writeValueAsString(businessLoginRequest);
-
-        RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/users/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json);
-
-        mockMvc.perform(requestBuilder)
-                .andExpect(status().is(400));
-    }
-
-    @Test
-    public void login_wrongPassword() throws Exception {
-        // 先註冊新帳號
-        BusinessRegisterRequest businessRegisterRequest = new BusinessRegisterRequest();
-        businessRegisterRequest.setLoginEmail("test4@gmail.com");
-        businessRegisterRequest.setPassword("123");
-
-        register(businessRegisterRequest);
-
-        // 測試密碼輸入錯誤的情況
-        BusinessLoginRequest businessLoginRequest = new BusinessLoginRequest();
-        businessLoginRequest.setLoginEmail(businessRegisterRequest.getLoginEmail());
-        businessLoginRequest.setPassword("unknown");
-
-        String json = objectMapper.writeValueAsString(businessLoginRequest);
-
-        RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/users/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json);
-
-        mockMvc.perform(requestBuilder)
-                .andExpect(status().is(400));
-    }
 
     private void register(BusinessRegisterRequest businessRegisterRequest) throws Exception {
         String json = objectMapper.writeValueAsString(businessRegisterRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/users/register")
+                .post("/business/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json);
 

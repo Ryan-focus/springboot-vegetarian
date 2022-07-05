@@ -2,8 +2,12 @@ package com.eeit45.champion.vegetarian.service.impl;
 
 import java.util.List;
 
+import com.eeit45.champion.vegetarian.dto.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.eeit45.champion.vegetarian.dao.UserDao;
 import com.eeit45.champion.vegetarian.dto.UserQueryParams;
@@ -56,5 +60,34 @@ public class UserServiceImpl implements UserService {
 	public int updateUserStatus(Integer userId) {
 		return userDao.updateUserStatus(userId);
 	}
+
+	@Override
+	public User login(LoginRequest loginRequest) {
+
+		User user = userDao.getUserByEmail(loginRequest.getAccount());
+
+		//帳號存在 且 密碼相符合
+		if(user != null ) {
+		//有此帳密但被禁用
+			System.out.println(2);
+		if(userDao.isBanned(loginRequest.getAccount())) {
+			System.out.println(3);
+			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+		}
+		if(new BCryptPasswordEncoder().matches(loginRequest.getPassword(),user.getPassword())){
+			return user;
+		}
+		//帳號存在 但密碼錯誤
+			System.out.println(4);
+		throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+		}
+		System.out.println(5);
+		return null;
+	}
+
+//	@Override
+//	public boolean isBanned(UserRequest userRequest) {
+//		return false;
+//	}
 
 }

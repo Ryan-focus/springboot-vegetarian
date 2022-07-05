@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, toRefs } from "vue";
 
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
 import useVuelidate from "@vuelidate/core";
@@ -13,101 +13,40 @@ import {
   url,
   sameAs,
 } from "@vuelidate/validators";
-// CKEditor 5, for more info and examples you can check out https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/vuejs-v3.html
-import CKEditor from "@ckeditor/ckeditor5-vue";
 
-// You can import one of the following CKEditor variation (only one at a time)
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-//import InlineEditor from '@ckeditor/ckeditor5-build-inline'
-//import BalloonEditor from '@ckeditor/ckeditor5-build-balloon'
-//import BalloonBlockEditor from '@ckeditor/ckeditor5-build-balloon-block'
-
-// CKEditor 5 variables
-let ckeditor = CKEditor.component;
-
-const editorData = ref("<p>Hello CKEditor5!</p>");
-const editorConfig = ref({});
-
-// Example options for select
-const options = reactive([
-  { value: null, text: "Please select" },
-  { value: "html", text: "HTML" },
-  { value: "css", text: "CSS" },
-  { value: "javascript", text: "JavaScript" },
-  { value: "angular", text: "Angular" },
-  { value: "react", text: "React" },
-  { value: "vuejs", text: "Vue.js" },
-  { value: "ruby", text: "Ruby" },
-  { value: "php", text: "PHP" },
-  { value: "asp", text: "ASP.NET" },
-  { value: "python", text: "Python" },
-  { value: "mysql", text: "MySQL" },
-]);
+import axios from "axios";
 
 // Input state variables
 const state = reactive({
-  username: null,
-  email: null,
-  password: null,
-  confirmPassword: null,
-  suggestions: null,
-  skill: null,
-  currency: null,
-  website: null,
-  digits: null,
-  number: null,
-  range: null,
-  terms: null,
+  restaurantName: null,
+  restaurantTel: null,
+  restaurantAddress: null,
+  restaurantBusinessHours: null,
+  restaurantScore: null,
 });
 
 // Validation rules
 const rules = computed(() => {
   return {
-    username: {
+    restaurantName: {
       required,
       minLength: minLength(1),
     },
-    email: {
+    restaurantTel: {
       required,
-      email,
+      minLength: minLength(1),
     },
-    password: {
+    restaurantAddress: {
       required,
-      minLength: minLength(5),
+      minLength: minLength(1),
     },
-    confirmPassword: {
+    restaurantBusinessHours: {
       required,
-      sameAs: sameAs(state.password),
+      minLength: minLength(1),
     },
-    suggestions: {
+    restaurantScore: {
       required,
-      minLength: minLength(3),
-    },
-    skill: {
-      required,
-    },
-    currency: {
-      required,
-      decimal,
-    },
-    website: {
-      required,
-      url,
-    },
-    digits: {
-      required,
-      integer,
-    },
-    number: {
-      required,
-      decimal,
-    },
-    range: {
-      required,
-      between: between(1, 5),
-    },
-    terms: {
-      sameAs: sameAs(true),
+      between: between(0, 5),
     },
   };
 });
@@ -136,13 +75,13 @@ async function onSubmit() {
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-alt">
           <li class="breadcrumb-item">
-            <a class="link-fx" href="#/backend/restaurant/dashboard">
+            <a class="link-fx" href="#/backend/restaurants/dashboard">
               <i class="fa fa-burger"></i> 餐廳管理</a
             >
           </li>
           <li class="breadcrumb-item" aria-current="page">
-            <a class="link-fx" href="#/backend/restaurant/restaurantInfo">
-              <i class="fa fa-leaf"></i> 餐廳資訊</a
+            <a class="link-fx" href="#/backend/restaurants/restaurantInfo">
+              <i class="fa fa-store"></i> 餐廳資訊</a
             >
           </li>
           <li class="breadcrumb-item" aria-current="page">
@@ -157,38 +96,47 @@ async function onSubmit() {
   <!-- Page Content -->
   <div class="content">
     <!-- Basic -->
-    <form @submit.prevent="onSubmit">
-      <BaseBlock title="Validation Form" content-full>
+    <form @submit.prevent="onSubmit" @submit="createRestaurant" id="forms">
+      <BaseBlock title="新增餐廳表單" content-full>
         <div class="row push">
           <div class="col-lg-4">
-            <p class="fs-sm text-muted">請盡量填寫完整資訊</p>
+            <p class="fs-sm text-muted">請填寫完整資訊</p>
           </div>
           <div class="col-lg-8 col-xl-5">
-            <!-- 商品名稱開始 -->
+            <!-- 餐廳名稱開始 -->
             <div class="mb-4">
               <label class="form-label" for="val-restaurantName"
-                >餐廳名稱 <span class="text-danger">*</span></label
+                >餐廳名稱</label
               >
               <input
                 type="text"
                 id="val-restaurantName"
                 class="form-control"
-                :class="{
-                  'is-invalid': v$.restaurantName.$errors.length,
-                }"
-                v-model="state.restaurantName"
-                @blur="v$.restaurantName.$touch"
-                placeholder="請輸入餐廳名稱.."
+                v-model="restaurantName"
               />
-              <div
-                v-if="v$.restaurantName.$errors.length"
-                class="invalid-feedback animated fadeIn"
-              >
-                請輸入餐廳名稱
-              </div>
             </div>
             <!-- 電話開始 -->
+            <div class="mb-4">
+              <label class="form-label" for="val-restaurantTel">電話</label>
+              <input
+                type="text"
+                id="val-restaurantTel"
+                class="form-control"
+                placeholder="02-23448743"
+                v-model="restaurantTel"
+              />
+            </div>
             <!-- 地址開始 -->
+            <div class="mb-4">
+              <label class="form-label" for="val-restaurantAddress">地址</label>
+              <input
+                type="text"
+                id="val-restaurantAddress"
+                class="form-control"
+                placeholder="桃園市中壢區.."
+                v-model="restaurantAddress"
+              />
+            </div>
             <!-- 餐廳類型開始 -->
             <div class="mb-4">
               <label class="form-label" for="example-select"
@@ -198,6 +146,7 @@ async function onSubmit() {
                 class="form-select"
                 id="example-select"
                 name="example-select"
+                v-model="restaurantCategory"
               >
                 <option selected>按我選擇</option>
                 <option value="中式">中式</option>
@@ -220,6 +169,7 @@ async function onSubmit() {
                 class="form-select"
                 id="example-select"
                 name="example-select"
+                v-model="restaurantType"
               >
                 <option selected>按我選擇</option>
                 <option value="全素">全素</option>
@@ -232,36 +182,30 @@ async function onSubmit() {
             <!-- 營業時間 -->
             <div class="mb-4">
               <label class="form-label" for="example-select">營業時間</label>
+              <input
+                type="textarea"
+                id="val-restaurantBusinessHours"
+                class="form-control"
+                v-model="restaurantBusinessHours"
+              />
             </div>
             <!-- 評分開始 -->
             <div class="mb-4">
-              <label class="form-label" for="val-score"
-                >台幣 (NTD) <span class="text-danger">*</span></label
-              >
+              <label class="form-label" for="val-restaurantScore">評分</label>
               <input
                 type="text"
-                id="val-score"
+                id="val-restaurantScore"
                 class="form-control"
-                :class="{
-                  'is-invalid': v$.score.$errors.length,
-                }"
-                v-model="state.score"
-                @blur="v$.score.$touch"
                 placeholder="0.0-5.0"
+                v-model="restaurantScore"
               />
-              <div
-                v-if="v$.currency.$errors.length"
-                class="invalid-feedback animated fadeIn"
-              >
-                請輸入數字
-              </div>
             </div>
             <!-- 圖片上傳開始-->
-            <div class="row push">
+            <!-- <div class="row push">
               <div class="col-lg-8 col-xl-5 overflow-hidden">
                 <div class="mb-4">
                   <label class="form-label" for="example-file-input"
-                    >圖片上傳（一張）</label
+                    >圖片上傳</label
                   >
                   <input
                     class="form-control"
@@ -270,13 +214,11 @@ async function onSubmit() {
                   />
                 </div>
               </div>
-            </div>
+            </div> -->
 
             <div class="row items-push">
               <div class="col-lg-7 offset-lg-4">
-                <button type="submit" class="btn btn-alt-primary">
-                  Submit
-                </button>
+                <button type="submit" class="btn btn-alt-primary">送出</button>
               </div>
             </div>
           </div>
@@ -286,3 +228,35 @@ async function onSubmit() {
     <!-- END Basic -->
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      restaurantName: null,
+      restaurantTel: null,
+      restaurantAddress: null,
+      restaurantCategory: null,
+      restaurantType: null,
+      restaurantBusinessHours: null,
+      restaurantScore: null,
+    };
+  },
+  methods: {
+    createRestaurant() {
+      const restaurant = {
+        restaurantName: this.restaurantName,
+        restaurantTel: this.restaurantTel,
+        restaurantAddress: this.restaurantAddress,
+        restaurantCategory: this.restaurantCategory,
+        restaurantType: this.restaurantType,
+        restaurantBusinessHours: this.restaurantBusinessHours,
+        restaurantScore: this.restaurantScore,
+      };
+      axios.post("http://localhost:8088/restaurants", restaurant).then(() => {
+        this.$router.replace("/backend/restaurants/restaurantInfo");
+      });
+    },
+  },
+};
+</script>

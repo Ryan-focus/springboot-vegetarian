@@ -25,99 +25,58 @@ public class ReserveDaoImpl implements ReserveDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    @Override
-    public Integer getTotal(ReserveRequest reserveRequest) {
-        String sql = "SELECT * FROM reserve WHERE 1=1 ";
 
-        Map<String, Object > map = new HashMap<>();
-
-        Integer total = namedParameterJdbcTemplate.queryForObject(sql, map , Integer.class);
-        return total;
-    }
-
-    @Override
-    public List<Reserve> getReserves(ReserveQueryParams reserveQueryParams) {
-        String sql = "SELECT * FROM reserve WHERE 1=1";
-
-        Map<String, Object> map = new HashMap<>();
-
-        // 排序
-        sql = sql + " ORDER BY " + reserveQueryParams.getOrderBy() + " " + reserveQueryParams.getSorting();
-
-        //分頁
-        sql = sql + " LIMIT :limit OFFSET :offset";
-        map.put("limit", reserveQueryParams.getLimit());
-        map.put("offset", reserveQueryParams.getOffset());
-
-        List<Reserve> reserveList = namedParameterJdbcTemplate.query(sql,map,new ReserveRowMapper());
-
-        return reserveList;
-    }
-
-
-    @Override
-    public List<Reserve> getAllReserve() {
-        String sql = "SELECT * FROM reserve";
-        List<Reserve> reserveList = namedParameterJdbcTemplate.query(sql , new ReserveRowMapper());
-
-        if(reserveList != null){
-            return reserveList;
-        }else return null;
-    }
-
+    //查詢單一對象，回傳使用Reserve(物件)
     @Override
     public Reserve getReserveById(Integer reserveId) {
         String sql = "SELECT * FROM reserve WHERE reserveId = :reserveId";
 
-        Map<String,Object> map = new HashMap<>();
-        map.put("reserveId" , reserveId);
+        Map<String, Object> map = new HashMap<>();
+        map.put("reserveId", reserveId);
 
         List<Reserve> reserveList = namedParameterJdbcTemplate.query(sql, map, new ReserveRowMapper());
-        if(reserveList.size() > 0){
+        if (reserveList.size() > 0) {
             return reserveList.get(0);
-        }else{
+        } else {
             return null;
         }
     }
 
+
+    //使用者前台發送一筆創建訂單
     @Override
     public Integer createReserve(ReserveRequest reserveRequest) {
 
-        String sql = "INSERT INTO reserve ( reserveDate, count, reserveTime, restaurantId, userId)" +
-                     "VALUES (:reserveDate, :count, :reserveTime, :restaurantId, :userId)";
+        String sql = "INSERT INTO reserve ( reserveDateTime, adult, child, baby, reserveTime, restaurantId,businessId, userId)"  +
+                "VALUES (:reserveDate, :adult , :child , :baby , :reserveTime, :restaurantId, :businessId, :userId)";
 
         Map<String, Object> map = new HashMap<>();
 
-        map.put("reserveDate" ,reserveRequest.getReserveDate());
+        map.put("reserveDate", reserveRequest.getReserveDate());
 
-        map.put("count" ,reserveRequest.getCount());
+        map.put("adult" ,reserveRequest.getAdult() );
+
+        map.put("child" ,reserveRequest.getChild());
+
+
+        map.put("baby" ,reserveRequest.getBaby() );
+
 
         Date now = new Date();
         Timestamp timestamp = new Timestamp(now.getTime());
-        map.put("reserveTime" ,timestamp);
+        map.put("reserveTime", timestamp);
 
-        map.put("restaurantId" ,reserveRequest.getRestaurantId());
-        map.put("userId" ,reserveRequest.getUserId());
+        map.put("restaurantId", reserveRequest.getRestaurantId());
+        map.put("businessId", reserveRequest.getBusinessId());
+        map.put("userId", reserveRequest.getUserId());
 
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
-        namedParameterJdbcTemplate.update(sql,new MapSqlParameterSource(map), keyHolder);
+        namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
 
         int reserveId = keyHolder.getKey().intValue();
 
         return reserveId;
     }
-
-    @Override
-    public void updateReserve(Integer reserveId, ReserveRequest reserveRequest) {
-//        String sql =  "UPDATE reserve SET "
-    }
-
-    @Override
-    public void deleteReserveById(Integer reserveId) {
-
-    }
-
-
 }

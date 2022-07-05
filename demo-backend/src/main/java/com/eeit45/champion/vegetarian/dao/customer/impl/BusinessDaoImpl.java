@@ -24,16 +24,18 @@ public class BusinessDaoImpl implements BusinessDao {
 
     @Override
     public Integer createBusiness(BusinessRegisterRequest businessRegisterRequest) {
-        String sql = "INSERT INTO business ( email, password, businessName, status, businessPic, createdTime , lastLoginTime)" +
-                "VALUES (:email, :password, :businessName, :status, :businessPic, :createdTime , :lastLoginTime)";
+        String sql = "INSERT INTO business ( email, password, principalName,principalPhone, businessName,located, businessPic, status,  createdTime , lastLoginTime)" +
+                "VALUES (:email, :password, :principalName, :principalPhone , :businessName, :located,   :businessPic, :status, :createdTime , :lastLoginTime)";
 
         Map<String,Object> map = new HashMap<>();
-        map.put("email", businessRegisterRequest.getLoginEmail());
+        map.put("email", businessRegisterRequest.getAccount());
         map.put("password", businessRegisterRequest.getPassword());
+        map.put("principalName", businessRegisterRequest.getPrincipalName());
+        map.put("principalPhone", businessRegisterRequest.getPrincipalPhone());
         map.put("businessName", businessRegisterRequest.getBusinessName());
+        map.put("located", businessRegisterRequest.getLocated());
         map.put("businessPic", businessRegisterRequest.getBusinessPic());
-
-        map.put("status","未開通");
+        map.put("status",businessRegisterRequest.getStatus());
 
         //TimeStamp
         Date now = new Date();

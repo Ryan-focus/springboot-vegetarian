@@ -1,22 +1,23 @@
-package com.eeit45.champion.vegetarian.dto.customer;
+package com.eeit45.champion.vegetarian.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-public class BusinessLoginRequest {
+public class LoginRequest {
     @NotBlank
     @Email
-    private String loginEmail;
+    private String account;
 
     @NotBlank
     private String password;
 
-    public String getLoginEmail() {
-        return loginEmail;
+
+    public String getAccount() {
+        return account;
     }
 
-    public void setLoginEmail(String loginEmail) {
-        this.loginEmail = loginEmail;
+    public void setAccount(String account) {
+        this.account = account;
     }
 
     public String getPassword() {
