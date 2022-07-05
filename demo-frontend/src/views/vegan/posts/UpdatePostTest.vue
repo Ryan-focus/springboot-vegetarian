@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, computed, toRefs } from "vue";
+import { ref, reactive, computed } from "vue";
 
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
 import useVuelidate from "@vuelidate/core";
@@ -18,39 +18,99 @@ import CKEditor from "@ckeditor/ckeditor5-vue";
 
 // You can import one of the following CKEditor variation (only one at a time)
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
-import axios from "axios";
-import path from "path";
 //import InlineEditor from '@ckeditor/ckeditor5-build-inline'
 //import BalloonEditor from '@ckeditor/ckeditor5-build-balloon'
 //import BalloonBlockEditor from '@ckeditor/ckeditor5-build-balloon-block'
+// import EasyImage from '@ckeditor/ckeditor5-easy-image/src/easyimage';
+// import Image from '@ckeditor/ckeditor5-image/src/image';
+// import ImageUpload from '@ckeditor/ckeditor5-image/src/imageupload';
 
 // CKEditor 5 variables
 let ckeditor = CKEditor.component;
 
-const editorData = ref("<p>請在這邊輸入對商品的詳細描述</p>");
+const editorData = ref("<p>Hello CKEditor5!</p>");
 const editorConfig = ref({});
+
+// Example options for select
+const options = reactive([
+  { value: null, text: "Please select" },
+  { value: "html", text: "HTML" },
+  { value: "css", text: "CSS" },
+  { value: "javascript", text: "JavaScript" },
+  { value: "angular", text: "Angular" },
+  { value: "react", text: "React" },
+  { value: "vuejs", text: "Vue.js" },
+  { value: "ruby", text: "Ruby" },
+  { value: "php", text: "PHP" },
+  { value: "asp", text: "ASP.NET" },
+  { value: "python", text: "Python" },
+  { value: "mysql", text: "MySQL" },
+]);
 
 // Input state variables
 const state = reactive({
-  productName: null,
-  productPrice: null,
-  stock: null,
+  username: null,
+  email: null,
+  password: null,
+  confirmPassword: null,
+  suggestions: null,
+  skill: null,
+  currency: null,
+  website: null,
+  digits: null,
+  number: null,
+  range: null,
+  terms: null,
 });
 
 // Validation rules
 const rules = computed(() => {
   return {
-    productName: {
+    username: {
       required,
       minLength: minLength(1),
     },
-    productPrice: {
+    email: {
+      required,
+      email,
+    },
+    password: {
+      required,
+      minLength: minLength(5),
+    },
+    confirmPassword: {
+      required,
+      sameAs: sameAs(state.password),
+    },
+    suggestions: {
+      required,
+      minLength: minLength(3),
+    },
+    skill: {
+      required,
+    },
+    currency: {
       required,
       decimal,
     },
-    stock: {
+    website: {
+      required,
+      url,
+    },
+    digits: {
+      required,
+      integer,
+    },
+    number: {
       required,
       decimal,
+    },
+    range: {
+      required,
+      between: between(1, 5),
+    },
+    terms: {
+      sameAs: sameAs(true),
     },
   };
 });
@@ -69,7 +129,43 @@ async function onSubmit() {
 
   // perform async actions
 }
+
+// UploadAdapter: function(loader) {
+//     this.loader = loader
+//     loader.file.then(response)
+    
+//     this.upload = () => {
+//     const body = new FormData();
+//     body.append('file', this.loader.file);
+
+//     return fetch('http://localhost:8000/api/imageUpload', {
+//     headers: {
+//     'Content-Type': "multipart/form-data; charset=utf-8; boundary=" + Math.random().toString().substr(2),
+//     'Accept': 'application/json'
+//            },
+//     body: body,
+//     method: 'post'
+//             })
+//     .then(response => response.json())
+//     .then(downloadUrl => {
+//           return {
+
+//         default: downloadUrl
+//         }
+//     })
+//     .catch(error => {
+//         console.log(error);
+//     });
+//         }
+//     this.abort = () => {
+//           console.log('Abort upload.')
+//     }
+
+// }
+
 </script>
+
+
 
 <template>
   <!-- Hero -->
@@ -100,7 +196,7 @@ async function onSubmit() {
   <!-- Page Content -->
   <div class="content">
     <!-- Basic -->
-    <form @submit.prevent="onSubmit" @submit="createProduct" id="forms">
+    <form @submit.prevent="onSubmit">
       <BaseBlock title="Validation Form" content-full>
         <div class="row push">
           <div class="col-lg-4">
@@ -109,28 +205,27 @@ async function onSubmit() {
           <div class="col-lg-8 col-xl-5">
             <!-- 商品名稱開始 -->
             <div class="mb-4">
-              <label class="form-label" for="val-productName"
+              <label class="form-label" for="val-username"
                 >商品名稱 <span class="text-danger">*</span></label
               >
               <input
                 type="text"
-                id="val-productName"
+                id="val-username"
                 class="form-control"
                 :class="{
-                  'is-invalid': v$.productName.$errors.length,
+                  'is-invalid': v$.username.$errors.length,
                 }"
-                v-model="productName"
-                @blur="v$.productName.$touch"
-                placeholder="請輸入產品名稱"
+                v-model="state.username"
+                @blur="v$.username.$touch"
+                placeholder="Enter a username.."
               />
               <div
-                v-if="v$.productName.$errors.length"
+                v-if="v$.username.$errors.length"
                 class="invalid-feedback animated fadeIn"
               >
                 請輸入商品名稱
               </div>
             </div>
-
             <!-- 商品分類開始 -->
             <div class="mb-4">
               <label class="form-label" for="example-select"
@@ -140,7 +235,6 @@ async function onSubmit() {
                 class="form-select"
                 id="example-select"
                 name="example-select"
-                v-model="category"
               >
                 <option selected>按我選擇</option>
                 <option value="生鮮">生鮮</option>
@@ -163,7 +257,6 @@ async function onSubmit() {
                 class="form-select"
                 id="example-select"
                 name="example-select"
-                v-model="veganCategory"
               >
                 <option selected>按我選擇</option>
                 <option value="全素">全素</option>
@@ -177,57 +270,31 @@ async function onSubmit() {
                 <option value="量販批發">量販批發</option>
               </select>
             </div>
-
             <!-- 價格開始 -->
             <div class="mb-4">
-              <label class="form-label" for="val-productPrice"
+              <label class="form-label" for="val-currency"
                 >台幣 (NTD) <span class="text-danger">*</span></label
               >
               <input
                 type="text"
-                id="val-productPrice"
+                id="val-currency"
                 class="form-control"
                 :class="{
-                  'is-invalid': v$.productPrice.$errors.length,
+                  'is-invalid': v$.currency.$errors.length,
                 }"
-                v-model="productPrice"
-                @blur="v$.productPrice.$touch"
+                v-model="state.currency"
+                @blur="v$.currency.$touch"
                 placeholder="200"
               />
               <div
-                v-if="v$.productPrice.$errors.length"
+                v-if="v$.currency.$errors.length"
                 class="invalid-feedback animated fadeIn"
               >
                 請輸入數字!
               </div>
             </div>
-
-            <!-- 庫存開始 -->
-            <div class="mb-4">
-              <label class="form-label" for="val-stock"
-                >庫存 <span class="text-danger">*</span></label
-              >
-              <input
-                type="text"
-                id="val-stock"
-                class="form-control"
-                :class="{
-                  'is-invalid': v$.stock.$errors.length,
-                }"
-                v-model="stock"
-                @blur="v$.stock.$touch"
-                placeholder="200"
-              />
-              <div
-                v-if="v$.stock.$errors.length"
-                class="invalid-feedback animated fadeIn"
-              >
-                請輸入數字!
-              </div>
-            </div>
-
             <!-- 圖片上傳開始-->
-            <!-- <div class="row push">
+            <div class="row push">
               <div class="col-lg-8 col-xl-5 overflow-hidden">
                 <div class="mb-4">
                   <label class="form-label" for="example-file-input"
@@ -237,11 +304,10 @@ async function onSubmit() {
                     class="form-control"
                     type="file"
                     id="example-file-input"
-                    @change="onFileUpload"
                   />
                 </div>
               </div>
-            </div> -->
+            </div>
             <!-- 產品CK editor -->
             <div class="mb-4">
               <label class="form-label" for="example-select"
@@ -250,12 +316,15 @@ async function onSubmit() {
               <ckeditor
                 :editor="ClassicEditor"
                 :config="editorConfig"
-                v-model="description"
+                :upload-adapter="UploadAdapter"
+                v-model="editorData"
               />
             </div>
             <div class="row items-push">
               <div class="col-lg-7 offset-lg-4">
-                <button class="btn btn-alt-primary">Submit</button>
+                <button type="submit" class="btn btn-alt-primary">
+                  Submit
+                </button>
               </div>
             </div>
           </div>
@@ -265,32 +334,3 @@ async function onSubmit() {
     <!-- END Basic -->
   </div>
 </template>
-<script>
-export default {
-  data() {
-    return {
-      productName: null,
-      category: null,
-      veganCategory: null,
-      productPrice: null,
-      stock: null,
-      description: null,
-    };
-  },
-  methods: {
-    createProduct() {
-      const product = {
-        productName: this.productName,
-        category: this.category,
-        veganCategory: this.veganCategory,
-        productPrice: this.productPrice,
-        stock: this.stock,
-        description: this.description,
-      };
-      axios.post("http://localhost:8088/products", product).then(() => {
-        window.location = "#/backend/cart/productInfo";
-      });
-    },
-  },
-};
-</script>

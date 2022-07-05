@@ -51,7 +51,6 @@ const veganCategory = ref();
 const productPrice = ref();
 const productImage = ref();
 const description = ref();
-
 const stock = ref();
 
 //取得全部的資料
@@ -117,9 +116,10 @@ const cols = reactive([
     field: "imageUrl",
     sort: "",
   },
+
   {
-    name: "產品描述",
-    field: "description",
+    name: "庫存",
+    field: "stock",
     sort: "",
   },
 ]);
@@ -400,7 +400,7 @@ th.sort {
                         class="d-none d-sm-table-cell fs-sm"
                         style="min-width: 110px"
                       >
-                        {{ row.description }}
+                        {{ row.stock }}
                       </td>
                       <td class="text-center">
                         <div class="btn-group">
@@ -482,6 +482,7 @@ th.sort {
                     name="example-select"
                     v-model="productCategory"
                   >
+                    <option selected>{{ productCategory }}</option>
                     <option value="生鮮">生鮮</option>
                     <option value="食品">食品</option>
                     <option value="寵物">寵物</option>
@@ -505,6 +506,7 @@ th.sort {
                     name="example-select"
                     v-model="veganCategory"
                   >
+                    <option selected>{{ veganCategory }}</option>
                     <option value="全素">全素</option>
                     <option value="蛋素">蛋素</option>
                     <option value="奶素">奶素</option>
@@ -581,6 +583,15 @@ th.sort {
 <script>
 export default {
   data() {
+    let toast = Swal.mixin({
+      buttonsStyling: false,
+      target: "#page-container",
+      customClass: {
+        confirmButton: "btn btn-success m-1",
+        cancelButton: "btn btn-danger m-1",
+        input: "form-control",
+      },
+    });
     return {
       productName: null,
       productCategory: null,
@@ -603,8 +614,27 @@ export default {
       axios
         .put(`http://localhost:8088/products/${number}`, product)
         .then(() => {
-          this.$router.replace("/backend/cart/productInfo");
+          console.log(product);
+          window.location.reload();
         })
+        // .then(() => {
+        //   axios
+        //     .get(`http://localhost:8088/products`)
+        //     .then((res) => {
+        //       //獲取伺服器的回傳資料
+        //       console.log(res);
+        //       productId.value = res.data.productId;
+        //       productName.value = res.data.productName;
+        //       productCategory.value = res.data.productCategory;
+        //       veganCategory.value = res.data.veganCategory;
+        //       productPrice.value = res.data.productPrice;
+        //       stock.value = res.data.stock;
+        //       description.value = res.data.description;
+        //     })
+        //     .catch((error) => {
+        //       console.log(error, "失敗");
+        //     });
+        // })
         .catch((error) => {
           console.log(error, "失敗");
         });
