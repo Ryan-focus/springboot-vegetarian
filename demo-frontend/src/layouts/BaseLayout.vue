@@ -138,6 +138,10 @@ onMounted(() => {
         <slot name="header-content-left"></slot>
       </template>
 
+      <template #content-middle>
+        <slot name="header-content-middle"></slot>
+      </template>
+
       <template #content-right>
         <slot name="header-content-right"></slot>
       </template>

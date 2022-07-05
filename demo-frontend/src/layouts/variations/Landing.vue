@@ -1,8 +1,16 @@
 <script setup>
+import { ref } from "vue";
 import { useTemplateStore } from "@/stores/template";
 
 import BaseLayout from "@/layouts/BaseLayout.vue";
 
+import BaseNavigation from "@/components/BaseNavigation.vue";
+
+// Grab menu navigation arrays
+import menu from "@/data/menu";
+
+// Helper variables for mobile navigation visibility
+const mobileVisibleNavHoverCentered = ref(false);
 // Main store
 const store = useTemplateStore();
 
@@ -26,16 +34,50 @@ store.mainContent({ mode: "boxed" });
     <template #header-content-left>
       <!-- Logo -->
       <RouterLink
-        :to="{ name: 'landing' }"
+        :to="{ name: 'index' }"
         class="fw-bold fs-lg tracking-wider text-dual me-2"
       >
-        愛蔬網
+        <h1 class=".h1 mt-2 mt-lg-0">愛蔬網</h1>
         <!-- <span class="fw-normal"></span> -->
       </RouterLink>
       <!-- END Logo -->
     </template>
     <!-- END Header Content Left -->
 
+    <template #header-content-middle>
+      <!-- Horizontal Navigation - Hover Centered -->
+      <div class="p-3 push">
+        <!-- Toggle Navigation -->
+        <div class="d-lg-none">
+          <button
+            type="button"
+            class="btn w-100 btn-alt-secondary d-flex justify-content-between align-items-center"
+            @click="
+              mobileVisibleNavHoverCentered = !mobileVisibleNavHoverCentered
+            "
+          >
+            <i class="fa fa-bars"></i>
+          </button>
+        </div>
+        <!-- END Toggle Navigation -->
+
+        <!-- Navigation -->
+        <div
+          class="d-lg-block mt-2 mt-lg-0"
+          :class="{
+            'd-none': !mobileVisibleNavHoverCentered,
+          }"
+        >
+          <BaseNavigation
+            :nodes="menu.demo"
+            horizontal
+            horizontal-hover
+            horizontal-center
+          />
+        </div>
+      </div>
+      <!-- END Navigation -->
+    </template>
     <!-- Header Content Right -->
     <!-- Using the available v-slot, we can override the default Side Overlay content from layouts/partials/Header.vue -->
     <template #header-content-right>
@@ -111,10 +153,17 @@ store.mainContent({ mode: "boxed" });
       </div>
       <!-- END Options -->
 
+      <RouterLink
+        :to="{ name: 'login' }"
+        class="btn btn-warning"
+        v-click-ripple
+      >
+        <i class="fa fa-fw fa-user opacity-50"></i>
+      </RouterLink>
       <!-- Purchase Link -->
-      <a class="btn btn-success" href="/" v-click-ripple>
+      <a class="btn btn-success" href="#" v-click-ripple>
         <i class="fa fa-fw fa-shopping-cart opacity-50"></i>
-        <span class="d-none d-sm-inline-block ms-2">購物車</span>
+        <!-- <span class="d-none d-sm-inline-block ms-2">購物車</span> -->
       </a>
       <!-- END Purchase Link -->
     </template>

@@ -3,7 +3,7 @@ import { ref } from "vue";
 import BaseNavigation from "@/components/BaseNavigation.vue";
 
 // Grab menu navigation arrays
-import menu from "@/data/menu";
+// import menu from "@/data/menu";
 
 // Helper variables for mobile navigation visibility
 const mobileVisibleNavHoverNormal = ref(false);

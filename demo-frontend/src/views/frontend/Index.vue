@@ -9,23 +9,93 @@ const store = useTemplateStore();
   <div>
     <!-- Hero -->
     <div id="one-vue-hero" class="bg-body-extra-light">
-      <div class="content content-full">
+      <div class="w-80 text-centert">
+        <!-- <div class="px-lg-12 m-5 p-2 text-center"> -->
+        <div
+          id="carouselExampleIndicators"
+          class="carousel slide"
+          data-bs-ride="carousel"
+        >
+          <div class="carousel-indicators">
+            <button
+              type="button"
+              data-bs-target="#carouselExampleIndicators"
+              data-bs-slide-to="0"
+              class="active"
+              aria-current="true"
+              aria-label="Slide 1"
+            ></button>
+            <button
+              type="button"
+              data-bs-target="#carouselExampleIndicators"
+              data-bs-slide-to="1"
+              aria-label="Slide 2"
+            ></button>
+            <button
+              type="button"
+              data-bs-target="#carouselExampleIndicators"
+              data-bs-slide-to="2"
+              aria-label="Slide 3"
+            ></button>
+          </div>
+          <div class="carousel-inner">
+            <div class="carousel-item active" data-bs-interval="5000">
+              <img
+                src="http://assets.suelo.pl/soup/img/photos/slider-pasta.jpg"
+                class="d-block w-100"
+                alt="..."
+              />
+            </div>
+            <div class="carousel-item" data-bs-interval="3000">
+              <img
+                src="http://assets.suelo.pl/soup/img/photos/slider-burger.jpg"
+                class="d-block w-100"
+                alt="..."
+              />
+            </div>
+            <div class="carousel-item" data-bs-interval="2000">
+              <img
+                src="http://assets.suelo.pl/soup/img/photos/slider-dessert.jpg"
+                class="d-block w-100"
+                alt="..."
+              />
+            </div>
+          </div>
+          <button
+            class="carousel-control-prev"
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="prev"
+          >
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button
+            class="carousel-control-next"
+            type="button"
+            data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="next"
+          >
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+        <!-- </div> -->
         <div class="row g-0 justify-content-center text-center">
-          <div class="col-md-10 pt-6 pb-9">
-            <h1
+          <!-- <h1
               class="fs-2 fw-bold mb-3 d-inline-flex align-items-center space-x-2"
             >
-              愛蔬網 <span class="fw-normal ms-2">測試首頁</span>
+              愛蔬網 <span class="fw-normal ms-2">測試首頁</span> -->
 
-              <!-- Version -->
-              <span
+          <!-- Version -->
+          <!-- <span
                 class="fs-sm fw-medium py-1 px-2 rounded-pill bg-body-dark text-dark"
               >
                 {{ store.app.name }}
-              </span>
-              <!-- END Version -->
-            </h1>
-            <p class="fs-5 fw-medium text-muted mb-5 mx-xl-8">
+              </span> -->
+          <!-- END Version -->
+          <!-- </h1> -->
+          <!-- <p class="fs-5 fw-medium text-muted mb-5 mx-xl-8">
               鑒於近年環保與健康意識抬頭，各國<span
                 class="text-body-color fw-semibold"
                 >素食者</span
@@ -37,40 +107,25 @@ const store = useTemplateStore();
                 class="text-body-color fw-semibold"
                 >搜尋、訂位、網誌、食記、購物</span
               >功能五合一的服務網站。
-            </p>
-            <!-- 連到後台的方法 -->
-            <!-- 如果要新開畫面可以加target="_blank" -->
-            <RouterLink
+            </p> -->
+          <!-- 連到後台的方法 -->
+          <!-- 如果要新開畫面可以加target="_blank" -->
+          <!-- <RouterLink
               :to="{ name: 'backend-dashboard' }"
               class="btn btn-primary py-2 px-3 m-1"
               v-click-ripple
             >
               <i class="fa fa-fw fa-eye opacity-50 me-1"></i> 點我進後台
-            </RouterLink>
-          </div>
+            </RouterLink> -->
         </div>
       </div>
     </div>
     <!-- END Hero -->
 
     <!-- Hero After -->
-    <!-- <div id="one-vue-hero-after" class="bg-body-light">
+    <div id="one-vue-hero-after" class="bg-body-light">
       <div class="content content-full">
-        <div class="px-lg-8 text-center">
-          <BaseBlock
-            fx-shadow
-            class="overflow-hidden"
-            content-class="p-2"
-            style="margin-top: -200px"
-          >
-            <img
-              class="img-fluid"
-              src="/assets/media/various/hero-promo.png"
-              alt="Hero Promo Light Dashboard"
-            />
-          </BaseBlock>
-        </div>
-        <div class="row py-5 text-center">
+        <!-- <div class="row py-5 text-center">
           <div class="col-6 col-md-3">
             <div
               class="rounded d-inline-block px-3 py-4 text-flat bg-flat-lighter"
@@ -103,9 +158,9 @@ const store = useTemplateStore();
             </div>
             <p class="fs-lg fw-semibold mt-2">Sass</p>
           </div>
-        </div>
+        </div> -->
       </div>
-    </div> -->
+    </div>
     <!-- END Hero After -->
 
     <!-- Power of Vue.js -->

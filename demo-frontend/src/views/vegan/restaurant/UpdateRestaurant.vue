@@ -70,7 +70,7 @@ async function onSubmit() {
 <template>
   <!-- Hero -->
 
-  <BasePageHeading title="餐廳管理" subtitle="填寫資料新增餐廳">
+  <BasePageHeading title="餐廳管理" subtitle="更新餐廳資料">
     <template #extra>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-alt">
@@ -85,7 +85,7 @@ async function onSubmit() {
             >
           </li>
           <li class="breadcrumb-item" aria-current="page">
-            <i class="fa fa-leaf"></i> 新增餐廳
+            <i class="fa fa-leaf"></i> 更新餐廳
           </li>
         </ol>
       </nav>
@@ -96,8 +96,8 @@ async function onSubmit() {
   <!-- Page Content -->
   <div class="content">
     <!-- Basic -->
-    <form @submit.prevent="onSubmit" @submit="createRestaurant" id="forms">
-      <BaseBlock title="新增餐廳表單" content-full>
+    <form @submit.prevent="onSubmit" @submit="updateRestaurant" id="forms">
+      <BaseBlock title="更新餐廳表單" content-full>
         <div class="row push">
           <div class="col-lg-4">
             <p class="fs-sm text-muted">請填寫完整資訊</p>

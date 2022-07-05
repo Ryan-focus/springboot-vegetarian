@@ -26,11 +26,16 @@ boolean addPostImage(Post post);
 	
 	List<Post> findPostByStatus() ;
 	
+	List<Post> findPostByNoAudit();
+	
+	List<Post> findPostByNoPass();
+	
 	void addFavPost(int pid,int uid);
 	
 	PostFavorite findByFavorite(int pid , int uid);
 	
 	boolean isFavorite(int pid, int uid);
+
 	
 
 }

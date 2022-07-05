@@ -3,14 +3,16 @@ import { createRouter, createWebHashHistory, RouterView } from "vue-router";
 import NProgress from "nprogress/nprogress.js";
 
 // Main layout variations
+//設定Layout模板
 import LayoutSimple from "@/layouts/variations/Simple.vue";
 import LayoutLanding from "@/layouts/variations/Landing.vue";
 import LayoutBackend from "@/layouts/variations/Backend.vue";
 import LayoutBackendBoxed from "@/layouts/variations/BackendBoxed.vue";
 import LayoutBackendMegaMenu from "@/layouts/variations/BackendMegaMenu.vue";
 
-// Frontend: Landing
-const Landing = () => import("@/views/landing/LandingView.vue");
+// Frontend: Index
+const Index = () => import("@/views/frontend/Index.vue");
+const Login = () => import("@/views/frontend/Login.vue");
 
 // Backend Boxed: Dashboard
 const BackendBoxedDashboard = () =>
@@ -36,7 +38,10 @@ const VeganRestaurantDashboard = () =>
   import("@/views/vegan/restaurant/DashboardView.vue");
 const VeganRestaurantInfo = () =>
   import("@/views/vegan/restaurant/RestaurantInfo.vue");
-
+const VeganRestaurantInsertRestaurant = () =>
+  import("@/views/vegan/restaurant/InsertRestaurant.vue");
+const VeganRestaurantUpdateRestaurant = () =>
+  import("@/views/vegan/restaurant/UpdateRestaurant.vue");
 //愛蔬網後台: forums
 const VeganForumsDashboard = () =>
   import("@/views/vegan/forums/DashboardView.vue");
@@ -266,8 +271,13 @@ const routes = [
     children: [
       {
         path: "",
-        name: "landing",
-        component: Landing,
+        name: "index",
+        component: Index,
+      },
+      {
+        path: "/signin",
+        name: "login",
+        component: Login,
       },
     ],
   },
@@ -390,6 +400,16 @@ const routes = [
             path: "restaurantinfo",
             name: "backend-restaurants-restaurant-info",
             component: VeganRestaurantInfo,
+          },
+          {
+            path: "insertRestaurant",
+            name: "backend-restaurants-insert-restaurant",
+            component: VeganRestaurantInsertRestaurant,
+          },
+          {
+            path: "updateRestaurant",
+            name: "backend-restaurants-update-restaurant",
+            component: VeganRestaurantUpdateRestaurant,
           },
         ],
       },
