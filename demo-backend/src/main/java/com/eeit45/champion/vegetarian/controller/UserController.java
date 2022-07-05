@@ -9,6 +9,7 @@ import javax.validation.constraints.Min;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -136,6 +137,18 @@ public class UserController {
         User updateUserStatus = userService.getUserById(userId);
 
         return ResponseEntity.status(HttpStatus.OK).body(updateUserStatus);
+    }
+    
+    @PostMapping("/user/login")
+    public ResponseEntity<User> login(@RequestBody UserRequest userRequest){
+    	
+    	User user =  userService.login(userRequest);;
+
+		if(user != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(user); //登入成功
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); //沒註冊
+    	
     }
 
 }

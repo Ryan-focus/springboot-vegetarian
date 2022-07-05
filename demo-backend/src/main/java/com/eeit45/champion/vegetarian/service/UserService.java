@@ -21,5 +21,9 @@ public interface UserService {
 	void deleteUserById(Integer userId);
 	
 	int updateUserStatus(Integer userId);
+	
+	User login(UserRequest userRequest);
+	
+//	boolean isBanned(UserRequest userRequest);
 
 }

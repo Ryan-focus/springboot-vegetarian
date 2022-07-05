@@ -9,6 +9,7 @@ import com.eeit45.champion.vegetarian.model.User;
 public interface UserDao {
 	
 	Integer totalUser(UserQueryParams userQueryParams);
+	
 	List<User> getUsers(UserQueryParams userQueryParams);
 	
 	List<User> getAllUser();
@@ -21,5 +22,9 @@ public interface UserDao {
 	void deleteUserById(Integer userId);
 	
 	int updateUserStatus(Integer userId);
+	
+	User login(UserRequest userRequest);
+	
+	boolean isBanned(UserRequest userRequest);
 
 }

@@ -158,12 +158,44 @@ public class UserDaoImpl implements UserDao {
 		
 	}
 	
+	@Override
+	public User login(UserRequest userRequest) {
+		
+		String sql = "select * from `user` where email= :email";
+		
+		Map<String, Object> map = new HashMap<>();
+        map.put("email", userRequest.getEmail());
+		  
+        List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
+        
+        if (userList.size() > 0) {
+            return userList.get(0);
+        }
+		return null;
+	}
+
+	@Override
+	public boolean isBanned(UserRequest userRequest) {
+		
+		String sql = "select * from `user` where email= :email and status='禁用'";
+		
+		Map<String, Object> map = new HashMap<>();
+        map.put("email", userRequest.getEmail());
+		  
+        List<User> userList = namedParameterJdbcTemplate.query(sql, map, new UserRowMapper());
+        
+        if (userList.size() > 0) {
+            return true;
+        }
+		return false;
+	}
+
 	private String filteringSQL(String sql, Map<String, Object> map, UserQueryParams userQueryParams) {
 		
 		if (userQueryParams.getSearch() != null) {
-            sql = sql + " AND userId in :search";
-            map.put("search", userQueryParams.getSearch());
-        }
+			sql = sql + " AND userId in :search";
+			map.put("search", userQueryParams.getSearch());
+		}
 		return sql;
 	}
 
