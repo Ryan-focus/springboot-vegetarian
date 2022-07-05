@@ -288,7 +288,7 @@ export default {
         description: this.description,
       };
       axios.post("http://localhost:8088/products", product).then(() => {
-        this.$router.replace("/backend/cart/productInfo");
+        window.location = "#/backend/cart/productInfo";
       });
     },
   },
