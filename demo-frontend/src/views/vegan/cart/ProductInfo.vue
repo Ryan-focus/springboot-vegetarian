@@ -375,12 +375,42 @@ th.sort {
                         class="d-none d-sm-table-cell fs-sm"
                         style="min-width: 110px"
                       >
-                        <img :src="row.productImage" width="80" height="80" />
-                        {{ row.productImage }}
+                        <div class="options-container">
+                          <img
+                            class="img-fluid options-item"
+                            :src="row.productImage"
+                            alt="Image"
+                          />
+                          <div class="options-overlay bg-black-30">
+                            <div class="options-overlay-content">
+                              <h4 class="h6 text-white-75 fw-normal mb-1">
+                                點按鈕編輯
+                              </h4>
+                              <div class="space-x-2">
+                                <a
+                                  class="btn btn-sm btn-alt-secondary"
+                                  href="javascript:void(0)"
+                                >
+                                  <i
+                                    class="fa fa-pencil-alt text-primary me-1"
+                                  ></i>
+                                  Edit
+                                </a>
+                                <a
+                                  class="btn btn-sm btn-alt-secondary"
+                                  href="javascript:void(0)"
+                                >
+                                  <i class="fa fa-times text-danger me-1"></i>
+                                  Delete
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </td>
                       <td
                         class="d-none d-sm-table-cell fs-sm"
-                        style="min-width: 110px"
+                        style="min-width: 90px"
                       >
                         {{ row.stock }}
                       </td>
