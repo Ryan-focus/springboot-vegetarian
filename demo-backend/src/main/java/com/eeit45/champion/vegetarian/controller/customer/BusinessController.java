@@ -1,6 +1,6 @@
 package com.eeit45.champion.vegetarian.controller.customer;
 
-import com.eeit45.champion.vegetarian.dto.customer.BusinessLoginRequest;
+import com.eeit45.champion.vegetarian.dto.LoginRequest;
 import com.eeit45.champion.vegetarian.dto.customer.BusinessRegisterRequest;
 import com.eeit45.champion.vegetarian.interceptor.LoginVO;
 import com.eeit45.champion.vegetarian.model.customer.Business;
@@ -22,19 +22,6 @@ public class BusinessController {
     @Autowired
     BusinessService businessService;
 
-    @PostMapping("/users/login")
-    public ResponseEntity<Result<Business>> loginValid(@RequestBody @Valid BusinessLoginRequest businessLoginRequest){
-        Business business = businessService.login(businessLoginRequest);
-
-        LoginVO loginVO = new LoginVO();
-        loginVO.setId(business.getBusinessId());
-        loginVO.setToken(UUID.randomUUID().toString());
-        loginVO.setUser(business);
-
-        Result result = new Result(200,"",loginVO);
-
-        return ResponseEntity.status(HttpStatus.OK).body(result);
-    }
 
 
     @PostMapping("/business/register")

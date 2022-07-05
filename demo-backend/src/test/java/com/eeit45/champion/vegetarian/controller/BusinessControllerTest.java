@@ -1,7 +1,7 @@
 package com.eeit45.champion.vegetarian.controller;
 
 import com.eeit45.champion.vegetarian.dao.customer.BusinessDao;
-import com.eeit45.champion.vegetarian.dto.customer.BusinessLoginRequest;
+import com.eeit45.champion.vegetarian.dto.LoginRequest;
 import com.eeit45.champion.vegetarian.dto.customer.BusinessRegisterRequest;
 import com.eeit45.champion.vegetarian.model.customer.Business;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -109,9 +109,9 @@ class BusinessControllerTest {
         register(businessRegisterRequest);
 
         // 再測試登入功能
-        BusinessLoginRequest businessLoginRequest = new BusinessLoginRequest();
-        businessLoginRequest.setLoginEmail(businessRegisterRequest.getLoginEmail());
-        businessLoginRequest.setPassword(businessRegisterRequest.getPassword());
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setLoginEmail(businessRegisterRequest.getLoginEmail());
+        loginRequest.setPassword(businessRegisterRequest.getPassword());
 
         String json = objectMapper.writeValueAsString(businessRegisterRequest);
 
@@ -130,11 +130,11 @@ class BusinessControllerTest {
 
     @Test
     public void login_invalidEmailFormat() throws Exception {
-        BusinessLoginRequest businessLoginRequest = new BusinessLoginRequest();
-        businessLoginRequest.setLoginEmail("hkbudsr324");
-        businessLoginRequest.setPassword("123");
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setLoginEmail("hkbudsr324");
+        loginRequest.setPassword("123");
 
-        String json = objectMapper.writeValueAsString(businessLoginRequest);
+        String json = objectMapper.writeValueAsString(loginRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post("/users/login")
@@ -147,11 +147,11 @@ class BusinessControllerTest {
 
     @Test
     public void login_emailNotExist() throws Exception {
-        BusinessLoginRequest businessLoginRequest = new BusinessLoginRequest();
-        businessLoginRequest.setLoginEmail("unknown@gmail.com");
-        businessLoginRequest.setPassword("123");
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setLoginEmail("unknown@gmail.com");
+        loginRequest.setPassword("123");
 
-        String json = objectMapper.writeValueAsString(businessLoginRequest);
+        String json = objectMapper.writeValueAsString(loginRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post("/users/login")
@@ -172,11 +172,11 @@ class BusinessControllerTest {
         register(businessRegisterRequest);
 
         // 測試密碼輸入錯誤的情況
-        BusinessLoginRequest businessLoginRequest = new BusinessLoginRequest();
-        businessLoginRequest.setLoginEmail(businessRegisterRequest.getLoginEmail());
-        businessLoginRequest.setPassword("unknown");
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setLoginEmail(businessRegisterRequest.getLoginEmail());
+        loginRequest.setPassword("unknown");
 
-        String json = objectMapper.writeValueAsString(businessLoginRequest);
+        String json = objectMapper.writeValueAsString(loginRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
                 .post("/users/login")
