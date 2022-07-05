@@ -40,8 +40,8 @@ const VeganRestaurantInfo = () =>
   import("@/views/vegan/restaurant/RestaurantInfo.vue");
 const VeganRestaurantInsertRestaurant = () =>
   import("@/views/vegan/restaurant/InsertRestaurant.vue");
-const VeganRestaurantUpdateRestaurant = () =>
-  import("@/views/vegan/restaurant/UpdateRestaurant.vue");
+// const VeganRestaurantUpdateRestaurant = () =>
+//   import("@/views/vegan/restaurant/UpdateRestaurant.vue");
 //愛蔬網後台: forums
 const VeganForumsDashboard = () =>
   import("@/views/vegan/forums/DashboardView.vue");
