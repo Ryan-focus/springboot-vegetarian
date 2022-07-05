@@ -406,11 +406,6 @@ const routes = [
             name: "backend-restaurants-insert-restaurant",
             component: VeganRestaurantInsertRestaurant,
           },
-          {
-            path: "updateRestaurant",
-            name: "backend-restaurants-update-restaurant",
-            component: VeganRestaurantUpdateRestaurant,
-          },
         ],
       },
       {
