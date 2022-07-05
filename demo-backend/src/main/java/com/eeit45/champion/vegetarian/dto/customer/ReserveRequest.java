@@ -1,23 +1,33 @@
 package com.eeit45.champion.vegetarian.dto.customer;
 
+import org.springframework.beans.factory.annotation.Value;
+
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 public class ReserveRequest {
 
-    @NotNull
+    @NotBlank
     private String reserveDate;
 
     @NotNull
-    private Integer count;
+    private Integer adult;
+
+    private Integer child;
+
+    private Integer baby;
 
     private Date reserveTime;
 
     @NotNull
     private Integer restaurantId;
 
-    private Integer userId;
+    @NotNull
+    private Integer businessId;
 
+    @NotNull
+    private Integer userId;
 
     public String getReserveDate() {
         return reserveDate;
@@ -27,12 +37,28 @@ public class ReserveRequest {
         this.reserveDate = reserveDate;
     }
 
-    public Integer getCount() {
-        return count;
+    public Integer getAdult() {
+        return adult;
     }
 
-    public void setCount(Integer count) {
-        this.count = count;
+    public void setAdult(Integer adult) {
+        this.adult = adult;
+    }
+
+    public Integer getChild() {
+        return child;
+    }
+
+    public void setChild(Integer child) {
+        this.child = child;
+    }
+
+    public Integer getBaby() {
+        return baby;
+    }
+
+    public void setBaby(Integer baby) {
+        this.baby = baby;
     }
 
     public Date getReserveTime() {
@@ -49,6 +75,14 @@ public class ReserveRequest {
 
     public void setRestaurantId(Integer restaurantId) {
         this.restaurantId = restaurantId;
+    }
+
+    public Integer getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessId(Integer businessId) {
+        this.businessId = businessId;
     }
 
     public Integer getUserId() {

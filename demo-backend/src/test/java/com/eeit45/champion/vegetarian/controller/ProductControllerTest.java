@@ -75,7 +75,7 @@ public class ProductControllerTest {
     public void updatedProduct() throws Exception{
         ProductRequest productRequest = new ProductRequest();
         productRequest.setProductName("test product");
-        productRequest.setProductCategory(ProductCategory.飾品);
+        productRequest.setCategory(ProductCategory.飾品);
         productRequest.setVeganCategory(VeganCategory.VEGAN);
         productRequest.setProductPrice(30678);
         productRequest.setProductImage("30678.jpg");

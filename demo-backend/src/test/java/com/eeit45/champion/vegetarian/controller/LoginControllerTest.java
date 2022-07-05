@@ -1,8 +1,8 @@
 package com.eeit45.champion.vegetarian.controller;
 
 import com.eeit45.champion.vegetarian.dao.customer.BusinessDao;
+import com.eeit45.champion.vegetarian.dto.LoginRequest;
 import com.eeit45.champion.vegetarian.dto.customer.BusinessRegisterRequest;
-import com.eeit45.champion.vegetarian.model.customer.Business;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,13 +15,13 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
 @SpringBootTest
-class BusinessControllerTest {
+public class LoginControllerTest {
+
 
     @Autowired
     private MockMvc mockMvc;
@@ -31,43 +31,47 @@ class BusinessControllerTest {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    // 商家註冊新帳號
+
+    // 測試商家註冊 且登入狀態方法
     @Test
-    public void register_success() throws Exception {
+    public void login_success() throws Exception {
+        // 先註冊新帳號
         BusinessRegisterRequest businessRegisterRequest = new BusinessRegisterRequest();
-        businessRegisterRequest.setLoginEmail(("test1@gmail.com"));
-        businessRegisterRequest.setPassword("123");
+        businessRegisterRequest.setLoginEmail("test3@gmail.com");
+        businessRegisterRequest.setPassword("12345678");
+
+        businessRegister(businessRegisterRequest);
+
+        // 再測試登入功能
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setAccount(businessRegisterRequest.getLoginEmail());
+        loginRequest.setPassword(businessRegisterRequest.getPassword());
 
         String json = objectMapper.writeValueAsString(businessRegisterRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/users/register")
+                .post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json);
 
         mockMvc.perform(requestBuilder)
-                .andExpect(status().is(201))
-                .andExpect(jsonPath("$.userId", notNullValue()))
-                .andExpect(jsonPath("$.email", equalTo("test1@gmail.com")))
+                .andExpect(status().is(200))
+                .andExpect(jsonPath("$.businessId", notNullValue()))
+                .andExpect(jsonPath("$.email", equalTo(businessRegisterRequest.getLoginEmail())))
                 .andExpect(jsonPath("$.createdDate", notNullValue()))
                 .andExpect(jsonPath("$.lastModifiedDate", notNullValue()));
-
-        // 檢查資料庫中的密碼不為明碼
-        Business business = businessDao.getBusinessByEmail(businessRegisterRequest.getLoginEmail());
-        //比較從資料庫取得的使用者的密碼，不得與使用者輸入的密碼相同。
-        assertNotEquals(businessRegisterRequest.getPassword(), business.getPassword());
     }
 
     @Test
-    public void register_invalidEmailFormat() throws Exception {
-        BusinessRegisterRequest businessRegisterRequest = new BusinessRegisterRequest();
-        businessRegisterRequest.setLoginEmail("3gd8e7q34l9");
-        businessRegisterRequest.setPassword("123");
+    public void login_invalidEmailFormat() throws Exception {
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setAccount("hkbudsr324");
+        loginRequest.setPassword("12345678");
 
-        String json = objectMapper.writeValueAsString(businessRegisterRequest);
+        String json = objectMapper.writeValueAsString(loginRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/users/register")
+                .post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json);
 
@@ -76,30 +80,50 @@ class BusinessControllerTest {
     }
 
     @Test
-    public void register_emailAlreadyExist() throws Exception {
-        // 先註冊一個帳號
-        BusinessRegisterRequest businessRegisterRequest = new BusinessRegisterRequest();
-        businessRegisterRequest.setLoginEmail("test2@gmail.com");
-        businessRegisterRequest.setPassword("123");
+    public void login_emailNotExist() throws Exception {
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setAccount("unknown@gmail.com");
+        loginRequest.setPassword("12345678");
 
-        String json = objectMapper.writeValueAsString(businessRegisterRequest);
+        String json = objectMapper.writeValueAsString(loginRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/users/register")
+                .post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json);
 
         mockMvc.perform(requestBuilder)
-                .andExpect(status().is(201));
+                .andExpect(status().is(400));
+    }
 
-        // 再次使用同個 email 註冊
+    @Test
+    public void login_wrongPassword() throws Exception {
+        // 先註冊新帳號
+        BusinessRegisterRequest businessRegisterRequest = new BusinessRegisterRequest();
+        businessRegisterRequest.setLoginEmail("test4@gmail.com");
+        businessRegisterRequest.setPassword("123");
+
+        businessRegister(businessRegisterRequest);
+
+        // 測試密碼輸入錯誤的情況
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setAccount(businessRegisterRequest.getLoginEmail());
+        loginRequest.setPassword("unknown");
+
+        String json = objectMapper.writeValueAsString(loginRequest);
+
+        RequestBuilder requestBuilder = MockMvcRequestBuilders
+                .post("/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(json);
+
         mockMvc.perform(requestBuilder)
                 .andExpect(status().is(400));
     }
 
 
 
-    private void register(BusinessRegisterRequest businessRegisterRequest) throws Exception {
+    private void businessRegister(BusinessRegisterRequest businessRegisterRequest) throws Exception {
         String json = objectMapper.writeValueAsString(businessRegisterRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
