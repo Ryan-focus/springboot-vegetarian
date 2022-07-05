@@ -31,6 +31,15 @@ const url = "localhost:8088";
 //接收的資料ref
 const resData = ref();
 
+const resRestaurantNumber = ref();
+const resRestaurantName = ref();
+const resRestaurantTel = ref();
+const resRestaurantAddress = ref();
+const resRestaurantCategory = ref();
+const resRestaurantType = ref();
+const resRestaurantBusinessHours = ref();
+const resRestaurantScore = ref();
+
 const getAxios = function () {
   axios
     .get(`http://${url}/restaurants`)
@@ -124,7 +133,71 @@ function onSort(event, i) {
   sortEl.sort = toset;
 }
 
-//更新餐廳的方法
+//更新餐廳的方法--取值
+// const data = {
+//   restaurantNumber: this.restaurantNumber,
+//   restaurantName: this.restaurantName,
+//   restaurantTel: this.restaurantTel,
+//   restaurantAddress: this.restaurantAddress,
+//   restaurantCategory: this.restaurantCategory,
+//   restaurantType: this.restaurantType,
+//   restaurantBusinessHours: this.restaurantBusinessHours,
+//   restaurantScore: this.restaurantScore,
+// };
+
+function updateRestaurant(number) {
+  axios
+    .get(`http://${url}/restaurants/${number}`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resRestaurantNumber.value = res.data.restaurantNumber;
+      resRestaurantName.value = res.data.restaurantName;
+      resRestaurantTel.value = res.data.restaurantTel;
+      resRestaurantAddress.value = res.data.restaurantAddress;
+      resRestaurantCategory.value = res.data.restaurantCategory;
+      resRestaurantType.value = res.data.restaurantType;
+      resRestaurantBusinessHours.value = res.data.restaurantBusinessHours;
+      resRestaurantScore.value = res.data.restaurantScore;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+
+//更新後送出
+function sendRestaurant(number, name, tel, add, category, type, hours, score) {
+  let params = new URLSearchParams();
+  params.append("restaurantNumber", number);
+  params.append("restaurantName", name);
+  params.append("restaurantTel", tel);
+  params.append("restaurantAddress", add);
+  params.append("restaurantCategory", category);
+  params.append("restaurantType", type);
+  params.append("restaurantBusinessHours", hours);
+  params.append("restaurantScore", score);
+
+  const headers = {
+    "Content-Type": "application/json",
+  };
+
+  axios
+
+    .put(`http://${url}/restaurants/${number}`, JSON.stringify(params), headers)
+    .then((res) => {
+      console.log(res);
+
+      getAxios();
+    })
+
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+
+//重整頁面
+// window.setTimeout(function () {
+//   location.reload();
+// }, 1000);
 
 //刪除餐廳的方法
 function deleteRestaurant(number) {
@@ -390,8 +463,9 @@ th.sort {
                           <button
                             type="button"
                             class="btn btn-sm btn-alt-secondary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#updateRestaurant"
                             @click="updateRestaurant(row.restaurantNumber)"
-                            onclick="location.href='#/backend/restaurants/UpdateRestaurant'"
                           >
                             <i class="fa fa-fw fa-pencil-alt"></i>
                           </button>
@@ -416,6 +490,180 @@ th.sort {
         >
           <DatasetInfo class="py-3 fs-sm" />
           <DatasetPager class="flex-wrap py-3 fs-sm" />
+        </div>
+        <!-- 更新餐廳表單的樣式 -->
+        <div
+          class="modal fade"
+          id="updateRestaurant"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div class="modal-dialog">
+            <form class="row g-3" id="restaurantform">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    更新餐廳資料
+                  </h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  ></button>
+                </div>
+
+                <div class="modal-body">
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label"
+                      >編號</label
+                    ><br />
+                    <textarea
+                      type="textarea"
+                      class="form-control"
+                      id="exampleFormControlInput1"
+                      style="resize: none"
+                      disabled
+                      readonly
+                      rows="1"
+                      v-model="resRestaurantNumber"
+                    ></textarea>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label"
+                      >餐廳名稱</label
+                    >
+                    <textarea
+                      type="textarea"
+                      class="form-control"
+                      id="exampleFormControlInput1"
+                      style="resize: none"
+                      rows="1"
+                      v-model="resRestaurantName"
+                    ></textarea>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label"
+                      >電話</label
+                    >
+                    <textarea
+                      type="textarea"
+                      class="form-control"
+                      id="exampleFormControlInput1"
+                      style="resize: none"
+                      rows="1"
+                      v-model="resRestaurantTel"
+                    ></textarea>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label"
+                      >地址</label
+                    >
+                    <textarea
+                      type="textarea"
+                      class="form-control"
+                      id="exampleFormControlInput1"
+                      style="resize: none"
+                      rows="1"
+                      v-model="resRestaurantAddress"
+                    ></textarea>
+                  </div>
+                  <div class="auditselect">
+                    <label for="exampleFormControlInput1" class="form-label"
+                      >餐廳類型</label
+                    >
+                    <select
+                      class="form-select form-select-lg mb-3"
+                      aria-label=".form-select-lg example"
+                      v-model="resRestaurantCategory"
+                    >
+                      <option value="中式">中式</option>
+                      <option value="義式">義式</option>
+                      <option value="韓式">韓式</option>
+                      <option value="日式">日式</option>
+                      <option value="美式">美式</option>
+                      <option value="印度">印度</option>
+                      <option value="簡餐">簡餐</option>
+                      <option value="麵食">麵食</option>
+                      <option value="自助餐">自助餐</option>
+                    </select>
+                  </div>
+                  <div class="auditselect">
+                    <label for="exampleFormControlInput1" class="form-label"
+                      >素食種類</label
+                    >
+                    <select
+                      class="form-select form-select-lg mb-3"
+                      aria-label=".form-select-lg example"
+                      v-model="resRestaurantType"
+                    >
+                      <option value="全素">全素</option>
+                      <option value="蛋素">蛋素</option>
+                      <option value="奶素">奶素</option>
+                      <option value="蛋奶素">蛋奶素</option>
+                      <option value="五辛素">五辛素</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label"
+                      >營業時間</label
+                    >
+                    <textarea
+                      type="textarea"
+                      class="form-control"
+                      id="exampleFormControlTextarea1"
+                      style="resize: none"
+                      rows="8"
+                      v-model="resRestaurantBusinessHours"
+                    ></textarea>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label"
+                      >評分</label
+                    >
+                    <textarea
+                      type="textarea"
+                      class="form-control"
+                      id="exampleFormControlInput1"
+                      style="resize: none"
+                      rows="1"
+                      v-model="resRestaurantScore"
+                    ></textarea>
+                  </div>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal"
+                  >
+                    關閉
+                  </button>
+                  <button
+                    type="submit"
+                    class="btn btn-primary"
+                    @click.prevent="
+                      sendRestaurant(
+                        resRestaurantNumber,
+                        resRestaurantName,
+                        resRestaurantTel,
+                        resRestaurantAddress,
+                        resRestaurantCategory,
+                        resRestaurantType,
+                        resRestaurantBusinessHours,
+                        resRestaurantScore
+                      )
+                    "
+                  >
+                    送出
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
       </Dataset>
     </BaseBlock>
