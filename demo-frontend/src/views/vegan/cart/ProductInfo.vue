@@ -122,11 +122,6 @@ const cols = reactive([
     field: "stock",
     sort: "",
   },
-  {
-    name: "產品描述",
-    field: "description",
-    sort: "",
-  },
 ]);
 
 // Sort by functionality
@@ -406,12 +401,6 @@ th.sort {
                         style="min-width: 110px"
                       >
                         {{ row.stock }}
-                      </td>
-                      <td
-                        class="d-none d-sm-table-cell fs-sm"
-                        style="min-width: 110px"
-                      >
-                        {{ row.description }}
                       </td>
                       <td class="text-center">
                         <div class="btn-group">
