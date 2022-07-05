@@ -123,7 +123,7 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public void updateProduct(Integer productId, ProductRequest productRequest) {
-        String sql = "UPDATE product SET productName = :productName, category = :category, veganCategory= :veganCategory," +
+        String sql = "UPDATE product SET productName = :productName, category = :category, veganCategory= :veganCategory,stock= :stock," +
                 " productPrice = :productPrice, productImage= :productImage,updatedTime = :updatedTime,description = :description  WHERE productId = :productId";
 
         Map<String, Object> map = new HashMap<>();
@@ -135,6 +135,7 @@ public class ProductDaoImpl implements ProductDao {
         map.put("productPrice", productRequest.getProductPrice());
         map.put("productImage", productRequest.getProductImage());
         map.put("description", productRequest.getDescription());
+        map.put("stock",productRequest.getStock());
 
         //日期處理
         Date now = new Date();

@@ -51,7 +51,6 @@ const veganCategory = ref();
 const productPrice = ref();
 const productImage = ref();
 const description = ref();
-
 const stock = ref();
 
 //取得全部的資料
@@ -115,6 +114,12 @@ const cols = reactive([
   {
     name: "產品圖片",
     field: "imageUrl",
+    sort: "",
+  },
+
+  {
+    name: "庫存",
+    field: "stock",
     sort: "",
   },
   {
@@ -400,6 +405,12 @@ th.sort {
                         class="d-none d-sm-table-cell fs-sm"
                         style="min-width: 110px"
                       >
+                        {{ row.stock }}
+                      </td>
+                      <td
+                        class="d-none d-sm-table-cell fs-sm"
+                        style="min-width: 110px"
+                      >
                         {{ row.description }}
                       </td>
                       <td class="text-center">
@@ -583,6 +594,15 @@ th.sort {
 <script>
 export default {
   data() {
+    let toast = Swal.mixin({
+      buttonsStyling: false,
+      target: "#page-container",
+      customClass: {
+        confirmButton: "btn btn-success m-1",
+        cancelButton: "btn btn-danger m-1",
+        input: "form-control",
+      },
+    });
     return {
       productName: null,
       productCategory: null,
@@ -606,8 +626,26 @@ export default {
         .put(`http://localhost:8088/products/${number}`, product)
         .then(() => {
           console.log(product);
-          this.$router.replace("/backend/cart/productInfo");
+          window.location.reload();
         })
+        // .then(() => {
+        //   axios
+        //     .get(`http://localhost:8088/products`)
+        //     .then((res) => {
+        //       //獲取伺服器的回傳資料
+        //       console.log(res);
+        //       productId.value = res.data.productId;
+        //       productName.value = res.data.productName;
+        //       productCategory.value = res.data.productCategory;
+        //       veganCategory.value = res.data.veganCategory;
+        //       productPrice.value = res.data.productPrice;
+        //       stock.value = res.data.stock;
+        //       description.value = res.data.description;
+        //     })
+        //     .catch((error) => {
+        //       console.log(error, "失敗");
+        //     });
+        // })
         .catch((error) => {
           console.log(error, "失敗");
         });
