@@ -231,7 +231,7 @@ function sendAuditPost(number, status) {
   //重整頁面(先解決審核的顏色一定要刷新頁面才會更改的問題&不能自己關的modal)
   window.setTimeout(function () {
     location.reload();
-  }, 2000);
+  }, 1000);
 
   //毫無反應
   $("#auditform").submit(function (e) {
@@ -392,7 +392,13 @@ th.sort {
               aria-labelledby="dropdown-recent-orders-filters"
             >
               <a
-                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
+                class="
+                  dropdown-item
+                  fw-medium
+                  d-flex
+                  align-items-center
+                  justify-content-between
+                "
                 href="#"
                 @click.prevent="notaudit()"
               >
@@ -400,7 +406,13 @@ th.sort {
                 <span class="badge bg-primary rounded-pill">20</span>
               </a>
               <a
-                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
+                class="
+                  dropdown-item
+                  fw-medium
+                  d-flex
+                  align-items-center
+                  justify-content-between
+                "
                 href="#"
                 @click.prevent="frontPost()"
               >
@@ -408,7 +420,13 @@ th.sort {
                 <span class="badge bg-primary rounded-pill">72</span>
               </a>
               <a
-                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
+                class="
+                  dropdown-item
+                  fw-medium
+                  d-flex
+                  align-items-center
+                  justify-content-between
+                "
                 href="#"
                 @click.prevent="notPassPost()"
               >
@@ -416,9 +434,16 @@ th.sort {
                 <span class="badge bg-primary rounded-pill">890</span>
               </a>
               <a
-                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-                href=""
+                class="
+                  dropdown-item
+                  fw-medium
+                  d-flex
+                  align-items-center
+                  justify-content-between
+                "
+                href="#"
                 data-rel="all"
+                @click.prevent="getAxios"
               >
                 全部
                 <span class="badge bg-primary rounded-pill">997</span>
@@ -546,7 +571,12 @@ th.sort {
           </div>
         </div>
         <div
-          class="d-flex flex-md-row flex-column justify-content-between align-items-center"
+          class="
+            d-flex
+            flex-md-row flex-column
+            justify-content-between
+            align-items-center
+          "
         >
           <DatasetInfo class="py-3 fs-sm" />
           <DatasetPager class="flex-wrap py-3 fs-sm" />
