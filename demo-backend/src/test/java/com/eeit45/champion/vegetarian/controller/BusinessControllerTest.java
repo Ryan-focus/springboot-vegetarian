@@ -32,7 +32,7 @@ class BusinessControllerTest {
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
-    // 註冊新帳號
+    // 商家註冊新帳號
     @Test
     public void register_success() throws Exception {
         BusinessRegisterRequest businessRegisterRequest = new BusinessRegisterRequest();
@@ -104,25 +104,25 @@ class BusinessControllerTest {
         // 先註冊新帳號
         BusinessRegisterRequest businessRegisterRequest = new BusinessRegisterRequest();
         businessRegisterRequest.setLoginEmail("test3@gmail.com");
-        businessRegisterRequest.setPassword("123");
+        businessRegisterRequest.setPassword("12345678");
 
         register(businessRegisterRequest);
 
         // 再測試登入功能
         LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setLoginEmail(businessRegisterRequest.getLoginEmail());
+        loginRequest.setAccount(businessRegisterRequest.getLoginEmail());
         loginRequest.setPassword(businessRegisterRequest.getPassword());
 
         String json = objectMapper.writeValueAsString(businessRegisterRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/users/login")
+                .post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json);
 
         mockMvc.perform(requestBuilder)
                 .andExpect(status().is(200))
-                .andExpect(jsonPath("$.userId", notNullValue()))
+                .andExpect(jsonPath("$.businessId", notNullValue()))
                 .andExpect(jsonPath("$.email", equalTo(businessRegisterRequest.getLoginEmail())))
                 .andExpect(jsonPath("$.createdDate", notNullValue()))
                 .andExpect(jsonPath("$.lastModifiedDate", notNullValue()));
@@ -131,13 +131,13 @@ class BusinessControllerTest {
     @Test
     public void login_invalidEmailFormat() throws Exception {
         LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setLoginEmail("hkbudsr324");
-        loginRequest.setPassword("123");
+        loginRequest.setAccount("hkbudsr324");
+        loginRequest.setPassword("12345678");
 
         String json = objectMapper.writeValueAsString(loginRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/users/login")
+                .post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json);
 
@@ -148,13 +148,13 @@ class BusinessControllerTest {
     @Test
     public void login_emailNotExist() throws Exception {
         LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setLoginEmail("unknown@gmail.com");
-        loginRequest.setPassword("123");
+        loginRequest.setAccount("unknown@gmail.com");
+        loginRequest.setPassword("12345678");
 
         String json = objectMapper.writeValueAsString(loginRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/users/login")
+                .post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json);
 
@@ -173,13 +173,13 @@ class BusinessControllerTest {
 
         // 測試密碼輸入錯誤的情況
         LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setLoginEmail(businessRegisterRequest.getLoginEmail());
+        loginRequest.setAccount(businessRegisterRequest.getLoginEmail());
         loginRequest.setPassword("unknown");
 
         String json = objectMapper.writeValueAsString(loginRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/users/login")
+                .post("/login")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json);
 
@@ -191,7 +191,7 @@ class BusinessControllerTest {
         String json = objectMapper.writeValueAsString(businessRegisterRequest);
 
         RequestBuilder requestBuilder = MockMvcRequestBuilders
-                .post("/users/register")
+                .post("/business/register")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json);
 

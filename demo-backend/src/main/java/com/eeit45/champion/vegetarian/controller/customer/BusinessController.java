@@ -23,7 +23,6 @@ public class BusinessController {
     BusinessService businessService;
 
 
-
     @PostMapping("/business/register")
     public ResponseEntity<Business> register(@RequestBody @Valid BusinessRegisterRequest businessRegisterRequest){
         Integer businessId = businessService.register(businessRegisterRequest);
