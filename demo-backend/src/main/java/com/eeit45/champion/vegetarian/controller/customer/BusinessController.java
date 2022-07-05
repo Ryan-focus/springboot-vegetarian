@@ -22,9 +22,10 @@ public class BusinessController {
     @Autowired
     BusinessService businessService;
 
-
     @PostMapping("/business/register")
     public ResponseEntity<Business> register(@RequestBody @Valid BusinessRegisterRequest businessRegisterRequest){
+        if(businessRegisterRequest.getStatus() == null) businessRegisterRequest.setStatus("審核中");
+
         Integer businessId = businessService.register(businessRegisterRequest);
 
         Business business = businessService.getBusinessId(businessId);

@@ -52,9 +52,10 @@ public class BusinessServiceImpl implements BusinessService {
         Business business =  businessDao.getBusinessByEmail(businessRegisterRequest.getAccount());
         if (business != null){
             //set error comment log in console
-            log.warn("該商家帳號 ! ", businessRegisterRequest.getAccount());
+            log.warn("{}此帳號已被註冊", businessRegisterRequest.getAccount());
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
+
         // MD5 Hash Value
         String hashPassword = DigestUtils.md5DigestAsHex(businessRegisterRequest.getPassword().getBytes());
         businessRegisterRequest.setPassword(hashPassword);
