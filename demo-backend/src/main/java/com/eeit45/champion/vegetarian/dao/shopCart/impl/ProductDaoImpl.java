@@ -123,13 +123,14 @@ public class ProductDaoImpl implements ProductDao {
 
     @Override
     public void updateProduct(Integer productId, ProductRequest productRequest) {
-        String sql = "UPDATE product SET productName = :productName, category = :category," +
+        String sql = "UPDATE product SET productName = :productName, category = :category, veganCategory= :veganCategory," +
                 " productPrice = :productPrice, productImage= :productImage,updatedTime = :updatedTime,description = :description  WHERE productId = :productId";
 
         Map<String, Object> map = new HashMap<>();
         map.put("productId", productId);
 
         map.put("productName", productRequest.getProductName());
+        map.put("veganCategory",productRequest.getVeganCategory().toString());
         map.put("category", productRequest.getCategory().toString());
         map.put("productPrice", productRequest.getProductPrice());
         map.put("productImage", productRequest.getProductImage());

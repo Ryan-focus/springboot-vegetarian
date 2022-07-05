@@ -482,6 +482,7 @@ th.sort {
                     name="example-select"
                     v-model="productCategory"
                   >
+                    <option selected>{{ productCategory }}</option>
                     <option value="生鮮">生鮮</option>
                     <option value="食品">食品</option>
                     <option value="寵物">寵物</option>
@@ -505,6 +506,7 @@ th.sort {
                     name="example-select"
                     v-model="veganCategory"
                   >
+                    <option selected>{{ veganCategory }}</option>
                     <option value="全素">全素</option>
                     <option value="蛋素">蛋素</option>
                     <option value="奶素">奶素</option>
@@ -603,6 +605,7 @@ export default {
       axios
         .put(`http://localhost:8088/products/${number}`, product)
         .then(() => {
+          console.log(product);
           this.$router.replace("/backend/cart/productInfo");
         })
         .catch((error) => {
