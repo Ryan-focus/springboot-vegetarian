@@ -14,15 +14,19 @@ public class ReserveRowMapper implements RowMapper<Reserve> {
 
         reserve.setReserveId(rs.getInt("reserveId"));
 
-        Timestamp reserveDate = rs.getTimestamp("reserveDate");
-        reserve.setReserveDate(reserveDate);
+        Timestamp reserveDate = rs.getTimestamp("reserveDateTime");
+        reserve.setReserveDateTime(reserveDate);
 
-        reserve.setCount(rs.getInt("count"));
+        reserve.setAdult(rs.getInt("adult"));
+        reserve.setChild(rs.getInt("child"));
+        reserve.setBaby(rs.getInt("baby"));
 
         Timestamp reserveTime = rs.getTimestamp("reserveTime");
         reserve.setReserveTime(reserveTime);
 
         reserve.setRestaurantId(rs.getInt("restaurantId"));
+
+        reserve.setBusinessId(rs.getInt("restaurantId"));
 
         reserve.setUserId(rs.getInt("userId"));
 

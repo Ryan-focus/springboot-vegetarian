@@ -14,12 +14,7 @@ CREATE TABLE `user`(
 );
 
 -- business
-# 企業登入 ，應有 Id 、聯絡人姓名
-# 手機號碼、電子信箱、餐廳名稱
-# 餐廳所在地址 、審核、
-# Logic: 商家會到前台註冊，填完表單後送資料到後台去做審核
-#審核通過可以開通狀態為"試用期" 或者 已開通
-# 審核未過 應可查閱原因
+
 DROP TABLE IF EXISTS business;
 CREATE TABLE business(
                          businessId int NOT NULL auto_increment primary key,
@@ -35,10 +30,6 @@ CREATE TABLE business(
                          lastLoginTime TIMESTAMP not null
 );
 
-#針對前台消費者去做設計
-#每送出一個訂位記錄，就會包含 autoId、訂位日期
-# Count(大人、小孩、嬰兒)、送出訂位時間、餐廳Id、商家Id,使用者ID
-#
 -- reserve
 DROP TABLE IF EXISTS reserve;
 CREATE TABLE reserve (
@@ -47,14 +38,13 @@ CREATE TABLE reserve (
                          adult int not null ,
                          child int not null ,
                          baby int not null ,
-                         reserveTime DATE not null ,
+                         reserveTime DATETIME not null ,
                          restaurantId int not null,
                          businessId int not null,
                          userId int
 );
 
-#針對後台資料呈現
-#訂位管理系統應包含 autoId 、businessId 、可使用天數(有效天數) 、到期日、來客數、營業額、開始使用日期、最後使用日期
+-- pos
 DROP TABLE IF EXISTS pos;  -- 銷售時點情報系統 簡稱pos系統 / 主要功能在於統計商品的銷售、庫存與顧客購買行為
 CREATE TABLE pos (
                   posId INT NOT NULL auto_increment primary key,

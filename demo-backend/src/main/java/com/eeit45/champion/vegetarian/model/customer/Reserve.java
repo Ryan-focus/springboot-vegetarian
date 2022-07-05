@@ -6,13 +6,17 @@ public class Reserve {
 
     private Integer reserveId;
 
-    private Date reserveDate;
+    private Date reserveDateTime;
 
-    private Integer count;
+    private Integer adult;
+    private Integer child;
+    private Integer baby;
 
     private Date reserveTime;
 
     private Integer restaurantId;
+
+    private Integer businessId;
 
     private Integer userId;
 
@@ -24,20 +28,36 @@ public class Reserve {
         this.reserveId = reserveId;
     }
 
-    public Date getReserveDate() {
-        return reserveDate;
+    public Date getReserveDateTime() {
+        return reserveDateTime;
     }
 
-    public void setReserveDate(Date reserveDate) {
-        this.reserveDate = reserveDate;
+    public void setReserveDateTime(Date reserveDateTime) {
+        this.reserveDateTime = reserveDateTime;
     }
 
-    public Integer getCount() {
-        return count;
+    public Integer getAdult() {
+        return adult;
     }
 
-    public void setCount(Integer count) {
-        this.count = count;
+    public void setAdult(Integer adult) {
+        this.adult = adult;
+    }
+
+    public Integer getChild() {
+        return child;
+    }
+
+    public void setChild(Integer child) {
+        this.child = child;
+    }
+
+    public Integer getBaby() {
+        return baby;
+    }
+
+    public void setBaby(Integer baby) {
+        this.baby = baby;
     }
 
     public Date getReserveTime() {
@@ -54,6 +74,14 @@ public class Reserve {
 
     public void setRestaurantId(Integer restaurantId) {
         this.restaurantId = restaurantId;
+    }
+
+    public Integer getBusinessId() {
+        return businessId;
+    }
+
+    public void setBusinessId(Integer businessId) {
+        this.businessId = businessId;
     }
 
     public Integer getUserId() {
