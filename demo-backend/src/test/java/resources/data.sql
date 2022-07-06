@@ -18,13 +18,13 @@ INSERT INTO `user` ( email, password, userName, status, userPic, registerTime, l
 ,('abc12@mail.com', 'Wafghfh12', '麥可', '正常', 'a010', curdate(), now());
 
 -- business
-INSERT INTO business ( email, password,principalName,principalPhone, businessName,located, status, businessPic, createdTime, lastLoginTime) VALUES
-('bt213485@gmail.com', 'aa00d00s01','宋振宏','0914378265', '艾格企業有限公司','桃園市龜山區','試用中', 'a001', now(), now())
-,('test2@gmail.com', 'ra0fgh02','李慧菁','02-29995660', '馬亞科技iWare','新北市三重區' ,'試用中', 'a002', now(), now())
-,('kemfsl3@gmail.com', 'ra12hg3','方亦聖','04-22301313', '藝誠網頁設計公司','台中市北區','開通中', 'a003', now(), now())
-,('en4@gmail.com', 'ca00ffd004','曾富美','0968288068', '墨宇網頁設計公司','台中市北區', '未開通', 'a004', now(), now())
-,('fgen5@gmail.com', 'da0d23h005','吳晧民','02 8951 2121', '亞惿股份有限公司','新北市板橋區', '未開通', 'a005', now(), now())
-,('en6@gmail.com', 'ba0fgh06','李孟陽','022395 5080','Larvata果子云數位科技','臺北市信義區', '未開通', 'a006', now(), now())
+INSERT INTO business ( email, password,principalName,principalPhone, businessName,located, status, businessPic, createdTime, lastLoginTime, updateTime) VALUES
+('bt213485@gmail.com', 'aa00d00s01','宋振宏','0914378265', '艾格企業有限公司','桃園市龜山區','試用中', 'a001', now(), now() ,now())
+,('test2@gmail.com', 'ra0fgh02','李慧菁','02-29995660', '馬亞科技iWare','新北市三重區' ,'試用中', 'a002', now(), now(),now())
+,('kemfsl3@gmail.com', 'ra12hg3','方亦聖','04-22301313', '藝誠網頁設計公司','台中市北區','開通中', 'a003', now(), now(),now())
+,('en4@gmail.com', 'ca00ffd004','曾富美','0968288068', '墨宇網頁設計公司','台中市北區', '未開通', 'a004', now(), now(),now())
+,('fgen5@gmail.com', 'da0d23h005','吳晧民','02 8951 2121', '亞惿股份有限公司','新北市板橋區', '未開通', 'a005', now(), now(),now())
+,('en6@gmail.com', 'ba0fgh06','李孟陽','022395 5080','Larvata果子云數位科技','臺北市信義區', '未開通', 'a006', now(), now(),now())
 ;
 update business set password = MD5(password);
 

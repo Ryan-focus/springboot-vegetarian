@@ -17,4 +17,6 @@ public interface PosDao {
     List<PosBusiness> getPosBusinessByPosId(Integer posId);
 
     void buildPosBusiness(Integer posId, Integer businessId);
+
+    Pos getPosByBusinessId(Integer businessId);
 }
