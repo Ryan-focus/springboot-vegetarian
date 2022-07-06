@@ -64,4 +64,9 @@ public class PosDaoImpl implements PosDao {
 
         return posId;
     }
+
+    @Override
+    public List<Pos> getAllPosList() {
+        return null;
+    }
 }

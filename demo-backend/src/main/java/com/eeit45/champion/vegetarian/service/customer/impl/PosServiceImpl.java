@@ -14,6 +14,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @Component
 public class PosServiceImpl implements PosService {
 
@@ -48,5 +50,10 @@ public class PosServiceImpl implements PosService {
     @Override
     public Pos getPosById(Integer posId) {
         return posDao.getPosById(posId);
+    }
+
+    @Override
+    public List<Pos> getAllPosList() {
+        return posDao.getAllPosList();
     }
 }
