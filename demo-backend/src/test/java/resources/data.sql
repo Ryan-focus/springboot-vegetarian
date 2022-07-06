@@ -18,17 +18,15 @@ INSERT INTO `user` ( email, password, userName, status, userPic, registerTime, l
 ,('abc12@mail.com', 'Wafghfh12', '麥可', '正常', 'a010', curdate(), now());
 
 -- business
-INSERT INTO business ( email, password, businessName, status, businessPic, createdTime, lastLoginTime) VALUES
-('test1@gmail.com', 'aa000001', '艾格企業網路', '試用中', 'a010', now(), now())
-,('test2@gmail.com', 'ra0fgh02', '馬亞科技iWare', '試用中', 'a010', now(), now())
-,('kemfsl3@gmail.com', 'ra12hg3', '藝誠網頁設計公司', '開通中', 'a010', now(), now())
-,('en4@gmail.com', 'ca00ffd004', '墨宇網頁設計公司', '未開通', 'a010', now(), now())
-,('fgen5@gmail.com', 'da0d23h005', '亞惿設計', '未開通', 'a010', now(), now())
-,('en6@gmail.com', 'ba0fgh06', 'Larvata果子云數位科技', '未開通', 'a010', now(), now())
-,('wrtn7@gmail.com', 'n12g007', '新銘鐵工廠股份有限公司', '開通中', 'a010', now(), now())
-,('sden8@gmail.com', 'da0g12ng008', '嘉隆興鐵工廠', '試用中', 'a010', now(), now())
-,('dffen9@gmail.com', 'sa0f12h009', '弘甡鐵', '試用中', 'a010', now(), now());
-
+INSERT INTO business ( email, password,principalName,principalPhone, businessName,located, status, businessPic, createdTime, lastLoginTime) VALUES
+('bt213485@gmail.com', 'aa00d00s01','宋振宏','0914378265', '艾格企業有限公司','桃園市龜山區','試用中', 'a001', now(), now())
+,('test2@gmail.com', 'ra0fgh02','李慧菁','02-29995660', '馬亞科技iWare','新北市三重區' ,'試用中', 'a002', now(), now())
+,('kemfsl3@gmail.com', 'ra12hg3','方亦聖','04-22301313', '藝誠網頁設計公司','台中市北區','開通中', 'a003', now(), now())
+,('en4@gmail.com', 'ca00ffd004','曾富美','0968288068', '墨宇網頁設計公司','台中市北區', '未開通', 'a004', now(), now())
+,('fgen5@gmail.com', 'da0d23h005','吳晧民','02 8951 2121', '亞惿股份有限公司','新北市板橋區', '未開通', 'a005', now(), now())
+,('en6@gmail.com', 'ba0fgh06','李孟陽','022395 5080','Larvata果子云數位科技','臺北市信義區', '未開通', 'a006', now(), now())
+;
+update business set password = MD5(password);
 
 
 -- product
@@ -60,25 +58,25 @@ INSERT INTO product ( productName, category,veganCategory, productPrice,stock,cr
 ,('《潤覺茶 輕感淨化》茶樹茶籽綠茶潔顏慕斯(200ml)～清爽不緊繃 淨化控油效果佳','美妝保養','VEGAN',350,48,now(),now());
 
 -- reserve
-INSERT INTO reserve (reserveDate, count, reserveTime, restaurantId, userId) VALUES
- (now() , 2, '2022-07-12' ,10 , 3)
-,(now() , 3, '2022-08-12' ,11 , 2)
-,(now() , 4, '2022-08-02' ,11 , 1)
-,(now() , 5, '2022-08-02' ,11 , 4)
-,(now() , 11, '2022-08-09' ,10 , 6)
-,(now() , 9, '2022-07-16' ,2 , 5)
-,(now() , 8, '2022-07-19' ,2 , 3)
-,(now() , 6, '2022-07-21' ,2 , 9)
-,(now() , 8, '2022-07-26' ,3 , 11)
-,(now() , 4, '2022-08-12' ,3 , 5)
-,(now() , 3, '2022-08-01' ,3 , 6)
-,(now() , 14, '2022-08-02' ,10 , 7)
-,(now() , 2, '2022-08-04' ,10 , 12)
-,(now() , 2, '2022-08-06' ,4 , 8)
-,(now() , 3, '2022-08-09' ,4 , 10)
-,(now() , 4, '2022-08-09' ,4 , 3)
-,(now() , 26, '2022-08-12' ,10 , 5)
-,(now() , 15, '2022-08-12' ,6 , 4);
+INSERT INTO reserve (reserveDateTime, adult,child,baby, reserveTime, restaurantId,businessId, userId) VALUES
+ (now() , 2,3,1, '2022-07-12' ,10 ,1, 3)
+,(now() , 3,0,0, '2022-08-12' ,11 ,1, 2)
+,(now() , 4,2,0, '2022-08-02' ,11 ,1, 1)
+,(now() , 5,3,0 ,'2022-08-02' ,11 ,1, 4)
+,(now() , 11,2,0 ,'2022-08-09' ,10 ,2, 6)
+,(now() , 9,4,2, '2022-07-16' ,2 ,2, 5)
+,(now() , 8,4,1, '2022-07-19' ,2 ,2, 3)
+,(now() , 6,3,3, '2022-07-21' ,2 ,3, 9)
+,(now() , 8,2,3, '2022-07-26' ,3 ,4, 11)
+,(now() , 4,0,3, '2022-08-12' ,3 ,3, 5)
+,(now() , 3,2,0, '2022-08-01' ,3 ,2, 6)
+,(now() , 14,3,0, '2022-08-02' ,10 ,2, 7)
+,(now() , 2,2,0, '2022-08-04' ,10 ,1, 12)
+,(now() , 2,2,0, '2022-08-06' ,4 ,1, 8)
+,(now() , 3,0,0, '2022-08-09' ,4 ,2, 10)
+,(now() , 4,0,0, '2022-08-09' ,4 ,2, 3)
+,(now() , 26,0,0, '2022-08-12' ,10 ,3, 5)
+,(now() , 15,0,0, '2022-08-12' ,6 ,4, 4);
 
 -- order
 INSERT INTO `order` (userId, payment, status, createdTime,updatedTime) VALUES

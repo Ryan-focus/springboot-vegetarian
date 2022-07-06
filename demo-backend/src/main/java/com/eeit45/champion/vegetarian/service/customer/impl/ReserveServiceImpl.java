@@ -7,6 +7,8 @@ import com.eeit45.champion.vegetarian.service.customer.ReserveService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 public class ReserveServiceImpl implements ReserveService {
 
@@ -14,12 +16,17 @@ public class ReserveServiceImpl implements ReserveService {
     private ReserveDao reserveDao;
 
     @Override
-    public Reserve getReserveById(Integer reserveId) {
-        return reserveDao.getReserveById(reserveId);
+    public Reserve getReserveById(Integer businessId , Integer reserveId) {
+        return reserveDao.getReserveById(businessId,reserveId);
     }
 
     @Override
-    public Integer createReserve(ReserveRequest reserveRequest) {
-        return reserveDao.createReserve(reserveRequest);
+    public Integer createReserve(Integer businessId ,ReserveRequest reserveRequest) {
+        return reserveDao.createReserve(businessId,reserveRequest);
+    }
+
+    @Override
+    public List<Reserve> getAllReserve(Integer businessId) {
+        return reserveDao.getAllReserve(businessId);
     }
 }

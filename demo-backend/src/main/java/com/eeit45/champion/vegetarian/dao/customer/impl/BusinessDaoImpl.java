@@ -3,7 +3,9 @@ package com.eeit45.champion.vegetarian.dao.customer.impl;
 import com.eeit45.champion.vegetarian.dao.customer.BusinessDao;
 import com.eeit45.champion.vegetarian.dto.customer.BusinessRegisterRequest;
 import com.eeit45.champion.vegetarian.model.customer.Business;
+import com.eeit45.champion.vegetarian.model.customer.Pos;
 import com.eeit45.champion.vegetarian.rowmapper.customer.BusinessRowMapper;
+import com.eeit45.champion.vegetarian.rowmapper.customer.PosRowMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -80,6 +82,28 @@ public class BusinessDaoImpl implements BusinessDao {
         }else{
             return null;
         }
+    }
+
+    @Override
+    public void updateStatus(Integer businessId, String status) {
+        String sql = "UPDATE business SET status = :status WHERE businessId = :businessId ";
+        Map<String , Object > map = new HashMap<>();
+        map.put("status" , status);
+        map.put("businessId" , businessId);
+
+        namedParameterJdbcTemplate.update(sql,map);
+
+    }
+
+    @Override
+    public List<Business> getAllBusiness() {
+        String sql = "SELECT * FROM business";
+
+        List<Business> businessList = namedParameterJdbcTemplate.query(sql,new BusinessRowMapper());
+
+        if(businessList != null) return businessList;
+
+        return null;
     }
 
 

@@ -49,12 +49,10 @@ DROP TABLE IF EXISTS pos;  -- 銷售時點情報系統 簡稱pos系統 / 主要�
 CREATE TABLE pos (
                   posId INT NOT NULL auto_increment primary key,
                   businessId Int not null UNIQUE,
-                  validDate DATETIME not null,
+                  validDate nvarchar(64) not null,
                   expiryDate DATETIME not null,
                   visitors int not null ,
-                  turnOver int not null ,
-                  startDate DATETIME not null ,
-                  lastUsingDate DATETIME not null 
+                  turnOver int not null
 );
 
 -- product
