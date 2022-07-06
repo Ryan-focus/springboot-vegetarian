@@ -11,12 +11,11 @@ import axios from "axios";
       <label
         >File
         <input
-          ref="upload"
+          ref="file"
           type="file"
-          name="file-upload"
-          multiple=""
+          name="file"
           accept="image/jpeg, image/png"
-          @change="onUploadFiles"
+          @change="handleFileUpload"
         />
       </label>
       <br />
