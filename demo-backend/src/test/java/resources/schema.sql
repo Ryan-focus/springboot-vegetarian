@@ -72,7 +72,7 @@ CREATE TABLE product (
                          category nvarchar(64) NOT NULL,
                          veganCategory nvarchar(64) NOT NULL,
                          productPrice INT NOT NULL,
-                         productImage nvarchar(64),
+                         productImage nvarchar(640),
                          stock       INT NOT NULL ,
                          createdTime DATETIME NOT NULL,
                          updatedTime DATETIME NOT NULL,
