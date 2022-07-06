@@ -22,6 +22,7 @@ public class BusinessController {
     @Autowired
     BusinessService businessService;
 
+    //商家用戶註冊
     @PostMapping("/business/register")
     public ResponseEntity<Business> register(@RequestBody @Valid BusinessRegisterRequest businessRegisterRequest){
         if(businessRegisterRequest.getStatus() == null) businessRegisterRequest.setStatus("審核中");
