@@ -131,6 +131,56 @@ function onSort(event, i) {
 
   sortEl.sort = toset;
 }
+//更新訂單功能
+function updateOrder(number) {
+  toast
+    .fire({
+      title: "確定要更新嗎?",
+      text: "更新後不能返回",
+      icon: "warning",
+      showCancelButton: true,
+      customClass: {
+        confirmButton: "btn btn-danger m-1",
+        cancelButton: "btn btn-secondary m-1",
+      },
+      confirmButtonText: "更新資料",
+      cancelButtonText: "取消更新",
+
+      html: false,
+      preConfirm: () => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 50);
+        });
+      },
+    })
+    .then((result) => {
+      //send request to server
+      if (result.value) {
+        const order = {
+          payment: this.payment,
+          status: this.status,
+        };
+        //執行put方法
+        axios
+          .put(`http://localhost:8088/order/${number}`, order)
+          .then(() => {
+            console.log(order);
+            getAxios();
+
+            getAxios();
+            toast.fire("更新成功!", "", "success");
+          })
+          .catch((error) => {
+            console.log(error, "失敗");
+          });
+      } else if (result.dismiss === "cancel") {
+        toast.fire("更新失敗", "", "error");
+      }
+    });
+}
+
 //Delete Order Fuction
 function deleteRestaurant(number) {
   toast
@@ -413,7 +463,8 @@ th.sort {
                 <button
                   type="submit"
                   class="btn btn-primary"
-                  @click="updateProduct(orderId)"
+                  data-bs-dismiss="modal"
+                  @click="updateOrder(orderId)"
                 >
                   送出
                 </button>
@@ -426,33 +477,3 @@ th.sort {
   </div>
   <!-- END Page Content -->
 </template>
-<script>
-//輸出data
-export default {
-  data() {
-    return {
-      payment: null,
-      status: null,
-    };
-  },
-  //綁定表單資料變成物件格式
-  methods: {
-    updateProduct(number) {
-      const order = {
-        payment: this.payment,
-        status: this.status,
-      };
-      //執行put方法
-      axios
-        .put(`http://localhost:8088/order/${number}`, order)
-        .then(() => {
-          console.log(order);
-          window.location.reload();
-        })
-        .catch((error) => {
-          console.log(error, "失敗");
-        });
-    },
-  },
-};
-</script>
