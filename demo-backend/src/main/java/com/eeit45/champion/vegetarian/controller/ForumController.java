@@ -45,6 +45,8 @@ public class ForumController {
 		
 		List<Forum> forums = forumService.getForums(forum);
 		
+		
+		
 		return ResponseEntity.status(HttpStatus.OK).body(forums);
 		
 	}
@@ -70,7 +72,7 @@ public class ForumController {
 	
 	@PutMapping("/forums/{forumId}")
 	public ResponseEntity<Forum> updateForum(@PathVariable Integer forumId,
-											 @RequestBody Forum forum){
+											 @RequestBody @Valid Forum forum){
 		Forum checkForum = forumService.getForumById(forumId);
 		if(checkForum == null ) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
