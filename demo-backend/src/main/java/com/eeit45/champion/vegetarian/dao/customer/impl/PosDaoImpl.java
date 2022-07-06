@@ -3,9 +3,9 @@ package com.eeit45.champion.vegetarian.dao.customer.impl;
 import com.eeit45.champion.vegetarian.dao.customer.PosDao;
 import com.eeit45.champion.vegetarian.dto.customer.PosRequest;
 import com.eeit45.champion.vegetarian.model.customer.Pos;
-import com.eeit45.champion.vegetarian.model.shopCart.Product;
+
 import com.eeit45.champion.vegetarian.rowmapper.customer.PosRowMapper;
-import com.eeit45.champion.vegetarian.rowmapper.shopCart.ProductRowMapper;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -13,6 +13,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -41,20 +43,16 @@ public class PosDaoImpl implements PosDao {
 
     @Override
     public Integer buildPos(Integer businessId, PosRequest posRequest) {
-        String sql = "INSERT INTO pos (businessId,validDate,expiryDate,visitors,turnOver,startDate,lastUsingDate) VALUES " +
-                "(:businessId,:validDate,:expiryDate,:visitors,:turnOver,:startDate,:lastUsingDate)";
+        String sql = "INSERT INTO pos (businessId,validDate,expiryDate,visitors,turnOver) VALUES " +
+                "(:businessId,:validDate,:expiryDate,:visitors,:turnOver)";
 
         Map<String, Object> map = new HashMap<>();
         map.put("businessId", businessId);
         map.put("validDate", posRequest.getValidDate());
+
         map.put("expiryDate", posRequest.getExpiryDate());
         map.put("visitors", 0);
         map.put("turnOver", 0);
-
-        Date now = new Date();
-        map.put("startDate", now);
-        map.put("lastUsingDate", now);
-
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 

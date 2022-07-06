@@ -33,7 +33,7 @@ public class PosController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
-    @PostMapping ("{businessId}/pos")
+    @PostMapping ("/business/{businessId}/pos")
     public ResponseEntity<Pos> buildPos(@PathVariable Integer businessId,
                                       @RequestBody @Valid PosRequest posRequest){
 
