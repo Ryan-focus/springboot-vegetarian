@@ -13,6 +13,7 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -86,10 +87,18 @@ public class BusinessDaoImpl implements BusinessDao {
 
     @Override
     public void updateStatus(Integer businessId, String status) {
-        String sql = "UPDATE business SET status = :status WHERE businessId = :businessId ";
+        String sql = "UPDATE business SET status = :status ,updateTime = :updateTime " +
+                "WHERE businessId = :businessId  " ;
         Map<String , Object > map = new HashMap<>();
         map.put("status" , status);
+
+
+        Date now = new Date();
+        Timestamp timestamp = new Timestamp(now.getTime());
+        map.put("updateTime", timestamp);
+
         map.put("businessId" , businessId);
+
 
         namedParameterJdbcTemplate.update(sql,map);
 
@@ -105,6 +114,4 @@ public class BusinessDaoImpl implements BusinessDao {
 
         return null;
     }
-
-
 }

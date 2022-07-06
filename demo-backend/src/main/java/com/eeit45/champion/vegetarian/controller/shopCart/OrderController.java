@@ -2,6 +2,7 @@ package com.eeit45.champion.vegetarian.controller.shopCart;
 
 import com.eeit45.champion.vegetarian.dto.shopCart.CreateOrderRequest;
 import com.eeit45.champion.vegetarian.dto.shopCart.OrderQueryParams;
+import com.eeit45.champion.vegetarian.dto.shopCart.OrderRequest;
 import com.eeit45.champion.vegetarian.model.shopCart.Order;
 import com.eeit45.champion.vegetarian.service.shopCart.OrderService;
 import com.eeit45.champion.vegetarian.util.Page;
@@ -55,6 +56,17 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+    @GetMapping("order/{orderId}")
+    public ResponseEntity<Order> getOrderById(@PathVariable Integer orderId){
+
+        Order order = orderService.getOrdersById(orderId);
+        if (order!=null){
+            return ResponseEntity.status(HttpStatus.OK).body(order);
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+    }
 
     //表示前端送一個已經存在的User所購買的訂單
     // JsonObject : {"buyItemList:[{"productId":9,"quantity:1},{"productId":10,"quantity:18}]}
@@ -70,8 +82,17 @@ public class OrderController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
-
-
+    @PutMapping("order/{orderId}")
+    public ResponseEntity<Order> updateOrder(@PathVariable Integer orderId,
+                                             @RequestBody @Valid OrderRequest orderRequest){
+        Order checkOrder = orderService.getOrdersById(orderId);
+        if (checkOrder==null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        orderService.updateOrder(orderId,orderRequest);
+        Order updatedOrder = orderService.getOrdersById(orderId);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedOrder);
+    }
 
 
 }

@@ -1,6 +1,7 @@
 package com.eeit45.champion.vegetarian.model.customer;
 
 import java.util.Date;
+import java.util.List;
 
 public class Pos {
 
@@ -8,9 +9,8 @@ public class Pos {
     private Integer businessId;
     private String validDate;
     private Date expiryDate;
-    private Integer visitors;
-    private Integer turnOver;
 
+    private List<PosBusiness> posBusinessList;
     public Integer getPosId() {
         return posId;
     }
@@ -43,19 +43,11 @@ public class Pos {
         this.expiryDate = expiryDate;
     }
 
-    public Integer getVisitors() {
-        return visitors;
+    public List<PosBusiness> getPosBusinessList() {
+        return posBusinessList;
     }
 
-    public void setVisitors(Integer visitors) {
-        this.visitors = visitors;
-    }
-
-    public Integer getTurnOver() {
-        return turnOver;
-    }
-
-    public void setTurnOver(Integer turnOver) {
-        this.turnOver = turnOver;
+    public void setPosBusinessList(List<PosBusiness> posBusinessList) {
+        this.posBusinessList = posBusinessList;
     }
 }

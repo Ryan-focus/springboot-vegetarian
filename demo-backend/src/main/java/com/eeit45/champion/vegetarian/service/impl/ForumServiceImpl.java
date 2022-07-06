@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.eeit45.champion.vegetarian.dao.ForumDao;
+import com.eeit45.champion.vegetarian.dto.shopCart.ProductQueryParams;
 import com.eeit45.champion.vegetarian.model.Forum;
 import com.eeit45.champion.vegetarian.service.ForumService;
 
@@ -14,6 +15,8 @@ public class ForumServiceImpl implements ForumService {
 
 	@Autowired
 	private ForumDao forumDao;
+	
+
 	
 	@Override
 	public List<Forum> getForums(Forum forum) {	

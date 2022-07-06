@@ -68,7 +68,6 @@ const getAxios = function () {
 };
 
 //取得單一筆商品，number用來抓id
-
 function getSingle(number) {
   //send request to server
 
@@ -90,6 +89,58 @@ function getSingle(number) {
       console.log(error, "失敗");
     });
 }
+//更新資料的方法
+function updateProduct(number) {
+  toast
+    .fire({
+      title: "確定要更新嗎?",
+      text: "更新後不能返回",
+      icon: "warning",
+      showCancelButton: true,
+      customClass: {
+        confirmButton: "btn btn-danger m-1",
+        cancelButton: "btn btn-secondary m-1",
+      },
+      confirmButtonText: "更新資料",
+      cancelButtonText: "取消更新",
+
+      html: false,
+      preConfirm: () => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 50);
+        });
+      },
+    })
+    .then((result) => {
+      //send request to server
+      if (result.value) {
+        const product = {
+          productName: this.productName,
+          category: this.productCategory,
+          veganCategory: this.veganCategory,
+          productPrice: this.productPrice,
+          stock: this.stock,
+          description: this.description,
+          productImage: this.productImage,
+        };
+        //執行put方法
+        axios
+          .put(`http://localhost:8088/products/${number}`, product)
+          .then(() => {
+            console.log(product);
+            getAxios();
+          })
+          .catch((error) => {
+            console.log(error, "失敗");
+          });
+      } else if (result.dismiss === "cancel") {
+        toast.fire("更新失敗", "", "error");
+      }
+    });
+}
+
 //執行Axios
 getAxios();
 // Helper variables
@@ -417,6 +468,7 @@ th.sort {
                       </td>
                       <td class="text-center">
                         <div class="btn-group">
+                          <!-- 更新的按鈕 -->
                           <button
                             type="button"
                             class="btn btn-sm btn-alt-secondary"
@@ -592,6 +644,7 @@ th.sort {
                 <button
                   type="submit"
                   class="btn btn-primary"
+                  data-bs-dismiss="modal"
                   @click="updateProduct(productId)"
                 >
                   送出
@@ -605,43 +658,3 @@ th.sort {
   </div>
   <!-- END Page Content -->
 </template>
-<script>
-//輸出data
-export default {
-  data() {
-    return {
-      productName: null,
-      productCategory: null,
-      veganCategory: null,
-      productPrice: null,
-      stock: null,
-      productImage: null,
-      description: null,
-    };
-  },
-  //綁定表單資料變成物件格式
-  methods: {
-    updateProduct(number) {
-      const product = {
-        productName: this.productName,
-        category: this.productCategory,
-        veganCategory: this.veganCategory,
-        productPrice: this.productPrice,
-        stock: this.stock,
-        description: this.description,
-        productImage: this.productImage,
-      };
-      //執行put方法
-      axios
-        .put(`http://localhost:8088/products/${number}`, product)
-        .then(() => {
-          console.log(product);
-          window.location.reload();
-        })
-        .catch((error) => {
-          console.log(error, "失敗");
-        });
-    },
-  },
-};
-</script>

@@ -2,8 +2,6 @@ package com.eeit45.champion.vegetarian.dto.customer;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
-
 
 public class PosRequest {
 

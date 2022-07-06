@@ -3,6 +3,7 @@ import { ref, reactive, computed, toRefs } from "vue";
 
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
 import useVuelidate from "@vuelidate/core";
+import Swal from "sweetalert2";
 import {
   required,
   minLength,
@@ -30,11 +31,26 @@ let ckeditor = CKEditor.component;
 const editorData = ref("<p>請在這邊輸入對商品的詳細描述</p>");
 const editorConfig = ref({});
 
+// Set default properties
+let toast = Swal.mixin({
+  buttonsStyling: false,
+  target: "#page-container",
+  customClass: {
+    confirmButton: "btn btn-success m-1",
+    cancelButton: "btn btn-danger m-1",
+    input: "form-control",
+  },
+});
+
+//將下面的參數綁到一個reactive物件裡面
 // Input state variables
 const state = reactive({
   productName: null,
   productPrice: null,
   stock: null,
+  category: null,
+  veganCategory: null,
+  description: null,
 });
 
 // Validation rules
@@ -68,6 +84,53 @@ async function onSubmit() {
   }
 
   // perform async actions
+}
+function createProduct() {
+  toast
+    .fire({
+      title: "確定要新增嗎?",
+      text: "新增後將跳轉至商品列表",
+      icon: "warning",
+      showCancelButton: true,
+      customClass: {
+        confirmButton: "btn btn-danger m-1",
+        cancelButton: "btn btn-secondary m-1",
+      },
+      confirmButtonText: "新增資料",
+      cancelButtonText: "繼續填寫",
+
+      html: false,
+      preConfirm: () => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 50);
+        });
+      },
+    })
+    .then((result) => {
+      //send request to server
+      if (result.value) {
+        const product = {
+          productName: state.productName,
+          category: state.category,
+          veganCategory: state.veganCategory,
+          productPrice: state.productPrice,
+          stock: state.stock,
+          description: state.description,
+        };
+        axios
+          .post("http://localhost:8088/products", product)
+          .then(() => {
+            window.location = "#/backend/cart/productInfo";
+          })
+          .catch((error) => {
+            console.log(error, "失敗");
+          });
+      } else if (result.dismiss === "cancel") {
+        toast.fire("返回輸入", "", "error");
+      }
+    });
 }
 </script>
 
@@ -119,7 +182,7 @@ async function onSubmit() {
                 :class="{
                   'is-invalid': v$.productName.$errors.length,
                 }"
-                v-model="productName"
+                v-model="state.productName"
                 @blur="v$.productName.$touch"
                 placeholder="請輸入產品名稱"
               />
@@ -140,7 +203,7 @@ async function onSubmit() {
                 class="form-select"
                 id="example-select"
                 name="example-select"
-                v-model="category"
+                v-model="state.category"
               >
                 <option selected>按我選擇</option>
                 <option value="生鮮">生鮮</option>
@@ -163,7 +226,7 @@ async function onSubmit() {
                 class="form-select"
                 id="example-select"
                 name="example-select"
-                v-model="veganCategory"
+                v-model="state.veganCategory"
               >
                 <option selected>按我選擇</option>
                 <option value="全素">全素</option>
@@ -190,7 +253,7 @@ async function onSubmit() {
                 :class="{
                   'is-invalid': v$.productPrice.$errors.length,
                 }"
-                v-model="productPrice"
+                v-model="state.productPrice"
                 @blur="v$.productPrice.$touch"
                 placeholder="200"
               />
@@ -214,7 +277,7 @@ async function onSubmit() {
                 :class="{
                   'is-invalid': v$.stock.$errors.length,
                 }"
-                v-model="stock"
+                v-model="state.stock"
                 @blur="v$.stock.$touch"
                 placeholder="200"
               />
@@ -250,7 +313,7 @@ async function onSubmit() {
               <ckeditor
                 :editor="ClassicEditor"
                 :config="editorConfig"
-                v-model="description"
+                v-model="state.description"
               />
             </div>
             <div class="row items-push">
@@ -265,32 +328,3 @@ async function onSubmit() {
     <!-- END Basic -->
   </div>
 </template>
-<script>
-export default {
-  data() {
-    return {
-      productName: null,
-      category: null,
-      veganCategory: null,
-      productPrice: null,
-      stock: null,
-      description: null,
-    };
-  },
-  methods: {
-    createProduct() {
-      const product = {
-        productName: this.productName,
-        category: this.category,
-        veganCategory: this.veganCategory,
-        productPrice: this.productPrice,
-        stock: this.stock,
-        description: this.description,
-      };
-      axios.post("http://localhost:8088/products", product).then(() => {
-        window.location = "#/backend/cart/productInfo";
-      });
-    },
-  },
-};
-</script>

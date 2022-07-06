@@ -70,7 +70,7 @@ onUnmounted(() => {
           <!-- User Info -->
           <div class="ms-2">
             <a class="text-dark fw-semibold fs-sm" href="javascript:void(0)"
-              >Raven</a
+              >{{admin.data.user.userName}}</a
             >
           </div>
           <!-- END User Info -->
@@ -406,3 +406,15 @@ onUnmounted(() => {
   </aside>
   <!-- END Side Overlay -->
 </template>
+<script>
+export default {
+  data() {
+    return {
+      admin: ''
+    }
+  },
+  created() {
+    this.admin = JSON.parse(window.localStorage.getItem('access-admin'))
+  }
+}
+</script>
