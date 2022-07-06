@@ -13,6 +13,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 
 @Component
 public class BusinessServiceImpl implements BusinessService {
@@ -68,5 +70,10 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     public Business getBusinessId(Integer businessId) {
         return businessDao.getBusinessById(businessId);
+    }
+
+    @Override
+    public List<Business> getAllBusiness() {
+        return businessDao.getAllBusiness();
     }
 }

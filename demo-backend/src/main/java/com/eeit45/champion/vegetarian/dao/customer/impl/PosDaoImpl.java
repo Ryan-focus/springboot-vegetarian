@@ -65,8 +65,15 @@ public class PosDaoImpl implements PosDao {
         return posId;
     }
 
+    //後台用
     @Override
     public List<Pos> getAllPosList() {
+        String sql = "SELECT * FROM pos";
+
+        List<Pos> posList = namedParameterJdbcTemplate.query(sql,new PosRowMapper());
+
+        if(posList != null) return posList;
+
         return null;
     }
 }
