@@ -54,7 +54,7 @@ getAxios();
 //取得單一筆訂單，number用來抓id
 function getSingle(number) {
   axios
-    .get(`http://${url}/orders/${number}`)
+    .get(`http://${url}/order/${number}`)
     .then((res) => {
       //獲取伺服器的回傳資料
       console.log(res);
@@ -325,6 +325,8 @@ th.sort {
                           <button
                             type="button"
                             class="btn btn-sm btn-alt-secondary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#updateProduct"
                             @click="getSingle(row.orderId)"
                           >
                             <i class="fa fa-fw fa-pencil-alt"></i>
@@ -343,6 +345,101 @@ th.sort {
         >
           <DatasetInfo class="py-3 fs-sm" />
           <DatasetPager class="flex-wrap py-3 fs-sm" />
+        </div>
+
+        <!-- 這邊以下是隱藏的更新表單，按下更新鈕之後會跳出來 -->
+        <div
+          class="modal fade"
+          id="updateProduct"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <!-- 這邊是更新的標題 -->
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">修改商品</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <!-- 內文開始 -->
+              <div class="modal-body">
+                <!-- 商品名稱 -->
+                <div class="mb-3">
+                  <label for="exampleFormControlInput1" class="form-label"
+                    >商品名稱</label
+                  >
+                  <textarea
+                    type="textarea"
+                    class="form-control"
+                    id="exampleFormControlInput1"
+                    style="resize: none"
+                    rows="1"
+                    v-model="productName"
+                  ></textarea>
+                </div>
+
+                <!-- 商品種類 -->
+                <div class="mb-3">
+                  <label class="form-label" for="example-select"
+                    >選擇商品分類</label
+                  >
+                  <select
+                    class="form-select"
+                    id="example-select"
+                    name="example-select"
+                    v-model="productCategory"
+                  >
+                    <option selected>{{ productCategory }}</option>
+                    <option value="生鮮">生鮮</option>
+                    <option value="食品">食品</option>
+                    <option value="寵物">寵物</option>
+                    <option value="居家百貨">居家百貨</option>
+                    <option value="飾品">飾品</option>
+                    <option value="保健">保健</option>
+                    <option value="書籍影音">書籍影音</option>
+                    <option value="美妝保養">美妝保養</option>
+                    <option value="量販批發">量販批發</option>
+                  </select>
+                </div>
+
+                <!-- 價格 -->
+                <div class="mb-4">
+                  <label class="form-label" for="example-ltf-email">價格</label>
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="productPrice"
+                    name="productPrice"
+                    v-model="productPrice"
+                  />
+                </div>
+              </div>
+              <!-- 表單內文在這裡結束 -->
+              <!-- 送出button -->
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  取消
+                </button>
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  @click="updateProduct(productId)"
+                >
+                  送出
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </Dataset>
     </BaseBlock>

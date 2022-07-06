@@ -2,6 +2,7 @@ package com.eeit45.champion.vegetarian.controller.shopCart;
 
 import com.eeit45.champion.vegetarian.dto.shopCart.CreateOrderRequest;
 import com.eeit45.champion.vegetarian.dto.shopCart.OrderQueryParams;
+import com.eeit45.champion.vegetarian.dto.shopCart.OrderRequest;
 import com.eeit45.champion.vegetarian.model.shopCart.Order;
 import com.eeit45.champion.vegetarian.service.shopCart.OrderService;
 import com.eeit45.champion.vegetarian.util.Page;
@@ -81,8 +82,17 @@ public class OrderController {
 
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
-
-
+    @PutMapping("order/{orderId}")
+    public ResponseEntity<Order> updateOrder(@PathVariable Integer orderId,
+                                             @RequestBody @Valid OrderRequest orderRequest){
+        Order checkOrder = orderService.getOrdersById(orderId);
+        if (checkOrder==null){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        orderService.updateOrder(orderId,orderRequest);
+        Order updatedOrder = orderService.getOrdersById(orderId);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedOrder);
+    }
 
 
 }

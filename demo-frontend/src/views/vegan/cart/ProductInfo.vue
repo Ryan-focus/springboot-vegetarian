@@ -593,6 +593,7 @@ th.sort {
                 <button
                   type="submit"
                   class="btn btn-primary"
+                  data-bs-dismiss="modal"
                   @click="updateProduct(productId)"
                 >
                   送出
