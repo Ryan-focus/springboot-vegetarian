@@ -5,6 +5,7 @@ import com.eeit45.champion.vegetarian.dao.customer.PosDao;
 import com.eeit45.champion.vegetarian.dto.customer.PosRequest;
 import com.eeit45.champion.vegetarian.model.customer.Business;
 import com.eeit45.champion.vegetarian.model.customer.Pos;
+import com.eeit45.champion.vegetarian.model.customer.PosBusiness;
 import com.eeit45.champion.vegetarian.service.customer.PosService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,9 +15,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 @Component
@@ -47,16 +45,31 @@ public class PosServiceImpl implements PosService {
 
         Integer posId = posDao.buildPos(businessId,posRequest);
 
+        posDao.buildPosBusiness(posId,businessId);
+
+
+
         return posId;
     }
 
     @Override
     public Pos getPosById(Integer posId) {
-        return posDao.getPosById(posId);
+        Pos pos = posDao.getPosById(posId);
+        List<PosBusiness> posBusinesses = posDao.getPosBusinessByPosId(posId);
+        pos.setPosBusinessList(posBusinesses);
+        return pos;
     }
 
     @Override
     public List<Pos> getAllPosList() {
-        return posDao.getAllPosList();
+        List<Pos> posList = posDao.getAllPosList();
+
+        for(Pos pos : posList){
+            List<PosBusiness> posBusinesses = posDao.getPosBusinessByPosId(pos.getPosId());
+
+            pos.setPosBusinessList(posBusinesses);
+        }
+
+        return posList;
     }
 }

@@ -26,9 +26,6 @@ public class OrderDaoImpl implements OrderDao {
     @Autowired
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    @Autowired
-    private ProductDao productDao;
-
 
     //查詢訂單資料返回Controller 使用 Join Table
     @Override

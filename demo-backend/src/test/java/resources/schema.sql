@@ -50,9 +50,17 @@ CREATE TABLE pos (
                   posId INT NOT NULL auto_increment primary key,
                   businessId Int not null UNIQUE,
                   validDate nvarchar(64) not null,
-                  expiryDate DATETIME not null,
-                  visitors int not null ,
-                  turnOver int not null
+                  expiryDate DATETIME not null
+);
+
+-- PosBusiness
+DROP TABLE IF EXISTS posBusiness;
+CREATE TABLE posBusiness (
+                     posBusinessId      INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+                     posId              INT NOT NULL,
+                     businessId         INT NOT NULL,
+                     visitors           INT NOT NULL,
+                     turnOver           INT NOT NULL
 );
 
 -- product

@@ -105,6 +105,4 @@ public class BusinessDaoImpl implements BusinessDao {
 
         return null;
     }
-
-
 }
