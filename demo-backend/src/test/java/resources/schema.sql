@@ -52,9 +52,7 @@ CREATE TABLE pos (
                   validDate nvarchar(64) not null,
                   expiryDate DATETIME not null,
                   visitors int not null ,
-                  turnOver int not null ,
-                  startDate DATETIME not null ,
-                  lastUsingDate DATETIME not null 
+                  turnOver int not null
 );
 
 -- product

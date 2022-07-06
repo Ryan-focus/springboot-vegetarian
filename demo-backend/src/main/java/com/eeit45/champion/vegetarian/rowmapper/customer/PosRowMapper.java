@@ -24,11 +24,6 @@ public class PosRowMapper  implements RowMapper<Pos> {
         pos.setVisitors(rs.getInt("visitors"));
         pos.setTurnOver(rs.getInt("turnOver"));
 
-        Timestamp startDate = rs.getTimestamp("startDate");
-        pos.setStartDate(startDate);
-
-        Timestamp lastUsingDate = rs.getTimestamp("lastUsingDate");
-        pos.setLastUsingDate(lastUsingDate);
 
         return pos;
     }

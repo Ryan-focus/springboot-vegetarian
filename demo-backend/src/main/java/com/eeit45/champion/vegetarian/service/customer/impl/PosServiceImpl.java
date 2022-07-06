@@ -26,6 +26,7 @@ public class PosServiceImpl implements PosService {
     @Autowired
     private BusinessDao businessDao;
 
+
     @Transactional
     @Override
     public Integer buildPos(Integer businessId, PosRequest posRequest) {
@@ -39,7 +40,9 @@ public class PosServiceImpl implements PosService {
         //更新business 系統狀態
         businessDao.updateStatus(business.getBusinessId(),"開通中");
 
-        return null;
+        Integer posId = posDao.buildPos(businessId,posRequest);
+
+        return posId;
     }
 
     @Override

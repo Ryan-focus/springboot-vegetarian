@@ -9,10 +9,11 @@ import java.util.List;
 public interface ReserveDao {
 
     //查詢單一對象，回傳使用Reserve(物件)
-    Reserve getReserveById(Integer reserveId);
+    Reserve getReserveById(Integer businessId, Integer reserveId);
 
     //使用者前台發送一筆創建訂單
-    Integer createReserve(ReserveRequest reserveRequest);
+    Integer createReserve(Integer businessId, ReserveRequest reserveRequest);
 
 
+    List<Reserve> getAllReserve(Integer businessId);
 }

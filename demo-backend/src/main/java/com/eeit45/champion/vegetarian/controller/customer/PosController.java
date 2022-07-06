@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 public class PosController {
@@ -21,8 +22,19 @@ public class PosController {
     private  BusinessService businessService;
 
 
+    @GetMapping("/pos")
+    public ResponseEntity<List<Pos>> getAllPosList(){
+        List<Pos> posList = posService.getAllPosList();
+
+        if(posList != null){
+            return ResponseEntity.status(HttpStatus.OK).body(posList);
+        }
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
     @PostMapping ("{businessId}/pos")
-    public ResponseEntity<?> buildPos(@PathVariable Integer businessId,
+    public ResponseEntity<Pos> buildPos(@PathVariable Integer businessId,
                                       @RequestBody @Valid PosRequest posRequest){
 
         Integer posId = posService.buildPos(businessId , posRequest);
