@@ -3,6 +3,7 @@ package com.eeit45.champion.vegetarian.dao.shopCart.impl;
 import com.eeit45.champion.vegetarian.dao.shopCart.OrderDao;
 import com.eeit45.champion.vegetarian.dao.shopCart.ProductDao;
 import com.eeit45.champion.vegetarian.dto.shopCart.OrderQueryParams;
+import com.eeit45.champion.vegetarian.dto.shopCart.OrderRequest;
 import com.eeit45.champion.vegetarian.model.shopCart.Order;
 import com.eeit45.champion.vegetarian.model.shopCart.OrderItem;
 import com.eeit45.champion.vegetarian.rowmapper.shopCart.OrderItemRowMapper;
@@ -164,4 +165,19 @@ public class OrderDaoImpl implements OrderDao {
             return null;
         }
     }
+
+    @Override
+    public void updateOrder(Integer orderId, OrderRequest orderRequest) {
+    String sql = "UPDATE veganDB.order SET payment = :payment,status = :status, updatedTime= :updatedTime " +
+            "WHERE orderId = :orderId";
+        Map<String , Object> map = new HashMap<>();
+        map.put("payment",orderRequest.getPayment());
+        map.put("status",orderRequest.getStatus());
+        map.put("orderId",orderId);
+        map.put("updatedTime",new Date());
+
+        namedParameterJdbcTemplate.update(sql,map);
+    }
+
+
 }

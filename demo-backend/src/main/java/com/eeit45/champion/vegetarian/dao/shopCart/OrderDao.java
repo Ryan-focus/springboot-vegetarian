@@ -1,6 +1,8 @@
 package com.eeit45.champion.vegetarian.dao.shopCart;
 
 import com.eeit45.champion.vegetarian.dto.shopCart.OrderQueryParams;
+import com.eeit45.champion.vegetarian.dto.shopCart.OrderRequest;
+import com.eeit45.champion.vegetarian.dto.shopCart.ProductRequest;
 import com.eeit45.champion.vegetarian.model.shopCart.Order;
 import com.eeit45.champion.vegetarian.model.shopCart.OrderItem;
 
@@ -26,6 +28,8 @@ public interface OrderDao {
 
      //配合寫Left Join 方法
      Order getOrdersById(Integer orderId);
+
+     void updateOrder(Integer orderId, OrderRequest orderRequest);
 
 
 

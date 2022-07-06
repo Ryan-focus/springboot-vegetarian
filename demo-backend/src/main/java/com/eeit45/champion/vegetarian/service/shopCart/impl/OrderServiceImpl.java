@@ -6,6 +6,7 @@ import com.eeit45.champion.vegetarian.dao.shopCart.ProductDao;
 import com.eeit45.champion.vegetarian.dto.shopCart.BuyItem;
 import com.eeit45.champion.vegetarian.dto.shopCart.CreateOrderRequest;
 import com.eeit45.champion.vegetarian.dto.shopCart.OrderQueryParams;
+import com.eeit45.champion.vegetarian.dto.shopCart.OrderRequest;
 import com.eeit45.champion.vegetarian.model.User;
 import com.eeit45.champion.vegetarian.model.shopCart.Order;
 import com.eeit45.champion.vegetarian.model.shopCart.OrderItem;
@@ -133,6 +134,11 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> getAllOrders() {
         return orderDao.getAllOrders();
+    }
+
+    @Override
+    public void updateOrder(Integer orderId, OrderRequest orderRequest) {
+        orderDao.updateOrder(orderId,orderRequest);
     }
 }
 

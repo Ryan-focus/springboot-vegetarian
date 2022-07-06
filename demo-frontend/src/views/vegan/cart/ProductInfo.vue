@@ -417,6 +417,7 @@ th.sort {
                       </td>
                       <td class="text-center">
                         <div class="btn-group">
+                          <!-- 更新的按鈕 -->
                           <button
                             type="button"
                             class="btn btn-sm btn-alt-secondary"
@@ -592,6 +593,7 @@ th.sort {
                 <button
                   type="submit"
                   class="btn btn-primary"
+                  data-bs-dismiss="modal"
                   @click="updateProduct(productId)"
                 >
                   送出

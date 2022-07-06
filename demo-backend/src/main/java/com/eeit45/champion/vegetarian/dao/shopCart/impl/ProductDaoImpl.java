@@ -149,14 +149,14 @@ public class ProductDaoImpl implements ProductDao {
     @Override
     public void updateStock(Integer productId, Integer stock) {
         //更新 products 的Stock 的值 ， 還有更新 UpdateTime
-//        String sql = "UPDATE products SET stock = :stock, last_modified_date = :lastModifiedDate " +
-//                "WHERE product_id = :productId";
+        String sql = "UPDATE products SET stock = :stock, last_modified_date = :lastModifiedDate " +
+                "WHERE product_id = :productId";
         Map<String , Object> map = new HashMap<>();
         map.put("productId", productId);
         map.put("stock", stock);
         map.put("lastModifiedDate" , new Date());
 
-//        namedParameterJdbcTemplate.update(sql,map);
+        namedParameterJdbcTemplate.update(sql,map);
     }
 
     @Override
