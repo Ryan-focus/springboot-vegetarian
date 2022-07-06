@@ -3,19 +3,19 @@ use vegandb;
 -- USER
 INSERT INTO `user` ( email, password, userName, status, userPic, registerTime, lastLoginTime) VALUES
 ('a1kgkms11@gmail.com', '$2a$10$O969pkOXv/LwhDAgvZR/iuI62clH0djrmL8WGtgCTKLdG9XZFbBMW', '呱呱', '正常', 'a010', curdate(), now())
-,('nsdk8853@gmail.com', '$2a$10$l0hfgZQLrYGOVRGL8vMqi.hqc64TmRJrSC.V88UrdJtsri9RkR9f6', 'guagua', '正常', 'a010', curdate(), now())
-,('abc01@mail.com', 'Aa000001', 'Jason', '正常', 'a010', curdate(), now())
-,('abc02@mail.com', 'Oa0fgh02', 'John', '正常', 'a010', curdate(), now())
-,('abc03@mail.com', 'Radghg3', 'David', '正常', 'a010', curdate(), now())
-,('abc04@mail.com', 'Ca00fghfd004', 'Jack', '正常', 'a010', curdate(), now())
-,('abc05@mail.com', 'Va0dfgh005', 'Anthony', '正常', 'a010', curdate(), now())
-,('abc06@mail.com', 'Ba0fgh06', 'Michael', '正常', 'a010', curdate(), now())
-,('abc07@mail.com', 'Naghg007', '傑森', '正常', 'a010', curdate(), now())
-,('abc08@mail.com', 'Ma0gbng008', '約翰', '正常', 'a010', curdate(), now())
-,('abc09@mail.com', 'Qa0fgdh009', '大衛', '正常', 'a010', curdate(), now())
-,('abc10@mail.com', 'La0gngn10', '傑克', '正常', 'a010', curdate(), now())
-,('abc11@mail.com', 'Pa0fdgdgh011', '安東尼', '正常', 'a010', curdate(), now())
-,('abc12@mail.com', 'Wafghfh12', '麥可', '正常', 'a010', curdate(), now());
+,('atdk8853@gmail.com', '$2a$10$l0hfgZQLrYGOVRGL8vMqi.hqc64TmRJrSC.V88UrdJtsri9RkR9f6', 'guagua', '正常', 'a010', curdate(), now())
+,('nsdf1h32@gmail.com', '$2a$10$uGR2IkaiC.RZsOZtoY7M7ugGapiiwOkFCSEigkix2aSN.u6b1UnWy', 'Jason', '正常', 'a010', curdate(), now())
+,('dsddmlm093@gmail.com', '$2a$10$1eCToqRxiCzgsoJoBp8Y..RO4wkwwFOd90nH1PkhGBGBeBl4BFonO', 'John', '正常', 'a010', curdate(), now())
+,('sdsdk457@gmail.com', '$2a$10$6oYKJpvvwFkoJxZOi0ogOO4ta1.gds9vP4FlIzMnnK2H.LM5GcAhK', 'David', '正常', 'a010', curdate(), now())
+,('dnfjn003@gmail.com', '$2a$10$1N2w5TMU0OOjSB.9kVhb8OQKAZ726.AgyktmxoQnjdrtCkrQ31ziC', 'Jack', '正常', 'a010', curdate(), now())
+,('dsnjd25@gmail.com', '$2a$10$DKayHEMjcXVdN1E4jgn7SeesC/ZdJgHZzBzVficD.jyvszCBMd9Sq', 'Anthony', '正常', 'a010', curdate(), now())
+,('dkopm023@gmail.com', '$2a$10$8Y6fTr2MiNEH0hwH/wQC1ewCe/i3BUki3NAqCNm/SpQVENtjeY722', 'Michael', '正常', 'a010', curdate(), now())
+,('vmdns23@gmail.com', '$2a$10$kmbp2jSux5GWTt7UMeRHge2UaInt6UjQTmSl5nO.Ir6jdRV5hhu6y', '傑森', '正常', 'a010', curdate(), now())
+,('fdnfl983@gmail.com', '$2a$10$0RS4K7T9d84dlIY8J7wd3.1L/WFFtQzjMEOKeHmnxWAg93Mv9lFyC', '約翰', '正常', 'a010', curdate(), now())
+,('sdj4498@gmail.com', '$2a$10$fKJ.DT6U2lx.dpiAE.6nUedlCWvEkyPFKjeFJ1ioWnLE/uwMJ0xaK', '大衛', '正常', 'a010', curdate(), now())
+,('sdsndj12@gmail.com', '$2a$10$r8P1P1pM4.SwzqoCS6ZYWujqbuvku7B98k.iRpEpyJxhl7.ZnnKxq', '傑克', '正常', 'a010', curdate(), now())
+,('fdfnkn9@gmail.com', '$2a$10$VdMO7903g7YrTrdI.B4N7.iXJtAflnZTRe08hqSi4pBlJjKdaIYo2', '安東尼', '正常', 'a010', curdate(), now())
+,('dkd93@gmail.com', '$2a$10$dAXsizGzNbj2lvUqDyGqTuS1fuKGsAEOwFY/eZ1O1PMWbO2ayk4Wy', '麥可', '正常', 'a010', curdate(), now());
 
 -- business
 INSERT INTO business ( email, password,principalName,principalPhone, businessName,located, status, businessPic, createdTime, lastLoginTime, updateTime) VALUES

@@ -64,8 +64,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User login(LoginRequest loginRequest) {
 
+		userDao.updateLastLoginTime(loginRequest.getAccount());
+		
 		User user = userDao.getUserByEmail(loginRequest.getAccount());
 
+		System.out.println(user.getLastLoginTime());
 		//帳號存在 且 密碼相符合
 		if(user != null ) {
 		//有此帳密但被禁用
