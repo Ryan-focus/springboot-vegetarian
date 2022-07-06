@@ -162,7 +162,7 @@ export default {
       ],
     },
     {
-      name: "訂位管理",
+      name: "預訂管理",
       icon: "fa fa-clock",
       subActivePaths: "/backend-boxed",
       sub: [

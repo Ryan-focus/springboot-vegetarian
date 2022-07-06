@@ -28,6 +28,23 @@ INSERT INTO business ( email, password,principalName,principalPhone, businessNam
 ;
 update business set password = MD5(password);
 
+-- pos
+INSERT INTO pos(businessId,validDate,expiryDate) VALUES
+ (6,'未開通',null)
+,(5,'14日',NOW() + INTERVAL 14 DAY)
+,(4,'7日',NOW() + INTERVAL 7 DAY)
+,(3,'14日',NOW() + INTERVAL 14 DAY)
+,(2,'開通中',NOW() + INTERVAL 12 MONTH )
+,(1,'開通中',NOW() + INTERVAL 6 MONTH);
+
+-- PosBusiness
+INSERT INTO posBusiness(posId,businessId,visitors,turnOver,businessName) VALUES
+(1,6,67842,100274896,'Larvata果子云數位科技')
+,(2,5,249,298432,'亞惿股份有限公司')
+,(3,4,367,367705,'墨宇網頁設計公司')
+,(4,3,142,122450,'藝誠網頁設計公司')
+,(5,2,2475,5379892,'馬亞科技iWare')
+,(6,1,6487,12568,'艾格企業有限公司');
 
 -- product
 INSERT INTO product ( productName, category,veganCategory, productPrice,stock,productImage,createdTime,updatedTime ) VALUES
