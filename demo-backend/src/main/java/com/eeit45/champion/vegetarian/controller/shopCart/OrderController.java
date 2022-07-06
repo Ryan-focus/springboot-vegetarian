@@ -55,6 +55,17 @@ public class OrderController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+    @GetMapping("order/{orderId}")
+    public ResponseEntity<Order> getOrderById(@PathVariable Integer orderId){
+
+        Order order = orderService.getOrdersById(orderId);
+        if (order!=null){
+            return ResponseEntity.status(HttpStatus.OK).body(order);
+        }else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+    }
 
     //表示前端送一個已經存在的User所購買的訂單
     // JsonObject : {"buyItemList:[{"productId":9,"quantity:1},{"productId":10,"quantity:18}]}

@@ -29,7 +29,13 @@ let toast = Swal.mixin({
 const url = "localhost:8088";
 //接收的資料ref
 const resData = ref();
+const orderId = ref();
+const orderItemList = ref();
+const payment = ref();
+const status = ref();
+const userId = ref();
 
+//取得全部的order
 const getAxios = function () {
   axios
     .get(`http://${url}/order`)
@@ -44,6 +50,24 @@ const getAxios = function () {
 };
 //執行Axios
 getAxios();
+
+//取得單一筆訂單，number用來抓id
+function getSingle(number) {
+  axios
+    .get(`http://${url}/orders/${number}`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      console.log(res);
+      orderId.value = res.data.orderId;
+      orderItemList.value = res.data.orderItemList;
+      payment.value = res.data.payment;
+      status.value = res.data.status;
+      userId.value = res.data.userId;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
 
 // Helper variables
 //在這邊去設定Table :th的欄位名稱
@@ -301,6 +325,7 @@ th.sort {
                           <button
                             type="button"
                             class="btn btn-sm btn-alt-secondary"
+                            @click="getSingle(row.orderId)"
                           >
                             <i class="fa fa-fw fa-pencil-alt"></i>
                           </button>
