@@ -371,53 +371,33 @@ th.sort {
               <div class="modal-body">
                 <!-- 商品名稱 -->
                 <div class="mb-3">
-                  <label for="exampleFormControlInput1" class="form-label"
-                    >商品名稱</label
-                  >
-                  <textarea
-                    type="textarea"
+                  <input
+                    type="hidden"
                     class="form-control"
                     id="exampleFormControlInput1"
                     style="resize: none"
                     rows="1"
-                    v-model="productName"
-                  ></textarea>
+                    v-model="payment"
+                  />
                 </div>
 
                 <!-- 商品種類 -->
                 <div class="mb-3">
                   <label class="form-label" for="example-select"
-                    >選擇商品分類</label
+                    >更新訂單狀態</label
                   >
                   <select
                     class="form-select"
                     id="example-select"
                     name="example-select"
-                    v-model="productCategory"
+                    v-model="status"
                   >
-                    <option selected>{{ productCategory }}</option>
-                    <option value="生鮮">生鮮</option>
-                    <option value="食品">食品</option>
-                    <option value="寵物">寵物</option>
-                    <option value="居家百貨">居家百貨</option>
-                    <option value="飾品">飾品</option>
-                    <option value="保健">保健</option>
-                    <option value="書籍影音">書籍影音</option>
-                    <option value="美妝保養">美妝保養</option>
-                    <option value="量販批發">量販批發</option>
+                    <option selected>{{ status }}</option>
+                    <option value="未付款">未付款</option>
+                    <option value="已付款">已付款</option>
+                    <option value="已出貨">已出貨</option>
+                    <option value="訂單完成">訂單完成</option>
                   </select>
-                </div>
-
-                <!-- 價格 -->
-                <div class="mb-4">
-                  <label class="form-label" for="example-ltf-email">價格</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="productPrice"
-                    name="productPrice"
-                    v-model="productPrice"
-                  />
                 </div>
               </div>
               <!-- 表單內文在這裡結束 -->
@@ -433,7 +413,7 @@ th.sort {
                 <button
                   type="submit"
                   class="btn btn-primary"
-                  @click="updateProduct(productId)"
+                  @click="updateProduct(orderId)"
                 >
                   送出
                 </button>
@@ -446,3 +426,33 @@ th.sort {
   </div>
   <!-- END Page Content -->
 </template>
+<script>
+//輸出data
+export default {
+  data() {
+    return {
+      payment: null,
+      status: null,
+    };
+  },
+  //綁定表單資料變成物件格式
+  methods: {
+    updateProduct(number) {
+      const order = {
+        payment: this.payment,
+        status: this.status,
+      };
+      //執行put方法
+      axios
+        .put(`http://localhost:8088/order/${number}`, order)
+        .then(() => {
+          console.log(order);
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.log(error, "失敗");
+        });
+    },
+  },
+};
+</script>
