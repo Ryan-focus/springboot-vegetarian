@@ -82,5 +82,16 @@ public class BusinessDaoImpl implements BusinessDao {
         }
     }
 
+    @Override
+    public void updateStatus(Integer businessId, String status) {
+        String sql = "UPDATE business SET status = :status WHERE businessId = :businessId ";
+        Map<String , Object > map = new HashMap<>();
+        map.put("status" , status);
+        map.put("businessId" , businessId);
+
+        namedParameterJdbcTemplate.update(sql,map);
+
+    }
+
 
 }

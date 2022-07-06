@@ -6,7 +6,9 @@ import com.eeit45.champion.vegetarian.model.customer.Business;
 public interface BusinessDao {
     Integer createBusiness(BusinessRegisterRequest businessRegisterRequest);
 
-    Business getBusinessById(Integer userId);
+    Business getBusinessById(Integer businessId);
 
-    Business getBusinessByEmail(String loginEmail);
+    Business getBusinessByEmail(String account);
+
+    void updateStatus(Integer businessId, String status);
 }

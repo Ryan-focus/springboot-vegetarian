@@ -10,8 +10,6 @@ public class Pos {
     private Date expiryDate;
     private Integer visitors;
     private Integer turnOver;
-    private Date startDate;
-    private Date lastUsingDate;
 
     public Integer getPosId() {
         return posId;
@@ -59,21 +57,5 @@ public class Pos {
 
     public void setTurnOver(Integer turnOver) {
         this.turnOver = turnOver;
-    }
-
-    public Date getStartDate() {
-        return startDate;
-    }
-
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
-
-    public Date getLastUsingDate() {
-        return lastUsingDate;
-    }
-
-    public void setLastUsingDate(Date lastUsingDate) {
-        this.lastUsingDate = lastUsingDate;
     }
 }

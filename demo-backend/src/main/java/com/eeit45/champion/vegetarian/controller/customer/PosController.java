@@ -1,16 +1,15 @@
 package com.eeit45.champion.vegetarian.controller.customer;
 
-import com.eeit45.champion.vegetarian.model.customer.Business;
+import com.eeit45.champion.vegetarian.dto.customer.PosRequest;
 import com.eeit45.champion.vegetarian.model.customer.Pos;
 import com.eeit45.champion.vegetarian.service.customer.BusinessService;
 import com.eeit45.champion.vegetarian.service.customer.PosService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import javax.validation.Valid;
 
 @RestController
 public class PosController {
@@ -21,13 +20,16 @@ public class PosController {
     @Autowired
     private  BusinessService businessService;
 
-    @GetMapping("{businessId}/pos")
-    public ResponseEntity<Pos> getPos (
-            @PathVariable Integer businessId){
 
-//        List<Business> businessList = businessService
+    @PostMapping ("{businessId}/pos")
+    public ResponseEntity<?> buildPos(@PathVariable Integer businessId,
+                                      @RequestBody @Valid PosRequest posRequest){
 
-        return  null;
+        Integer posId = posService.buildPos(businessId , posRequest);
+
+        Pos pos = posService.getPosById(posId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(pos);
     }
 
 }
