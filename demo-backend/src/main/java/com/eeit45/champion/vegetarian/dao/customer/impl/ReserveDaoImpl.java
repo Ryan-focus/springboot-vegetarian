@@ -1,7 +1,6 @@
 package com.eeit45.champion.vegetarian.dao.customer.impl;
 
 import com.eeit45.champion.vegetarian.dao.customer.ReserveDao;
-import com.eeit45.champion.vegetarian.dto.customer.ReserveQueryParams;
 import com.eeit45.champion.vegetarian.dto.customer.ReserveRequest;
 import com.eeit45.champion.vegetarian.model.customer.Reserve;
 import com.eeit45.champion.vegetarian.rowmapper.customer.ReserveRowMapper;
@@ -28,10 +27,11 @@ public class ReserveDaoImpl implements ReserveDao {
 
     //查詢單一對象，回傳使用Reserve(物件)
     @Override
-    public Reserve getReserveById(Integer reserveId) {
-        String sql = "SELECT * FROM reserve WHERE reserveId = :reserveId";
+    public Reserve getReserveById(Integer businessId ,Integer  reserveId) {
+        String sql = "SELECT * FROM reserve WHERE businessId = :businessId AND reserveId = :reserveId";
 
         Map<String, Object> map = new HashMap<>();
+        map.put("businessId" ,businessId);
         map.put("reserveId", reserveId);
 
         List<Reserve> reserveList = namedParameterJdbcTemplate.query(sql, map, new ReserveRowMapper());
@@ -45,7 +45,7 @@ public class ReserveDaoImpl implements ReserveDao {
 
     //使用者前台發送一筆創建訂單
     @Override
-    public Integer createReserve(ReserveRequest reserveRequest) {
+    public Integer createReserve(Integer businessId, ReserveRequest reserveRequest) {
 
         String sql = "INSERT INTO reserve ( reserveDateTime, adult, child, baby, reserveTime, restaurantId,businessId, userId)"  +
                 "VALUES (:reserveDate, :adult , :child , :baby , :reserveTime, :restaurantId, :businessId, :userId)";
@@ -67,7 +67,7 @@ public class ReserveDaoImpl implements ReserveDao {
         map.put("reserveTime", timestamp);
 
         map.put("restaurantId", reserveRequest.getRestaurantId());
-        map.put("businessId", reserveRequest.getBusinessId());
+        map.put("businessId", businessId);
         map.put("userId", reserveRequest.getUserId());
 
 
@@ -75,8 +75,23 @@ public class ReserveDaoImpl implements ReserveDao {
 
         namedParameterJdbcTemplate.update(sql, new MapSqlParameterSource(map), keyHolder);
 
-        int reserveId = keyHolder.getKey().intValue();
+        Integer reserveId = keyHolder.getKey().intValue();
 
         return reserveId;
+    }
+
+    @Override
+    public List<Reserve> getAllReserve(Integer businessId) {
+        String sql = "select * from reserve WHERE businessId = :businessId";
+
+        Map<String , Object > map = new HashMap<>();
+        map.put("businessId",businessId);
+
+        List<Reserve> reserveList = namedParameterJdbcTemplate.query(sql,map,new ReserveRowMapper());
+        if (reserveList!=null){
+            return reserveList;
+        }else {
+            return null;
+        }
     }
 }

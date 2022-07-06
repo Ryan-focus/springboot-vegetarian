@@ -66,6 +66,9 @@ const getAxios = function () {
       console.log(error, "失敗");
     });
 };
+
+//取得單一筆商品，number用來抓id
+
 function getSingle(number) {
   //send request to server
 
@@ -81,6 +84,7 @@ function getSingle(number) {
       productPrice.value = res.data.productPrice;
       stock.value = res.data.stock;
       description.value = res.data.description;
+      productImage.value = res.data.productImage;
     })
     .catch((error) => {
       console.log(error, "失敗");
@@ -113,7 +117,7 @@ const cols = reactive([
   },
   {
     name: "產品圖片",
-    field: "imageUrl",
+    field: "productImage",
     sort: "",
   },
 
@@ -204,29 +208,6 @@ function deleteRestaurant(number) {
       } else if (result.dismiss === "cancel") {
         toast.fire("刪除失敗", "", "error");
       }
-    });
-}
-
-// 更新商品
-function updateForum(number) {
-  //send request to server
-
-  axios
-    .get(`http://${url}/products/${number}`)
-    .then((res) => {
-      //獲取伺服器的回傳資料
-      console.log(res);
-      productId.value = res.data.productId;
-      productName.value = res.data.productName;
-      productCategory.value = res.data.productCategory;
-      veganCategory.value = res.data.veganCategory;
-      productPrice.value = res.data.productPrice;
-      productImage.value = res.data.productImage;
-      stock.value = res.data.stock;
-      description.value = res.data.description;
-    })
-    .catch((error) => {
-      console.log(error, "失敗");
     });
 }
 
@@ -394,11 +375,43 @@ th.sort {
                         class="d-none d-sm-table-cell fs-sm"
                         style="min-width: 110px"
                       >
-                        {{ row.image }}
+                        <div class="options-container">
+                          <!-- 抓出路徑後要用這個方式塞進去才會變動態的 :src -->
+                          <img
+                            class="img-fluid options-item"
+                            :src="row.productImage"
+                            alt="Image"
+                          />
+                          <div class="options-overlay bg-black-30">
+                            <div class="options-overlay-content">
+                              <h4 class="h6 text-white-75 fw-normal mb-1">
+                                點按鈕編輯
+                              </h4>
+                              <div class="space-x-2">
+                                <a
+                                  class="btn btn-sm btn-alt-secondary"
+                                  href="#/backend/cart/imageTest"
+                                >
+                                  <i
+                                    class="fa fa-pencil-alt text-primary me-1"
+                                  ></i>
+                                  Edit
+                                </a>
+                                <a
+                                  class="btn btn-sm btn-alt-secondary"
+                                  href="javascript:void(0)"
+                                >
+                                  <i class="fa fa-times text-danger me-1"></i>
+                                  Delete
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                       </td>
                       <td
                         class="d-none d-sm-table-cell fs-sm"
-                        style="min-width: 110px"
+                        style="min-width: 90px"
                       >
                         {{ row.stock }}
                       </td>
@@ -436,6 +449,8 @@ th.sort {
           <DatasetInfo class="py-3 fs-sm" />
           <DatasetPager class="flex-wrap py-3 fs-sm" />
         </div>
+
+        <!-- 這邊以下是隱藏的更新表單，按下更新鈕之後會跳出來 -->
         <div
           class="modal fade"
           id="updateProduct"
@@ -443,6 +458,7 @@ th.sort {
           aria-labelledby="exampleModalLabel"
           aria-hidden="true"
         >
+          <!-- 這邊是更新的標題 -->
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
@@ -530,6 +546,15 @@ th.sort {
                     v-model="productPrice"
                   />
                 </div>
+                <!-- 圖片 -->
+                <!-- 預設不改路徑所以單純取值之後放回，使用隱藏屬性 -->
+                <input
+                  type="hidden"
+                  class="form-control"
+                  id="productImage"
+                  name="productImage"
+                  v-model="productImage"
+                />
 
                 <!-- 庫存 -->
                 <div class="mb-4">
@@ -581,26 +606,20 @@ th.sort {
   <!-- END Page Content -->
 </template>
 <script>
+//輸出data
 export default {
   data() {
-    let toast = Swal.mixin({
-      buttonsStyling: false,
-      target: "#page-container",
-      customClass: {
-        confirmButton: "btn btn-success m-1",
-        cancelButton: "btn btn-danger m-1",
-        input: "form-control",
-      },
-    });
     return {
       productName: null,
       productCategory: null,
       veganCategory: null,
       productPrice: null,
       stock: null,
+      productImage: null,
       description: null,
     };
   },
+  //綁定表單資料變成物件格式
   methods: {
     updateProduct(number) {
       const product = {
@@ -610,31 +629,15 @@ export default {
         productPrice: this.productPrice,
         stock: this.stock,
         description: this.description,
+        productImage: this.productImage,
       };
+      //執行put方法
       axios
         .put(`http://localhost:8088/products/${number}`, product)
         .then(() => {
           console.log(product);
           window.location.reload();
         })
-        // .then(() => {
-        //   axios
-        //     .get(`http://localhost:8088/products`)
-        //     .then((res) => {
-        //       //獲取伺服器的回傳資料
-        //       console.log(res);
-        //       productId.value = res.data.productId;
-        //       productName.value = res.data.productName;
-        //       productCategory.value = res.data.productCategory;
-        //       veganCategory.value = res.data.veganCategory;
-        //       productPrice.value = res.data.productPrice;
-        //       stock.value = res.data.stock;
-        //       description.value = res.data.description;
-        //     })
-        //     .catch((error) => {
-        //       console.log(error, "失敗");
-        //     });
-        // })
         .catch((error) => {
           console.log(error, "失敗");
         });

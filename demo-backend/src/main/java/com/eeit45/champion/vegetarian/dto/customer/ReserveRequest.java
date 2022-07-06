@@ -24,9 +24,6 @@ public class ReserveRequest {
     private Integer restaurantId;
 
     @NotNull
-    private Integer businessId;
-
-    @NotNull
     private Integer userId;
 
     public String getReserveDate() {
@@ -75,14 +72,6 @@ public class ReserveRequest {
 
     public void setRestaurantId(Integer restaurantId) {
         this.restaurantId = restaurantId;
-    }
-
-    public Integer getBusinessId() {
-        return businessId;
-    }
-
-    public void setBusinessId(Integer businessId) {
-        this.businessId = businessId;
     }
 
     public Integer getUserId() {
