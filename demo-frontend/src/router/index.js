@@ -59,6 +59,7 @@ const VeganCartProductInfo = () => import("@/views/vegan/cart/ProductInfo.vue");
 const VeganCartOrderInfo = () => import("@/views/vegan/cart/OrderInfo.vue");
 const VeganCartInsertProduct = () =>
   import("@/views/vegan/cart/InsertProduct.vue");
+const VeganImageTest = () => import("@/views/vegan/cart/ImageTest.vue");
 
 //愛蔬網後台: reserve
 const VeganReserveDashboard = () =>
@@ -476,6 +477,11 @@ const routes = [
             path: "insertProduct",
             name: "backend-cart-insert-product",
             component: VeganCartInsertProduct,
+          },
+          {
+            path: "imageTest",
+            name: "backend-cart-image-test",
+            component: VeganImageTest,
           },
         ],
       },

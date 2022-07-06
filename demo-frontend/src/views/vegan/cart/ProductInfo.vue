@@ -376,6 +376,7 @@ th.sort {
                         style="min-width: 110px"
                       >
                         <div class="options-container">
+                          <!-- 抓出路徑後要用這個方式塞進去才會變動態的 :src -->
                           <img
                             class="img-fluid options-item"
                             :src="row.productImage"
@@ -389,7 +390,7 @@ th.sort {
                               <div class="space-x-2">
                                 <a
                                   class="btn btn-sm btn-alt-secondary"
-                                  href="javascript:void(0)"
+                                  href="#/backend/cart/imageTest"
                                 >
                                   <i
                                     class="fa fa-pencil-alt text-primary me-1"
