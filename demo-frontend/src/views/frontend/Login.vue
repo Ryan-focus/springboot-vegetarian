@@ -164,24 +164,6 @@ async function onSubmit() {
     <!-- END Page Content -->
   </div>
 </template>
-<!-- <script>
-  export default {
-    data() {
-      return {
-        state: {
-          account:'',
-          password:''
-        }
-      }
-    },
-    methods: {
-      login() {
-        console.log('帳號', this.state.account)
-        console.log('密碼', this.state.password)
-      }
-    }
-  }
-</script> -->
 <script>
 export default {
   data(){
@@ -215,20 +197,3 @@ methods: {
 }
 }
 </script>
-<!-- <script>
-  export default{
-    data(){
-      return {
-        state:{
-          account:"",
-          password:""
-        }
-      }
-    },
-    methods:{
-      handleSubmit(){
-        console.log("你已送出表單");
-      }
-    }
-  }
-</script> -->
