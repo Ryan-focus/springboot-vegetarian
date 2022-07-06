@@ -2,10 +2,11 @@
 import { reactive, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useTemplateStore } from "@/stores/template";
+import axios from "axios";
 
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
 import useVuelidate from "@vuelidate/core";
-import { required, minLength } from "@vuelidate/validators";
+import { required, minLength, url } from "@vuelidate/validators";
 
 // Main store
 const store = useTemplateStore();
@@ -13,20 +14,20 @@ const router = useRouter();
 
 // Input state variables
 const state = reactive({
-  username: null,
+  account: null,
   password: null,
 });
 
 // Validation rules
 const rules = computed(() => {
   return {
-    username: {
+    account: {
       required,
-      minLength: minLength(3),
+      // minLength: minLength(3),
     },
     password: {
       required,
-      minLength: minLength(5),
+      // minLength: minLength(5),
     },
   };
 });
@@ -44,7 +45,7 @@ async function onSubmit() {
   }
 
   // Go to dashboard
-  router.push({ name: "backend-pages-auth" });
+  // router.push({ name: "backend-pages-auth" });
 }
 </script>
 
@@ -80,7 +81,7 @@ async function onSubmit() {
               <p class="fw-medium text-muted">Welcome, please login.</p>
 
               <!-- Sign In Form -->
-              <form @submit.prevent="onSubmit">
+              <form @submit.prevent="onSubmit" @submit="login">
                 <div class="py-3">
                   <div class="mb-4">
                     <input
@@ -88,18 +89,18 @@ async function onSubmit() {
                       class="form-control form-control-alt form-control-lg"
                       id="login-username"
                       name="login-username"
-                      placeholder="Username"
+                      placeholder="account"
                       :class="{
-                        'is-invalid': v$.username.$errors.length,
+                        'is-invalid': v$.account.$errors.length,
                       }"
-                      v-model="state.username"
-                      @blur="v$.username.$touch"
+                      v-model="state.account"
+                      @blur="v$.account.$touch"
                     />
                     <div
-                      v-if="v$.username.$errors.length"
+                      v-if="v$.account.$errors.length"
                       class="invalid-feedback animated fadeIn"
                     >
-                      Please enter your username
+                      Please enter your account
                     </div>
                   </div>
                   <div class="mb-4">
@@ -139,7 +140,7 @@ async function onSubmit() {
                 </div>
                 <div class="row mb-4">
                   <div class="col-md-6 col-xl-5">
-                    <button type="submit" class="btn w-100 btn-alt-primary">
+                    <button type="submit" class="btn w-100 btn-alt-primary" @click="handleSubmit">
                       <i class="fa fa-fw fa-sign-in-alt me-1 opacity-50"></i>
                       Sign In
                     </button>
@@ -163,3 +164,71 @@ async function onSubmit() {
     <!-- END Page Content -->
   </div>
 </template>
+<!-- <script>
+  export default {
+    data() {
+      return {
+        state: {
+          account:'',
+          password:''
+        }
+      }
+    },
+    methods: {
+      login() {
+        console.log('帳號', this.state.account)
+        console.log('密碼', this.state.password)
+      }
+    }
+  }
+</script> -->
+<script>
+export default {
+  data(){
+    return {
+      state:{
+        account:"",
+        password:""
+        }
+    }
+  },
+methods: {
+  login(){
+    const user ={
+      account: this.state.account,
+      password:this.state.password
+    }
+    axios.post('http://localhost:8088/login', user).then(function(response){
+      // let _this = this
+    console.log(response.data)
+    if(response.status === 200) {
+
+      localStorage.setItem('access-admin', JSON.stringify(response.data))
+      
+      location.replace("http://localhost:8080/#/backend/dashboard"); //登入成功擋返回前頁回到登入頁
+      alert("登入成功");
+    } 
+  }).catch((error) => {
+    alert("登入失敗");
+  })
+  }
+}
+}
+</script>
+<!-- <script>
+  export default{
+    data(){
+      return {
+        state:{
+          account:"",
+          password:""
+        }
+      }
+    },
+    methods:{
+      handleSubmit(){
+        console.log("你已送出表單");
+      }
+    }
+  }
+</script> -->

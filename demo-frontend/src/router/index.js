@@ -1140,3 +1140,17 @@ router.afterEach((to, from) => {
 /*eslint-enable no-unused-vars*/
 
 export default router;
+
+// router.beforeEach(() => {
+//   if(to.path.startsWith('/signin')) {
+//     window.localStorage.removeItem('access-admin')
+//     next()
+//   } else {
+//     let admin = JSON.parse(window.localStorage.getItem('access-admin'))
+//     if(!admin){
+//       next({path:'/signin'})
+//     } else {
+//       next()
+//     }
+//   }
+// })

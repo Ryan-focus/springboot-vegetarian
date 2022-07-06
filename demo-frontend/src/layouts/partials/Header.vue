@@ -35,6 +35,14 @@ onMounted(() => {
 onUnmounted(() => {
   document.removeEventListener("keydown", eventHeaderSearch);
 });
+
+//登出
+function logout() {
+  // this.admin = null;
+  localStorage.removeItem('access-admin');
+  location.replace("http://localhost:8080/#/"); //登出後防止返回上頁
+  alert("您已登出");
+}
 </script>
 
 <template>
@@ -134,7 +142,7 @@ onUnmounted(() => {
                     alt="Header Avatar"
                     style="width: 21px"
                   />
-                  <span class="d-none d-sm-inline-block ms-2">Raven</span>
+                  <span class="d-none d-sm-inline-block ms-2">{{admin.data.user.userName}}</span>
                   <i
                     class="fa fa-fw fa-angle-down d-none d-sm-inline-block opacity-50 ms-1 mt-1"
                   ></i>
@@ -151,7 +159,7 @@ onUnmounted(() => {
                       src="/assets/media/avatars/avatar10.jpg"
                       alt="Header Avatar"
                     />
-                    <p class="mt-2 mb-0 fw-medium">John Smith</p>
+                    <p class="mt-2 mb-0 fw-medium">{{admin.data.user.userName}}</p>
                     <p class="mb-0 text-muted fs-sm fw-medium">Web Developer</p>
                   </div>
                   <div class="p-2">
@@ -184,8 +192,8 @@ onUnmounted(() => {
                     >
                       <span class="fs-sm fw-medium">Lock Account</span>
                     </RouterLink>
-                    <RouterLink
-                      :to="{ name: 'auth-signin' }"
+                    <RouterLink @click="logout()"
+                      :to="{ name: '' }"
                       class="dropdown-item d-flex align-items-center justify-content-between"
                     >
                       <span class="fs-sm fw-medium">Log Out</span>
@@ -332,3 +340,15 @@ onUnmounted(() => {
   </header>
   <!-- END Header -->
 </template>
+<script>
+export default {
+  data() {
+    return {
+      admin: ''
+    }
+  },
+  created() {
+    this.admin = JSON.parse(window.localStorage.getItem('access-admin'))
+  }
+}
+</script>
