@@ -2,9 +2,11 @@ package com.eeit45.champion.vegetarian.dao.customer.impl;
 
 import com.eeit45.champion.vegetarian.dao.customer.PosDao;
 import com.eeit45.champion.vegetarian.dto.customer.PosRequest;
+import com.eeit45.champion.vegetarian.model.customer.Business;
 import com.eeit45.champion.vegetarian.model.customer.Pos;
 
 import com.eeit45.champion.vegetarian.model.customer.PosBusiness;
+import com.eeit45.champion.vegetarian.rowmapper.customer.BusinessRowMapper;
 import com.eeit45.champion.vegetarian.rowmapper.customer.PosBusinessRowMapper;
 import com.eeit45.champion.vegetarian.rowmapper.customer.PosRowMapper;
 
@@ -43,18 +45,41 @@ public class PosDaoImpl implements PosDao {
 
     @Override
     public void buildPosBusiness(Integer posId, Integer businessId) {
-        String sql = "INSERT INTO posbusiness(posId, businessId , visitors , turnOver) " +
-                "VALUES(:posId , :businessId , :visitors, :turnOver)";
+        String bSql = "SELECT * FROM business WHERE businessId = :businessId";
+        String sql = "INSERT INTO posbusiness(posId, businessId , visitors , turnOver,businessName) " +
+                "VALUES(:posId , :businessId , :visitors, :turnOver, :businessName)";
+
+        Map<String , Object > mapBusiness = new HashMap<>();
+        mapBusiness.put("businessId" , businessId);
+        List<Business> businessList =namedParameterJdbcTemplate.query(bSql,mapBusiness,new BusinessRowMapper());
+        Business business = businessList.get(0);
+
 
         Map<String, Object> map = new HashMap<>();
         map.put("posId", posId);
         map.put("businessId", businessId);
         map.put("visitors", 0);
         map.put("turnOver", 0);
+        map.put("businessName" , business.getBusinessName());
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
         namedParameterJdbcTemplate.update(sql,new MapSqlParameterSource(map), keyHolder);
+    }
+
+    @Override
+    public Pos getPosByBusinessId(Integer businessId) {
+        String sql = "SELECT * FROM pos WHERE businessId = :businessId";
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("businessId", businessId);
+
+        List<Pos> posList =namedParameterJdbcTemplate.query(sql,map,new PosRowMapper());
+
+        if (posList.size() > 0) {
+            return posList.get(0);
+        }
+        return null;
     }
 
     @Override

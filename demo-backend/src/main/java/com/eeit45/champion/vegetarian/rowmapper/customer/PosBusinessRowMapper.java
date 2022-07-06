@@ -17,6 +17,7 @@ public class PosBusinessRowMapper implements RowMapper<PosBusiness> {
         posBusiness.setBusinessId(rs.getInt("businessId"));
         posBusiness.setVisitors(rs.getInt("visitors"));
         posBusiness.setTurnOver(rs.getInt("turnOver"));
+        posBusiness.setBusinessName(rs.getString("businessName"));
 
         return posBusiness;
     }

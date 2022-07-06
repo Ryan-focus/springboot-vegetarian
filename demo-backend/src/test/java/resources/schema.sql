@@ -27,7 +27,8 @@ CREATE TABLE business(
                          businessPic nvarchar(64),
                          status nvarchar (32) not null,
                          createdTime TIMESTAMP not null ,
-                         lastLoginTime TIMESTAMP not null
+                         lastLoginTime TIMESTAMP not null,
+                         updateTime  TIMESTAMP not null
 );
 
 -- reserve
@@ -60,7 +61,8 @@ CREATE TABLE posBusiness (
                      posId              INT NOT NULL,
                      businessId         INT NOT NULL,
                      visitors           INT NOT NULL,
-                     turnOver           INT NOT NULL
+                     turnOver           INT NOT NULL,
+                     businessName       nvarchar(128) NOT NULL
 );
 
 -- product

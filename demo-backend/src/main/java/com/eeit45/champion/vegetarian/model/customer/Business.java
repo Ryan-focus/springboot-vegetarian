@@ -17,6 +17,7 @@ public class Business {
     private String status;
     private Date createdTime;
     private Date lastLoginTime;
+    private Date updateTime;
 
     public Integer getBusinessId() {
         return businessId;
@@ -103,6 +104,15 @@ public class Business {
     }
 
     public void setLastLoginTime(Date lastLoginTime) {
+
         this.lastLoginTime = lastLoginTime;
+    }
+
+    public Date getUpdateTime() {
+        return updateTime;
+    }
+
+    public void setUpdateTime(Date updateTime) {
+        this.updateTime = updateTime;
     }
 }
