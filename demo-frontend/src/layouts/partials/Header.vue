@@ -2,6 +2,7 @@
 import { ref, onMounted, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 import { useTemplateStore } from "@/stores/template";
+import Swal from "sweetalert2";
 
 // Grab example data
 import notifications from "@/data/notifications";
@@ -41,7 +42,7 @@ function logout() {
   // this.admin = null;
   localStorage.removeItem('access-admin');
   location.replace("http://localhost:8080/#/"); //登出後防止返回上頁
-  alert("您已登出");
+  Swal.fire('您已登出 ', 'ﾚ(ﾟ∀ﾟ;)ﾍ=З=З=З', 'info');
 }
 </script>
 

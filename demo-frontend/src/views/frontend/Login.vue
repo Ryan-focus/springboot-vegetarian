@@ -2,6 +2,7 @@
 import { reactive, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useTemplateStore } from "@/stores/template";
+import Swal from "sweetalert2";
 import axios from "axios";
 
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
@@ -188,10 +189,10 @@ methods: {
       localStorage.setItem('access-admin', JSON.stringify(response.data))
       
       location.replace("http://localhost:8080/#/backend/dashboard"); //登入成功擋返回前頁回到登入頁
-      alert("登入成功");
+      Swal.fire('登入成功 ~', '｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡', 'success');
     } 
   }).catch((error) => {
-    alert("登入失敗");
+    Swal.fire('登入失敗!', '(〒︿〒)', 'error');
   })
   }
 }
