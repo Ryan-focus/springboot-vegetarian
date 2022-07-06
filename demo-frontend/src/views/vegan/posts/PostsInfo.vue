@@ -35,7 +35,7 @@ var resData = ref();
 const resPostId = ref();
 const resPostTitle = ref();
 const resPostText = ref();
-const resPostStatus = ref();
+const resPostStatus = ref("待審核");
 const statusClass = [];
 
 const getAxios = function () {
@@ -191,56 +191,74 @@ function auditPost(number) {
     });
 }
 
-//送出審核文章
 function sendAuditPost(number, status) {
-  // var data = {postStatus = status};
-  // axios({
-  //   method: "put",
-  //   baseURL: "http://localhost:8088",
-  //   url: `http://${url}/auditPost/${number}`,
-  //   headers: {
-  //     "content-type": "application/x-www-form-urlencoded;charset=utf-8",
-  //   },
-  // })
-  //   .then((result) => {
-  //     console.log(result.data);
-  //   })
-  //   .catch((err) => {
-  //     console.error(err);
-  //   });
+  toast
+    .fire({
+      title: "確定送出審核嗎?",
+      text: "即將更新審核狀態",
+      icon: "warning",
+      showCancelButton: true,
+      customClass: {
+        confirmButton: "btn btn-danger m-1",
+        cancelButton: "btn btn-secondary m-1",
+      },
+      confirmButtonText: "確定",
+      cancelButtonText: "取消",
 
-  let params = new URLSearchParams();
-  params.append("postId", number);
-  params.append("title", "");
-  params.append("postedText", "");
-  params.append("imgurl", "");
-  params.append("postStatus", status);
-
-  axios
-    .put(`http://${url}/auditPost/${number}`, params)
-    .then((res) => {
-      console.log(res);
-
-      getAxios();
+      html: false,
+      preConfirm: () => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 50);
+        });
+      },
     })
+    .then((result) => {
+      //send request to server
+      if (result.value) {
+        let params = new URLSearchParams();
+        params.append("postId", number);
+        params.append("title", "");
+        params.append("postedText", "");
+        params.append("imgurl", "");
+        params.append("postStatus", status);
 
-    .catch((error) => {
-      console.log(error, "失敗");
+        axios
+          .put(`http://${url}/auditPost/${number}`, params)
+          .then((res) => {
+            console.log(res);
+            getAxios();
+            //重整頁面(先解決審核的顏色一定要刷新頁面才會更改的問題&不能自己關的modal)
+            window.setTimeout(function () {
+              location.reload();
+            }, 1000);
+          })
+
+          .catch((error) => {
+            console.log(error, "失敗");
+          });
+      }
     });
-
-  //重整頁面(先解決審核的顏色一定要刷新頁面才會更改的問題&不能自己關的modal)
-  window.setTimeout(function () {
-    location.reload();
-  }, 1000);
-
-  //毫無反應
-  $("#auditform").submit(function (e) {
-    //e.preventDefault();
-
-    $("#auditPost").modal("hide"); //or  $('#IDModal').modal('hide');
-    //return false;
-  });
 }
+
+// //送出審核文章
+// function sendAuditPost(number, status) {
+//   // var data = {postStatus = status};
+//   // axios({
+//   //   method: "put",
+//   //   baseURL: "http://localhost:8088",
+//   //   url: `http://${url}/auditPost/${number}`,
+//   //   headers: {
+//   //     "content-type": "application/x-www-form-urlencoded;charset=utf-8",
+//   //   },
+//   // })
+//   //   .then((result) => {
+//   //     console.log(result.data);
+//   //   })
+//   //   .catch((err) => {
+//   //     console.error(err);
+//   //   });
 
 //發布中文章(篩選器)
 function frontPost() {
@@ -392,13 +410,7 @@ th.sort {
               aria-labelledby="dropdown-recent-orders-filters"
             >
               <a
-                class="
-                  dropdown-item
-                  fw-medium
-                  d-flex
-                  align-items-center
-                  justify-content-between
-                "
+                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
                 href="#"
                 @click.prevent="notaudit()"
               >
@@ -406,13 +418,7 @@ th.sort {
                 <span class="badge bg-primary rounded-pill">20</span>
               </a>
               <a
-                class="
-                  dropdown-item
-                  fw-medium
-                  d-flex
-                  align-items-center
-                  justify-content-between
-                "
+                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
                 href="#"
                 @click.prevent="frontPost()"
               >
@@ -420,13 +426,7 @@ th.sort {
                 <span class="badge bg-primary rounded-pill">72</span>
               </a>
               <a
-                class="
-                  dropdown-item
-                  fw-medium
-                  d-flex
-                  align-items-center
-                  justify-content-between
-                "
+                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
                 href="#"
                 @click.prevent="notPassPost()"
               >
@@ -434,13 +434,7 @@ th.sort {
                 <span class="badge bg-primary rounded-pill">890</span>
               </a>
               <a
-                class="
-                  dropdown-item
-                  fw-medium
-                  d-flex
-                  align-items-center
-                  justify-content-between
-                "
+                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
                 href="#"
                 data-rel="all"
                 @click.prevent="getAxios"
@@ -571,12 +565,7 @@ th.sort {
           </div>
         </div>
         <div
-          class="
-            d-flex
-            flex-md-row flex-column
-            justify-content-between
-            align-items-center
-          "
+          class="d-flex flex-md-row flex-column justify-content-between align-items-center"
         >
           <DatasetInfo class="py-3 fs-sm" />
           <DatasetPager class="flex-wrap py-3 fs-sm" />
@@ -652,6 +641,7 @@ th.sort {
                       aria-label=".form-select-lg example"
                       v-model="resPostStatus"
                     >
+                      <option disabled value="">Please select one</option>
                       <option value="待審核" selected>待審核</option>
                       <option value="發布中">發布中</option>
                       <option value="未通過">未通過</option>
@@ -670,6 +660,7 @@ th.sort {
                     type="submit"
                     class="btn btn-primary"
                     @click.prevent="sendAuditPost(resPostId, resPostStatus)"
+                    id="sub"
                   >
                     送出審核
                   </button>
