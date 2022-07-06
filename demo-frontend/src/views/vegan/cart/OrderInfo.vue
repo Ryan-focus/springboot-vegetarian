@@ -168,8 +168,6 @@ function updateOrder(number) {
           .then(() => {
             console.log(order);
             getAxios();
-
-            getAxios();
             toast.fire("更新成功!", "", "success");
           })
           .catch((error) => {
