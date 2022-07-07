@@ -1,17 +1,21 @@
 <script setup>
 // 已經宣告但從未使用過的Value (請勿刪除)
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import axios from "axios";
+
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
 //接收的資料ref
 const resData = ref();
 const total = ref();
+const passTotal = ref();
+const testTotal = ref();
+const rejectTotal = ref();
 
+//取得全部的order
 const getAxios = function () {
-  var unStatus = "未審核";
   axios
-    .get(`http://${url}/pos`, { params: { status: unStatus } })
+    .get(`http://${url}/pos`)
     .then((res) => {
       //獲取伺服器的回傳資料
       resData.value = res.data;
@@ -21,12 +25,77 @@ const getAxios = function () {
       console.log(error, "失敗");
     });
 };
+//取得開通中的商家
+const getPass = function () {
+  axios
+    .get(`http://${url}/pos`, {
+      params: {
+        statusCategory: "開通中",
+      },
+    })
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      passTotal.value = res.data.total;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+//取得試用期中的商家
+const testUsing = function () {
+  var pass;
+  axios
+    .get(`http://${url}/pos`, {
+      params: {
+        statusCategory: "試用期7日",
+      },
+    })
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      pass = res.data.total;
+      if (res) {
+        axios
+          .get(`http://${url}/pos`, {
+            params: {
+              statusCategory: "試用期14日",
+            },
+          })
+          .then((res) => {
+            //獲取伺服器的回傳資料
+            testTotal.value = res.data.total + pass;
+          });
+      }
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+//取得未開通的商家
+const getReject = function () {
+  axios
+    .get(`http://${url}/pos`, {
+      params: {
+        statusCategory: "未開通",
+      },
+    })
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      rejectTotal.value = res.data.total;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
 //執行Axios
 getAxios();
+getPass();
+getReject();
+testUsing();
 </script>
 
 <template>
   <!-- Hero -->
+
   <div class="content">
     <div
       class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center py-2 text-center text-md-start"
@@ -103,16 +172,16 @@ getAxios();
     <!-- Overview -->
     <div class="row items-push">
       <div class="col-sm-6 col-xxl-3">
-        <!-- 待處理訂單 Pending Orders  :to 購物車模板-->
+        <!-- 待處理訂單 全部合作商家 -->
         <BaseBlock class="d-flex flex-column h-100 mb-0">
           <template #content>
             <div
               class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
             >
               <dl class="mb-0">
-                <dt class="fs-3 fw-bold">30678</dt>
+                <dt class="fs-3 fw-bold">{{ total }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                  未審核訂單
+                  全部合作商家
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
@@ -124,7 +193,7 @@ getAxios();
                 class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
                 href="javascript:void(0)"
               >
-                <span>查看全部訂單</span>
+                <span>查看全部合作商家</span>
                 <i
                   class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
                 ></i>
@@ -142,9 +211,9 @@ getAxios();
               class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
             >
               <dl class="mb-0">
-                <dt class="fs-3 fw-bold">2266</dt>
+                <dt class="fs-3 fw-bold">{{ passTotal }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                  新註冊會員
+                  預訂功能開通中的商家
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
@@ -156,7 +225,7 @@ getAxios();
                 class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
                 href="javascript:void(0)"
               >
-                <span>查看全部新會員</span>
+                <span>查看預訂功能開通中的商家</span>
                 <i
                   class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
                 ></i>
@@ -174,9 +243,9 @@ getAxios();
               class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
             >
               <dl class="mb-0">
-                <dt class="fs-3 fw-bold">15575</dt>
+                <dt class="fs-3 fw-bold">{{ testTotal }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                  新食記
+                  在試用期中的商家
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
@@ -188,7 +257,7 @@ getAxios();
                 class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
                 href="javascript:void(0)"
               >
-                <span>查看全部新食記</span>
+                <span>查看在試用期中的商家</span>
                 <i
                   class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
                 ></i>
@@ -206,9 +275,9 @@ getAxios();
               class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
             >
               <dl class="mb-0">
-                <dt class="fs-3 fw-bold">15.99%</dt>
+                <dt class="fs-3 fw-bold">{{ rejectTotal }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                  消費轉換率
+                  未開通的商家
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
@@ -220,7 +289,7 @@ getAxios();
                 class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
                 href="javascript:void(0)"
               >
-                <span>查看統計數據</span>
+                <span>查看未開通的商家</span>
                 <i
                   class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
                 ></i>

@@ -287,6 +287,7 @@ const urlParams = "warning";
 //接收的資料ref
 const restaurantTotal = ref();
 const productsTotal = ref();
+const businessTotal = ref();
 
 const getRestaurant = function () {
   axios
@@ -310,9 +311,23 @@ const getProducts = function () {
       console.log(error, "失敗");
     });
 };
+//取得全部的order
+const getBusiness = function () {
+  axios
+    .get(`http://${url}/pos`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      businessTotal.value = res.data.total;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+
 //執行Axios
 getRestaurant();
 getProducts();
+getBusiness();
 </script>
 
 <template>
@@ -462,25 +477,24 @@ getProducts();
               class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
             >
               <dl class="mb-0">
-                <dt class="fs-3 fw-bold">15575</dt>
+                <dt class="fs-3 fw-bold">{{ businessTotal }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                  新食記
+                  全部合作商家
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
-                <i class="far fa-paper-plane fs-3 text-primary"></i>
+                <i class="fa fa-shop fs-3 text-primary"></i>
               </div>
             </div>
             <div class="bg-body-light rounded-bottom">
-              <a
+              <RouterLink
+                :to="{ name: 'backend-reserve-info' }"
                 class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
-              >
-                <span>查看全部新食記</span>
-                <i
+                ><span>查看全部合作商家</span
+                ><i
                   class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
-                ></i>
-              </a>
+                ></i
+              ></RouterLink>
             </div>
           </template>
         </BaseBlock>

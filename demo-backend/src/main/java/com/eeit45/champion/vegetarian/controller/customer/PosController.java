@@ -34,7 +34,7 @@ public class PosController {
             @RequestParam(defaultValue = "expiryDate") String orderBy,
             @RequestParam(defaultValue = "desc") String sorting,
             //Pagination
-            @RequestParam(defaultValue = "5")@Max(100) @Min(0) Integer limit,
+            @RequestParam(defaultValue = "100")@Max(100) @Min(0) Integer limit,
             @RequestParam(defaultValue = "0")@Min(0) Integer offset
     ){
         PosQueryParams posQueryParams = new PosQueryParams();

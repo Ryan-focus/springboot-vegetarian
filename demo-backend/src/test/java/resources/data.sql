@@ -30,7 +30,7 @@ update business set password = MD5(password);
 
 -- pos
 INSERT INTO pos(businessId,validDate,expiryDate) VALUES
- (6,'未開通',null)
+ (6,'未開通',NOW())
 ,(5,'試用期14日',NOW() + INTERVAL 14 DAY)
 ,(4,'試用期7日',NOW() + INTERVAL 7 DAY)
 ,(3,'試用期14日',NOW() + INTERVAL 14 DAY)
