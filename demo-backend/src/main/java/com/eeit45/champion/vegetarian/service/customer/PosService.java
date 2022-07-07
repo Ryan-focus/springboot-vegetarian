@@ -1,5 +1,6 @@
 package com.eeit45.champion.vegetarian.service.customer;
 
+import com.eeit45.champion.vegetarian.dto.customer.PosQueryParams;
 import com.eeit45.champion.vegetarian.dto.customer.PosRequest;
 import com.eeit45.champion.vegetarian.model.customer.Pos;
 
@@ -10,7 +11,7 @@ public interface PosService {
 
     Pos getPosById(Integer posId);
 
-    List<Pos> getAllPosList();
+    List<Pos> getAllPosList(PosQueryParams posQueryParams);
 
-    List<Pos> getStatusPosList(String businessStatus);
+    Integer totalPos(PosQueryParams posQueryParams);
 }

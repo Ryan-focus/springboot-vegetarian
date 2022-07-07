@@ -29,20 +29,14 @@ let toast = Swal.mixin({
 const url = "localhost:8088";
 //接收的資料ref
 const resData = ref();
-const orderId = ref();
-const orderItemList = ref();
-const payment = ref();
-const status = ref();
-const userId = ref();
 
 //取得全部的order
 const getAxios = function () {
   axios
     .get(`http://${url}/pos`)
     .then((res) => {
-      console.log(res);
       //獲取伺服器的回傳資料
-      resData.value = res.data;
+      resData.value = res.data.results;
     })
     .catch((error) => {
       console.log(error, "失敗");
@@ -50,19 +44,15 @@ const getAxios = function () {
 };
 //執行Axios
 getAxios();
+console.log(resData);
 
 //取得單一筆訂單，number用來抓id
-function getSingle(number) {
+function getSingle() {
   axios
-    .get(`http://${url}/order/${number}`)
+    .get(`http://${url}/pos?statusCategory=試用期7日`)
     .then((res) => {
       //獲取伺服器的回傳資料
       console.log(res);
-      orderId.value = res.data.orderId;
-      orderItemList.value = res.data.orderItemList;
-      payment.value = res.data.payment;
-      status.value = res.data.status;
-      userId.value = res.data.userId;
     })
     .catch((error) => {
       console.log(error, "失敗");
@@ -328,7 +318,14 @@ th.sort {
         v-slot="{ ds }"
         :ds-data="resData"
         :ds-sortby="sortBy"
-        :ds-search-in="['userId', 'payment', 'status']"
+        :ds-search-in="[
+          'posId',
+          'businessName',
+          'validDate',
+          'expiryDate',
+          'visitors',
+          'turnOver',
+        ]"
       >
         <div class="row" :data-page-count="ds.dsPagecount">
           <div id="datasetLength" class="col-md-8 py-2">
@@ -445,7 +442,6 @@ th.sort {
                     id="exampleFormControlInput1"
                     style="resize: none"
                     rows="1"
-                    v-model="payment"
                   />
                 </div>
 
@@ -458,9 +454,8 @@ th.sort {
                     class="form-select"
                     id="example-select"
                     name="example-select"
-                    v-model="status"
                   >
-                    <option selected>{{ status }}</option>
+                    <option selected></option>
                     <option value="未付款">未付款</option>
                     <option value="已付款">已付款</option>
                     <option value="已出貨">已出貨</option>

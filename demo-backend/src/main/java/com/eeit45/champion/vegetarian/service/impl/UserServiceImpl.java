@@ -72,11 +72,11 @@ public class UserServiceImpl implements UserService {
 		if(user != null ) {
 		//有此帳密但被禁用
 
-		if(userDao.isBanned(loginRequest.getAccount())) {
-			System.out.println(3);
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-		}
 		if(new BCryptPasswordEncoder().matches(loginRequest.getPassword(),user.getPassword())){
+			if(userDao.isBanned(loginRequest.getAccount())) {
+				System.out.println(3);
+				throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+			}
 			userDao.updateLastLoginTime(loginRequest.getAccount());
 			return user;
 		}

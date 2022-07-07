@@ -2,6 +2,7 @@ package com.eeit45.champion.vegetarian.service.customer.impl;
 
 import com.eeit45.champion.vegetarian.dao.customer.BusinessDao;
 import com.eeit45.champion.vegetarian.dao.customer.PosDao;
+import com.eeit45.champion.vegetarian.dto.customer.PosQueryParams;
 import com.eeit45.champion.vegetarian.dto.customer.PosRequest;
 import com.eeit45.champion.vegetarian.model.customer.Business;
 import com.eeit45.champion.vegetarian.model.customer.Pos;
@@ -66,8 +67,8 @@ public class PosServiceImpl implements PosService {
     }
 
     @Override
-    public List<Pos> getAllPosList() {
-        List<Pos> posList = posDao.getAllPosList();
+    public List<Pos> getAllPosList(PosQueryParams posQueryParams) {
+        List<Pos> posList = posDao.getAllPosList(posQueryParams);
 
         for(Pos pos : posList){
             List<PosBusiness> posBusinesses = posDao.getPosBusinessByPosId(pos.getPosId());
@@ -79,14 +80,7 @@ public class PosServiceImpl implements PosService {
     }
 
     @Override
-    public List<Pos> getStatusPosList(String businessStatus) {
-        List<Pos> posList = posDao.getStautsPos(businessStatus);
-
-        for (Pos pos : posList){
-            List<PosBusiness> posBusinesses = posDao.getPosBusinessByPosId(pos.getPosId());
-            pos.setPosBusinessList(posBusinesses);
-        }
-
-        return posList;
+    public Integer totalPos(PosQueryParams posQueryParams) {
+        return posDao.totalPos(posQueryParams);
     }
 }
