@@ -83,7 +83,7 @@ const cols = reactive([
     sort: "",
   },
   {
-    name: "審核狀態",
+    name: "試用狀態",
     field: "validDate",
     sort: "",
   },
@@ -190,49 +190,50 @@ function updateOrder(number) {
 }
 
 //Delete Order Fuction
-function deleteRestaurant(number) {
-  toast
-    .fire({
-      title: "確定要刪除嗎?",
-      text: "刪除後不能返回",
-      icon: "warning",
-      showCancelButton: true,
-      customClass: {
-        confirmButton: "btn btn-danger m-1",
-        cancelButton: "btn btn-secondary m-1",
-      },
-      confirmButtonText: "刪除資料",
-      cancelButtonText: "取消刪除",
+// function deleteRestaurant(number) {
+//   toast
+//     .fire({
+//       title: "確定要刪除嗎?",
+//       text: "刪除後不能返回",
+//       icon: "warning",
+//       showCancelButton: true,
+//       customClass: {
+//         confirmButton: "btn btn-danger m-1",
+//         cancelButton: "btn btn-secondary m-1",
+//       },
+//       confirmButtonText: "刪除資料",
+//       cancelButtonText: "取消刪除",
 
-      html: false,
-      preConfirm: () => {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            resolve();
-          }, 50);
-        });
-      },
-    })
-    .then((result) => {
-      //send request to server
-      if (result.value) {
-        axios
-          .delete(`http://${url}/order/${number}`)
-          .then((res) => {
-            //獲取伺服器的回傳資料
-            console.log(res);
+//       html: false,
+//       preConfirm: () => {
+//         return new Promise((resolve) => {
+//           setTimeout(() => {
+//             resolve();
+//           }, 50);
+//         });
+//       },
+//     })
+//     .then((result) => {
+//       //send request to server
+//       if (result.value) {
+//         axios
+//           .delete(`http://${url}/order/${number}`)
+//           .then((res) => {
+//             //獲取伺服器的回傳資料
+//             console.log(res);
 
-            getAxios();
-            toast.fire("刪除成功!", "", "success");
-          })
-          .catch((error) => {
-            console.log(error, "失敗");
-          });
-      } else if (result.dismiss === "cancel") {
-        toast.fire("刪除失敗", "", "error");
-      }
-    });
-}
+//             getAxios();
+//             toast.fire("刪除成功!", "", "success");
+//           })
+//           .catch((error) => {
+//             console.log(error, "失敗");
+//           });
+//       } else if (result.dismiss === "cancel") {
+//         toast.fire("刪除失敗", "", "error");
+//       }
+//     });
+// }
+
 // Apply a few Bootstrap 5 optimizations
 onMounted(() => {
   // Remove labels from
@@ -353,7 +354,7 @@ th.sort {
                     >
                       {{ th.name }} <i class="gg-select float-end"></i>
                     </th>
-                    <th class="text-center" style="width: 100px">點我審核</th>
+                    <th class="text-center" style="width: 100px">操作</th>
                   </tr>
                 </thead>
                 <DatasetItem tag="tbody" class="fs-sm">
