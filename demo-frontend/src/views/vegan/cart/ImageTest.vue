@@ -1,67 +1,73 @@
-<script setup>
-import { ref, reactive, computed, toRefs } from "vue";
-import axios from "axios";
-</script>
 <template>
-  <br />
   <div class="container">
-    <div>
-      <h2>圖片上傳</h2>
-      <hr />
+    <div class="large-12 medium-12 small-12 cell">
       <label
         >File
         <input
-          ref="file"
           type="file"
-          name="file"
-          accept="image/jpeg, image/png"
-          @change="handleFileUpload"
+          id="file"
+          ref="file"
+          v-on:change="handleFileUpload()"
         />
       </label>
-      <br />
-      <button type="submit" class="btn btn-primary" @click="fileOutput">
-        Submit
-      </button>
+      <button v-on:click="submitFile()">Submit</button>
     </div>
   </div>
 </template>
 
-<!-- <script>
+<script>
+import axios from "axios";
 export default {
+  /*
+      Defines the data used by the component
+    */
   data() {
     return {
-      file: [],
+      file: "",
     };
   },
+
   methods: {
-    fileOutput() {
-      file = this.file;
+    /*
+        Submits the file to the server
+      */
+    submitFile() {
+      /*
+                Initialize the form data
+            */
+      let formData = new FormData();
+      formData.append("image", this.file); //required
+      formData.append("title", "test"); //optional
+      formData.append("description", "test"); //optional
+
+      /*
+                加入檔案
+            */
+      formData.append("file", this.file);
+
+      /*
+          Make the request to the POST /single-file URL
+        */
+      axios
+        .post("https://api.imgur.com/3/image", formData, {
+          headers: {
+            Authorization: "Client-ID 66438a9adb39fba",
+          },
+        })
+        .then(function () {
+          console.log("SUCCESS!!");
+        })
+        .catch(function () {
+          console.log("FAILURE!!");
+        });
+    },
+
+    /*
+        Handles a change on the file upload
+      */
+    handleFileUpload() {
+      this.file = this.$refs.file.files[0];
     },
   },
 };
-
-const id = "66438a9adb39fba"; // 填入 App 的 Client ID
-const token = "50b0002237bd4a0296303edf550fda2ad07189a6"; // 填入 token
-// const album = "XXXX"; // 若要指定傳到某個相簿，就填入相簿的 ID
-
-let formData = new FormData();
-formData.append("image", this.file); //required
-formData.append("title", "test"); //optional
-formData.append("description", "test"); //optional
-axios({
-  method: "POST",
-  url: "https://api.imgur.com/3/image",
-  data: formData,
-  headers: {
-    Authorization:
-      "66438a9adb39fba" + "50b0002237bd4a0296303edf550fda2ad07189a6", //放置你剛剛申請的Client-ID
-  },
-  mimeType: "multipart/form-data",
-})
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((e) => {
-    console.log(e);
-  });
-</script> -->
+</script>
