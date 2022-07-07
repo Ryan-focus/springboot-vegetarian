@@ -37,7 +37,6 @@ const rules = computed(() => {
     },
     restaurantScore: {
       required,
-      decimal,
       between: between(0, 5),
     },
   };
@@ -56,6 +55,21 @@ async function onSubmit() {
   }
 
   // perform async actions
+}
+
+function createRestaurant() {
+  const restaurant = {
+    restaurantName: state.restaurantName,
+    restaurantTel: state.restaurantTel,
+    restaurantAddress: state.restaurantAddress,
+    restaurantCategory: state.restaurantCategory,
+    restaurantType: state.restaurantType,
+    restaurantBusinessHours: state.restaurantBusinessHours,
+    restaurantScore: state.restaurantScore,
+  };
+  axios.post("http://localhost:8088/restaurants", restaurant).then(() => {
+    window.location = "#/backend/restaurants/restaurantInfo";
+  });
 }
 </script>
 
@@ -173,9 +187,8 @@ async function onSubmit() {
                 class="form-select"
                 id="example-select"
                 name="example-select"
-                v-model="restaurantCategory"
+                v-model="state.restaurantCategory"
               >
-                <option selected>按我選擇</option>
                 <option value="中式">中式</option>
                 <option value="義式">義式</option>
                 <option value="韓式">韓式</option>
@@ -196,9 +209,8 @@ async function onSubmit() {
                 class="form-select"
                 id="example-select"
                 name="example-select"
-                v-model="restaurantType"
+                v-model="state.restaurantType"
               >
-                <option selected>按我選擇</option>
                 <option value="全素">全素</option>
                 <option value="蛋素">蛋素</option>
                 <option value="奶素">奶素</option>
@@ -244,18 +256,18 @@ async function onSubmit() {
                 v-model="state.restaurantScore"
                 @blur="v$.restaurantScore.$touch"
               />
-              <!-- <div
+              <div
                 v-if="v$.restaurantScore.between"
                 class="invalid-feedback animated fadeIn"
               >
-                數字必須是0-5
-              </div> -->
-              <div
+                必須輸入0-5的數字
+              </div>
+              <!-- <div
                 v-if="v$.restaurantScore.$errors.length"
                 class="invalid-feedback animated fadeIn"
               >
                 請輸入數字
-              </div>
+              </div> -->
             </div>
             <!-- 圖片上傳開始-->
             <!-- <div class="row push">
@@ -286,7 +298,7 @@ async function onSubmit() {
   </div>
 </template>
 
-<script>
+<!-- <script>
 export default {
   data() {
     return {
@@ -316,4 +328,4 @@ export default {
     },
   },
 };
-</script>
+</script> -->
