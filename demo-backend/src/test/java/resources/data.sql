@@ -31,9 +31,9 @@ update business set password = MD5(password);
 -- pos
 INSERT INTO pos(businessId,validDate,expiryDate) VALUES
  (6,'未開通',null)
-,(5,'14日',NOW() + INTERVAL 14 DAY)
-,(4,'7日',NOW() + INTERVAL 7 DAY)
-,(3,'14日',NOW() + INTERVAL 14 DAY)
+,(5,'試用期14日',NOW() + INTERVAL 14 DAY)
+,(4,'試用期7日',NOW() + INTERVAL 7 DAY)
+,(3,'試用期14日',NOW() + INTERVAL 14 DAY)
 ,(2,'開通中',NOW() + INTERVAL 12 MONTH )
 ,(1,'開通中',NOW() + INTERVAL 6 MONTH);
 
@@ -403,7 +403,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postAuditDate
 
 尤其是酸甜大根泡菜的好表現，把美味度又再往上提升，加點辣椒醬更是好吃極了，風味相當有特色
 
-《一碗豆腐》營業時間從下午開始，一路賣到晚上10點，無論當成下午茶點心，或是宵夜都很不錯呢','p04','通過',now()),
+《一碗豆腐》營業時間從下午開始，一路賣到晚上10點，無論當成下午茶點心，或是宵夜都很不錯呢','p04','發布中',now()),
 
 ('【新店大坪林美食】原粹蔬食作 菜單料理講究素食料理，特色飛龍頭咖哩、味噌豆漿拉麵',now(),'《原粹蔬食作》是新北市新店區、捷運大坪林站附近，人氣很高的素食餐廳
 
