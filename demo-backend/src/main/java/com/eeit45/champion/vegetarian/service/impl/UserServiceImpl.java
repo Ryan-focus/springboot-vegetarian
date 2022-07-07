@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService {
 		//帳號存在 且 密碼相符合
 		if(user != null ) {
 		//有此帳密但被禁用
-			System.out.println(2);
+
 		if(userDao.isBanned(loginRequest.getAccount())) {
 			System.out.println(3);
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
