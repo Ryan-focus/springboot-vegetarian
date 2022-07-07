@@ -316,7 +316,7 @@ getAxios();
           <RouterLink
             :to="{ name: 'backend-pages-generic-profile' }"
             class="fw-semibold"
-            >博宇</RouterLink
+            >{{ admin.data.user.userName }}</RouterLink
           >
         </h2>
       </div>
@@ -390,7 +390,7 @@ getAxios();
               <dl class="mb-0">
                 <dt class="fs-3 fw-bold">{{ forumsTotal }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                   日誌數量
+                  日誌數量
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
@@ -1127,3 +1127,15 @@ getAxios();
   </div>
   <!-- END Page Content -->
 </template>
+<script>
+export default {
+  data() {
+    return {
+      admin: "",
+    };
+  },
+  created() {
+    this.admin = JSON.parse(window.localStorage.getItem("access-admin"));
+  },
+};
+</script>
