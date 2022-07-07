@@ -2,6 +2,7 @@
 import { reactive, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useTemplateStore } from "@/stores/template";
+import Swal from "sweetalert2";
 import axios from "axios";
 
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
@@ -54,19 +55,23 @@ async function onSubmit() {
   <div
     class="hero-static d-flex align-items-center"
     style="
-      background-image: url(https://pixabay.com/get/gc402009db5c66ce787a3138502ec8263d7a7cb75275faca9c583be46f4c4f5a0a2bec18fbe8ee0d30f3ffc3f9132d6e8c78235dfc76c120d357893356f61fa51_1920.jpg);
+      background-image: url('/assets/media/photos/login_bg.jpg');
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      background-position: center;
     "
   >
     <div class="content">
       <div class="row justify-content-center push">
         <div class="col-md-8 col-lg-6 col-xl-4">
           <!-- Sign In Block -->
-          <BaseBlock title="Sign In" class="mb-0">
+          <BaseBlock title="登入" class="mb-0">
             <template #options>
               <RouterLink
                 :to="{ name: 'auth-reminder' }"
                 class="btn-block-option fs-sm"
-                >Forgot Password?</RouterLink
+                ><b>忘記密碼?</b></RouterLink
               >
               <RouterLink
                 :to="{ name: 'auth-signup' }"
@@ -77,8 +82,11 @@ async function onSubmit() {
             </template>
 
             <div class="p-sm-3 px-lg-4 px-xxl-5 py-lg-5">
-              <h1 class="h2 mb-1">OneUI</h1>
-              <p class="fw-medium text-muted">Welcome, please login.</p>
+              <h1 class="h2 mb-1">登入「愛蔬網」</h1>
+              <p class="fw-medium text-muted">愛蔬網是有279個用戶的美食平台</p>
+              <p>點擊下方按鈕登入以繼續</p>
+              <p>登入後即代表您已閱讀並且</p>
+              同意<a>服務條款</a>及<a>隱私政策</a>
 
               <!-- Sign In Form -->
               <form @submit.prevent="onSubmit" @submit="login">
@@ -89,7 +97,7 @@ async function onSubmit() {
                       class="form-control form-control-alt form-control-lg"
                       id="login-username"
                       name="login-username"
-                      placeholder="account"
+                      placeholder="E-mail"
                       :class="{
                         'is-invalid': v$.account.$errors.length,
                       }"
@@ -100,7 +108,7 @@ async function onSubmit() {
                       v-if="v$.account.$errors.length"
                       class="invalid-feedback animated fadeIn"
                     >
-                      Please enter your account
+                      請輸入你的帳號
                     </div>
                   </div>
                   <div class="mb-4">
@@ -109,7 +117,7 @@ async function onSubmit() {
                       class="form-control form-control-alt form-control-lg"
                       id="login-password"
                       name="login-password"
-                      placeholder="Password"
+                      placeholder="密碼"
                       :class="{
                         'is-invalid': v$.password.$errors.length,
                       }"
@@ -120,7 +128,7 @@ async function onSubmit() {
                       v-if="v$.password.$errors.length"
                       class="invalid-feedback animated fadeIn"
                     >
-                      Please enter your password
+                      請輸入你的密碼
                     </div>
                   </div>
                   <div class="mb-4">
@@ -133,16 +141,20 @@ async function onSubmit() {
                         name="login-remember"
                       />
                       <label class="form-check-label" for="login-remember"
-                        >Remember Me</label
+                        ><b>記住我</b></label
                       >
                     </div>
                   </div>
                 </div>
                 <div class="row mb-4">
                   <div class="col-md-6 col-xl-5">
-                    <button type="submit" class="btn w-100 btn-alt-primary" @click="handleSubmit">
+                    <button
+                      type="submit"
+                      class="btn w-100 btn-alt-primary"
+                      @click="handleSubmit"
+                    >
                       <i class="fa fa-fw fa-sign-in-alt me-1 opacity-50"></i>
-                      Sign In
+                      <b>登入</b>
                     </button>
                   </div>
                 </div>
@@ -164,71 +176,38 @@ async function onSubmit() {
     <!-- END Page Content -->
   </div>
 </template>
-<!-- <script>
-  export default {
-    data() {
-      return {
-        state: {
-          account:'',
-          password:''
-        }
-      }
-    },
-    methods: {
-      login() {
-        console.log('帳號', this.state.account)
-        console.log('密碼', this.state.password)
-      }
-    }
-  }
-</script> -->
 <script>
 export default {
-  data(){
+  data() {
     return {
-      state:{
-        account:"",
-        password:""
-        }
-    }
+      state: {
+        account: "",
+        password: "",
+      },
+    };
   },
-methods: {
-  login(){
-    const user ={
-      account: this.state.account,
-      password:this.state.password
-    }
-    axios.post('http://localhost:8088/login', user).then(function(response){
-      // let _this = this
-    console.log(response.data)
-    if(response.status === 200) {
+  methods: {
+    login() {
+      const user = {
+        account: this.state.account,
+        password: this.state.password,
+      };
+      axios
+        .post("http://localhost:8088/login", user)
+        .then(function (response) {
+          // let _this = this
+          console.log(response.data);
+          if (response.status === 200) {
+            localStorage.setItem("access-admin", JSON.stringify(response.data));
 
-      localStorage.setItem('access-admin', JSON.stringify(response.data))
-      
-      location.replace("http://localhost:8080/#/backend/dashboard"); //登入成功擋返回前頁回到登入頁
-      alert("登入成功");
-    } 
-  }).catch((error) => {
-    alert("登入失敗");
-  })
-  }
-}
-}
-</script>
-<!-- <script>
-  export default{
-    data(){
-      return {
-        state:{
-          account:"",
-          password:""
-        }
-      }
+            location.replace("http://localhost:8080/#/backend/dashboard"); //登入成功擋返回前頁回到登入頁
+            Swal.fire("登入成功 ~", "｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡", "success");
+          }
+        })
+        .catch((error) => {
+          Swal.fire("登入失敗!", "(〒︿〒)", "error");
+        });
     },
-    methods:{
-      handleSubmit(){
-        console.log("你已送出表單");
-      }
-    }
-  }
-</script> -->
+  },
+};
+</script>

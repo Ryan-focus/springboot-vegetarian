@@ -3,59 +3,76 @@ use vegandb;
 -- USER
 INSERT INTO `user` ( email, password, userName, status, userPic, registerTime, lastLoginTime) VALUES
 ('a1kgkms11@gmail.com', '$2a$10$O969pkOXv/LwhDAgvZR/iuI62clH0djrmL8WGtgCTKLdG9XZFbBMW', '呱呱', '正常', 'a010', curdate(), now())
-,('nsdk8853@gmail.com', '$2a$10$l0hfgZQLrYGOVRGL8vMqi.hqc64TmRJrSC.V88UrdJtsri9RkR9f6', 'guagua', '正常', 'a010', curdate(), now())
-,('abc01@mail.com', 'Aa000001', 'Jason', '正常', 'a010', curdate(), now())
-,('abc02@mail.com', 'Oa0fgh02', 'John', '正常', 'a010', curdate(), now())
-,('abc03@mail.com', 'Radghg3', 'David', '正常', 'a010', curdate(), now())
-,('abc04@mail.com', 'Ca00fghfd004', 'Jack', '正常', 'a010', curdate(), now())
-,('abc05@mail.com', 'Va0dfgh005', 'Anthony', '正常', 'a010', curdate(), now())
-,('abc06@mail.com', 'Ba0fgh06', 'Michael', '正常', 'a010', curdate(), now())
-,('abc07@mail.com', 'Naghg007', '傑森', '正常', 'a010', curdate(), now())
-,('abc08@mail.com', 'Ma0gbng008', '約翰', '正常', 'a010', curdate(), now())
-,('abc09@mail.com', 'Qa0fgdh009', '大衛', '正常', 'a010', curdate(), now())
-,('abc10@mail.com', 'La0gngn10', '傑克', '正常', 'a010', curdate(), now())
-,('abc11@mail.com', 'Pa0fdgdgh011', '安東尼', '正常', 'a010', curdate(), now())
-,('abc12@mail.com', 'Wafghfh12', '麥可', '正常', 'a010', curdate(), now());
+,('atdk8853@gmail.com', '$2a$10$l0hfgZQLrYGOVRGL8vMqi.hqc64TmRJrSC.V88UrdJtsri9RkR9f6', 'guagua', '正常', 'a010', curdate(), now())
+,('nsdf1h32@gmail.com', '$2a$10$uGR2IkaiC.RZsOZtoY7M7ugGapiiwOkFCSEigkix2aSN.u6b1UnWy', 'Jason', '正常', 'a010', curdate(), now())
+,('dsddmlm093@gmail.com', '$2a$10$1eCToqRxiCzgsoJoBp8Y..RO4wkwwFOd90nH1PkhGBGBeBl4BFonO', 'John', '正常', 'a010', curdate(), now())
+,('sdsdk457@gmail.com', '$2a$10$6oYKJpvvwFkoJxZOi0ogOO4ta1.gds9vP4FlIzMnnK2H.LM5GcAhK', 'David', '正常', 'a010', curdate(), now())
+,('dnfjn003@gmail.com', '$2a$10$1N2w5TMU0OOjSB.9kVhb8OQKAZ726.AgyktmxoQnjdrtCkrQ31ziC', 'Jack', '正常', 'a010', curdate(), now())
+,('dsnjd25@gmail.com', '$2a$10$DKayHEMjcXVdN1E4jgn7SeesC/ZdJgHZzBzVficD.jyvszCBMd9Sq', 'Anthony', '正常', 'a010', curdate(), now())
+,('dkopm023@gmail.com', '$2a$10$8Y6fTr2MiNEH0hwH/wQC1ewCe/i3BUki3NAqCNm/SpQVENtjeY722', 'Michael', '正常', 'a010', curdate(), now())
+,('vmdns23@gmail.com', '$2a$10$kmbp2jSux5GWTt7UMeRHge2UaInt6UjQTmSl5nO.Ir6jdRV5hhu6y', '傑森', '正常', 'a010', curdate(), now())
+,('fdnfl983@gmail.com', '$2a$10$0RS4K7T9d84dlIY8J7wd3.1L/WFFtQzjMEOKeHmnxWAg93Mv9lFyC', '約翰', '正常', 'a010', curdate(), now())
+,('sdj4498@gmail.com', '$2a$10$fKJ.DT6U2lx.dpiAE.6nUedlCWvEkyPFKjeFJ1ioWnLE/uwMJ0xaK', '大衛', '正常', 'a010', curdate(), now())
+,('sdsndj12@gmail.com', '$2a$10$r8P1P1pM4.SwzqoCS6ZYWujqbuvku7B98k.iRpEpyJxhl7.ZnnKxq', '傑克', '正常', 'a010', curdate(), now())
+,('fdfnkn9@gmail.com', '$2a$10$VdMO7903g7YrTrdI.B4N7.iXJtAflnZTRe08hqSi4pBlJjKdaIYo2', '安東尼', '正常', 'a010', curdate(), now())
+,('dkd93@gmail.com', '$2a$10$dAXsizGzNbj2lvUqDyGqTuS1fuKGsAEOwFY/eZ1O1PMWbO2ayk4Wy', '麥可', '正常', 'a010', curdate(), now());
 
 -- business
-INSERT INTO business ( email, password,principalName,principalPhone, businessName,located, status, businessPic, createdTime, lastLoginTime) VALUES
-('bt213485@gmail.com', 'aa00d00s01','宋振宏','0914378265', '艾格企業有限公司','桃園市龜山區','試用中', 'a001', now(), now())
-,('test2@gmail.com', 'ra0fgh02','李慧菁','02-29995660', '馬亞科技iWare','新北市三重區' ,'試用中', 'a002', now(), now())
-,('kemfsl3@gmail.com', 'ra12hg3','方亦聖','04-22301313', '藝誠網頁設計公司','台中市北區','開通中', 'a003', now(), now())
-,('en4@gmail.com', 'ca00ffd004','曾富美','0968288068', '墨宇網頁設計公司','台中市北區', '未開通', 'a004', now(), now())
-,('fgen5@gmail.com', 'da0d23h005','吳晧民','02 8951 2121', '亞惿股份有限公司','新北市板橋區', '未開通', 'a005', now(), now())
-,('en6@gmail.com', 'ba0fgh06','李孟陽','022395 5080','Larvata果子云數位科技','臺北市信義區', '未開通', 'a006', now(), now())
+INSERT INTO business ( email, password,principalName,principalPhone, businessName,located, status, businessPic, createdTime, lastLoginTime, updateTime) VALUES
+('bt213485@gmail.com', 'aa00d00s01','宋振宏','0914378265', '艾格企業有限公司','桃園市龜山區','試用中', 'a001', now(), now() ,now())
+,('test2@gmail.com', 'ra0fgh02','李慧菁','02-29995660', '馬亞科技iWare','新北市三重區' ,'試用中', 'a002', now(), now(),now())
+,('kemfsl3@gmail.com', 'ra12hg3','方亦聖','04-22301313', '藝誠網頁設計公司','台中市北區','開通中', 'a003', now(), now(),now())
+,('en4@gmail.com', 'ca00ffd004','曾富美','0968288068', '墨宇網頁設計公司','台中市北區', '未開通', 'a004', now(), now(),now())
+,('fgen5@gmail.com', 'da0d23h005','吳晧民','02 8951 2121', '亞惿股份有限公司','新北市板橋區', '未開通', 'a005', now(), now(),now())
+,('en6@gmail.com', 'ba0fgh06','李孟陽','022395 5080','Larvata果子云數位科技','臺北市信義區', '未開通', 'a006', now(), now(),now())
 ;
 update business set password = MD5(password);
 
+-- pos
+INSERT INTO pos(businessId,validDate,expiryDate) VALUES
+ (6,'未開通',null)
+,(5,'14日',NOW() + INTERVAL 14 DAY)
+,(4,'7日',NOW() + INTERVAL 7 DAY)
+,(3,'14日',NOW() + INTERVAL 14 DAY)
+,(2,'開通中',NOW() + INTERVAL 12 MONTH )
+,(1,'開通中',NOW() + INTERVAL 6 MONTH);
+
+-- PosBusiness
+INSERT INTO posBusiness(posId,businessId,visitors,turnOver,businessName) VALUES
+(1,6,67842,100274896,'Larvata果子云數位科技')
+,(2,5,249,298432,'亞惿股份有限公司')
+,(3,4,367,367705,'墨宇網頁設計公司')
+,(4,3,142,122450,'藝誠網頁設計公司')
+,(5,2,2475,5379892,'馬亞科技iWare')
+,(6,1,6487,12568,'艾格企業有限公司');
 
 -- product
-INSERT INTO product ( productName, category,veganCategory, productPrice,stock,createdTime,updatedTime ) VALUES
-('《UFUMI》純素無麩質米圈圈 紫薯腰果口味~無麩質全素甜甜圈 Q軟口感超好吃！','生鮮','全素',360,3060,now(),now())
-,('《吾時吾客》燕麥抹茶拿鐵~抹茶的醇香 優雅的滋味','食品','全素',250,9920,now(),now())
-,('《UFUMI》純素無麩質米圈圈 黑芝麻口味~無麩質全素甜甜圈 濃濃黑芝麻香超好吃！','生鮮','全素',360,8143,now(),now())
-,('《INAH 銀那》卡本內蘇維濃 橡木桶釀葡萄汁(無酒精紅酒)~清真認證 國際葡萄酒大賽非酒精類銅獎','生鮮','全素',780,6812,now(),now())
-,('《AMI 阿米》橘罐 素食狗罐頭(400g)~南瓜、地瓜口味','寵物','全素',200,1155,now(),now())
-,('《木酢達人》太陽洗衣精(附贈壓頭/1000g/瓶)~6倍濃縮 用量超省','居家百貨','VEGAN',450,1728,now(),now())
-,('《淨覺茶》天然茶籽洗衣素(2.3KG)~ph值6.5微酸性安全配方 自然分解汙垢','居家百貨','VEGAN',450,142,now(),now())
-,('設計師媽咪親手作‧可愛小女孩的日常＆外出服~設計師媽媽用愛製作的衣物','書籍影音','VEGAN',420,97,now(),now())
-,('手作潮包日常提案:30個初學者也能完成的肩背包','書籍影音','VEGAN',450,65,now(),now())
-,('【獨享包】《呷七碗》南瓜養生沖調-微鹹~中老年人的代餐養生聖品','食品','全素',28,56,now(),now())
-,('【獨享包】《逗留時光》堅果+厚豆奶(無加糖/20g/包)~醇濃多層次風味 搭配燕麥更香濃','食品','全素',25,54,now(),now())
-,('《Q-Link》純手工個性銀牌～著名設計師費德里科德Alzaga 阿根廷設計手工鍛造','飾品','VEGAN',12000,54,now(),now())
-,('麥蘆卡蜂蜜 乳化活性20+(250g)~芬芳甘甜、濃醇蜜香','保健','全素',1640,54,now(),now())
-,('麥蘆卡蜂蜜 乳化活性25+(250g)~芬芳甘甜、濃醇蜜香','保健','全素',1890,36,now(),now())
-,('《蓮廚》牛蒡大福丸(3KG)~新鮮牛蒡 風味獨特','生鮮','蛋素',690,44,now(),now())
-,('《蓮廚》香菇素排骨(3KG)~作為燉料、滷味、油炸鹽酥 魅力無法擋','生鮮','蛋素',690,36,now(),now())
-,('《《蓮廚》糖醋排骨(3KG)~酸酸甜甜超下飯 大人小孩都愛','生鮮','蛋素',690,28,now(),now())
-,('《蓮廚》蓮花菇(1.8KG)~大朵香菇 過癮口感','生鮮','蛋素',600,48,now(),now())
-,('《松珍》雞胸肉(3KG/袋)~運動後補充蛋白質！','生鮮','蛋奶素',770,45,now(),now())
-,('《松珍》素花枝揚(3KG/袋)~國民夜市小吃經典','生鮮','蛋奶素',910,12,now(),now())
-,('《自然緣素》鬆餅粉(1KG)~輕鬆DIY點心','量販批發','蛋奶素',200,68,now(),now())
-,('《松珍》頂級神戶牛排(3KG/袋)~香到隔壁鄰居都上門','生鮮','蛋奶素',1060,68,now(),now())
-,('《樂卉集》極淨 藍銅胜肽精華液(30ml)~高效保濕','美妝保養','VEGAN',1180,67,now(),now())
-,('【Alteya】保加利亞原裝進口 奧圖玫瑰原萃花露(120ml/噴瓶)~頂級奧圖玫瑰 保持肌膚平衡','美妝保養','VEGAN',580,42,now(),now())
-,('《潤覺茶 輕感淨化》茶樹茶籽綠茶潔顏慕斯(200ml)～清爽不緊繃 淨化控油效果佳','美妝保養','VEGAN',350,48,now(),now());
+INSERT INTO product ( productName, category,veganCategory, productPrice,stock,productImage,createdTime,updatedTime ) VALUES
+('《UFUMI》純素無麩質米圈圈 紫薯腰果口味~無麩質全素甜甜圈 Q軟口感超好吃！','生鮮','全素',360,3060,'https://media.fastretain.com/cdn-cgi/image/width=640,f=webp/media/magento/3/2/32pvnqi_-_imgur.jpg',now(),now())
+,('《吾時吾客》燕麥抹茶拿鐵~抹茶的醇香 優雅的滋味','食品','全素',250,9920,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《UFUMI》純素無麩質米圈圈 黑芝麻口味~無麩質全素甜甜圈 濃濃黑芝麻香超好吃！','生鮮','全素',360,8143,'https://mall.suiis.com/img/10077/1007727l.jpg',now(),now())
+,('《INAH 銀那》卡本內蘇維濃 橡木桶釀葡萄汁(無酒精紅酒)~清真認證 國際葡萄酒大賽非酒精類銅獎','生鮮','全素',780,6812,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《AMI 阿米》橘罐 素食狗罐頭(400g)~南瓜、地瓜口味','寵物','全素',200,1155,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《木酢達人》太陽洗衣精(附贈壓頭/1000g/瓶)~6倍濃縮 用量超省','居家百貨','VEGAN',450,1728,'https://purevegan.suiis.com/img/10056/1005607l.jpg',now(),now())
+,('《淨覺茶》天然茶籽洗衣素(2.3KG)~ph值6.5微酸性安全配方 自然分解汙垢','居家百貨','VEGAN',450,142,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('設計師媽咪親手作‧可愛小女孩的日常＆外出服~設計師媽媽用愛製作的衣物','書籍影音','VEGAN',420,97,'https://purevegan.suiis.com/img/10056/1005607l.jpg',now(),now())
+,('手作潮包日常提案:30個初學者也能完成的肩背包','書籍影音','VEGAN',450,65,'https://media.fastretain.com/cdn-cgi/image/width=640,f=webp/media/magento/7/b/7bc96bbf-b5ad-4878-923f-b92e99df1d14-4225-000003420732e366.jpg',now(),now())
+,('【獨享包】《呷七碗》南瓜養生沖調-微鹹~中老年人的代餐養生聖品','食品','全素',28,56,'https://media.fastretain.com/cdn-cgi/image/width=640,f=webp/media/magento/b/j/bj107_-_500g.jpg',now(),now())
+,('【獨享包】《逗留時光》堅果+厚豆奶(無加糖/20g/包)~醇濃多層次風味 搭配燕麥更香濃','食品','全素',25,54,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《Q-Link》純手工個性銀牌～著名設計師費德里科德Alzaga 阿根廷設計手工鍛造','飾品','VEGAN',12000,54,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('麥蘆卡蜂蜜 乳化活性20+(250g)~芬芳甘甜、濃醇蜜香','保健','全素',1640,54,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('麥蘆卡蜂蜜 乳化活性25+(250g)~芬芳甘甜、濃醇蜜香','保健','全素',1890,36,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《蓮廚》牛蒡大福丸(3KG)~新鮮牛蒡 風味獨特','生鮮','蛋素',690,44,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《蓮廚》香菇素排骨(3KG)~作為燉料、滷味、油炸鹽酥 魅力無法擋','生鮮','蛋素',690,36,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《《蓮廚》糖醋排骨(3KG)~酸酸甜甜超下飯 大人小孩都愛','生鮮','蛋素',690,28,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《蓮廚》蓮花菇(1.8KG)~大朵香菇 過癮口感','生鮮','蛋素',600,48,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《松珍》雞胸肉(3KG/袋)~運動後補充蛋白質！','生鮮','蛋奶素',770,45,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《松珍》素花枝揚(3KG/袋)~國民夜市小吃經典','生鮮','蛋奶素',910,12,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《自然緣素》鬆餅粉(1KG)~輕鬆DIY點心','量販批發','蛋奶素',200,68,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《松珍》頂級神戶牛排(3KG/袋)~香到隔壁鄰居都上門','生鮮','蛋奶素',1060,68,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《樂卉集》極淨 藍銅胜肽精華液(30ml)~高效保濕','美妝保養','VEGAN',1180,67,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('【Alteya】保加利亞原裝進口 奧圖玫瑰原萃花露(120ml/噴瓶)~頂級奧圖玫瑰 保持肌膚平衡','美妝保養','VEGAN',580,42,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《潤覺茶 輕感淨化》茶樹茶籽綠茶潔顏慕斯(200ml)～清爽不緊繃 淨化控油效果佳','美妝保養','VEGAN',350,48,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now());
 
 -- reserve
 INSERT INTO reserve (reserveDateTime, adult,child,baby, reserveTime, restaurantId,businessId, userId) VALUES

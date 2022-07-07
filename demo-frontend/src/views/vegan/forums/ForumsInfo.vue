@@ -31,9 +31,9 @@ const url = "localhost:8088";
 //接收的資料ref
 const resData = ref();
 
-const resforumId = ref();
-const resforumTitle = ref();
-const resforumContent = ref();
+const resForumId = ref();
+const resForumTitle = ref();
+const resForumContent = ref();
 
 const getAxios = function () {
   axios
@@ -116,8 +116,63 @@ function onSort(event, i) {
 
   sortEl.sort = toset;
 }
+/*
+function updateForum(number) {
+  axios
+    .get(`http://${url}/forums/${number}`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resForumId.value = res.data.resforumId;
+      resForumTitle.value =res.data.resforumTitle;
+      resForumContent.value = res.data.resforumContent;  
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}*/
 
-//Delete Restaurant Fuction
+function updateForum(number) {
+  //send request to server
+
+  axios
+    .get(`http://${url}/forums/${number}`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      console.log(res);
+      resForumId.value = res.data.forumId;
+      resForumTitle.value = res.data.forumTitle;
+      resForumContent.value = res.data.forumContent;
+     
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+
+function sendForum(number, title, content) {
+  var data = {
+    forumId: number,
+    forumTitle: title,
+    forumContent: content,
+  };
+
+  axios
+    .put(`http://${url}/forums/${number}`, data)
+    .then((res) => {
+      console.log(res);
+      getAxios();
+      window.setTimeout(function () {
+        location.reload();
+      }, 100);
+
+
+    })
+     .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+
+
 function deleteForum(number) {
   toast
     .fire({
@@ -160,22 +215,12 @@ function deleteForum(number) {
       }
     });
 }
-function updateForum(number) {
-  //send request to server
 
-  axios
-    .get(`http://${url}/forums/${number}`)
-    .then((res) => {
-      //獲取伺服器的回傳資料
-      console.log(res);
-      resforumId.value = res.data.forumId;
-      resforumTitle.value = res.data.forumTitle;
-      resforumContent.value = res.data.forumContent;
-    })
-    .catch((error) => {
-      console.log(error, "失敗");
-    });
-}
+
+        
+
+
+
 
 
 // Apply a few Bootstrap 5 optimizations
@@ -334,7 +379,7 @@ th.sort {
                             class="btn btn-sm btn-alt-secondary"
                             data-bs-toggle="modal"
                             data-bs-target="#updateForum"
-                            @click="updateForum(row.forumId)"
+                            @click.prevent="updateForum(row.forumId)"
                           >
                             <i class="fa fa-fw fa-pencil-alt"></i>
                           </button>
@@ -369,9 +414,10 @@ th.sort {
           aria-hidden="true"
         >
           <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">修改文章</h5>
+            <form class="row g-3" id="forum">
+             <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">修改文章</h5>
                 <button
                   type="button"
                   class="btn-close"
@@ -379,7 +425,24 @@ th.sort {
                   aria-label="Close"
                 ></button>
               </div>
+
               <div class="modal-body">
+
+                 <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label"
+                      >編號</label
+                    ><br />
+                    <textarea
+                      type="textarea"
+                      class="form-control"
+                      id="exampleFormControlInput1"
+                      style="resize: none"
+                      
+                      rows="1"
+                      v-model="resForumId"
+                    ></textarea>
+                  </div>
+
                 <div class="mb-3">
                   <label for="exampleFormControlInput1" class="form-label"
                     >標題</label
@@ -392,7 +455,7 @@ th.sort {
                     
                     
                     rows="1"
-                    v-model="resforumTitle"
+                    v-model="resForumTitle"
                   ></textarea>
                 </div>
                 <div class="mb-3">
@@ -406,7 +469,7 @@ th.sort {
                     style="resize: none"
                     
                     
-                    v-model="resforumContent"
+                    v-model="resForumContent"
                   ></textarea>
                 </div>
                
@@ -419,9 +482,12 @@ th.sort {
                 >
                   取消
                 </button>
-                <button type="submit" class="btn btn-primary">送出</button>
+                <button type="submit" class="btn btn-primary"
+                @click.prevent="sendForum(resForumId, resForumTitle, resForumContent)"
+                >送出</button>
               </div>
             </div>
+            </form>
           </div>
         </div>
       </Dataset>
@@ -429,3 +495,4 @@ th.sort {
   </div>
   <!-- END Page Content -->
 </template>
+

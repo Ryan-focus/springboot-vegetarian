@@ -1,9 +1,10 @@
 <script setup>
 // 已經宣告但從未使用過的Value (請勿刪除)
 import { reactive, ref } from "vue";
+import axios from "axios";
 
 // vue-chart-3, for more info and examples you can check out https://vue-chart-3.netlify.app/ and http://www.chartjs.org/docs/ -->
-import { LineChart, BarChart } from "vue-chart-3";
+import { BarChart } from "vue-chart-3";
 import { Chart, registerables } from "chart.js";
 
 Chart.register(...registerables);
@@ -278,6 +279,28 @@ const newCustomersOptions = reactive({
     },
   },
 });
+
+//預設傳值伺服器與[params]
+const url = "localhost:8088";
+const urlParams = "warning";
+//接收的資料ref
+const resData = ref();
+const forumsTotal = ref();
+
+const getAxios = function () {
+  axios
+    .get(`http://${url}/forums`, { params: { status: urlParams } })
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+      forumsTotal.value = res.data.total;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+//執行Axios
+getAxios();
 </script>
 
 <template>
@@ -365,9 +388,9 @@ const newCustomersOptions = reactive({
               class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
             >
               <dl class="mb-0">
-                <dt class="fs-3 fw-bold">30678</dt>
+                <dt class="fs-3 fw-bold">{{ forumsTotal }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                  未審核訂單
+                   日誌數量
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">

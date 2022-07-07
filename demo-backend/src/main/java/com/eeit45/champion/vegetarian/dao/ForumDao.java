@@ -7,6 +7,8 @@ import com.eeit45.champion.vegetarian.model.Forum;
 
 public interface ForumDao {
 	
+
+	
 	//查詢全部
 	List<Forum> getForums(ForumDao forumDao);
 	//查詢By ID

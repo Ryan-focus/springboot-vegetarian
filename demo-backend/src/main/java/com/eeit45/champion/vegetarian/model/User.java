@@ -98,4 +98,29 @@ public class User {
 	public void setLastLoginTime(Date lastLoginTime) {
 		this.lastLoginTime = lastLoginTime;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("User [userId=");
+		builder.append(userId);
+		builder.append(", email=");
+		builder.append(email);
+		builder.append(", password=");
+		builder.append(password);
+		builder.append(", userName=");
+		builder.append(userName);
+		builder.append(", status=");
+		builder.append(status);
+		builder.append(", userPic=");
+		builder.append(userPic);
+		builder.append(", registerTime=");
+		builder.append(registerTime);
+		builder.append(", lastLoginTime=");
+		builder.append(lastLoginTime);
+		builder.append("]");
+		return builder.toString();
+	}
+	
+	
 }

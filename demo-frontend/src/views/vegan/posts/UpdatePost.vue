@@ -5,6 +5,7 @@
 </style>
 <script setup>
 import { ref, reactive, computed, onBeforeUnmount } from "vue";
+import axios from "axios";
 
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
 import useVuelidate from "@vuelidate/core";
@@ -15,7 +16,6 @@ import {
   email,
   decimal,
   integer,
-  url,
   sameAs,
 } from "@vuelidate/validators";
 // CKEditor 5, for more info and examples you can check out https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/vuejs-v3.html
@@ -28,50 +28,21 @@ import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 //import BalloonBlockEditor from '@ckeditor/ckeditor5-build-balloon-block'
 import Dropzone from "dropzone";
 
-// Dropzone variables
-const dropzone = ref(null);
+//預設傳值伺服器與
+const url = "localhost:8088";
+//接收的資料ref
+var resData = ref();
 
-// Init Dropzone when content is loaded
-// onMounted(() => {
-//   dropzone.value = new Dropzone("#dropzoneForm", {
-//     url: "https://httpbin.org/post",
-//   });
-
-//   dropzone.value.on("addedfile", (file) => {
-//     console.log(`File added: ${file.name}`);
-//   });
-// });
-
-// Detroy dropzone instance before leaving the page
-// onBeforeUnmount(() => {
-//   dropzone.value.destroy();
-// });
-
-// Dropzone + Custom overrides
-// @import "dropzone/dist/dropzone.css";
-// @import "@/assets/scss/vendor/dropzone";
+const resPostId = ref();
+const resPostTitle = ref();
+const resPostText = ref();
+const resPostStatus = ref("待審核");
 
 // CKEditor 5 variables
 let ckeditor = CKEditor.component;
 
 const editorData = ref("<p>Hello CKEditor5!</p>");
 const editorConfig = ref({});
-
-// Example options for select
-const options = reactive([
-  { value: null, text: "Please select" },
-  { value: "html", text: "HTML" },
-  { value: "css", text: "CSS" },
-  { value: "javascript", text: "JavaScript" },
-  { value: "angular", text: "Angular" },
-  { value: "react", text: "React" },
-  { value: "vuejs", text: "Vue.js" },
-  { value: "ruby", text: "Ruby" },
-  { value: "php", text: "PHP" },
-  { value: "asp", text: "ASP.NET" },
-  { value: "python", text: "Python" },
-  { value: "mysql", text: "MySQL" },
-]);
 
 // Input state variables
 const state = reactive({
@@ -87,6 +58,7 @@ const state = reactive({
   number: null,
   range: null,
   terms: null,
+  select: null,
 });
 
 // Validation rules
@@ -95,6 +67,9 @@ const rules = computed(() => {
     username: {
       required,
       minLength: minLength(1),
+    },
+    select: {
+      required,
     },
     email: {
       required,
@@ -121,7 +96,6 @@ const rules = computed(() => {
     },
     website: {
       required,
-      url,
     },
     digits: {
       required,
@@ -155,9 +129,29 @@ async function onSubmit() {
 
   // perform async actions
 }
+
+const imagefile = document.querySelector("#example-file-input");
+function sendPost() {
+  let forms = new FormData();
+  forms.append("title", resPostTitle);
+  forms.append("postedText", resPostText);
+  forms.append("imgurl", imagefile);
+  let config = {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  };
+
+  axios
+    .post(`http://${url}/PostNew`, forms, config)
+    .then((res) => {
+      console.log(res);
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
 </script>
-
-
 
 <template>
   <!-- Hero -->
@@ -190,7 +184,11 @@ async function onSubmit() {
     <div class="row">
       <div class="col-lg-8">
         <!-- Basic -->
-        <form @submit.prevent="onSubmit">
+        <form
+          @submit.prevent="onSubmit"
+          method="post"
+          enctype="multipart/form-data"
+        >
           <BaseBlock title=" " content-full>
             <div class="row push">
               <div class="col-lg-12">
@@ -209,7 +207,7 @@ async function onSubmit() {
                     :class="{
                       'is-invalid': v$.username.$errors.length,
                     }"
-                    v-model="state.username"
+                    v-model="resPostTitle"
                     @blur="v$.username.$touch"
                   />
                   <div
@@ -229,6 +227,12 @@ async function onSubmit() {
                     class="form-select"
                     id="example-select"
                     name="example-select"
+                    required
+                    :class="{
+                      'is-invalid': v$.select.$errors.length,
+                    }"
+                    @blur="v$.select.$touch"
+                    v-model="resPostStatus"
                   >
                     <option selected>請選擇</option>
                     <option value="全素">全素</option>
@@ -237,6 +241,13 @@ async function onSubmit() {
                     <option value="蛋奶素">蛋奶素</option>
                     <option value="五辛素">五辛素</option>
                   </select>
+
+                  <div
+                    class="invalid-feedback animated fadeIn"
+                    v-if="v$.select.$errors.length"
+                  >
+                    請選擇分類
+                  </div>
                 </div>
 
                 <!-- 圖片上傳開始-->
@@ -250,6 +261,7 @@ async function onSubmit() {
                         class="form-control"
                         type="file"
                         id="example-file-input"
+                        name="file"
                       />
                     </div>
                   </div>
@@ -272,19 +284,22 @@ async function onSubmit() {
                 <!-- 產品CK editor -->
                 <div class="mb-4">
                   <label class="form-label" for="example-select"
-                    >產品細節描述</label
+                    >文章內文</label
                   >
                   <ckeditor
                     :editor="ClassicEditor"
                     :config="editorConfig"
-                    :upload-adapter="UploadAdapter"
-                    v-model="editorData"
+                    v-model="resPostText"
                   />
                 </div>
                 <div class="row items-push">
-                  <div class="col-lg-7 offset-lg-4">
-                    <button type="submit" class="btn btn-alt-primary">
-                      Submit
+                  <div class="col-lg-6 offset-lg-5">
+                    <button
+                      type="submit"
+                      class="btn btn-alt-primary"
+                      @click="sendPost()"
+                    >
+                      送出文章
                     </button>
                   </div>
                 </div>

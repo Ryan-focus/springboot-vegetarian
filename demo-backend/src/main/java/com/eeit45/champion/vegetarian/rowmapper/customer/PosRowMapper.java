@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 
 
-public class PosRowMapper  implements RowMapper<Pos> {
+public class PosRowMapper implements RowMapper<Pos> {
 
     @Override
     public Pos mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -20,10 +20,6 @@ public class PosRowMapper  implements RowMapper<Pos> {
 
         Timestamp expiryDate = rs.getTimestamp("expiryDate");
         pos.setExpiryDate(expiryDate);
-
-        pos.setVisitors(rs.getInt("visitors"));
-        pos.setTurnOver(rs.getInt("turnOver"));
-
 
         return pos;
     }

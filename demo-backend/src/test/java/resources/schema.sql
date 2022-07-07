@@ -27,7 +27,8 @@ CREATE TABLE business(
                          businessPic nvarchar(64),
                          status nvarchar (32) not null,
                          createdTime TIMESTAMP not null ,
-                         lastLoginTime TIMESTAMP not null
+                         lastLoginTime TIMESTAMP not null,
+                         updateTime  TIMESTAMP not null
 );
 
 -- reserve
@@ -50,9 +51,18 @@ CREATE TABLE pos (
                   posId INT NOT NULL auto_increment primary key,
                   businessId Int not null UNIQUE,
                   validDate nvarchar(64) not null,
-                  expiryDate DATETIME not null,
-                  visitors int not null ,
-                  turnOver int not null
+                  expiryDate DATETIME
+);
+
+-- PosBusiness
+DROP TABLE IF EXISTS posBusiness;
+CREATE TABLE posBusiness (
+                     posBusinessId      INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+                     posId              INT NOT NULL,
+                     businessId         INT NOT NULL,
+                     visitors           INT NOT NULL,
+                     turnOver           INT NOT NULL,
+                     businessName       nvarchar(128) NOT NULL
 );
 
 -- product
@@ -64,7 +74,7 @@ CREATE TABLE product (
                          category nvarchar(64) NOT NULL,
                          veganCategory nvarchar(64) NOT NULL,
                          productPrice INT NOT NULL,
-                         productImage nvarchar(64),
+                         productImage nvarchar(640),
                          stock       INT NOT NULL ,
                          createdTime DATETIME NOT NULL,
                          updatedTime DATETIME NOT NULL,
