@@ -415,7 +415,7 @@ th.sort {
                 @click.prevent="notaudit()"
               >
                 待審核
-                <span class="badge bg-primary rounded-pill">20</span>
+                <span class="badge bg-primary rounded-pill"></span>
               </a>
               <a
                 class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
@@ -423,7 +423,7 @@ th.sort {
                 @click.prevent="frontPost()"
               >
                 發布中
-                <span class="badge bg-primary rounded-pill">72</span>
+                <span class="badge bg-primary rounded-pill"></span>
               </a>
               <a
                 class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
@@ -431,7 +431,7 @@ th.sort {
                 @click.prevent="notPassPost()"
               >
                 未通過
-                <span class="badge bg-primary rounded-pill">890</span>
+                <span class="badge bg-primary rounded-pill"></span>
               </a>
               <a
                 class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
@@ -440,7 +440,7 @@ th.sort {
                 @click.prevent="getAxios"
               >
                 全部
-                <span class="badge bg-primary rounded-pill">997</span>
+                <span class="badge bg-primary rounded-pill"></span>
               </a>
             </div>
           </div>
