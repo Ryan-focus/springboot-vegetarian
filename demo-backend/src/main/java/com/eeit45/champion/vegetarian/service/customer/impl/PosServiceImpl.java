@@ -77,4 +77,16 @@ public class PosServiceImpl implements PosService {
 
         return posList;
     }
+
+    @Override
+    public List<Pos> getStatusPosList(String businessStatus) {
+        List<Pos> posList = posDao.getStautsPos(businessStatus);
+
+        for (Pos pos : posList){
+            List<PosBusiness> posBusinesses = posDao.getPosBusinessByPosId(pos.getPosId());
+            pos.setPosBusinessList(posBusinesses);
+        }
+
+        return posList;
+    }
 }

@@ -22,6 +22,17 @@ public class PosController {
     private  BusinessService businessService;
 
 
+    //寫一個方法 ，預期返回一個total值 與所有POS狀態的List
+    @GetMapping("/pos/{businessStatus}")
+    public ResponseEntity<List<Pos>> getPosStatus(@PathVariable String businessStatus){
+        List<Pos> posList  = posService.getStatusPosList(businessStatus);
+
+        if(posList != null ) return ResponseEntity.status(HttpStatus.OK).body(posList);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+
     @GetMapping("/pos")
     public ResponseEntity<List<Pos>> getAllPosList(){
         List<Pos> posList = posService.getAllPosList();

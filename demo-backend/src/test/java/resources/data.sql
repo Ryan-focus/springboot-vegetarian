@@ -3,7 +3,7 @@ use vegandb;
 -- USER
 INSERT INTO `user` ( email, password, userName, status, userPic, registerTime, lastLoginTime) VALUES
 ('a1kgkms11@gmail.com', '$2a$10$O969pkOXv/LwhDAgvZR/iuI62clH0djrmL8WGtgCTKLdG9XZFbBMW', '呱呱', '正常', 'a010', curdate(), now())
-,('atdk8853@gmail.com', '$2a$10$l0hfgZQLrYGOVRGL8vMqi.hqc64TmRJrSC.V88UrdJtsri9RkR9f6', 'guagua', '正常', 'a010', curdate(), now())
+,('nsdk8853@gmail.com', '$2a$10$l0hfgZQLrYGOVRGL8vMqi.hqc64TmRJrSC.V88UrdJtsri9RkR9f6', 'guagua', '正常', 'a010', curdate(), now())
 ,('nsdf1h32@gmail.com', '$2a$10$uGR2IkaiC.RZsOZtoY7M7ugGapiiwOkFCSEigkix2aSN.u6b1UnWy', 'Jason', '正常', 'a010', curdate(), now())
 ,('dsddmlm093@gmail.com', '$2a$10$1eCToqRxiCzgsoJoBp8Y..RO4wkwwFOd90nH1PkhGBGBeBl4BFonO', 'John', '正常', 'a010', curdate(), now())
 ,('sdsdk457@gmail.com', '$2a$10$6oYKJpvvwFkoJxZOi0ogOO4ta1.gds9vP4FlIzMnnK2H.LM5GcAhK', 'David', '正常', 'a010', curdate(), now())

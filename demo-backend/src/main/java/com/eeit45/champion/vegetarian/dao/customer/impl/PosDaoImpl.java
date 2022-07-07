@@ -83,6 +83,17 @@ public class PosDaoImpl implements PosDao {
     }
 
     @Override
+    public List<Pos> getStautsPos(String businessStatus) {
+        String sql = "SELECT * FROM pos " +
+                "WHERE validDate = :businessStatus";
+        Map<String,Object> map = new HashMap<>();
+
+        map.put("businessStatus", businessStatus);
+
+        return namedParameterJdbcTemplate.query(sql,new PosRowMapper());
+    }
+
+    @Override
     public Pos getPosById(Integer posId) {
         String sql = "SELECT * FROM pos WHERE posId = :posId";
 

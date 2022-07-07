@@ -316,7 +316,7 @@ getAxios();
           <RouterLink
             :to="{ name: 'backend-pages-generic-profile' }"
             class="fw-semibold"
-            >呱呱</RouterLink
+            >{{ admin.data.user.userName }}</RouterLink
           >
         </h2>
       </div>
@@ -617,3 +617,15 @@ getAxios();
   </div>
   <!-- END Page Content -->
 </template>
+<script>
+export default {
+  data() {
+    return {
+      admin: "",
+    };
+  },
+  created() {
+    this.admin = JSON.parse(window.localStorage.getItem("access-admin"));
+  },
+};
+</script>

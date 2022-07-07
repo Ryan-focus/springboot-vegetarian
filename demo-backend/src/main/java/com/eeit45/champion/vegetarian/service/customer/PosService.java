@@ -11,4 +11,6 @@ public interface PosService {
     Pos getPosById(Integer posId);
 
     List<Pos> getAllPosList();
+
+    List<Pos> getStatusPosList(String businessStatus);
 }
