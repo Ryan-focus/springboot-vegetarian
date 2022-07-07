@@ -54,42 +54,42 @@ const earningsData = reactive({
 });
 
 // Chart Earnings options
-const earningsOptions = reactive({
-  scales: {
-    x: {
-      display: false,
-      grid: {
-        drawBorder: false,
-      },
-    },
-    y: {
-      display: false,
-      grid: {
-        drawBorder: false,
-      },
-    },
-  },
-  interaction: {
-    intersect: false,
-  },
-  plugins: {
-    legend: {
-      labels: {
-        boxHeight: 10,
-        font: {
-          size: 14,
-        },
-      },
-    },
-    tooltip: {
-      callbacks: {
-        label: function (context) {
-          return context.dataset.label + ": $" + context.parsed.y;
-        },
-      },
-    },
-  },
-});
+// const earningsOptions = reactive({
+//   scales: {
+//     x: {
+//       display: false,
+//       grid: {
+//         drawBorder: false,
+//       },
+//     },
+//     y: {
+//       display: false,
+//       grid: {
+//         drawBorder: false,
+//       },
+//     },
+//   },
+//   interaction: {
+//     intersect: false,
+//   },
+//   plugins: {
+//     legend: {
+//       labels: {
+//         boxHeight: 10,
+//         font: {
+//           size: 14,
+//         },
+//       },
+//     },
+//     tooltip: {
+//       callbacks: {
+//         label: function (context) {
+//           return context.dataset.label + ": $" + context.parsed.y;
+//         },
+//       },
+//     },
+//   },
+// });
 
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
@@ -97,6 +97,7 @@ const urlParams = "warning";
 //接收的資料ref
 const resData = ref();
 const restaurantsTotal = ref();
+const newRestaurant = ref();
 
 const getAxios = function () {
   axios
@@ -110,8 +111,21 @@ const getAxios = function () {
       console.log(error, "失敗");
     });
 };
-//執行Axios
 getAxios();
+
+//取得餐廳資料的方法
+const getRestaurant = function () {
+  axios
+    .get(`http://${url}/restaurants`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+getRestaurant();
 </script>
 
 <template>
@@ -231,7 +245,7 @@ getAxios();
               class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
             >
               <dl class="mb-0">
-                <dt class="fs-3 fw-bold">5</dt>
+                <dt class="fs-3 fw-bold">{{ newRestaurant }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
                   新註冊餐廳
                 </dd>
@@ -266,11 +280,11 @@ getAxios();
           title="餐廳總數成長表"
           class="flex-grow-1 d-flex flex-column"
         >
-          <template #options>
+          <!-- <template #options>
             <button type="button" class="btn-block-option">
               <i class="si si-settings"></i>
             </button>
-          </template>
+          </template> -->
 
           <template #content>
             <div
@@ -345,7 +359,12 @@ getAxios();
               </thead>
               <tbody class="fs-sm">
                 <tr>
-                  s
+                  <td>{{}}</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
                 </tr>
               </tbody>
             </table>
