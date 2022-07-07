@@ -64,7 +64,6 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User login(LoginRequest loginRequest) {
 
-		userDao.updateLastLoginTime(loginRequest.getAccount());
 		
 		User user = userDao.getUserByEmail(loginRequest.getAccount());
 
@@ -78,6 +77,7 @@ public class UserServiceImpl implements UserService {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 		}
 		if(new BCryptPasswordEncoder().matches(loginRequest.getPassword(),user.getPassword())){
+			userDao.updateLastLoginTime(loginRequest.getAccount());
 			return user;
 		}
 		//帳號存在 但密碼錯誤
