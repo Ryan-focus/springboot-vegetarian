@@ -204,9 +204,15 @@ export default {
             Swal.fire("登入成功 ~", "｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡", "success");
           }
         })
-        .catch((error) => {
-          Swal.fire("登入失敗!", "(〒︿〒)", "error");
-        });
+        .catch(function (error) {
+     console.log(error.response.status) // 401
+     console.log(error.response.data.error) //Please Authenticate or whatever returned from server
+   if(error.response.status==401){
+     Swal.fire("登入失敗,帳號異常", "∑(￣□￣;)", "error");
+   } else {
+              Swal.fire("登入失敗,帳號或密碼錯誤", "(〒︿〒)", "error");
+          }
+ })
     },
   },
 };
