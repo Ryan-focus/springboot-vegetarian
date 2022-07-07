@@ -52,31 +52,21 @@ async function onSubmit() {
 
 <template>
   <!-- Page Content -->
-  <div
-    class="hero-static d-flex align-items-center"
-    style="
+  <div class="hero-static d-flex align-items-center" style="
       background-image: url('/assets/media/photos/login_bg.jpg');
       background-size: cover;
       background-repeat: no-repeat;
       background-attachment: fixed;
       background-position: center;
-    "
-  >
+    ">
     <div class="content">
       <div class="row justify-content-center push">
         <div class="col-md-8 col-lg-6 col-xl-4">
           <!-- Sign In Block -->
           <BaseBlock title="登入" class="mb-0">
             <template #options>
-              <RouterLink
-                :to="{ name: 'auth-reminder' }"
-                class="btn-block-option fs-sm"
-                ><b>忘記密碼?</b></RouterLink
-              >
-              <RouterLink
-                :to="{ name: 'auth-signup' }"
-                class="btn-block-option"
-              >
+              <RouterLink :to="{ name: 'auth-reminder' }" class="btn-block-option fs-sm"><b>忘記密碼?</b></RouterLink>
+              <RouterLink :to="{ name: 'auth-signup' }" class="btn-block-option">
                 <i class="fa fa-user-plus"></i>
               </RouterLink>
             </template>
@@ -92,67 +82,34 @@ async function onSubmit() {
               <form @submit.prevent="onSubmit" @submit="login">
                 <div class="py-3">
                   <div class="mb-4">
-                    <input
-                      type="text"
-                      class="form-control form-control-alt form-control-lg"
-                      id="login-username"
-                      name="login-username"
-                      placeholder="E-mail"
-                      :class="{
+                    <input type="text" class="form-control form-control-alt form-control-lg" id="login-username"
+                      name="login-username" placeholder="E-mail" :class="{
                         'is-invalid': v$.account.$errors.length,
-                      }"
-                      v-model="state.account"
-                      @blur="v$.account.$touch"
-                    />
-                    <div
-                      v-if="v$.account.$errors.length"
-                      class="invalid-feedback animated fadeIn"
-                    >
+                      }" v-model="state.account" @blur="v$.account.$touch" />
+                    <div v-if="v$.account.$errors.length" class="invalid-feedback animated fadeIn">
                       請輸入你的帳號
                     </div>
                   </div>
                   <div class="mb-4">
-                    <input
-                      type="password"
-                      class="form-control form-control-alt form-control-lg"
-                      id="login-password"
-                      name="login-password"
-                      placeholder="密碼"
-                      :class="{
+                    <input type="password" class="form-control form-control-alt form-control-lg" id="login-password"
+                      name="login-password" placeholder="密碼" :class="{
                         'is-invalid': v$.password.$errors.length,
-                      }"
-                      v-model="state.password"
-                      @blur="v$.password.$touch"
-                    />
-                    <div
-                      v-if="v$.password.$errors.length"
-                      class="invalid-feedback animated fadeIn"
-                    >
+                      }" v-model="state.password" @blur="v$.password.$touch" />
+                    <div v-if="v$.password.$errors.length" class="invalid-feedback animated fadeIn">
                       請輸入你的密碼
                     </div>
                   </div>
                   <div class="mb-4">
                     <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        value=""
-                        id="login-remember"
-                        name="login-remember"
-                      />
-                      <label class="form-check-label" for="login-remember"
-                        ><b>記住我</b></label
-                      >
+                      <input class="form-check-input" type="checkbox" value="" id="login-remember"
+                        name="login-remember" />
+                      <label class="form-check-label" for="login-remember"><b>記住我</b></label>
                     </div>
                   </div>
                 </div>
                 <div class="row mb-4">
                   <div class="col-md-6 col-xl-5">
-                    <button
-                      type="submit"
-                      class="btn w-100 btn-alt-primary"
-                      @click="handleSubmit"
-                    >
+                    <button type="submit" class="btn w-100 btn-alt-primary" @click="handleSubmit">
                       <i class="fa fa-fw fa-sign-in-alt me-1 opacity-50"></i>
                       <b>登入</b>
                     </button>
@@ -195,9 +152,9 @@ export default {
       axios
         .post("http://localhost:8088/login", user)
         .then(function (response) {
-          // let _this = this
           console.log(response.data);
           if (response.status === 200) {
+
             localStorage.setItem("access-admin", JSON.stringify(response.data));
 
             location.replace("http://localhost:8080/#/backend/dashboard"); //登入成功擋返回前頁回到登入頁
@@ -205,14 +162,20 @@ export default {
           }
         })
         .catch(function (error) {
-     console.log(error.response.status) // 401
-     console.log(error.response.data.error) //Please Authenticate or whatever returned from server
-   if(error.response.status==401){
-     Swal.fire("登入失敗,帳號異常", "∑(￣□￣;)", "error");
-   } else {
-              Swal.fire("登入失敗,帳號或密碼錯誤", "(〒︿〒)", "error");
+
+          if (error.response.status === 401) {
+
+            Swal.fire("登入失敗,帳號異常", "∑(￣□￣;)", "error");
+
+          } else if (error.response.status === 400) {
+
+            Swal.fire("登入失敗,帳號或密碼錯誤", "(〒︿〒)", "error");
+
+          } else {
+            console.log(error.response.status)     // 印錯誤狀態代碼
+            console.log(error.response.data.error) // 印錯誤內容
           }
- })
+        })
     },
   },
 };
