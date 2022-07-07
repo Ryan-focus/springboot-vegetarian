@@ -64,17 +64,20 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public User login(LoginRequest loginRequest) {
 
+		
 		User user = userDao.getUserByEmail(loginRequest.getAccount());
 
+//		System.out.println(user.toString());
 		//帳號存在 且 密碼相符合
 		if(user != null ) {
 		//有此帳密但被禁用
-			System.out.println(2);
-		if(userDao.isBanned(loginRequest.getAccount())) {
-			System.out.println(3);
-			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-		}
+
 		if(new BCryptPasswordEncoder().matches(loginRequest.getPassword(),user.getPassword())){
+			if(userDao.isBanned(loginRequest.getAccount())) {
+				System.out.println(3);
+				throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+			}
+			userDao.updateLastLoginTime(loginRequest.getAccount());
 			return user;
 		}
 		//帳號存在 但密碼錯誤

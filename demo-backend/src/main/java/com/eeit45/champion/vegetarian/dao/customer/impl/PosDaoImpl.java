@@ -1,6 +1,7 @@
 package com.eeit45.champion.vegetarian.dao.customer.impl;
 
 import com.eeit45.champion.vegetarian.dao.customer.PosDao;
+import com.eeit45.champion.vegetarian.dto.customer.PosQueryParams;
 import com.eeit45.champion.vegetarian.dto.customer.PosRequest;
 import com.eeit45.champion.vegetarian.model.customer.Business;
 import com.eeit45.champion.vegetarian.model.customer.Pos;
@@ -83,6 +84,23 @@ public class PosDaoImpl implements PosDao {
     }
 
     @Override
+    public Integer totalPos(PosQueryParams posQueryParams) {
+        String sql = "SELECT count(*) FROM pos WHERE 1=1 ";
+
+        Map<String, Object> map = new HashMap<>();
+
+        if(posQueryParams.getStatusCategory() != null ) {
+            sql = sql + " AND validDate = :validDate";
+            System.out.println(posQueryParams.getStatusCategory().toString());
+            map.put("validDate" ,posQueryParams.getStatusCategory().toString());
+        }
+
+        Integer total = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+
+        return total;
+    }
+
+    @Override
     public Pos getPosById(Integer posId) {
         String sql = "SELECT * FROM pos WHERE posId = :posId";
 
@@ -119,9 +137,24 @@ public class PosDaoImpl implements PosDao {
 
     //後台用
     @Override
-    public List<Pos> getAllPosList() {
-        String sql = "SELECT * FROM pos";
-        return namedParameterJdbcTemplate.query(sql,new PosRowMapper());
+    public List<Pos> getAllPosList(PosQueryParams posQueryParams) {
+        String sql = "SELECT * FROM pos WHERE 1=1 ";
+        Map<String, Object> map = new HashMap<>();
+
+        if (posQueryParams.getStatusCategory() != null) {
+            sql = sql + " AND validDate = :category";
+            map.put("category", posQueryParams.getStatusCategory().name());
+        }
+
+        // 排序
+        sql = sql + " ORDER BY " + posQueryParams.getOrderBy() + " " + posQueryParams.getSorting();
+
+        sql = sql + " LIMIT :limit OFFSET :offset";
+
+        map.put("limit", posQueryParams.getLimit());
+        map.put("offset", posQueryParams.getOffset());
+
+        return namedParameterJdbcTemplate.query(sql,map , new PosRowMapper());
     }
 
 }

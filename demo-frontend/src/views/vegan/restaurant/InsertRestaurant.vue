@@ -3,16 +3,7 @@ import { ref, reactive, computed, toRefs } from "vue";
 
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
 import useVuelidate from "@vuelidate/core";
-import {
-  required,
-  minLength,
-  between,
-  email,
-  decimal,
-  integer,
-  url,
-  sameAs,
-} from "@vuelidate/validators";
+import { required, minLength, between, decimal } from "@vuelidate/validators";
 
 import axios from "axios";
 
@@ -65,6 +56,21 @@ async function onSubmit() {
 
   // perform async actions
 }
+
+function createRestaurant() {
+  const restaurant = {
+    restaurantName: state.restaurantName,
+    restaurantTel: state.restaurantTel,
+    restaurantAddress: state.restaurantAddress,
+    restaurantCategory: state.restaurantCategory,
+    restaurantType: state.restaurantType,
+    restaurantBusinessHours: state.restaurantBusinessHours,
+    restaurantScore: state.restaurantScore,
+  };
+  axios.post("http://localhost:8088/restaurants", restaurant).then(() => {
+    window.location = "#/backend/restaurants/restaurantInfo";
+  });
+}
 </script>
 
 <template>
@@ -106,36 +112,71 @@ async function onSubmit() {
             <!-- 餐廳名稱開始 -->
             <div class="mb-4">
               <label class="form-label" for="val-restaurantName"
-                >餐廳名稱</label
+                >餐廳名稱<span class="text-danger">*</span></label
               >
               <input
                 type="text"
                 id="val-restaurantName"
                 class="form-control"
-                v-model="restaurantName"
+                :class="{
+                  'is-invalid': v$.restaurantName.$errors.length,
+                }"
+                v-model="state.restaurantName"
+                @blur="v$.restaurantName.$touch"
+                placeholder="請輸入餐廳名稱"
               />
+              <div
+                v-if="v$.restaurantName.$errors.length"
+                class="invalid-feedback animated fadeIn"
+              >
+                請輸入餐廳名稱
+              </div>
             </div>
             <!-- 電話開始 -->
             <div class="mb-4">
-              <label class="form-label" for="val-restaurantTel">電話</label>
+              <label class="form-label" for="val-restaurantTel"
+                >電話<span class="text-danger">*</span></label
+              >
               <input
                 type="text"
                 id="val-restaurantTel"
                 class="form-control"
+                :class="{
+                  'is-invalid': v$.restaurantTel.$errors.length,
+                }"
                 placeholder="02-23448743"
-                v-model="restaurantTel"
+                v-model="state.restaurantTel"
+                @blur="v$.restaurantTel.$touch"
               />
+              <div
+                v-if="v$.restaurantTel.$errors.length"
+                class="invalid-feedback animated fadeIn"
+              >
+                請輸入數字
+              </div>
             </div>
             <!-- 地址開始 -->
             <div class="mb-4">
-              <label class="form-label" for="val-restaurantAddress">地址</label>
+              <label class="form-label" for="val-restaurantAddress"
+                >地址<span class="text-danger">*</span></label
+              >
               <input
                 type="text"
                 id="val-restaurantAddress"
                 class="form-control"
+                :class="{
+                  'is-invalid': v$.restaurantAddress.$errors.length,
+                }"
                 placeholder="桃園市中壢區.."
-                v-model="restaurantAddress"
+                v-model="state.restaurantAddress"
+                @blur="v$.restaurantAddress.$touch"
               />
+              <div
+                v-if="v$.restaurantAddress.$errors.length"
+                class="invalid-feedback animated fadeIn"
+              >
+                請輸入完整地址
+              </div>
             </div>
             <!-- 餐廳類型開始 -->
             <div class="mb-4">
@@ -146,9 +187,8 @@ async function onSubmit() {
                 class="form-select"
                 id="example-select"
                 name="example-select"
-                v-model="restaurantCategory"
+                v-model="state.restaurantCategory"
               >
-                <option selected>按我選擇</option>
                 <option value="中式">中式</option>
                 <option value="義式">義式</option>
                 <option value="韓式">韓式</option>
@@ -169,9 +209,8 @@ async function onSubmit() {
                 class="form-select"
                 id="example-select"
                 name="example-select"
-                v-model="restaurantType"
+                v-model="state.restaurantType"
               >
-                <option selected>按我選擇</option>
                 <option value="全素">全素</option>
                 <option value="蛋素">蛋素</option>
                 <option value="奶素">奶素</option>
@@ -181,24 +220,54 @@ async function onSubmit() {
             </div>
             <!-- 營業時間 -->
             <div class="mb-4">
-              <label class="form-label" for="example-select">營業時間</label>
+              <label class="form-label" for="example-select"
+                >營業時間<span class="text-danger">*</span></label
+              >
               <input
                 type="textarea"
                 id="val-restaurantBusinessHours"
                 class="form-control"
-                v-model="restaurantBusinessHours"
+                :class="{
+                  'is-invalid': v$.restaurantBusinessHours.$errors.length,
+                }"
+                v-model="state.restaurantBusinessHours"
+                @blur="v$.restaurantBusinessHours.$touch"
               />
+              <div
+                v-if="v$.restaurantBusinessHours.$errors.length"
+                class="invalid-feedback animated fadeIn"
+              >
+                此項為必填
+              </div>
             </div>
             <!-- 評分開始 -->
             <div class="mb-4">
-              <label class="form-label" for="val-restaurantScore">評分</label>
+              <label class="form-label" for="val-restaurantScore"
+                >評分<span class="text-danger">*</span></label
+              >
               <input
                 type="text"
                 id="val-restaurantScore"
                 class="form-control"
+                :class="{
+                  'is-invalid': v$.restaurantScore.$errors.length,
+                }"
                 placeholder="0.0-5.0"
-                v-model="restaurantScore"
+                v-model="state.restaurantScore"
+                @blur="v$.restaurantScore.$touch"
               />
+              <div
+                v-if="v$.restaurantScore.between"
+                class="invalid-feedback animated fadeIn"
+              >
+                必須輸入0-5的數字
+              </div>
+              <!-- <div
+                v-if="v$.restaurantScore.$errors.length"
+                class="invalid-feedback animated fadeIn"
+              >
+                請輸入數字
+              </div> -->
             </div>
             <!-- 圖片上傳開始-->
             <!-- <div class="row push">
@@ -229,7 +298,7 @@ async function onSubmit() {
   </div>
 </template>
 
-<script>
+<!-- <script>
 export default {
   data() {
     return {
@@ -259,4 +328,4 @@ export default {
     },
   },
 };
-</script>
+</script> -->

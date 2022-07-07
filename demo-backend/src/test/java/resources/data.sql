@@ -4,18 +4,18 @@ use vegandb;
 INSERT INTO `user` ( email, password, userName, status, userPic, registerTime, lastLoginTime) VALUES
 ('a1kgkms11@gmail.com', '$2a$10$O969pkOXv/LwhDAgvZR/iuI62clH0djrmL8WGtgCTKLdG9XZFbBMW', '呱呱', '正常', 'a010', curdate(), now())
 ,('nsdk8853@gmail.com', '$2a$10$l0hfgZQLrYGOVRGL8vMqi.hqc64TmRJrSC.V88UrdJtsri9RkR9f6', 'guagua', '正常', 'a010', curdate(), now())
-,('abc01@mail.com', 'Aa000001', 'Jason', '正常', 'a010', curdate(), now())
-,('abc02@mail.com', 'Oa0fgh02', 'John', '正常', 'a010', curdate(), now())
-,('abc03@mail.com', 'Radghg3', 'David', '正常', 'a010', curdate(), now())
-,('abc04@mail.com', 'Ca00fghfd004', 'Jack', '正常', 'a010', curdate(), now())
-,('abc05@mail.com', 'Va0dfgh005', 'Anthony', '正常', 'a010', curdate(), now())
-,('abc06@mail.com', 'Ba0fgh06', 'Michael', '正常', 'a010', curdate(), now())
-,('abc07@mail.com', 'Naghg007', '傑森', '正常', 'a010', curdate(), now())
-,('abc08@mail.com', 'Ma0gbng008', '約翰', '正常', 'a010', curdate(), now())
-,('abc09@mail.com', 'Qa0fgdh009', '大衛', '正常', 'a010', curdate(), now())
-,('abc10@mail.com', 'La0gngn10', '傑克', '正常', 'a010', curdate(), now())
-,('abc11@mail.com', 'Pa0fdgdgh011', '安東尼', '正常', 'a010', curdate(), now())
-,('abc12@mail.com', 'Wafghfh12', '麥可', '正常', 'a010', curdate(), now());
+,('nsdf1h32@gmail.com', '$2a$10$uGR2IkaiC.RZsOZtoY7M7ugGapiiwOkFCSEigkix2aSN.u6b1UnWy', 'Jason', '正常', 'a010', curdate(), now())
+,('dsddmlm093@gmail.com', '$2a$10$1eCToqRxiCzgsoJoBp8Y..RO4wkwwFOd90nH1PkhGBGBeBl4BFonO', 'John', '正常', 'a010', curdate(), now())
+,('sdsdk457@gmail.com', '$2a$10$6oYKJpvvwFkoJxZOi0ogOO4ta1.gds9vP4FlIzMnnK2H.LM5GcAhK', 'David', '正常', 'a010', curdate(), now())
+,('dnfjn003@gmail.com', '$2a$10$1N2w5TMU0OOjSB.9kVhb8OQKAZ726.AgyktmxoQnjdrtCkrQ31ziC', 'Jack', '正常', 'a010', curdate(), now())
+,('dsnjd25@gmail.com', '$2a$10$DKayHEMjcXVdN1E4jgn7SeesC/ZdJgHZzBzVficD.jyvszCBMd9Sq', 'Anthony', '正常', 'a010', curdate(), now())
+,('dkopm023@gmail.com', '$2a$10$8Y6fTr2MiNEH0hwH/wQC1ewCe/i3BUki3NAqCNm/SpQVENtjeY722', 'Michael', '正常', 'a010', curdate(), now())
+,('vmdns23@gmail.com', '$2a$10$kmbp2jSux5GWTt7UMeRHge2UaInt6UjQTmSl5nO.Ir6jdRV5hhu6y', '傑森', '正常', 'a010', curdate(), now())
+,('fdnfl983@gmail.com', '$2a$10$0RS4K7T9d84dlIY8J7wd3.1L/WFFtQzjMEOKeHmnxWAg93Mv9lFyC', '約翰', '正常', 'a010', curdate(), now())
+,('sdj4498@gmail.com', '$2a$10$fKJ.DT6U2lx.dpiAE.6nUedlCWvEkyPFKjeFJ1ioWnLE/uwMJ0xaK', '大衛', '正常', 'a010', curdate(), now())
+,('sdsndj12@gmail.com', '$2a$10$r8P1P1pM4.SwzqoCS6ZYWujqbuvku7B98k.iRpEpyJxhl7.ZnnKxq', '傑克', '正常', 'a010', curdate(), now())
+,('fdfnkn9@gmail.com', '$2a$10$VdMO7903g7YrTrdI.B4N7.iXJtAflnZTRe08hqSi4pBlJjKdaIYo2', '安東尼', '正常', 'a010', curdate(), now())
+,('dkd93@gmail.com', '$2a$10$dAXsizGzNbj2lvUqDyGqTuS1fuKGsAEOwFY/eZ1O1PMWbO2ayk4Wy', '麥可', '正常', 'a010', curdate(), now());
 
 -- business
 INSERT INTO business ( email, password,principalName,principalPhone, businessName,located, status, businessPic, createdTime, lastLoginTime, updateTime) VALUES
@@ -28,6 +28,23 @@ INSERT INTO business ( email, password,principalName,principalPhone, businessNam
 ;
 update business set password = MD5(password);
 
+-- pos
+INSERT INTO pos(businessId,validDate,expiryDate) VALUES
+ (6,'未開通',NOW())
+,(5,'試用期14日',NOW() + INTERVAL 14 DAY)
+,(4,'試用期7日',NOW() + INTERVAL 7 DAY)
+,(3,'試用期14日',NOW() + INTERVAL 14 DAY)
+,(2,'開通中',NOW() + INTERVAL 12 MONTH )
+,(1,'開通中',NOW() + INTERVAL 6 MONTH);
+
+-- PosBusiness
+INSERT INTO posBusiness(posId,businessId,visitors,turnOver,businessName) VALUES
+(1,6,67842,100274896,'Larvata果子云數位科技')
+,(2,5,249,298432,'亞惿股份有限公司')
+,(3,4,367,367705,'墨宇網頁設計公司')
+,(4,3,142,122450,'藝誠網頁設計公司')
+,(5,2,2475,5379892,'馬亞科技iWare')
+,(6,1,6487,12568,'艾格企業有限公司');
 
 -- product
 INSERT INTO product ( productName, category,veganCategory, productPrice,stock,productImage,createdTime,updatedTime ) VALUES
@@ -386,7 +403,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postAuditDate
 
 尤其是酸甜大根泡菜的好表現，把美味度又再往上提升，加點辣椒醬更是好吃極了，風味相當有特色
 
-《一碗豆腐》營業時間從下午開始，一路賣到晚上10點，無論當成下午茶點心，或是宵夜都很不錯呢','p04','通過',now()),
+《一碗豆腐》營業時間從下午開始，一路賣到晚上10點，無論當成下午茶點心，或是宵夜都很不錯呢','p04','發布中',now()),
 
 ('【新店大坪林美食】原粹蔬食作 菜單料理講究素食料理，特色飛龍頭咖哩、味噌豆漿拉麵',now(),'《原粹蔬食作》是新北市新店區、捷運大坪林站附近，人氣很高的素食餐廳
 

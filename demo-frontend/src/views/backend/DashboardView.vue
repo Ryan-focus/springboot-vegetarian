@@ -2,6 +2,7 @@
 // 已經宣告但從未使用過的Value (請勿刪除)
 // eslint-disable-next-line no-unused-vars
 import { reactive, ref } from "vue";
+import axios from "axios";
 
 // vue-chart-3, for more info and examples you can check out https://vue-chart-3.netlify.app/ and http://www.chartjs.org/docs/ -->
 // import { LineChart, BarChart } from "vue-chart-3";
@@ -279,6 +280,54 @@ const orderSearch = ref(false);
 //     },
 //   },
 // });
+
+//預設傳值伺服器與[params]
+const url = "localhost:8088";
+const urlParams = "warning";
+//接收的資料ref
+const restaurantTotal = ref();
+const productsTotal = ref();
+const businessTotal = ref();
+
+const getRestaurant = function () {
+  axios
+    .get(`http://${url}/restaurantList`, { params: { status: urlParams } })
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      restaurantTotal.value = res.data.total;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+const getProducts = function () {
+  axios
+    .get(`http://${url}/products`, { params: { status: urlParams } })
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      productsTotal.value = res.data.total;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+//取得全部的order
+const getBusiness = function () {
+  axios
+    .get(`http://${url}/pos`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      businessTotal.value = res.data.total;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+
+//執行Axios
+getRestaurant();
+getProducts();
+getBusiness();
 </script>
 
 <template>
@@ -288,13 +337,13 @@ const orderSearch = ref(false);
       class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center py-2 text-center text-md-start"
     >
       <div class="flex-grow-1 mb-1 mb-md-0">
-        <h1 class="h3 fw-bold mb-2">愛蔬網儀錶板</h1>
+        <h1 class="h3 fw-bold mb-2">管理員系統</h1>
         <h2 class="h6 fw-medium fw-medium text-muted mb-0">
           歡迎 管理員
           <RouterLink
             :to="{ name: 'backend-pages-generic-profile' }"
             class="fw-semibold"
-            >Raven</RouterLink
+            >{{ admin.data.user.userName }}</RouterLink
           >
         </h2>
       </div>
@@ -366,9 +415,9 @@ const orderSearch = ref(false);
               class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
             >
               <dl class="mb-0">
-                <dt class="fs-3 fw-bold">30678</dt>
+                <dt class="fs-3 fw-bold">{{ restaurantTotal }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                  未審核訂單
+                  現有餐廳總數
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
@@ -376,15 +425,14 @@ const orderSearch = ref(false);
               </div>
             </div>
             <div class="bg-body-light rounded-bottom">
-              <a
+              <RouterLink
+                :to="{ name: 'backend-restaurants-restaurant-info' }"
                 class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
-              >
-                <span>查看全部訂單</span>
-                <i
+                ><span>查看全部餐廳</span
+                ><i
                   class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
-                ></i>
-              </a>
+                ></i
+              ></RouterLink>
             </div>
           </template>
         </BaseBlock>
@@ -398,25 +446,24 @@ const orderSearch = ref(false);
               class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
             >
               <dl class="mb-0">
-                <dt class="fs-3 fw-bold">2266</dt>
+                <dt class="fs-3 fw-bold">{{ productsTotal }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                  新註冊會員
+                  現有商品總數
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
-                <i class="far fa-user-circle fs-3 text-primary"></i>
+                <i class="fa-solid fa-basket-shopping fs-3 text-primary"></i>
               </div>
             </div>
             <div class="bg-body-light rounded-bottom">
-              <a
+              <RouterLink
+                :to="{ name: 'backend-cart-product-info' }"
                 class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
-              >
-                <span>查看全部新會員</span>
-                <i
+                ><span>查看全部商品</span
+                ><i
                   class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
-                ></i>
-              </a>
+                ></i
+              ></RouterLink>
             </div>
           </template>
         </BaseBlock>
@@ -430,25 +477,24 @@ const orderSearch = ref(false);
               class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
             >
               <dl class="mb-0">
-                <dt class="fs-3 fw-bold">15575</dt>
+                <dt class="fs-3 fw-bold">{{ businessTotal }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                  新食記
+                  全部合作商家
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
-                <i class="far fa-paper-plane fs-3 text-primary"></i>
+                <i class="fa fa-shop fs-3 text-primary"></i>
               </div>
             </div>
             <div class="bg-body-light rounded-bottom">
-              <a
+              <RouterLink
+                :to="{ name: 'backend-reserve-info' }"
                 class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
-              >
-                <span>查看全部新食記</span>
-                <i
+                ><span>查看全部合作商家</span
+                ><i
                   class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
-                ></i>
-              </a>
+                ></i
+              ></RouterLink>
             </div>
           </template>
         </BaseBlock>
@@ -1105,3 +1151,15 @@ const orderSearch = ref(false);
   </div>
   <!-- END Page Content -->
 </template>
+<script>
+export default {
+  data() {
+    return {
+      admin: "",
+    };
+  },
+  created() {
+    this.admin = JSON.parse(window.localStorage.getItem("access-admin"));
+  },
+};
+</script>

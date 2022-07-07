@@ -1,11 +1,10 @@
 <script setup>
 import { ref, reactive, computed, onMounted } from "vue";
-// Sweetalert2, for more info and examples, you can check out https://github.com/sweetalert2/sweetalert2
-import Swal from "sweetalert2";
-
-import axios from "axios";
 
 // Vue Dataset, for more info and examples you can check out https://github.com/kouts/vue-dataset/tree/next
+import Swal from "sweetalert2";
+import axios from "axios";
+
 import {
   Dataset,
   DatasetItem,
@@ -16,7 +15,6 @@ import {
 } from "vue-dataset";
 
 // Set default properties
-// eslint-disable-next-line no-unused-vars
 let toast = Swal.mixin({
   buttonsStyling: false,
   target: "#page-container",
@@ -32,13 +30,13 @@ const url = "localhost:8088";
 //接收的資料ref
 const resData = ref();
 
+//取得全部的order
 const getAxios = function () {
   axios
-    .get(`http://${url}/postIndex`)
+    .get(`http://${url}/pos`)
     .then((res) => {
-      console.log(res);
       //獲取伺服器的回傳資料
-      resData.value = res.data;
+      resData.value = res.data.results;
     })
     .catch((error) => {
       console.log(error, "失敗");
@@ -46,31 +44,52 @@ const getAxios = function () {
 };
 //執行Axios
 getAxios();
+console.log(resData);
 
-// Get example data
-//import users from "@/data/usersDataset.json";
+//取得單一筆訂單，number用來抓id
+function getSingle() {
+  axios
+    .get(`http://${url}/pos?statusCategory=試用期7日`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      console.log(res);
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
 
 // Helper variables
 //在這邊去設定Table :th的欄位名稱
 const cols = reactive([
   {
+    name: "開通編號",
+    field: "posId",
+    sort: "",
+  },
+  {
     name: "商家名稱",
-    field: "title",
+    field: "businessName",
     sort: "",
   },
   {
-    name: "文章內文",
-    field: "postedText",
+    name: "試用狀態",
+    field: "validDate",
     sort: "",
   },
   {
-    name: "發表日期",
-    field: "postedDate",
+    name: "實際到期日",
+    field: "expiryDate",
     sort: "",
   },
   {
-    name: "圖片預覽",
-    field: "imgurl",
+    name: "來客數",
+    field: "visitors",
+    sort: "",
+  },
+  {
+    name: "營業額",
+    field: "turnOver",
     sort: "",
   },
 ]);
@@ -112,6 +131,98 @@ function onSort(event, i) {
 
   sortEl.sort = toset;
 }
+//更新訂單功能
+function updateOrder(number) {
+  toast
+    .fire({
+      title: "確定要更新嗎?",
+      // text: "更新後不能返回",
+      icon: "warning",
+      showCancelButton: true,
+      customClass: {
+        confirmButton: "btn btn-danger m-1",
+        cancelButton: "btn btn-secondary m-1",
+      },
+      confirmButtonText: "審核通過",
+      cancelButtonText: "取消更新",
+
+      html: false,
+      preConfirm: () => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 50);
+        });
+      },
+    })
+    .then((result) => {
+      //send request to server
+      if (result.value) {
+        const order = {
+          payment: this.payment,
+          status: this.status,
+        };
+        //執行put方法
+        axios
+          .put(`http://localhost:8088/order/${number}`, order)
+          .then(() => {
+            console.log(order);
+            getAxios();
+            toast.fire("更新成功!", "", "success");
+          })
+          .catch((error) => {
+            console.log(error, "失敗");
+          });
+      } else if (result.dismiss === "cancel") {
+        toast.fire("更新失敗", "", "error");
+      }
+    });
+}
+
+//Delete Order Fuction
+// function deleteRestaurant(number) {
+//   toast
+//     .fire({
+//       title: "確定要刪除嗎?",
+//       text: "刪除後不能返回",
+//       icon: "warning",
+//       showCancelButton: true,
+//       customClass: {
+//         confirmButton: "btn btn-danger m-1",
+//         cancelButton: "btn btn-secondary m-1",
+//       },
+//       confirmButtonText: "刪除資料",
+//       cancelButtonText: "取消刪除",
+
+//       html: false,
+//       preConfirm: () => {
+//         return new Promise((resolve) => {
+//           setTimeout(() => {
+//             resolve();
+//           }, 50);
+//         });
+//       },
+//     })
+//     .then((result) => {
+//       //send request to server
+//       if (result.value) {
+//         axios
+//           .delete(`http://${url}/order/${number}`)
+//           .then((res) => {
+//             //獲取伺服器的回傳資料
+//             console.log(res);
+
+//             getAxios();
+//             toast.fire("刪除成功!", "", "success");
+//           })
+//           .catch((error) => {
+//             console.log(error, "失敗");
+//           });
+//       } else if (result.dismiss === "cancel") {
+//         toast.fire("刪除失敗", "", "error");
+//       }
+//     });
+// }
 
 // Apply a few Bootstrap 5 optimizations
 onMounted(() => {
@@ -127,29 +238,6 @@ onMounted(() => {
   selectLength.classList.add("form-select");
   selectLength.style.width = "80px";
 });
-//格式化時間
-
-// function formatTime(postedDate, row, index) {
-//   var date = new Date();
-//   date.setTime(postedDate);
-//   var month = date.getMonth() + 1;
-//   var hours = date.getHours();
-//   if (hours < 10) hours = "0" + hours;
-//   var minutes = date.getMinutes();
-//   if (minutes < 10) minutes = "0" + minutes;
-//   var time =
-//     date.getFullYear() +
-//     "-" +
-//     month +
-//     "-" +
-//     date.getDate() +
-//     " " +
-//     hours +
-//     ":" +
-//     minutes;
-//   return time;
-// }
-//
 </script>
 
 <style lang="scss" scoped>
@@ -198,19 +286,20 @@ th.sort {
     }
   }
 }
-// SweetAlert2
-@import "sweetalert2/dist/sweetalert2.min.css";
 </style>
 
 <template>
   <!-- Hero -->
-  <BasePageHeading title="訂單總覽" subtitle="現在可以查閱所有訂單狀態..">
+  <BasePageHeading
+    title="訂單總覽"
+    subtitle="現在可以查看所有使用POS系統的商家"
+  >
     <template #extra>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-alt">
           <li class="breadcrumb-item">
-            <a class="link-fx" href="#/backend/reserve/dashboard">
-              <i class="fa fa-hourglass"></i> 訂位管理</a
+            <a class="link-fx" href="#/backend/cart/dashboard">
+              <i class="fa fa-clock"></i> 預訂管理</a
             >
           </li>
           <li class="breadcrumb-item" aria-current="page">
@@ -224,70 +313,26 @@ th.sort {
 
   <!-- Page Content -->
   <div class="content">
-    <BaseBlock title="訂單資料" content-full>
-      <template #options>
-        <div class="space-x-1">
-          <div class="dropdown d-inline-block">
-            <button
-              type="button"
-              class="btn btn-sm btn-alt-secondary"
-              id="dropdown-recent-orders-filters"
-              data-bs-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
-              <i class="fa fa-fw fa-flask"></i>
-              篩選
-              <i class="fa fa-angle-down ms-1"></i>
-            </button>
-            <div
-              class="dropdown-menu dropdown-menu-md dropdown-menu-end fs-sm"
-              aria-labelledby="dropdown-recent-orders-filters"
-            >
-              <a
-                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
-              >
-                未審核
-                <span class="badge bg-primary rounded-pill">20</span>
-              </a>
-              <a
-                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
-              >
-                審核中
-                <span class="badge bg-primary rounded-pill">72</span>
-              </a>
-              <a
-                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
-              >
-                已完成
-                <span class="badge bg-primary rounded-pill">890</span>
-              </a>
-              <a
-                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
-              >
-                全部
-                <span class="badge bg-primary rounded-pill">997</span>
-              </a>
-            </div>
-          </div>
-        </div>
-      </template>
+    <BaseBlock title="POS系統資料" content-full>
       <Dataset
         v-slot="{ ds }"
         :ds-data="resData"
         :ds-sortby="sortBy"
-        :ds-search-in="['postStatus', 'title', 'postedDate', 'postedText']"
+        :ds-search-in="[
+          'posId',
+          'businessName',
+          'validDate',
+          'expiryDate',
+          'visitors',
+          'turnOver',
+        ]"
       >
         <div class="row" :data-page-count="ds.dsPagecount">
-          <div class="col-md-3 py-2">
-            <DatasetSearch ds-search-placeholder="內部搜尋..." />
-          </div>
-          <div id="datasetLength" class="col-md-2 ms-auto py-2">
+          <div id="datasetLength" class="col-md-8 py-2">
             <DatasetShow />
+          </div>
+          <div class="col-md-4 py-2">
+            <DatasetSearch ds-search-placeholder="資料搜尋..." />
           </div>
         </div>
         <hr />
@@ -297,11 +342,7 @@ th.sort {
               <table class="table table-bordered table-hover table-vcenter">
                 <thead>
                   <tr>
-                    <th scope="col" class="text-center" style="min-width: 55px">
-                      編號
-                    </th>
-                    <!-- 此欄位放上合作的商家開通的狀態是否為 試用期/開通中/未開通 -->
-                    <th scope="col" class="d-none d-sm-table-cell">開通狀態</th>
+                    <!-- <th scope="col" class="text-center">POS編號</th> -->
                     <th
                       v-for="(th, index) in cols"
                       :key="th.field"
@@ -310,83 +351,50 @@ th.sort {
                     >
                       {{ th.name }} <i class="gg-select float-end"></i>
                     </th>
-                    <!-- 直接採取動作，點選更新狀態 -->
-                    <th class="text-center" style="width: 100px">審核</th>
+                    <th class="text-center" style="width: 100px">操作</th>
                   </tr>
                 </thead>
                 <DatasetItem tag="tbody" class="fs-sm">
                   <template #default="{ row }">
-                    <tr style="line-height: 5px">
-                      <th scope="row">{{ row.postId }}</th>
-                      <td
-                        class="d-none d-sm-table-cell"
-                        style="min-width: 100px"
-                      >
-                        <span
-                          :class="`fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-${row.variant}-light text-${row.variant}`"
-                          >{{ row.postStatus }}</span
-                        >
-                        <!-- <td class="d-none d-sm-table-cell">
-                          <span
-                            :class="`fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-${user.labelVariant}-light text-${user.labelVariant}`"
-                          >
-                            {{ user.labelText }}
-                          </span>
-                        </td> -->
-                      </td>
-                      <td
-                        class="text-center"
-                        style="
-                          overflow: hidden;
-                          white-space: nowrap;
-                          text-overflow: ellipsis;
-                          max-width: 150px;
-                        "
-                      >
-                        {{ row.title }}
-                      </td>
-                      <td
-                        class="d-none d-md-table-cell fs-sm"
-                        style="
-                          overflow: hidden;
-                          white-space: nowrap;
-                          text-overflow: ellipsis;
-                          max-width: 150px;
-                        "
-                      >
-                        {{ row.postedText }}
+                    <tr>
+                      <th scope="row">{{ row.posId }}</th>
+                      <td class="d-none d-md-table-cell fs-sm">
+                        {{ row.posBusinessList[0].businessName }}
                       </td>
                       <td
                         class="d-none d-sm-table-cell"
-                        style="min-width: 180px"
+                        style="min-width: 110px"
                       >
-                        {{ row.postedDate }}
+                        {{ row.validDate }}
                       </td>
                       <td
                         class="d-none d-sm-table-cell"
-                        style="
-                          overflow: hidden;
-                          white-space: nowrap;
-                          text-overflow: ellipsis;
-                          max-width: 150px;
-                        "
+                        style="min-width: 110px"
                       >
-                        {{ row.imgurl }}
+                        {{ row.expiryDate }}
                       </td>
-
+                      <td
+                        class="d-none d-sm-table-cell"
+                        style="min-width: 110px"
+                      >
+                        {{ row.posBusinessList[0].visitors }}
+                      </td>
+                      <td
+                        class="d-none d-sm-table-cell"
+                        style="min-width: 110px"
+                      >
+                        {{ row.posBusinessList[0].turnOver }}
+                      </td>
                       <td class="text-center">
                         <div class="btn-group">
                           <button
                             type="button"
                             class="btn btn-sm btn-alt-secondary"
+                            data-bs-toggle="modal"
+                            data-bs-target="#updateProduct"
+                            @click="getSingle(row.orderId)"
                           >
                             <i class="fa fa-fw fa-pencil-alt"></i>
-                          </button>
-                          <button
-                            type="button"
-                            class="btn btn-sm btn-alt-secondary"
-                          >
-                            <i class="fa fa-fw fa-times"></i>
                           </button>
                         </div>
                       </td>
@@ -402,6 +410,80 @@ th.sort {
         >
           <DatasetInfo class="py-3 fs-sm" />
           <DatasetPager class="flex-wrap py-3 fs-sm" />
+        </div>
+
+        <!-- 這邊以下是隱藏的更新表單，按下更新鈕之後會跳出來 -->
+        <div
+          class="modal fade"
+          id="updateProduct"
+          tabindex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <!-- 這邊是更新的標題 -->
+          <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">修改商品</h5>
+                <button
+                  type="button"
+                  class="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <!-- 內文開始 -->
+              <div class="modal-body">
+                <!-- 商品名稱 -->
+                <div class="mb-3">
+                  <input
+                    type="hidden"
+                    class="form-control"
+                    id="exampleFormControlInput1"
+                    style="resize: none"
+                    rows="1"
+                  />
+                </div>
+
+                <!-- 商品種類 -->
+                <div class="mb-3">
+                  <label class="form-label" for="example-select"
+                    >更新訂單狀態</label
+                  >
+                  <select
+                    class="form-select"
+                    id="example-select"
+                    name="example-select"
+                  >
+                    <option selected></option>
+                    <option value="未付款">未付款</option>
+                    <option value="已付款">已付款</option>
+                    <option value="已出貨">已出貨</option>
+                    <option value="訂單完成">訂單完成</option>
+                  </select>
+                </div>
+              </div>
+              <!-- 表單內文在這裡結束 -->
+              <!-- 送出button -->
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  取消
+                </button>
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  data-bs-dismiss="modal"
+                  @click="updateOrder(orderId)"
+                >
+                  送出
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </Dataset>
     </BaseBlock>

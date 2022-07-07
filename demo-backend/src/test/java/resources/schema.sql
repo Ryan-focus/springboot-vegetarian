@@ -51,7 +51,7 @@ CREATE TABLE pos (
                   posId INT NOT NULL auto_increment primary key,
                   businessId Int not null UNIQUE,
                   validDate nvarchar(64) not null,
-                  expiryDate DATETIME not null
+                  expiryDate DATETIME
 );
 
 -- PosBusiness

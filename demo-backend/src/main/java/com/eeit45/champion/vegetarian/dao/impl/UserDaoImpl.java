@@ -207,6 +207,18 @@ public class UserDaoImpl implements UserDao {
         }
 		return false;
 	}
+	
+	@Override
+	public void updateLastLoginTime(String account) {
+		String sql = "UPDATE `user` SET lastLoginTime = :lastLoginTime where email= :email";
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("lastLoginTime", new Timestamp(System.currentTimeMillis()));
+        map.put("email", account);
+        
+        namedParameterJdbcTemplate.update(sql, map);
+		
+	}
 
 	private String filteringSQL(String sql, Map<String, Object> map, UserQueryParams userQueryParams) {
 		
