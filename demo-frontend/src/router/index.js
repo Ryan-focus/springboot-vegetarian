@@ -13,6 +13,7 @@ import LayoutBackendMegaMenu from "@/layouts/variations/BackendMegaMenu.vue";
 // Frontend: Index
 const Index = () => import("@/views/frontend/Index.vue");
 const Login = () => import("@/views/frontend/Login.vue");
+const ShoppingCart = () => import("@/views/frontend/ShoppingCart.vue");
 
 // Backend Boxed: Dashboard
 const BackendBoxedDashboard = () =>
@@ -279,6 +280,11 @@ const routes = [
         path: "/signin",
         name: "login",
         component: Login,
+      },
+      {
+        path: "/shopping",
+        name: "shoppingCart",
+        component: ShoppingCart,
       },
     ],
   },
