@@ -1,73 +1,103 @@
+<style>
+body {
+  font-family: "Nunito", sans-serif;
+  background: #000;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+#app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #fff;
+  margin-top: 60px;
+}
+#thumb {
+  height: 300px;
+}
+img {
+  border-radius: 0.5rem;
+}
+</style>
+
 <template>
-  <div class="container">
-    <div class="large-12 medium-12 small-12 cell">
-      <label
-        >File
-        <input
-          type="file"
-          id="file"
-          ref="file"
-          v-on:change="handleFileUpload()"
-        />
-      </label>
-      <button v-on:click="submitFile()">Submit</button>
-    </div>
-  </div>
+  <img src="https://i.imgur.com/X4z0q8g.png" />
+  <br /><br />
+  <input
+    v-show="!imgurURL"
+    type="file"
+    id="image_file"
+    @change="onFileChange"
+    class="imgur"
+    accept="image/*"
+    required
+  />
+  <button v-show="imgurURL" type="button" @click="refreshNewImg">
+    Upload New One
+  </button>
+  <br />
+  <p>URL: {{ imgurURL }}</p>
+  <br />
+  <img :src="thumb" id="thumb" />
 </template>
 
 <script>
 import axios from "axios";
 export default {
-  /*
-      Defines the data used by the component
-    */
   data() {
     return {
-      file: "",
+      loading:
+        "https://i.pinimg.com/originals/a4/f2/cb/a4f2cb80ff2ae2772e80bf30e9d78d4c.gif",
+      thumbSample: "https://i.imgur.com/UoRevba.gif",
+      thumb: null,
+      imgurURL: null,
     };
   },
-
   methods: {
-    /*
-        Submits the file to the server
-      */
-    submitFile() {
-      /*
-                Initialize the form data
-            */
-      let formData = new FormData();
-      formData.append("image", this.file); //required
-      formData.append("title", "test"); //optional
-      formData.append("description", "test"); //optional
+    onFileChange(event) {
+      let files = event.target.files || e.dataTransfer.files;
+      if (!files.length) {
+        return;
+      }
 
-      /*
-                加入檔案
-            */
-      formData.append("file", this.file);
+      this.thumb = this.loading;
+      this.imgurURL = "Uploading...";
 
-      /*
-          Make the request to the POST /single-file URL
-        */
+      let formdata = new FormData();
+
+      formdata.append("image", files[0]);
+
       axios
-        .post("https://api.imgur.com/3/image", formData, {
+        .post(`https://api.imgur.com/3/image`, formdata, {
           headers: {
-            Authorization: "Client-ID 66438a9adb39fba",
+            "Content-type": "application/x-www-form-urlencoded",
+            Authorization: "Client-ID b455d92782e5284",
+          },
+          onUploadProgress: (percentage) => {
+            let uploadPercent = Math.round(
+              (percentage.loaded / percentage.total) * 100
+            );
+            console.log(`Uploaded ${uploadPercent} %`);
           },
         })
-        .then(function () {
-          console.log("SUCCESS!!");
+        .then((res) => {
+          console.log(res.data);
+          this.imgurURL = res.data.data.link;
+          this.thumb = res.data.data.link;
         })
-        .catch(function () {
-          console.log("FAILURE!!");
+        .catch((err) => {
+          console.log(err);
         });
     },
-
-    /*
-        Handles a change on the file upload
-      */
-    handleFileUpload() {
-      this.file = this.$refs.file.files[0];
+    refreshNewImg() {
+      this.imgurURL = "";
+      document.getElementById("image_file").value = "";
+      this.thumb = this.thumbSample;
     },
+  },
+  created() {
+    this.thumb = this.thumbSample;
   },
 };
 </script>
