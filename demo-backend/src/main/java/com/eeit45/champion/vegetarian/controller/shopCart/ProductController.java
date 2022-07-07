@@ -13,10 +13,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.io.IOException;
 import java.util.List;
 
     @Validated
@@ -115,4 +117,14 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+
+        @PostMapping("/fileUpload")
+        public void getBlogger(@RequestParam("file") MultipartFile file){
+            try {
+                file.transferTo(new java.io.File("G:\\Desktop\\檔案上傳測試地址\\"+file.getOriginalFilename()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            System.out.println("已上傳");
+        }
 }
