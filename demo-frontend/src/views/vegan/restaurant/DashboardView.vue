@@ -99,6 +99,7 @@ const resData = ref();
 const restaurantsTotal = ref();
 const newRestaurant = ref();
 
+//restaurantsTotal
 const getAxios = function () {
   axios
     .get(`http://${url}/restaurantList`, { params: { status: urlParams } })
@@ -113,13 +114,14 @@ const getAxios = function () {
 };
 getAxios();
 
-//取得餐廳資料的方法
+//newRestaurant
 const getRestaurant = function () {
   axios
-    .get(`http://${url}/restaurants`)
+    .get(`http://${url}/restaurantList`, { params: { status: urlParams } })
     .then((res) => {
       //獲取伺服器的回傳資料
       resData.value = res.data;
+      newRestaurant.value = res.data.total;
     })
     .catch((error) => {
       console.log(error, "失敗");
@@ -259,7 +261,7 @@ getRestaurant();
                 class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
                 href="javascript:void(0)"
               >
-                <span>詳細</span>
+                <a href="#newRestaurant">詳細</a>
                 <i
                   class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
                 ></i>
@@ -341,7 +343,7 @@ getRestaurant();
     <!-- END Statistics -->
 
     <!-- Recent Orders -->
-    <BaseBlock title="最新餐廳">
+    <BaseBlock title="最新餐廳" id="newRestaurant">
       <template #content>
         <div class="block-content block-content-full">
           <!-- Recent Orders Table -->
@@ -359,12 +361,12 @@ getRestaurant();
               </thead>
               <tbody class="fs-sm">
                 <tr>
-                  <td>{{}}</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <td>{{ restaurantNumber }}</td>
+                  <td>{{ restaurantName }}</td>
+                  <td>{{ restaurantAddress }}</td>
+                  <td>{{ restaurantCategory }}</td>
+                  <td>{{ restaurantType }}</td>
+                  <td>{{ restaurantScore }}</td>
                 </tr>
               </tbody>
             </table>

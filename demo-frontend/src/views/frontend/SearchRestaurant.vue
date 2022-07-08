@@ -43,31 +43,35 @@ const store = useTemplateStore();
                 </div>
                 <p class="space-x-1">
                   <span>搜尋:</span>
-                  <a href="#/frontend/SearchRestaurant">
-                    <span class="badge rounded-pill bg-black-50">中式</span></a
-                  >
                   <a href="#">
-                    <span class="badge rounded-pill bg-black-50">義式</span></a
-                  >
-                  <a href="#">
-                    <span class="badge rounded-pill bg-black-50">麵食</span></a
-                  >
-                  <a href="#">
-                    <span class="badge rounded-pill bg-black-50">印度</span></a
-                  >
-                  <a href="#">
-                    <span class="badge rounded-pill bg-black-50">美式</span></a
-                  >
-                  <a href="#">
-                    <span class="badge rounded-pill bg-black-50">日式</span></a
-                  >
-                  <a href="#">
-                    <span class="badge rounded-pill bg-black-50">簡餐</span></a
+                    <span class="badge rounded-pill bg-black-50">火鍋</span></a
                   >
                   <a href="#">
                     <span class="badge rounded-pill bg-black-50"
-                      >自助餐</span
+                      >早午餐</span
                     ></a
+                  >
+                  <a href="#">
+                    <span class="badge rounded-pill bg-black-50">屍體</span></a
+                  >
+                  <a href="#">
+                    <span class="badge rounded-pill bg-black-50">厭世</span></a
+                  >
+                  <a href="#">
+                    <span class="badge rounded-pill bg-black-50">地獄</span></a
+                  >
+                  <a href="#">
+                    <span class="badge rounded-pill bg-black-50"
+                      >吃到死</span
+                    ></a
+                  >
+                  <a href="#">
+                    <span class="badge rounded-pill bg-black-50"
+                      >飽到吐</span
+                    ></a
+                  >
+                  <a href="#">
+                    <span class="badge rounded-pill bg-black-50">Gary</span></a
                   >
                 </p>
               </div>
