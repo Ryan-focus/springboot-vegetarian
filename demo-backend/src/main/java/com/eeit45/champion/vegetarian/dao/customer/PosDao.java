@@ -1,10 +1,10 @@
 package com.eeit45.champion.vegetarian.dao.customer;
 
+import com.eeit45.champion.vegetarian.dto.customer.PosQueryParams;
 import com.eeit45.champion.vegetarian.dto.customer.PosRequest;
 import com.eeit45.champion.vegetarian.model.customer.Pos;
 import com.eeit45.champion.vegetarian.model.customer.PosBusiness;
 
-import java.text.ParseException;
 import java.util.List;
 
 public interface PosDao {
@@ -12,7 +12,7 @@ public interface PosDao {
 
     Integer buildPos(Integer businessId, PosRequest posRequest);
 
-    List<Pos> getAllPosList();
+    List<Pos> getAllPosList(PosQueryParams posQueryParams);
 
     List<PosBusiness> getPosBusinessByPosId(Integer posId);
 
@@ -20,5 +20,5 @@ public interface PosDao {
 
     Pos getPosByBusinessId(Integer businessId);
 
-    List<Pos> getStautsPos(String businessStatus);
+    Integer totalPos(PosQueryParams posQueryParams);
 }

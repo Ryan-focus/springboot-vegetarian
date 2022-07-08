@@ -1,293 +1,107 @@
 <script setup>
 // 已經宣告但從未使用過的Value (請勿刪除)
-import { reactive, ref } from "vue";
+import { ref } from "vue";
+import axios from "axios";
 
-// vue-chart-3, for more info and examples you can check out https://vue-chart-3.netlify.app/ and http://www.chartjs.org/docs/ -->
-import { LineChart, BarChart } from "vue-chart-3";
-import { Chart, registerables } from "chart.js";
+//預設傳值伺服器與[params]
+const url = "localhost:8088";
+//接收的資料ref
+const resData = ref();
+const total = ref();
+const passTotal = ref();
+const testTotal = ref();
+const rejectTotal = ref();
 
-Chart.register(...registerables);
-
-// Set Global Chart.js configuration
-Chart.defaults.color = "#818d96";
-Chart.defaults.scale.grid.lineWidth = 0;
-Chart.defaults.scale.beginAtZero = true;
-Chart.defaults.datasets.bar.maxBarThickness = 45;
-Chart.defaults.elements.bar.borderRadius = 4;
-Chart.defaults.elements.bar.borderSkipped = false;
-Chart.defaults.elements.point.radius = 0;
-Chart.defaults.elements.point.hoverRadius = 0;
-Chart.defaults.plugins.tooltip.radius = 3;
-Chart.defaults.plugins.legend.labels.boxWidth = 10;
-
-// Helper variables
-const orderSearch = ref(false);
-
-// Chart Earnings data
-const earningsData = reactive({
-  labels: ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"],
-  datasets: [
-    {
-      label: "This Week",
-      fill: true,
-      backgroundColor: "rgba(100, 116, 139, .7)",
-      borderColor: "transparent",
-      pointBackgroundColor: "rgba(100, 116, 139, 1)",
-      pointBorderColor: "#fff",
-      pointHoverBackgroundColor: "#fff",
-      pointHoverBorderColor: "rgba(100, 116, 139, 1)",
-      data: [716, 628, 1056, 560, 956, 890, 790],
-    },
-    {
-      label: "Last Week",
-      fill: true,
-      backgroundColor: "rgba(100, 116, 139, .15)",
-      borderColor: "transparent",
-      pointBackgroundColor: "rgba(100, 116, 139, 1)",
-      pointBorderColor: "#fff",
-      pointHoverBackgroundColor: "#fff",
-      pointHoverBorderColor: "rgba(100, 116, 139, 1)",
-      data: [1160, 923, 1052, 1300, 880, 926, 963],
-    },
-  ],
-});
-
-// Chart Earnings options
-const earningsOptions = reactive({
-  scales: {
-    x: {
-      display: false,
-      grid: {
-        drawBorder: false,
+//取得全部的order
+const getAxios = function () {
+  axios
+    .get(`http://${url}/pos`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+      total.value = res.data.total;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+//取得開通中的商家
+const getPass = function () {
+  axios
+    .get(`http://${url}/pos`, {
+      params: {
+        statusCategory: "開通中",
       },
-    },
-    y: {
-      display: false,
-      grid: {
-        drawBorder: false,
+    })
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      passTotal.value = res.data.total;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+//取得試用期中的商家
+const testUsing = function () {
+  var pass;
+  axios
+    .get(`http://${url}/pos`, {
+      params: {
+        statusCategory: "試用期7日",
       },
-    },
-  },
-  interaction: {
-    intersect: false,
-  },
-  plugins: {
-    legend: {
-      labels: {
-        boxHeight: 10,
-        font: {
-          size: 14,
-        },
+    })
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      pass = res.data.total;
+      if (res) {
+        axios
+          .get(`http://${url}/pos`, {
+            params: {
+              statusCategory: "試用期14日",
+            },
+          })
+          .then((res) => {
+            //獲取伺服器的回傳資料
+            testTotal.value = res.data.total + pass;
+          });
+      }
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+//取得未開通的商家
+const getReject = function () {
+  axios
+    .get(`http://${url}/pos`, {
+      params: {
+        statusCategory: "未開通",
       },
-    },
-    tooltip: {
-      callbacks: {
-        label: function (context) {
-          return context.dataset.label + ": $" + context.parsed.y;
-        },
-      },
-    },
-  },
-});
-
-// Chart Total Orders data
-const totalOrdersData = reactive({
-  labels: [
-    "MON",
-    "TUE",
-    "WED",
-    "THU",
-    "FRI",
-    "SAT",
-    "SUN",
-    "MON",
-    "TUE",
-    "WED",
-    "THU",
-    "FRI",
-    "SAT",
-    "SUN",
-  ],
-  datasets: [
-    {
-      label: "Total Orders",
-      fill: true,
-      backgroundColor: "rgba(220, 38, 38, .15)",
-      borderColor: "transparent",
-      pointBackgroundColor: "rgba(220, 38, 38, 1)",
-      pointBorderColor: "#fff",
-      pointHoverBackgroundColor: "#fff",
-      pointHoverBorderColor: "rgba(220, 38, 38, 1)",
-      data: [33, 29, 32, 37, 38, 30, 34, 28, 43, 45, 26, 45, 49, 39],
-    },
-  ],
-});
-
-// Chart Total Orders options
-const totalOrdersOptions = reactive({
-  maintainAspectRatio: false,
-  tension: 0.4,
-  scales: {
-    x: {
-      display: false,
-    },
-    y: {
-      display: false,
-    },
-  },
-  interaction: {
-    intersect: false,
-  },
-  plugins: {
-    legend: {
-      display: false,
-    },
-    tooltip: {
-      callbacks: {
-        label: function (context) {
-          return " " + context.parsed.y + " Orders";
-        },
-      },
-    },
-  },
-});
-
-// Chart Total Earnings data
-const totalEarningsData = reactive({
-  labels: [
-    "MON",
-    "TUE",
-    "WED",
-    "THU",
-    "FRI",
-    "SAT",
-    "SUN",
-    "MON",
-    "TUE",
-    "WED",
-    "THU",
-    "FRI",
-    "SAT",
-    "SUN",
-  ],
-  datasets: [
-    {
-      label: "Total Earnings",
-      fill: true,
-      backgroundColor: "rgba(101, 163, 13, .15)",
-      borderColor: "transparent",
-      pointBackgroundColor: "rgba(101, 163, 13, 1)",
-      pointBorderColor: "#fff",
-      pointHoverBackgroundColor: "#fff",
-      pointHoverBorderColor: "rgba(101, 163, 13, 1)",
-      data: [
-        716, 1185, 750, 1365, 956, 890, 1200, 968, 1158, 1025, 920, 1190, 720,
-        1352,
-      ],
-    },
-  ],
-});
-
-// Chart Total Earnings options
-const totalEarningsOptions = reactive({
-  maintainAspectRatio: false,
-  tension: 0.4,
-  scales: {
-    x: {
-      display: false,
-    },
-    y: {
-      display: false,
-    },
-  },
-  interaction: {
-    intersect: false,
-  },
-  plugins: {
-    legend: {
-      display: false,
-    },
-    tooltip: {
-      callbacks: {
-        label: function (context) {
-          return " $" + context.parsed.y;
-        },
-      },
-    },
-  },
-});
-
-// Chart New Customers data
-const newCustomersData = reactive({
-  labels: [
-    "MON",
-    "TUE",
-    "WED",
-    "THU",
-    "FRI",
-    "SAT",
-    "SUN",
-    "MON",
-    "TUE",
-    "WED",
-    "THU",
-    "FRI",
-    "SAT",
-    "SUN",
-  ],
-  datasets: [
-    {
-      label: "Total Orders",
-      fill: true,
-      backgroundColor: "rgba(101, 163, 13, .15)",
-      borderColor: "transparent",
-      pointBackgroundColor: "rgba(101, 163, 13, 1)",
-      pointBorderColor: "#fff",
-      pointHoverBackgroundColor: "#fff",
-      pointHoverBorderColor: "rgba(101, 163, 13, 1)",
-      data: [25, 15, 36, 14, 29, 19, 36, 41, 28, 26, 29, 33, 23, 41],
-    },
-  ],
-});
-
-// Chart New Customers options
-const newCustomersOptions = reactive({
-  maintainAspectRatio: false,
-  tension: 0.4,
-  scales: {
-    x: {
-      display: false,
-    },
-    y: {
-      display: false,
-    },
-  },
-  interaction: {
-    intersect: false,
-  },
-  plugins: {
-    legend: {
-      display: false,
-    },
-    tooltip: {
-      callbacks: {
-        label: function (context) {
-          return " " + context.parsed.y + " Customers";
-        },
-      },
-    },
-  },
-});
+    })
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      rejectTotal.value = res.data.total;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+//執行Axios
+getAxios();
+getPass();
+getReject();
+testUsing();
 </script>
 
 <template>
   <!-- Hero -->
+
   <div class="content">
     <div
       class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center py-2 text-center text-md-start"
     >
       <div class="flex-grow-1 mb-1 mb-md-0">
-        <h1 class="h3 fw-bold mb-2">食記管理</h1>
+        <h1 class="h3 fw-bold mb-2">預訂分析</h1>
         <h2 class="h6 fw-medium fw-medium text-muted mb-0">
           歡迎 管理員
           <RouterLink
@@ -358,16 +172,16 @@ const newCustomersOptions = reactive({
     <!-- Overview -->
     <div class="row items-push">
       <div class="col-sm-6 col-xxl-3">
-        <!-- 待處理訂單 Pending Orders  :to 購物車模板-->
+        <!-- 待處理訂單 全部合作商家 -->
         <BaseBlock class="d-flex flex-column h-100 mb-0">
           <template #content>
             <div
               class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
             >
               <dl class="mb-0">
-                <dt class="fs-3 fw-bold">30678</dt>
+                <dt class="fs-3 fw-bold">{{ total }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                  未審核訂單
+                  全部合作商家
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
@@ -379,7 +193,7 @@ const newCustomersOptions = reactive({
                 class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
                 href="javascript:void(0)"
               >
-                <span>查看全部訂單</span>
+                <span>查看全部合作商家</span>
                 <i
                   class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
                 ></i>
@@ -397,9 +211,9 @@ const newCustomersOptions = reactive({
               class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
             >
               <dl class="mb-0">
-                <dt class="fs-3 fw-bold">2266</dt>
+                <dt class="fs-3 fw-bold">{{ passTotal }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                  新註冊會員
+                  預訂功能開通中的商家
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
@@ -411,7 +225,7 @@ const newCustomersOptions = reactive({
                 class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
                 href="javascript:void(0)"
               >
-                <span>查看全部新會員</span>
+                <span>查看預訂功能開通中的商家</span>
                 <i
                   class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
                 ></i>
@@ -429,9 +243,9 @@ const newCustomersOptions = reactive({
               class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
             >
               <dl class="mb-0">
-                <dt class="fs-3 fw-bold">15575</dt>
+                <dt class="fs-3 fw-bold">{{ testTotal }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                  新食記
+                  在試用期中的商家
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
@@ -443,7 +257,7 @@ const newCustomersOptions = reactive({
                 class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
                 href="javascript:void(0)"
               >
-                <span>查看全部新食記</span>
+                <span>查看在試用期中的商家</span>
                 <i
                   class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
                 ></i>
@@ -461,9 +275,9 @@ const newCustomersOptions = reactive({
               class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
             >
               <dl class="mb-0">
-                <dt class="fs-3 fw-bold">15.99%</dt>
+                <dt class="fs-3 fw-bold">{{ rejectTotal }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                  消費轉換率
+                  未開通的商家
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
@@ -475,7 +289,7 @@ const newCustomersOptions = reactive({
                 class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
                 href="javascript:void(0)"
               >
-                <span>查看統計數據</span>
+                <span>查看未開通的商家</span>
                 <i
                   class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
                 ></i>
@@ -490,9 +304,9 @@ const newCustomersOptions = reactive({
 
     <!-- Statistics -->
     <div class="row">
-      <div class="col-xl-8 col-xxl-9 d-flex flex-column">
-        <!-- Earnings Summary -->
-        <BaseBlock
+      <!-- <div class="col-xl-8 col-xxl-9 d-flex flex-column"> -->
+      <!-- Earnings Summary -->
+      <!-- <BaseBlock
           title="Earnings Summary"
           class="flex-grow-1 d-flex flex-column"
         >
@@ -554,12 +368,12 @@ const newCustomersOptions = reactive({
               </div>
             </div>
           </template>
-        </BaseBlock>
-        <!-- END Earnings Summary -->
-      </div>
-      <div class="col-xl-4 col-xxl-3 d-flex flex-column">
-        <!-- Last 2 Weeks -->
-        <div class="row items-push flex-grow-1">
+        </BaseBlock> -->
+      <!-- END Earnings Summary -->
+      <!-- </div> -->
+      <!-- <div class="col-xl-4 col-xxl-3 d-flex flex-column"> -->
+      <!-- Last 2 Weeks -->
+      <!-- <div class="row items-push flex-grow-1">
           <div class="col-md-6 col-xl-12">
             <BaseBlock class="d-flex flex-column h-100 mb-0">
               <template #content>
@@ -643,25 +457,25 @@ const newCustomersOptions = reactive({
                     </div>
                   </div>
                 </div>
-                <div class="block-content p-1 text-center overflow-hidden">
-                  <!-- New Customers Chart Container -->
-                  <LineChart
+                <div class="block-content p-1 text-center overflow-hidden"> -->
+      <!-- New Customers Chart Container -->
+      <!-- <LineChart
                     :chart-data="newCustomersData"
                     :options="newCustomersOptions"
                     style="height: 90px"
                   />
                 </div>
               </template>
-            </BaseBlock>
-          </div>
-        </div>
-        <!-- END Last 2 Weeks -->
-      </div>
+            </BaseBlock> -->
+      <!-- </div> -->
+      <!-- </div> -->
+      <!-- END Last 2 Weeks -->
+      <!-- </div> -->
     </div>
     <!-- END Statistics -->
 
     <!-- Recent Orders -->
-    <BaseBlock title="最近訂單">
+    <!-- <BaseBlock title="最新商家審核申請">
       <template #options>
         <div class="space-x-1">
           <button
@@ -730,9 +544,9 @@ const newCustomersOptions = reactive({
           v-if="orderSearch"
           id="one-dashboard-search-orders"
           class="block-content border-bottom"
-        >
-          <!-- Search Form -->
-          <form @sumit.prevent>
+        >-->
+    <!-- Search Form -->
+    <!-- <form @sumit.prevent>
             <div class="push">
               <div class="input-group">
                 <input
@@ -747,12 +561,12 @@ const newCustomersOptions = reactive({
                 </span>
               </div>
             </div>
-          </form>
-          <!-- END Search Form -->
-        </div>
-        <div class="block-content block-content-full">
-          <!-- Recent Orders Table -->
-          <div class="table-responsive">
+          </form> -->
+    <!-- END Search Form -->
+    <!-- </div>
+        <div class="block-content block-content-full"> -->
+    <!-- Recent Orders Table -->
+    <!-- <div class="table-responsive">
             <table class="table table-hover table-vcenter">
               <thead>
                 <tr>
@@ -1056,12 +870,12 @@ const newCustomersOptions = reactive({
                 </tr>
               </tbody>
             </table>
-          </div>
-          <!-- END Recent Orders Table -->
-        </div>
-        <div class="block-content block-content-full bg-body-light">
-          <!-- Pagination -->
-          <nav aria-label="Photos Search Navigation">
+          </div> -->
+    <!-- END Recent Orders Table -->
+    <!-- </div> -->
+    <!-- <div class="block-content block-content-full bg-body-light"> -->
+    <!-- Pagination -->
+    <!-- <nav aria-label="Photos Search Navigation">
             <ul class="pagination pagination-sm justify-content-end mb-0">
               <li class="page-item">
                 <a
@@ -1095,11 +909,11 @@ const newCustomersOptions = reactive({
                 </a>
               </li>
             </ul>
-          </nav>
-          <!-- END Pagination -->
-        </div>
+          </nav> -->
+    <!-- END Pagination -->
+    <!-- </div>
       </template>
-    </BaseBlock>
+    </BaseBlock> -->
     <!-- END Recent Orders -->
   </div>
   <!-- END Page Content -->

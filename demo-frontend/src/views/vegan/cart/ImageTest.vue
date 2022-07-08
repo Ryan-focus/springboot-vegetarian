@@ -1,67 +1,103 @@
-<script setup>
-import { ref, reactive, computed, toRefs } from "vue";
-import axios from "axios";
-</script>
+<style>
+body {
+  font-family: "Nunito", sans-serif;
+  background: #000;
+  color: #fff;
+  display: grid;
+  place-items: center;
+  text-align: center;
+}
+#app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #fff;
+  margin-top: 60px;
+}
+#thumb {
+  height: 300px;
+}
+img {
+  border-radius: 0.5rem;
+}
+</style>
+
 <template>
+  <img src="https://i.imgur.com/X4z0q8g.png" />
+  <br /><br />
+  <input
+    v-show="!imgurURL"
+    type="file"
+    id="image_file"
+    @change="onFileChange"
+    class="imgur"
+    accept="image/*"
+    required
+  />
+  <button v-show="imgurURL" type="button" @click="refreshNewImg">
+    Upload New One
+  </button>
   <br />
-  <div class="container">
-    <div>
-      <h2>圖片上傳</h2>
-      <hr />
-      <label
-        >File
-        <input
-          ref="file"
-          type="file"
-          name="file"
-          accept="image/jpeg, image/png"
-          @change="handleFileUpload"
-        />
-      </label>
-      <br />
-      <button type="submit" class="btn btn-primary" @click="fileOutput">
-        Submit
-      </button>
-    </div>
-  </div>
+  <p>URL: {{ imgurURL }}</p>
+  <br />
+  <img :src="thumb" id="thumb" />
 </template>
 
-<!-- <script>
+<script>
+import axios from "axios";
 export default {
   data() {
     return {
-      file: [],
+      loading:
+        "https://i.pinimg.com/originals/a4/f2/cb/a4f2cb80ff2ae2772e80bf30e9d78d4c.gif",
+      thumbSample: "https://i.imgur.com/UoRevba.gif",
+      thumb: null,
+      imgurURL: null,
     };
   },
   methods: {
-    fileOutput() {
-      file = this.file;
+    onFileChange(event) {
+      let files = event.target.files || e.dataTransfer.files;
+      if (!files.length) {
+        return;
+      }
+
+      this.thumb = this.loading;
+      this.imgurURL = "Uploading...";
+
+      let formdata = new FormData();
+
+      formdata.append("image", files[0]);
+
+      axios
+        .post(`https://api.imgur.com/3/image`, formdata, {
+          headers: {
+            "Content-type": "application/x-www-form-urlencoded",
+            Authorization: "Client-ID b455d92782e5284",
+          },
+          onUploadProgress: (percentage) => {
+            let uploadPercent = Math.round(
+              (percentage.loaded / percentage.total) * 100
+            );
+            console.log(`Uploaded ${uploadPercent} %`);
+          },
+        })
+        .then((res) => {
+          console.log(res.data);
+          this.imgurURL = res.data.data.link;
+          this.thumb = res.data.data.link;
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    refreshNewImg() {
+      this.imgurURL = "";
+      document.getElementById("image_file").value = "";
+      this.thumb = this.thumbSample;
     },
   },
-};
-
-const id = "66438a9adb39fba"; // 填入 App 的 Client ID
-const token = "50b0002237bd4a0296303edf550fda2ad07189a6"; // 填入 token
-// const album = "XXXX"; // 若要指定傳到某個相簿，就填入相簿的 ID
-
-let formData = new FormData();
-formData.append("image", this.file); //required
-formData.append("title", "test"); //optional
-formData.append("description", "test"); //optional
-axios({
-  method: "POST",
-  url: "https://api.imgur.com/3/image",
-  data: formData,
-  headers: {
-    Authorization:
-      "66438a9adb39fba" + "50b0002237bd4a0296303edf550fda2ad07189a6", //放置你剛剛申請的Client-ID
+  created() {
+    this.thumb = this.thumbSample;
   },
-  mimeType: "multipart/form-data",
-})
-  .then((res) => {
-    console.log(res);
-  })
-  .catch((e) => {
-    console.log(e);
-  });
-</script> -->
+};
+</script>

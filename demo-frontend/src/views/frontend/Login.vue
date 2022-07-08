@@ -86,7 +86,7 @@ async function onSubmit() {
               <p class="fw-medium text-muted">愛蔬網是有279個用戶的美食平台</p>
               <p>點擊下方按鈕登入以繼續</p>
               <p>登入後即代表您已閱讀並且</p>
-              同意<a>服務條款</a>及<a>隱私政策</a>
+              同意<a href="#">服務條款</a>及<a href="#">隱私政策</a>
 
               <!-- Sign In Form -->
               <form @submit.prevent="onSubmit" @submit="login">
@@ -157,6 +157,17 @@ async function onSubmit() {
                       <b>登入</b>
                     </button>
                   </div>
+
+                  <div class="col-md-6 col-xl-5">
+                    <RouterLink
+                      :to="{ name: 'userRegister' }"
+                      class="btn w-100 btn-alt-primary"
+                    >
+                      <i class="fa fa-fw fa-sign-in-alt me-1 opacity-50">
+                        <b>註冊</b></i
+                      >
+                    </RouterLink>
+                  </div>
                 </div>
               </form>
               <!-- END Sign In Form -->
@@ -195,7 +206,6 @@ export default {
       axios
         .post("http://localhost:8088/login", user)
         .then(function (response) {
-          // let _this = this
           console.log(response.data);
           if (response.status === 200) {
             localStorage.setItem("access-admin", JSON.stringify(response.data));
@@ -204,8 +214,15 @@ export default {
             Swal.fire("登入成功 ~", "｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡", "success");
           }
         })
-        .catch((error) => {
-          Swal.fire("登入失敗!", "(〒︿〒)", "error");
+        .catch(function (error) {
+          if (error.response.status === 401) {
+            Swal.fire("登入失敗,帳號異常", "∑(￣□￣;)", "error");
+          } else if (error.response.status === 400) {
+            Swal.fire("登入失敗,帳號或密碼錯誤", "(〒︿〒)", "error");
+          } else {
+            console.log(error.response.status); // 印錯誤狀態代碼
+            console.log(error.response.data.error); // 印錯誤內容
+          }
         });
     },
   },
