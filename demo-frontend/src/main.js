@@ -28,9 +28,8 @@ axios.defaults.withCredentials = false;
 axios.defaults.timeout = 5000;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-import VueSweetalert2 from "vue-sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
-app.use(VueSweetalert2);
+
 // Register global components
 app.component("BaseBlock", BaseBlock);
 app.component("BaseBackground", BaseBackground);

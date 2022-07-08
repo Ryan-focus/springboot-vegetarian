@@ -47,8 +47,8 @@ const editorConfig = ref({});
 
 // Input state variables
 const state = reactive({
-  title :null,
-  postedText :null,
+  title: null,
+  postedText: null,
   category: null,
 });
 
@@ -60,7 +60,6 @@ const options = reactive([
   { value: "奶素", text: "奶素" },
   { value: "蛋奶素", text: "蛋奶素" },
   { value: "五辛素", text: "五辛素" },
-
 ]);
 
 // Validation rules
@@ -76,9 +75,8 @@ const rules = computed(() => {
     email: {
       required,
       email,
-    
-  }
-  }
+    },
+  };
 });
 
 // Use vuelidate
@@ -96,7 +94,7 @@ async function onSubmit() {
   // perform async actions
 }
 
-function sendPost(title,postedText) {
+function sendPost(title, postedText) {
   //   const imagefile = document.querySelector("#example-file-input").files[0]
   // let forms = new FormData();
   // forms.append("title", title);
@@ -109,18 +107,22 @@ function sendPost(title,postedText) {
   // };
 
   axios
-    .postForm(`http://${url}/PostNew`,{
-      "title": title,
-      "postImage":document.querySelector("#example-file-input").files[0],
-      "postedText": postedText 
+    .postForm(`http://${url}/PostNew`, {
+      title: title,
+      postImage: document.querySelector("#example-file-input").files[0],
+      postedText: postedText,
     })
     .then((res) => {
       console.log(res);
-      Swal.fire("發表成功");
+      Swal.fire({
+        // title: "Auto close alert!",
+        text: "發表成功",
+        timer: 500,
+        type: "success",
+      });
       window.setTimeout(function () {
-               window.location.href="http://localhost:8080/#/post";
-            }, 1000);
-     
+        window.location.href = "http://localhost:8080/#/post";
+      }, 1000);
     })
     .catch((error) => {
       console.log(error, "失敗");
@@ -160,10 +162,9 @@ function sendPost(title,postedText) {
       <div class="col-lg-9">
         <!-- Basic -->
         <form
-         @submit.prevent="onSubmit"
+          @submit.prevent="onSubmit"
           method="post"
           enctype="multipart/form-data"
-          
         >
           <BaseBlock title=" " content-full>
             <div class="row push">
@@ -210,20 +211,20 @@ function sendPost(title,postedText) {
                     @blur="v$.category.$touch"
                     v-model="state.category"
                   >
-                  <option
-                  v-for="(option, index) in options"
-                  :value="option.value"
-                  :key="`option-${index}`"
-                >
-                  {{ option.text }}
-                </option>
-              </select>
-              <div
-                v-if="v$.category.$errors.length"
-                class="invalid-feedback animated fadeIn"
-              >
-                請選擇文章分類!
-              </div>
+                    <option
+                      v-for="(option, index) in options"
+                      :value="option.value"
+                      :key="`option-${index}`"
+                    >
+                      {{ option.text }}
+                    </option>
+                  </select>
+                  <div
+                    v-if="v$.category.$errors.length"
+                    class="invalid-feedback animated fadeIn"
+                  >
+                    請選擇文章分類!
+                  </div>
                 </div>
 
                 <!-- 圖片上傳開始-->
@@ -242,7 +243,7 @@ function sendPost(title,postedText) {
                     </div>
                   </div>
                 </div>
-                
+
                 <!-- 產品CK editor -->
                 <div class="mb-4">
                   <label class="form-label" for="example-select"
@@ -259,7 +260,7 @@ function sendPost(title,postedText) {
                     <button
                       type="submit"
                       class="btn btn-alt-primary"
-                      @click="sendPost(state.title,resPostText)"
+                      @click="sendPost(state.title, resPostText)"
                     >
                       送出文章
                     </button>
@@ -271,7 +272,6 @@ function sendPost(title,postedText) {
           <!-- END Basic -->
         </form>
       </div>
-      
     </div>
   </div>
 </template>
