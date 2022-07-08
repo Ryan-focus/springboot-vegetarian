@@ -441,7 +441,7 @@ th.sort {
                               <div class="space-x-2">
                                 <a
                                   class="btn btn-sm btn-alt-secondary"
-                                  href="#/backend/cart/imageTest"
+                                  href="#/backend/cart/imageUpload"
                                 >
                                   <i
                                     class="fa fa-pencil-alt text-primary me-1"

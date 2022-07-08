@@ -9,8 +9,11 @@ import com.eeit45.champion.vegetarian.service.shopCart.ProductService;
 import com.eeit45.champion.vegetarian.util.Page;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -120,16 +123,4 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
-
-        @PostMapping("/fileUpload")
-        public void getBlogger(@RequestParam("file") MultipartFile file){
-            try {
-                String fileLocation = new File("src/main/resources/images").getAbsolutePath() + "/" + file.getOriginalFilename();
-               file.transferTo(new File(fileLocation));
-                System.out.println("有");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            System.out.println("已上傳");
-        }
 }
