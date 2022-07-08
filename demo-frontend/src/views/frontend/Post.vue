@@ -158,28 +158,33 @@ const productsTotal = ref();
           link-shadow
         >
           <template #content>
-            <div class="card" style="width: 18rem">
-              <img
-                src="//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/5303563/0/637907333568370000?v=1"
-                class="card-img-top"
-                alt="［素日子］好日子家常素肉圓 （不含醬料）（150g＊3顆）"
-              />
-              <div class="card-body">
-                <h5 class="card-title">
-                  ［素日子］好日子家常素肉圓 （不含醬料）（150g＊3顆）
-                </h5>
+            <div class="block-header">
+              <!-- <h3 class="block-title">Developer</h3> -->
+              <BaseBlock content-full>
+                <img
+                  loading="lazy"
+                  class="d-inline"
+                  src="//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/5303563/0/637907333568370000?v=1"
+                  alt="［素日子］好日子家常素肉圓 （不含醬料）（150g＊3顆）"
+                  style="width: 100%; margin-right: 1px; margin-bottom: 0px"
+                />
+              </BaseBlock>
+            </div>
+            <div class="block-content bg-body-light">
+              <div class="fs-sm py-2">
+                <p>［素日子］好日子家常素肉圓 （不含醬料）（150g＊3顆）</p>
                 <p>
                   <small><s>NT$185</s></small>
                 </p>
                 <p>NT$180</p>
-                <div class="block-content bg-body-light">
-                  <div class="sc-fzXfOz jRhlbT">
-                    <span class="d-inline"><i class="far fa-heart"></i></span>
-                    <span class="d-inline"
-                      ><i class="fa fa-cart-shopping"></i
-                    ></span>
-                  </div>
-                </div>
+              </div>
+            </div>
+            <div class="block-content bg-body-light">
+              <div class="sc-fzXfOz jRhlbT">
+                <span class="d-inline"><i class="far fa-heart"></i></span>
+                <span class="d-inline"
+                  ><i class="fa fa-cart-shopping"></i
+                ></span>
               </div>
             </div>
           </template>
@@ -193,28 +198,33 @@ const productsTotal = ref();
           link-shadow
         >
           <template #content>
-            <div class="card" style="width: 18rem">
-              <img
-                src="//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/5303563/0/637907333568370000?v=1"
-                class="card-img-top"
-                alt="［素日子］好日子家常素肉圓 （不含醬料）（150g＊3顆）"
-              />
-              <div class="card-body">
-                <h5 class="card-title">
-                  ［素日子］好日子家常素肉圓 （不含醬料）（150g＊3顆）
-                </h5>
+            <div class="block-header">
+              <!-- <h3 class="block-title">Developer</h3> -->
+              <BaseBlock content-full>
+                <img
+                  loading="lazy"
+                  class="d-inline"
+                  src="//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/5303563/0/637907333568370000?v=1"
+                  alt="［素日子］好日子家常素肉圓 （不含醬料）（150g＊3顆）"
+                  style="width: 100%; margin-right: 1px; margin-bottom: 0px"
+                />
+              </BaseBlock>
+            </div>
+            <div class="block-content bg-body-light">
+              <div class="fs-sm py-2">
+                <p>［素日子］好日子家常素肉圓 （不含醬料）（150g＊3顆）</p>
                 <p>
                   <small><s>NT$185</s></small>
                 </p>
                 <p>NT$180</p>
-                <div class="block-content bg-body-light">
-                  <div class="sc-fzXfOz jRhlbT">
-                    <span class="d-inline"><i class="far fa-heart"></i></span>
-                    <span class="d-inline"
-                      ><i class="fa fa-cart-shopping"></i
-                    ></span>
-                  </div>
-                </div>
+              </div>
+            </div>
+            <div class="block-content bg-body-light">
+              <div class="sc-fzXfOz jRhlbT">
+                <span class="d-inline"><i class="far fa-heart"></i></span>
+                <span class="d-inline"
+                  ><i class="fa fa-cart-shopping"></i
+                ></span>
               </div>
             </div>
           </template>
@@ -228,28 +238,33 @@ const productsTotal = ref();
           link-shadow
         >
           <template #content>
-            <div class="card" style="width: 18rem">
-              <img
-                src="//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/5303563/0/637907333568370000?v=1"
-                class="card-img-top"
-                alt="［素日子］好日子家常素肉圓 （不含醬料）（150g＊3顆）"
-              />
-              <div class="card-body">
-                <h5 class="card-title">
-                  ［素日子］好日子家常素肉圓 （不含醬料）（150g＊3顆）
-                </h5>
+            <div class="block-header">
+              <!-- <h3 class="block-title">Developer</h3> -->
+              <BaseBlock content-full>
+                <img
+                  loading="lazy"
+                  class="d-inline"
+                  src="//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/5303563/0/637907333568370000?v=1"
+                  alt="［素日子］好日子家常素肉圓 （不含醬料）（150g＊3顆）"
+                  style="width: 100%; margin-right: 1px; margin-bottom: 0px"
+                />
+              </BaseBlock>
+            </div>
+            <div class="block-content bg-body-light">
+              <div class="fs-sm py-2">
+                <p>［素日子］好日子家常素肉圓 （不含醬料）（150g＊3顆）</p>
                 <p>
                   <small><s>NT$185</s></small>
                 </p>
                 <p>NT$180</p>
-                <div class="block-content bg-body-light">
-                  <div class="sc-fzXfOz jRhlbT">
-                    <span class="d-inline"><i class="far fa-heart"></i></span>
-                    <span class="d-inline"
-                      ><i class="fa fa-cart-shopping"></i
-                    ></span>
-                  </div>
-                </div>
+              </div>
+            </div>
+            <div class="block-content bg-body-light">
+              <div class="sc-fzXfOz jRhlbT">
+                <span class="d-inline"><i class="far fa-heart"></i></span>
+                <span class="d-inline"
+                  ><i class="fa fa-cart-shopping"></i
+                ></span>
               </div>
             </div>
           </template>
@@ -263,28 +278,33 @@ const productsTotal = ref();
           link-shadow
         >
           <template #content>
-            <div class="card" style="width: 18rem">
-              <img
-                src="//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/5303563/0/637907333568370000?v=1"
-                class="card-img-top"
-                alt="［素日子］好日子家常素肉圓 （不含醬料）（150g＊3顆）"
-              />
-              <div class="card-body">
-                <h5 class="card-title">
-                  ［素日子］好日子家常素肉圓 （不含醬料）（150g＊3顆）
-                </h5>
+            <div class="block-header">
+              <!-- <h3 class="block-title">Developer</h3> -->
+              <BaseBlock content-full>
+                <img
+                  loading="lazy"
+                  class="d-inline"
+                  src="//diz36nn4q02zr.cloudfront.net/webapi/imagesV3/Cropped/SalePage/5303563/0/637907333568370000?v=1"
+                  alt="［素日子］好日子家常素肉圓 （不含醬料）（150g＊3顆）"
+                  style="width: 100%; margin-right: 1px; margin-bottom: 0px"
+                />
+              </BaseBlock>
+            </div>
+            <div class="block-content bg-body-light">
+              <div class="fs-sm py-2">
+                <p>［素日子］好日子家常素肉圓 （不含醬料）（150g＊3顆）</p>
                 <p>
                   <small><s>NT$185</s></small>
                 </p>
                 <p>NT$180</p>
-                <div class="block-content bg-body-light">
-                  <div class="sc-fzXfOz jRhlbT">
-                    <span class="d-inline"><i class="far fa-heart"></i></span>
-                    <span class="d-inline"
-                      ><i class="fa fa-cart-shopping"></i
-                    ></span>
-                  </div>
-                </div>
+              </div>
+            </div>
+            <div class="block-content bg-body-light">
+              <div class="sc-fzXfOz jRhlbT">
+                <span class="d-inline"><i class="far fa-heart"></i></span>
+                <span class="d-inline"
+                  ><i class="fa fa-cart-shopping"></i
+                ></span>
               </div>
             </div>
           </template>
