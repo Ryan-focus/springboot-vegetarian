@@ -6,6 +6,7 @@
 <script setup>
 import { ref, reactive, computed, onBeforeUnmount } from "vue";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
 import useVuelidate from "@vuelidate/core";
@@ -46,71 +47,34 @@ const editorConfig = ref({});
 
 // Input state variables
 const state = reactive({
-  username: null,
-  email: null,
-  password: null,
-  confirmPassword: null,
-  suggestions: null,
-  skill: null,
-  currency: null,
-  website: null,
-  digits: null,
-  number: null,
-  range: null,
-  terms: null,
-  select: null,
+  title: null,
+  postedText: null,
+  category: null,
 });
+
+// Example options for select
+const options = reactive([
+  { value: null, text: "請選擇" },
+  { value: "全素", text: "全素" },
+  { value: "蛋素", text: "蛋素" },
+  { value: "奶素", text: "奶素" },
+  { value: "蛋奶素", text: "蛋奶素" },
+  { value: "五辛素", text: "五辛素" },
+]);
 
 // Validation rules
 const rules = computed(() => {
   return {
-    username: {
+    title: {
       required,
       minLength: minLength(1),
     },
-    select: {
+    category: {
       required,
     },
     email: {
       required,
       email,
-    },
-    password: {
-      required,
-      minLength: minLength(5),
-    },
-    confirmPassword: {
-      required,
-      sameAs: sameAs(state.password),
-    },
-    suggestions: {
-      required,
-      minLength: minLength(3),
-    },
-    skill: {
-      required,
-    },
-    currency: {
-      required,
-      decimal,
-    },
-    website: {
-      required,
-    },
-    digits: {
-      required,
-      integer,
-    },
-    number: {
-      required,
-      decimal,
-    },
-    range: {
-      required,
-      between: between(1, 5),
-    },
-    terms: {
-      sameAs: sameAs(true),
     },
   };
 });
@@ -130,22 +94,35 @@ async function onSubmit() {
   // perform async actions
 }
 
-const imagefile = document.querySelector("#example-file-input");
-function sendPost() {
-  let forms = new FormData();
-  forms.append("title", resPostTitle);
-  forms.append("postedText", resPostText);
-  forms.append("imgurl", imagefile);
-  let config = {
-    headers: {
-      "Content-Type": "multipart/form-data",
-    },
-  };
+function sendPost(title, postedText) {
+  //   const imagefile = document.querySelector("#example-file-input").files[0]
+  // let forms = new FormData();
+  // forms.append("title", title);
+  // forms.append("postedText", postedText);
+  // forms.append("imgurl", imagefile);
+  // let config = {
+  //   headers: {
+  //     "Content-Type": "multipart/form-data",
+  //   },
+  // };
 
   axios
-    .post(`http://${url}/PostNew`, forms, config)
+    .postForm(`http://${url}/PostNew`, {
+      title: title,
+      postImage: document.querySelector("#example-file-input").files[0],
+      postedText: postedText,
+    })
     .then((res) => {
       console.log(res);
+      Swal.fire({
+        // title: "Auto close alert!",
+        text: "發表成功",
+        timer: 500,
+        type: "success",
+      });
+      window.setTimeout(function () {
+        window.location.href = "http://localhost:8080/#/post";
+      }, 1000);
     })
     .catch((error) => {
       console.log(error, "失敗");
@@ -182,7 +159,7 @@ function sendPost() {
   <!-- Page Content -->
   <div class="content">
     <div class="row">
-      <div class="col-lg-8">
+      <div class="col-lg-9">
         <!-- Basic -->
         <form
           @submit.prevent="onSubmit"
@@ -192,7 +169,7 @@ function sendPost() {
           <BaseBlock title=" " content-full>
             <div class="row push">
               <div class="col-lg-12">
-                <p class="fs-sm text-muted">請盡量填寫完整資訊</p>
+                <p class="fs-sm text-muted"></p>
               </div>
               <div class="col-lg-4 col-xl-12">
                 <!-- 商品名稱開始 -->
@@ -205,13 +182,13 @@ function sendPost() {
                     id="val-username"
                     class="form-control"
                     :class="{
-                      'is-invalid': v$.username.$errors.length,
+                      'is-invalid': v$.title.$errors.length,
                     }"
-                    v-model="resPostTitle"
-                    @blur="v$.username.$touch"
+                    v-model="state.title"
+                    @blur="v$.title.$touch"
                   />
                   <div
-                    v-if="v$.username.$errors.length"
+                    v-if="v$.title.$errors.length"
                     class="invalid-feedback animated fadeIn"
                   >
                     請輸入文章標題
@@ -221,7 +198,7 @@ function sendPost() {
                 <!-- 素食種類開始 -->
                 <div class="mb-4">
                   <label class="form-label" for="example-select"
-                    >選擇文章分類</label
+                    >文章分類</label
                   >
                   <select
                     class="form-select"
@@ -229,24 +206,24 @@ function sendPost() {
                     name="example-select"
                     required
                     :class="{
-                      'is-invalid': v$.select.$errors.length,
+                      'is-invalid': v$.category.$errors.length,
                     }"
-                    @blur="v$.select.$touch"
-                    v-model="resPostStatus"
+                    @blur="v$.category.$touch"
+                    v-model="state.category"
                   >
-                    <option selected>請選擇</option>
-                    <option value="全素">全素</option>
-                    <option value="蛋素">蛋素</option>
-                    <option value="奶素">奶素</option>
-                    <option value="蛋奶素">蛋奶素</option>
-                    <option value="五辛素">五辛素</option>
+                    <option
+                      v-for="(option, index) in options"
+                      :value="option.value"
+                      :key="`option-${index}`"
+                    >
+                      {{ option.text }}
+                    </option>
                   </select>
-
                   <div
+                    v-if="v$.category.$errors.length"
                     class="invalid-feedback animated fadeIn"
-                    v-if="v$.select.$errors.length"
                   >
-                    請選擇分類
+                    請選擇文章分類!
                   </div>
                 </div>
 
@@ -266,21 +243,7 @@ function sendPost() {
                     </div>
                   </div>
                 </div>
-                <!-- Example -->
-                <h2 class="content-heading border-bottom mb-4 pb-2">
-                  Asynchronous File Uploads
-                </h2>
-                <div class="row push">
-                  <div class="col-lg-4">
-                    <p class="fs-sm text-muted">
-                      Drag and drop sections for your file uploads
-                    </p>
-                  </div>
-                  <div class="col-lg-8 col-xl-6">
-                    <form id="dropzoneForm" class="dropzone"></form>
-                  </div>
-                </div>
-                <!-- END Example -->
+
                 <!-- 產品CK editor -->
                 <div class="mb-4">
                   <label class="form-label" for="example-select"
@@ -297,7 +260,7 @@ function sendPost() {
                     <button
                       type="submit"
                       class="btn btn-alt-primary"
-                      @click="sendPost()"
+                      @click="sendPost(state.title, resPostText)"
                     >
                       送出文章
                     </button>
@@ -308,11 +271,6 @@ function sendPost() {
           </BaseBlock>
           <!-- END Basic -->
         </form>
-      </div>
-      <div class="col-md-4">
-        <BaseBlock title="Title" subtitle="Subtitle" :rounded="false" bordered>
-          <p>Bordered block with header background..</p>
-        </BaseBlock>
       </div>
     </div>
   </div>

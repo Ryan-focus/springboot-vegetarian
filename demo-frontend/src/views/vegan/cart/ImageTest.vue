@@ -1,26 +1,3 @@
-<style>
-body {
-  font-family: "Nunito", sans-serif;
-  background: #000;
-  color: #fff;
-  display: grid;
-  place-items: center;
-  text-align: center;
-}
-#app {
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  color: #fff;
-  margin-top: 60px;
-}
-#thumb {
-  height: 300px;
-}
-img {
-  border-radius: 0.5rem;
-}
-</style>
-
 <template>
   <img src="https://i.imgur.com/X4z0q8g.png" />
   <br /><br />

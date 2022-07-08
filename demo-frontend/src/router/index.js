@@ -13,7 +13,9 @@ import LayoutBackendMegaMenu from "@/layouts/variations/BackendMegaMenu.vue";
 // Frontend: Index
 const Index = () => import("@/views/frontend/Index.vue");
 const Login = () => import("@/views/frontend/Login.vue");
+const UserRegister = () => import("@/views/frontend/Register.vue");
 const ShoppingCart = () => import("@/views/frontend/ShoppingCart.vue");
+const Post = () => import("@/views/frontend/Post.vue");
 
 // Backend Boxed: Dashboard
 const BackendBoxedDashboard = () =>
@@ -61,6 +63,7 @@ const VeganCartOrderInfo = () => import("@/views/vegan/cart/OrderInfo.vue");
 const VeganCartInsertProduct = () =>
   import("@/views/vegan/cart/InsertProduct.vue");
 const VeganImageTest = () => import("@/views/vegan/cart/ImageTest.vue");
+const VeganImagUpload = () => import("@/views/vegan/cart/imageUpload.vue");
 
 //愛蔬網後台: reserve
 const VeganReserveDashboard = () =>
@@ -282,9 +285,19 @@ const routes = [
         component: Login,
       },
       {
+        path: "/user/register",
+        name: "userRegister",
+        component: UserRegister,
+      },
+      {
         path: "/shopping",
         name: "shoppingCart",
         component: ShoppingCart,
+      },
+      {
+        path: "/post",
+        name: "postIndex",
+        component: Post,
       },
     ],
   },
@@ -483,6 +496,11 @@ const routes = [
             path: "imageTest",
             name: "backend-cart-image-test",
             component: VeganImageTest,
+          },
+          {
+            path: "imageUpload",
+            name: "backend-cart-image-upload",
+            component: VeganImagUpload,
           },
         ],
       },

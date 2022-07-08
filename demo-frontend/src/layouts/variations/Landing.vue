@@ -33,13 +33,16 @@ store.mainContent({ mode: "boxed" });
     <!-- Using the available v-slot, we can override the default Side Overlay content from layouts/partials/Header.vue -->
     <template #header-content-left>
       <!-- Logo -->
+
       <RouterLink
         :to="{ name: 'index' }"
         class="fw-bold fs-lg tracking-wider text-dual me-2"
       >
-        <h1 class=".h1 mt-2 mt-lg-0">愛蔬網</h1>
-        <!-- <span class="fw-normal"></span> -->
+        <span class="smini-hide fs-3 tracking-wider">
+          <img src="/assets/media/vegan/logo.png" alt="..." class="w-50" />
+        </span>
       </RouterLink>
+
       <!-- END Logo -->
     </template>
     <!-- END Header Content Left -->
