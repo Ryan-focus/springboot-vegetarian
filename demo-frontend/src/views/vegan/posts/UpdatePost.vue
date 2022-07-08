@@ -6,6 +6,7 @@
 <script setup>
 import { ref, reactive, computed, onBeforeUnmount } from "vue";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
 import useVuelidate from "@vuelidate/core";
@@ -115,6 +116,11 @@ function sendPost(title,postedText) {
     })
     .then((res) => {
       console.log(res);
+      Swal.fire("發表成功");
+      window.setTimeout(function () {
+               window.location.href="http://localhost:8080/#/post";
+            }, 1000);
+     
     })
     .catch((error) => {
       console.log(error, "失敗");
