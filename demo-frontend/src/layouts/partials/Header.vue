@@ -40,9 +40,9 @@ onUnmounted(() => {
 //登出
 function logout() {
   // this.admin = null;
-  localStorage.removeItem('access-admin');
+  localStorage.removeItem("access-admin");
   location.replace("http://localhost:8080/#/"); //登出後防止返回上頁
-  Swal.fire('您已登出 ', 'ﾚ(ﾟ∀ﾟ;)ﾍ=З=З=З', 'info');
+  Swal.fire("您已登出 ", "ﾚ(ﾟ∀ﾟ;)ﾍ=З=З=З", "info");
 }
 </script>
 
@@ -143,7 +143,9 @@ function logout() {
                     alt="Header Avatar"
                     style="width: 21px"
                   />
-                  <span class="d-none d-sm-inline-block ms-2">{{admin.data.user.userName}}</span>
+                  <span class="d-none d-sm-inline-block ms-2">{{
+                    admin.data.user.userName
+                  }}</span>
                   <i
                     class="fa fa-fw fa-angle-down d-none d-sm-inline-block opacity-50 ms-1 mt-1"
                   ></i>
@@ -160,7 +162,9 @@ function logout() {
                       src="/assets/media/avatars/avatar10.jpg"
                       alt="Header Avatar"
                     />
-                    <p class="mt-2 mb-0 fw-medium">{{admin.data.user.userName}}</p>
+                    <p class="mt-2 mb-0 fw-medium">
+                      {{ admin.data.user.userName }}
+                    </p>
                     <p class="mb-0 text-muted fs-sm fw-medium">Web Developer</p>
                   </div>
                   <div class="p-2">
@@ -193,11 +197,12 @@ function logout() {
                     >
                       <span class="fs-sm fw-medium">Lock Account</span>
                     </RouterLink>
-                    <RouterLink @click="logout()"
+                    <RouterLink
+                      @click="logout()"
                       :to="{ name: '' }"
                       class="dropdown-item d-flex align-items-center justify-content-between"
                     >
-                      <span class="fs-sm fw-medium">Log Out</span>
+                      <span class="fs-sm fw-medium">登出</span>
                     </RouterLink>
                   </div>
                 </div>
@@ -345,11 +350,11 @@ function logout() {
 export default {
   data() {
     return {
-      admin: ''
-    }
+      admin: "",
+    };
   },
   created() {
-    this.admin = JSON.parse(window.localStorage.getItem('access-admin'))
-  }
-}
+    this.admin = JSON.parse(window.localStorage.getItem("access-admin"));
+  },
+};
 </script>
