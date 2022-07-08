@@ -34,7 +34,6 @@ function fileUpload() {
     <h4>圖片上傳</h4>
     <input class="form-control" id="input" type="file" ref="myFile" />
     <div>
-      <img :src="image.imageUrl" alt="..." />
       <div
         class="imagePreviewWrapper"
         :style="{ 'background-image': `url(${previewImage})` }"
@@ -44,5 +43,7 @@ function fileUpload() {
 
       <button class="btn btn-alt-primary" @click="fileUpload()">Submit</button>
     </div>
+    <br />
+    <img :src="image.imageUrl" />
   </div>
 </template>
