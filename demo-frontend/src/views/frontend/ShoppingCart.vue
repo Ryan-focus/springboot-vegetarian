@@ -10,20 +10,20 @@ const urlParams = "warning";
 const resData = ref();
 const productsTotal = ref();
 
-// const getAxios = function () {
-//   axios
-//     .get(`http://${url}/products`, { params: { status: urlParams } })
-//     .then((res) => {
-//       //獲取伺服器的回傳資料
-//       resData.value = res.data;
-//       productsTotal.value = res.data.total;
-//     })
-//     .catch((error) => {
-//       console.log(error, "失敗");
-//     });
-// };
-//執行Axios
-// getAxios();
+const getAxios = function () {
+  axios
+    .get(`http://${url}/products`, { params: { status: urlParams } })
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+      productsTotal.value = res.data.total;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+// 執行Axios;
+getAxios();
 // For Filters
 </script>
 <template>

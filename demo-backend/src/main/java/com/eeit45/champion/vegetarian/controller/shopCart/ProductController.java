@@ -18,10 +18,13 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
-    @Validated
+@Validated
 @RestController
 public class ProductController {
 
@@ -121,7 +124,9 @@ public class ProductController {
         @PostMapping("/fileUpload")
         public void getBlogger(@RequestParam("file") MultipartFile file){
             try {
-                file.transferTo(new java.io.File("G:\\Desktop\\檔案上傳測試地址\\"+file.getOriginalFilename()));
+                String fileLocation = new File("src/main/resources/images").getAbsolutePath() + "/" + file.getOriginalFilename();
+               file.transferTo(new File(fileLocation));
+                System.out.println("有");
             } catch (IOException e) {
                 e.printStackTrace();
             }
