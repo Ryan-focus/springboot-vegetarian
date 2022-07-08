@@ -65,7 +65,8 @@ async function onSubmit() {
           <!-- Sign In Block -->
           <BaseBlock title="登入" class="mb-0">
             <template #options>
-              <RouterLink :to="{ name: 'auth-reminder' }" class="btn-block-option fs-sm"><b>忘記密碼?</b></RouterLink>
+              <RouterLink :to="{ name: '' }" class="btn-block-option fs-sm" @click="forgetPassword"><b>忘記密碼?</b>
+              </RouterLink>
               <RouterLink :to="{ name: 'auth-signup' }" class="btn-block-option">
                 <i class="fa fa-user-plus"></i>
               </RouterLink>
@@ -177,6 +178,41 @@ export default {
           }
         })
     },
+    forgetPassword() {
+      const user = {
+        account: this.state.account,
+        password: this.state.password,
+      };
+      var email = document.getElementById("login-username").value;
+
+      Swal.fire({
+        title: "忘記密碼?",
+        text: `發送密碼信至${email},原本密碼將被覆蓋,請確認`,
+        showCancelButton: true,
+        confirmButtonText: "確認",
+        cancelButtonText: '取消',
+        showLoaderOnConfirm: true,
+        allowOutsideClick: false,
+
+        preConfirm: async () => {
+          return axios.post("http://localhost:8088/user/sendMail", user)
+            .then(response => {
+              if (response.status === 200) {
+                Swal.fire(`密碼信已寄出,請前往${email}查看`, "༼ つ ◕_◕ ༽つ", "success");
+                return response.data;
+              }
+            })
+            .catch(function (error) {
+              if (error.response.status === 400) {
+                Swal.fire("請確認帳號輸入正確", "◢▆▅▄▃崩╰(〒皿〒)╯潰▃▄▅▇◣", "error");
+              } else {
+                console.log(error.response.status)
+                console.log(error.response.data.error)
+              }
+            })
+        }
+      })
+    }
   },
 };
 </script>
