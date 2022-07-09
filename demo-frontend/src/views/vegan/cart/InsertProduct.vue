@@ -17,10 +17,11 @@ import {
 // CKEditor 5, for more info and examples you can check out https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/vuejs-v3.html
 import CKEditor from "@ckeditor/ckeditor5-vue";
 
-// You can import one of the following CKEditor variation (only one at a time)
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import axios from "axios";
 import path from "path";
+// You can import one of the following CKEditor variation (only one at a time)
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+
 //import InlineEditor from '@ckeditor/ckeditor5-build-inline'
 //import BalloonEditor from '@ckeditor/ckeditor5-build-balloon'
 //import BalloonBlockEditor from '@ckeditor/ckeditor5-build-balloon-block'

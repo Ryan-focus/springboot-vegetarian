@@ -1,11 +1,13 @@
 <script setup>
-import { reactive, computed } from "vue";
+import { reactive, computed, onBeforeUnmount, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
 import { useTemplateStore } from "@/stores/template";
 
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
 import useVuelidate from "@vuelidate/core";
 import { required, minLength, email, sameAs } from "@vuelidate/validators";
+import axios from "axios";
+import district from "@/data/district.json";
 
 // Main store and Router
 const store = useTemplateStore();
@@ -13,37 +15,60 @@ const router = useRouter();
 
 // Input state variables
 const state = reactive({
-  username: null,
   email: null,
   password: null,
   confirmPassword: null,
+  principalName: null,
+  principalPhone: null,
+  businessName: null,
+  district: null,
+  businessPic: null,
   terms: null,
 });
 
 // Validation rules
 const rules = computed(() => {
   return {
-    username: {
-      required,
-      minLength: minLength(3),
-    },
     email: {
       required,
       email,
     },
     password: {
       required,
-      minLength: minLength(5),
+      minLength: minLength(7),
     },
     confirmPassword: {
       required,
       sameAs: sameAs(state.password),
+    },
+    principalName: {
+      required,
+    },
+    principalPhone: {
+      required,
+      minLength: minLength(10),
+    },
+    businessName: {
+      required,
+    },
+    district: {
+      required,
     },
     terms: {
       sameAs: sameAs(true),
     },
   };
 });
+
+const pickCitys = computed(() => {
+  return (state.city === null ? "" : state.city[state.cityIndex].name);
+})
+
+const pickDistrict = computed(() => {
+  return (state.city === null ? "" : state.city[state.cityIndex].districts[state.districtIndex].name);
+})
+
+
 
 // Use vuelidate
 const v$ = useVuelidate(rules, state);
@@ -64,145 +89,110 @@ async function onSubmit() {
 
 <template>
   <!-- Page Content -->
-  <div
-    class="hero-static d-flex align-items-center"
-    style="
+  <div class="hero-static d-flex align-items-center" style="
       background-image: url('/assets/media/photos/login_bg.jpg');
       background-size: cover;
       background-repeat: no-repeat;
       background-attachment: fixed;
       background-position: center;
-    "
-  >
+    ">
     <div class="content">
       <div class="row justify-content-center push">
         <div class="col-md-8 col-lg-6 col-xl-4">
           <!-- Sign Up Block -->
-          <BaseBlock title="創立帳號" class="mb-0">
+          <BaseBlock title="愛蔬網-商家註冊" class="mb-0">
             <template #options>
-              <a
-                class="btn-block-option fs-sm"
-                href="javascript:void(0)"
-                data-bs-toggle="modal"
-                data-bs-target="#one-signup-terms"
-                >服務條款</a
-              >
-              <RouterLink
-                :to="{ name: 'auth-signin' }"
-                class="btn-block-option"
-              >
+              <a class="btn-block-option fs-sm" href="javascript:void(0)" data-bs-toggle="modal"
+                data-bs-target="#one-signup-terms">服務條款</a>
+              <RouterLink :to="{ name: 'auth-signin' }" class="btn-block-option">
                 <i class="fa fa-sign-in-alt"></i>
               </RouterLink>
             </template>
 
             <div class="p-sm-3 px-lg-4 px-xxl-5 py-lg-5">
-              <h1 class="h2 mb-1">申請帳號</h1>
-              <p class="fw-medium text-muted">請填入電子信箱及密碼</p>
+              <h1 class="h2 mb-1">申請成為商家</h1>
+              <p class="fw-medium text-muted">請填入必須資訊</p>
 
               <!-- Sign Up Form -->
               <form @submit.prevent="onSubmit">
                 <div class="py-3">
                   <div class="mb-4">
-                    <input
-                      type="text"
-                      class="form-control form-control-lg form-control-alt"
-                      id="signup-username"
-                      name="signup-username"
-                      placeholder="使用者名稱"
-                      :class="{
-                        'is-invalid': v$.username.$errors.length,
-                      }"
-                      v-model="state.username"
-                      @blur="v$.username.$touch"
-                    />
-                    <div
-                      v-if="v$.username.$errors.length"
-                      class="invalid-feedback animated fadeIn"
-                    >
-                      請輸入使用者名稱
-                    </div>
-                  </div>
-                  <div class="mb-4">
-                    <input
-                      type="email"
-                      class="form-control form-control-lg form-control-alt"
-                      id="signup-email"
-                      name="signup-email"
-                      placeholder="example@mail.com"
-                      :class="{
+                    <input type="email" class="form-control form-control-lg form-control-alt" id="signup-email"
+                      name="signup-email" placeholder="example@mail.com" :class="{
                         'is-invalid': v$.email.$errors.length,
-                      }"
-                      v-model="state.email"
-                      @blur="v$.email.$touch"
-                    />
-                    <div
-                      v-if="v$.email.$errors.length"
-                      class="invalid-feedback animated fadeIn"
-                    >
+                      }" v-model="state.email" @blur="v$.email.$touch" />
+                    <div v-if="v$.email.$errors.length" class="invalid-feedback animated fadeIn">
                       請輸入正確格式的電子信箱
                     </div>
                   </div>
                   <div class="mb-4">
-                    <input
-                      type="password"
-                      class="form-control form-control-lg form-control-alt"
-                      id="signup-password"
-                      name="signup-password"
-                      placeholder="密碼"
-                      :class="{
+                    <input type="new-password" class="form-control form-control-lg form-control-alt"
+                      id="signup-password" name="signup-password" placeholder="密碼" :class="{
                         'is-invalid': v$.password.$errors.length,
-                      }"
-                      v-model="state.password"
-                      @blur="v$.password.$touch"
-                    />
-                    <div
-                      v-if="v$.password.$errors.length"
-                      class="invalid-feedback animated fadeIn"
-                    >
-                      請提供密碼
+                      }" v-model="state.password" @blur="v$.password.$touch" />
+                    <div v-if="v$.password.$errors.length" class="invalid-feedback animated fadeIn">
+                      請提供8位英文大小寫、數字混合的密碼
                     </div>
                   </div>
                   <div class="mb-4">
-                    <input
-                      type="password"
-                      class="form-control form-control-lg form-control-alt"
-                      id="signup-password-confirm"
-                      name="signup-password-confirm"
-                      placeholder="確認密碼"
-                      :class="{
+                    <input type="new-password" class="form-control form-control-lg form-control-alt"
+                      id="signup-password-confirm" name="signup-password-confirm" placeholder="確認密碼" :class="{
                         'is-invalid': v$.confirmPassword.$errors.length,
-                      }"
-                      v-model="state.confirmPassword"
-                      @blur="v$.confirmPassword.$touch"
-                    />
-                    <div
-                      v-if="v$.confirmPassword.$errors.length"
-                      class="invalid-feedback animated fadeIn"
-                    >
+                      }" v-model="state.confirmPassword" @blur="v$.confirmPassword.$touch" />
+                    <div v-if="v$.confirmPassword.$errors.length" class="invalid-feedback animated fadeIn">
                       請確認提供密碼
                     </div>
                   </div>
                   <div class="mb-4">
+                    <input type="text" class="form-control form-control-lg form-control-alt" id="signup-principalName"
+                      name="signup-principalName" placeholder="負責人" :class="{
+                        'is-invalid': v$.principalName.$errors.length,
+                      }" v-model="state.principalName" @blur="v$.principalName.$touch" />
+                    <div v-if="v$.principalName.$errors.length" class="invalid-feedback animated fadeIn">
+                      請輸入負責人名稱
+                    </div>
+                  </div>
+                  <div class="mb-4">
+                    <input type="tel" class="form-control form-control-lg form-control-alt" id="signup-principalPhone"
+                      name="signup-principalPhone" placeholder="電話" :class="{
+                        'is-invalid': v$.principalPhone.$errors.length,
+                      }" v-model="state.principalPhone" @blur="v$.principalPhone.$touch" />
+                    <div v-if="v$.principalPhone.$errors.length" class="invalid-feedback animated fadeIn">
+                      請輸入正確格式電話
+                    </div>
+                  </div>
+                  <div class="mb-4">
+                    <input type="text" class="form-control form-control-lg form-control-alt" id="signup-businessName"
+                      name="signup-businessName" placeholder="營業餐廳名稱" :class="{
+                        'is-invalid': v$.businessName.$errors.length,
+                      }" v-model="state.businessName" @blur="v$.businessName.$touch" />
+                    <div v-if="v$.businessName.$errors.length" class="invalid-feedback animated fadeIn">
+                      請輸入完整的餐廳名稱
+                    </div>
+                  </div>
+                  <div class="mb-4">
+                    <div class="form-selected">
+                      營業餐廳位置:
+                      <select class="form-selected" id="signup-selected" name="signup-selected" :class="{
+                        'is-invalid': v$.district.$errors.length,
+                      }" v-model="state.district" @blur="v$.district.$touch">
+                        <option v-for="city in district" :key="city.value" :value="city.value">
+                          {{ city.name }}
+                        </option>
+                        <div v-if="v$.district.$errors.length" class="invalid-feedback animated fadeIn">
+                          請選擇您所在的區域
+                        </div>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="mb-4">
                     <div class="form-check">
-                      <input
-                        class="form-check-input"
-                        type="checkbox"
-                        id="signup-terms"
-                        name="signup-terms"
-                        :class="{
-                          'is-invalid': v$.terms.$errors.length,
-                        }"
-                        v-model="state.terms"
-                        @blur="v$.terms.$touch"
-                      />
-                      <label class="form-check-label" for="signup-terms"
-                        >我同意不殺生 &amp; 信教吃素</label
-                      >
-                      <div
-                        v-if="v$.terms.$errors.length"
-                        class="invalid-feedback animated fadeIn"
-                      >
-                        你若不同意則不適合吃素
+                      <input class="form-check-input" type="checkbox" id="signup-terms" name="signup-terms" :class="{
+                        'is-invalid': v$.terms.$errors.length,
+                      }" v-model="state.terms" @blur="v$.terms.$touch" />
+                      <label class="form-check-label" for="signup-terms">上述資料皆由本人所填寫</label>
+                      <div v-if="v$.terms.$errors.length" class="invalid-feedback animated fadeIn">
+                        若不同意則無法送出
                       </div>
                     </div>
                   </div>
@@ -228,24 +218,13 @@ async function onSubmit() {
     </div>
 
     <!-- Terms Modal -->
-    <div
-      class="modal fade"
-      id="one-signup-terms"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="one-signup-terms"
-      aria-hidden="true"
-    >
+    <div class="modal fade" id="one-signup-terms" tabindex="-1" role="dialog" aria-labelledby="one-signup-terms"
+      aria-hidden="true">
       <div class="modal-dialog modal-lg modal-dialog-popout" role="document">
         <div class="modal-content">
           <BaseBlock title="Terms &amp; Conditions" transparent class="mb-0">
             <template #options>
-              <button
-                type="button"
-                class="btn-block-option"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              >
+              <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
                 <i class="fa fa-fw fa-times"></i>
               </button>
             </template>
@@ -363,18 +342,10 @@ async function onSubmit() {
                 </p>
               </div>
               <div class="block-content block-content-full text-end bg-body">
-                <button
-                  type="button"
-                  class="btn btn-sm btn-alt-secondary me-1"
-                  data-bs-dismiss="modal"
-                >
+                <button type="button" class="btn btn-sm btn-alt-secondary me-1" data-bs-dismiss="modal">
                   我同意且關閉
                 </button>
-                <button
-                  type="button"
-                  class="btn btn-sm btn-primary"
-                  data-bs-dismiss="modal"
-                >
+                <button type="button" class="btn btn-sm btn-primary" data-bs-dismiss="modal">
                   我同意
                 </button>
               </div>
