@@ -16,6 +16,7 @@ const Login = () => import("@/views/frontend/Login.vue");
 const UserRegister = () => import("@/views/frontend/Register.vue");
 const ShoppingCart = () => import("@/views/frontend/ShoppingCart.vue");
 const Post = () => import("@/views/frontend/Post.vue");
+const SearchRestaurant = () => import("@/views/frontend/SearchRestaurant.vue");
 
 // Backend Boxed: Dashboard
 const BackendBoxedDashboard = () =>
@@ -43,8 +44,6 @@ const VeganRestaurantInfo = () =>
   import("@/views/vegan/restaurant/RestaurantInfo.vue");
 const VeganRestaurantInsertRestaurant = () =>
   import("@/views/vegan/restaurant/InsertRestaurant.vue");
-// const VeganRestaurantUpdateRestaurant = () =>
-//   import("@/views/vegan/restaurant/UpdateRestaurant.vue");
 //愛蔬網後台: forums
 const VeganForumsDashboard = () =>
   import("@/views/vegan/forums/DashboardView.vue");
@@ -298,6 +297,11 @@ const routes = [
         path: "/post",
         name: "postIndex",
         component: Post,
+      },
+      {
+        path: "/searchRestaurant",
+        name: "restaurantIndex",
+        component: SearchRestaurant,
       },
     ],
   },

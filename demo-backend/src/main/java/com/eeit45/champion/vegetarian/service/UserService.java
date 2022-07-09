@@ -25,6 +25,8 @@ public interface UserService {
 	int updateUserStatus(Integer userId);
 	
 	User login(LoginRequest loginRequest);
+	
+	User resetPassword(LoginRequest loginRequest);
 
 
 //	boolean isBanned(UserRequest userRequest);

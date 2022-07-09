@@ -51,7 +51,26 @@ const state = reactive({
   category: null,
   veganCategory: null,
   description: null,
+  productImage: null,
 });
+
+//用reactive會無法及時反應所以用ref另外宣告
+const image = ref({
+  imageUrl: null,
+});
+
+//檔案上傳方法，寫入後端後會吐回加入UUID之名稱，再url將寫入reactive裡的變數
+function fileUpload() {
+  var files = document.getElementById("input").files;
+  var params = new FormData();
+  params.append("file", files[0]);
+  console.log(params.get("file"));
+  axios.post("http://localhost:8088/fileUpload", params).then((res) => {
+    image.value = res.data;
+    //印出路徑
+    console.log(image);
+  });
+}
 
 // Validation rules
 const rules = computed(() => {
@@ -118,6 +137,7 @@ function createProduct() {
           productPrice: state.productPrice,
           stock: state.stock,
           description: state.description,
+          productImage: image.value.imageUrl,
         };
         axios
           .post("http://localhost:8088/products", product)
@@ -288,23 +308,22 @@ function createProduct() {
                 請輸入數字!
               </div>
             </div>
+            <!-- 圖片開始 -->
+            <!-- 選擇玩圖片後會自動寫入資料庫並帶回正確網址 -->
+            <div>
+              <label class="form-label" for="val-stock">圖片 </label>
+              <input
+                class="form-control"
+                id="input"
+                type="file"
+                ref="myFile"
+                @change="fileUpload()"
+              />
+              <br />
+              <img :src="image.imageUrl" />
+              <br />
+            </div>
 
-            <!-- 圖片上傳開始-->
-            <!-- <div class="row push">
-              <div class="col-lg-8 col-xl-5 overflow-hidden">
-                <div class="mb-4">
-                  <label class="form-label" for="example-file-input"
-                    >圖片上傳（一張）</label
-                  >
-                  <input
-                    class="form-control"
-                    type="file"
-                    id="example-file-input"
-                    @change="onFileUpload"
-                  />
-                </div>
-              </div>
-            </div> -->
             <!-- 產品CK editor -->
             <div class="mb-4">
               <label class="form-label" for="example-select"
