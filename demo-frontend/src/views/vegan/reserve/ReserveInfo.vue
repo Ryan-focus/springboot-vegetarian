@@ -31,19 +31,8 @@ const url = "localhost:8088";
 const resData = ref();
 const resImg = ref();
 
-//取得全部的order
-const getAxios = function () {
-  axios
-    .get(`http://${url}/pos`)
-    .then((res) => {
-      //獲取伺服器的回傳資料
-      resData.value = res.data.results;
-    })
-    .catch((error) => {
-      console.log(error, "失敗");
-    });
-};
 const getImg = function () {
+
   axios
     .get(`http://${url}/business`)
     .then((res) => {
@@ -54,11 +43,23 @@ const getImg = function () {
       console.log(error, "失敗");
     });
 };
+//取得全部的order
+const getAxios = function () {
+
+  axios
+    .get(`http://${url}/pos`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resData.value = res.data.results;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+
 //執行Axios
 getAxios();
 getImg();
-console.log(resData);
-console.log(resImg);
 
 //取得單一筆訂單，number用來抓id
 function getSingle() {
@@ -76,11 +77,7 @@ function getSingle() {
 // Helper variables
 //在這邊去設定Table :th的欄位名稱
 const cols = reactive([
-  {
-    name: "商家名稱",
-    field: "businessName",
-    sort: "",
-  },
+
   {
     name: "試用狀態",
     field: "validDate",
@@ -91,16 +88,7 @@ const cols = reactive([
     field: "expiryDate",
     sort: "",
   },
-  {
-    name: "來客數",
-    field: "visitors",
-    sort: "",
-  },
-  {
-    name: "營業額",
-    field: "turnOver",
-    sort: "",
-  },
+
 ]);
 
 // Sort by functionality
@@ -326,11 +314,8 @@ th.sort {
   <div class="content">
     <BaseBlock title="POS系統資料" content-full>
       <Dataset v-slot="{ ds }" :ds-data="resData" :ds-sortby="sortBy" :ds-search-in="[
-        'businessName',
         'validDate',
         'expiryDate',
-        'visitors',
-        'turnOver',
       ]">
         <div class="row" :data-page-count="ds.dsPagecount">
           <div id="datasetLength" class="col-md-8 py-2">
@@ -350,11 +335,21 @@ th.sort {
                     <th class="text-center" style="width: 100px">
                       <i class="far fa-user"></i>
                     </th>
+                    <th class="text-center" style="width: 200px">
+                      商家名稱
+                    </th>
                     <!-- <th scope="col" class="text-center">POS編號</th> -->
                     <th v-for="(th, index) in cols" :key="th.field"
                       :class="['sort', th.sort] && `d-none d-sm-table-cell`" @click="onSort($event, index)">
                       {{ th.name }} <i class="gg-select float-end"></i>
                     </th>
+                    <th class="text-center" style="width: 200px">
+                      來客量
+                    </th>
+                    <th class="text-center" style="width: 200px">
+                      營業額
+                    </th>
+
                     <th class="text-center" style="width: 50px">操作</th>
                   </tr>
                 </thead>
@@ -364,7 +359,7 @@ th.sort {
                       <td class="text-center">
                         <img class="img-avatar img-avatar48"
                           :src="`/assets/media/business/${resImg[row.posBusinessList[0].businessId - 1].businessPic}.jpg`"
-                          alt="Avatar" />
+                          alt="business" />
 
                       </td>
                       <!-- <th scope="row">{{ row.posId }}</th> -->

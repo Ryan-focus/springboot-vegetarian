@@ -1,6 +1,9 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import App from "./App.vue";
+import axios from "axios";
+import VueAxios from "vue-axios";
+import "sweetalert2/dist/sweetalert2.min.css";
 
 // You can use the following starter router instead of the default one as a clean starting point
 // import router from "./router/starter";
@@ -22,13 +25,10 @@ window.bootstrap = bootstrap;
 const app = createApp(App);
 
 //Axios
-import axios from "axios";
 // axios.defaults.baseURL = config.api.url
 axios.defaults.withCredentials = false;
 axios.defaults.timeout = 5000;
 axios.defaults.headers.post["Content-Type"] = "application/json";
-
-import "sweetalert2/dist/sweetalert2.min.css";
 
 // Register global components
 app.component("BaseBlock", BaseBlock);
@@ -37,6 +37,9 @@ app.component("BasePageHeading", BasePageHeading);
 
 // Register global directives
 app.directive("click-ripple", clickRipple);
+
+//using Axios
+app.use(VueAxios, axios);
 
 // Use Pinia and Vue Router
 app.use(createPinia());
