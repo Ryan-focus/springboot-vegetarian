@@ -100,7 +100,7 @@ getAxios();
     </BaseBlock>
   </div>
 
-  <div class="row">
+  <div class="">
     <BaseBlock>
       <img
         src="https://cms.cdn.91app.com/images/original/12557/481fb4bf-120e-42de-b3a6-9b2d0bfc55ef-1656313073-yymy6f1xps_m_1200x375_800x250_400x125.jpg"
@@ -130,9 +130,9 @@ getAxios();
                 </html>
                 <div class="block-content bg-body-light">
                   <div class="sc-fzXfOz jRhlbT">
-                    <span class="d-inline"><i class="far fa-heart"></i></span>
-                    <span>----</span>
-                    <span class="d-inline"><i class="fa fa-cart-shopping"></i></span>
+                    <span class="d-inline"><i class="far fa-heart">收藏</i></span>
+                    &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+                    <span class="d-inline"><i class="fa fa-cart-shopping">加入購物車</i></span>
                   </div>
                 </div>
               </div>
