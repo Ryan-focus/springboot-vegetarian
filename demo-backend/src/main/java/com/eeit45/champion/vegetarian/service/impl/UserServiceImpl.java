@@ -45,6 +45,11 @@ public class UserServiceImpl implements UserService {
 	public User getUserById(Integer userId) {
 		return userDao.getUserById(userId);
 	}
+	
+	@Override
+	public User getUserByEmail(String loginEmail) {
+		return userDao.getUserByEmail(loginEmail);
+	}
 
 	@Override
 	public Integer createUser(UserRequest userRequest) {
@@ -79,17 +84,17 @@ public class UserServiceImpl implements UserService {
 
 		if(new BCryptPasswordEncoder().matches(loginRequest.getPassword(),user.getPassword())){
 			if(userDao.isBanned(loginRequest.getAccount())) {
-				System.out.println(3);
+
 				throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 			}
 			userDao.updateLastLoginTime(loginRequest.getAccount());
 			return user;
 		}
 		//帳號存在 但密碼錯誤
-			System.out.println(4);
+
 		throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 		}
-		System.out.println(5);
+
 		return null;
 	}
 
