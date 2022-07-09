@@ -110,7 +110,7 @@ public class UserServiceImpl implements UserService {
 		String newPassword = userDao.resetPassword(user.getEmail());
 		
 		SimpleMailMessage sm = new SimpleMailMessage();
-//		sm.setFrom("");	//發送者，沒填預設properties檔設定
+		sm.setFrom("eeit45no1@gmail.com");		//發送者
 		sm.setTo(loginRequest.getAccount());	//收件者
 		sm.setSubject("愛蔬網會員，您的密碼已重設");	//主旨
 		sm.setText("您好，會員" + user.getUserName() + "\n\n你的新密碼為" + newPassword +"\n\n請查收");	//內文

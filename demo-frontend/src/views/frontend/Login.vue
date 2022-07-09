@@ -39,11 +39,37 @@ const v$ = useVuelidate(rules, state);
 // On form submission
 async function onSubmit() {
   const result = await v$.value.$validate();
+  const user = {
+    account: state.account,
+    password: state.password,
+  };
 
   if (!result) {
     // notify user form is invalid
     return;
   }
+
+  axios
+    .post("http://localhost:8088/login", user)
+    .then(function (response) {
+      console.log(response.data);
+      if (response.status === 200) {
+        localStorage.setItem("access-admin", JSON.stringify(response.data));
+
+        location.replace("http://localhost:8080/#/backend/dashboard"); //登入成功擋返回前頁回到登入頁
+        Swal.fire("登入成功 ~", "｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡", "success");
+      }
+    })
+    .catch(function (error) {
+      if (error.response.status === 401) {
+        Swal.fire("登入失敗,帳號異常", "∑(￣□￣;)", "error");
+      } else if (error.response.status === 400) {
+        Swal.fire("登入失敗,帳號或密碼錯誤", "(〒︿〒)", "error");
+      } else {
+        console.log(error.response.status); // 印錯誤狀態代碼
+        console.log(error.response.data.error); // 印錯誤內容
+      }
+    });
 
   // Go to dashboard
   // router.push({ name: "backend-pages-auth" });
@@ -80,7 +106,7 @@ async function onSubmit() {
               同意<a href="#">服務條款</a>及<a href="#">隱私政策</a>
 
               <!-- Sign In Form -->
-              <form @submit.prevent="onSubmit" @submit="login">
+              <form @submit.prevent="onSubmit">
                 <div class="py-3">
                   <div class="mb-4">
                     <input type="text" class="form-control form-control-alt form-control-lg" id="login-username"
@@ -152,62 +178,6 @@ export default {
     };
   },
   methods: {
-    login() {
-      const user = {
-        account: this.state.account,
-        password: this.state.password,
-      };
-      axios
-        .post("http://localhost:8088/login", user)
-        .then(function (response) {
-          console.log(response.data);
-          if (response.status === 200) {
-            localStorage.setItem("access-admin", JSON.stringify(response.data));
-
-            location.replace("http://localhost:8080/#/backend/dashboard"); //登入成功擋返回前頁回到登入頁
-            Swal.fire("登入成功 ~", "｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡", "success");
-          }
-        })
-        .catch(function (error) {
-          if (error.response.status === 401) {
-            Swal.fire("登入失敗,帳號異常", "∑(￣□￣;)", "error");
-          } else if (error.response.status === 400) {
-            Swal.fire("登入失敗,帳號或密碼錯誤", "(〒︿〒)", "error");
-          } else {
-            console.log(error.response.status); // 印錯誤狀態代碼
-            console.log(error.response.data.error); // 印錯誤內容
-          }
-        });
-    },
-  },
-  methods: {
-    login() {
-      const user = {
-        account: this.state.account,
-        password: this.state.password,
-      };
-      axios
-        .post("http://localhost:8088/login", user)
-        .then(function (response) {
-          console.log(response.data);
-          if (response.status === 200) {
-            localStorage.setItem("access-admin", JSON.stringify(response.data));
-
-            location.replace("http://localhost:8080/#/backend/dashboard"); //登入成功擋返回前頁回到登入頁
-            Swal.fire("登入成功 ~", "｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡", "success");
-          }
-        })
-        .catch(function (error) {
-          if (error.response.status === 401) {
-            Swal.fire("登入失敗,帳號異常", "∑(￣□￣;)", "error");
-          } else if (error.response.status === 400) {
-            Swal.fire("登入失敗,帳號或密碼錯誤", "(〒︿〒)", "error");
-          } else {
-            console.log(error.response.status); // 印錯誤狀態代碼
-            console.log(error.response.data.error); // 印錯誤內容
-          }
-        });
-    },
     forgetPassword() {
       const user = {
         account: this.state.account,

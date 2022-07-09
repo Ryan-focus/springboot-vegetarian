@@ -813,20 +813,9 @@ export default {
       icon: "fa fa-shop",
       sub: [
         {
-          name: "Web Development",
-          to: "#",
-        },
-        {
-          name: "Graphic Design",
-          to: "#",
-        },
-        {
-          name: "Legal",
-          to: "#",
-        },
-        {
-          name: "Consulting",
-          to: "#",
+          name: "店家加入",
+          icon: "fa fa-plus",
+          to: "BusinessRegister",
         },
       ],
     },
