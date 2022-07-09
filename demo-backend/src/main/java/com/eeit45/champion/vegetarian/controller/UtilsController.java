@@ -35,7 +35,7 @@ public class UtilsController {
     public ResponseEntity<Image> getBlogger(@RequestParam("file") MultipartFile file) {
         try {
             UUID uuid = UUID.randomUUID();
-            //命名方式為uuid+上傳圖片名字mul
+            //命名方式為uuid+上傳圖片名字
             String fileLocation = new File("target/classes/static").getAbsolutePath() + "/" + uuid + file.getOriginalFilename();
             file.transferTo(new File(fileLocation));
             System.out.println("有");

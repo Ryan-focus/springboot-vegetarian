@@ -32,16 +32,15 @@ function fileUpload() {
 <template>
   <div>
     <h4>圖片上傳</h4>
-    <input class="form-control" id="input" type="file" ref="myFile" />
+    <input
+      class="form-control"
+      id="input"
+      type="file"
+      ref="myFile"
+      @change="fileUpload()"
+    />
     <div>
-      <div
-        class="imagePreviewWrapper"
-        :style="{ 'background-image': `url(${previewImage})` }"
-        @click="selectImage"
-      ></div>
-      <br />
-
-      <button class="btn btn-alt-primary" @click="fileUpload()">Submit</button>
+      <button class="btn btn-alt-primary">Submit</button>
     </div>
     <br />
     <img :src="image.imageUrl" />
