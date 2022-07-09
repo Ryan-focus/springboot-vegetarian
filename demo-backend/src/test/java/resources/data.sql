@@ -19,23 +19,23 @@ INSERT INTO `user` ( email, password, userName, status, userPic, registerTime, l
 
 -- business
 INSERT INTO business ( email, password,principalName,principalPhone, businessName,located, status, businessPic, createdTime, lastLoginTime, updateTime) VALUES
-('bt213485@gmail.com', 'aa00d00s01','宋振宏','0914378265', '艾格企業有限公司','桃園市龜山區','試用中', 'a001', now(), now() ,now())
-,('test2@gmail.com', 'ra0fgh02','李慧菁','02-29995660', '馬亞科技iWare','新北市三重區' ,'試用中', 'a002', now(), now(),now())
-,('kemfsl3@gmail.com', 'ra12hg3','方亦聖','04-22301313', '藝誠網頁設計公司','台中市北區','開通中', 'a003', now(), now(),now())
-,('en4@gmail.com', 'ca00ffd004','曾富美','0968288068', '墨宇網頁設計公司','台中市北區', '未開通', 'a004', now(), now(),now())
-,('fgen5@gmail.com', 'da0d23h005','吳晧民','02 8951 2121', '亞惿股份有限公司','新北市板橋區', '未開通', 'a005', now(), now(),now())
-,('en6@gmail.com', 'ba0fgh06','李孟陽','022395 5080','Larvata果子云數位科技','臺北市信義區', '未開通', 'a006', now(), now(),now())
+('delisoys@gmail.com', 'Aa123456','嚴心鏞','0912345678', '善果餐飲集團','台北市中山區','試用中', 'b@01', now(), now() ,now())
+,('xiaoxiao@gmail.com', 'Bb123456','劉千瑞','0938978938', '航博瑞樸股份有限公司','台北市大安區' ,'開通中', 'b@02', now(), now(),now())
+,('hanlie@gmail.com', 'Cc123456','賴宗成','(07)213-5788', '漢來美食股份有限公司','高雄市前金區','開通中', 'b@03', now(), now(),now())
+,('miacucina@gmail.com', 'Dd123456','劉人銘','02-8866-2679', '佐上椿有限公司','台北市內湖區', '未審核', 'b@04', now(), now(),now())
+,('vegecreek@gmail.com', 'Ee123456','許淞堡','02-26626766', '蔬河有限公司','台北市文山區', '未審核', 'b@05', now(), now(),now())
+,('urban@gmail.com', 'Ff123456','吳逸如','02 8773 7033','二本餐飲股份有限公司','台北市大安區', '未審核', 'b@06', now(), now(),now())
 ;
 update business set password = MD5(password);
 
 -- pos
 INSERT INTO pos(businessId,validDate,expiryDate) VALUES
  (6,'未開通',NOW())
-,(5,'試用期14日',NOW() + INTERVAL 14 DAY)
-,(4,'試用期7日',NOW() + INTERVAL 7 DAY)
-,(3,'試用期14日',NOW() + INTERVAL 14 DAY)
+,(5,'未開通',NOW())
+,(4,'未開通',NOW())
+,(3,'開通中',NOW() + INTERVAL 6 MONTH)
 ,(2,'開通中',NOW() + INTERVAL 12 MONTH )
-,(1,'開通中',NOW() + INTERVAL 6 MONTH);
+,(1,'試用期14日',NOW() + INTERVAL 14 DAY);
 
 -- PosBusiness
 INSERT INTO posBusiness(posId,businessId,visitors,turnOver,businessName) VALUES
