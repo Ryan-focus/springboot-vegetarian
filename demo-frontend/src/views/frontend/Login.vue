@@ -7,7 +7,7 @@ import axios from "axios";
 
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
 import useVuelidate from "@vuelidate/core";
-import { required, minLength, url } from "@vuelidate/validators";
+import { required, url } from "@vuelidate/validators";
 
 // Main store
 const store = useTemplateStore();
@@ -24,11 +24,9 @@ const rules = computed(() => {
   return {
     account: {
       required,
-      // minLength: minLength(3),
     },
     password: {
       required,
-      // minLength: minLength(5),
     },
   };
 });
@@ -56,7 +54,7 @@ async function onSubmit() {
       if (response.status === 200) {
         localStorage.setItem("access-admin", JSON.stringify(response.data));
 
-        location.replace("http://localhost:8080/#/backend/dashboard"); //登入成功擋返回前頁回到登入頁
+        location.replace("http://localhost:8080/#/backend/dashboard");
         Swal.fire("登入成功 ~", "｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡", "success");
       }
     })
@@ -93,7 +91,7 @@ async function onSubmit() {
             <template #options>
               <RouterLink :to="{ name: '' }" class="btn-block-option fs-sm" @click="forgetPassword"><b>忘記密碼?</b>
               </RouterLink>
-              <RouterLink :to="{ name: 'auth-signup' }" class="btn-block-option">
+              <RouterLink :to="{ name: 'userRegister' }" class="btn-block-option">
                 <i class="fa fa-user-plus"></i>
               </RouterLink>
             </template>
@@ -192,11 +190,13 @@ export default {
         confirmButtonText: "確認",
         cancelButtonText: '取消',
         showLoaderOnConfirm: true,
-        allowOutsideClick: false,
+        allowOutsideClick: true,
 
         preConfirm: async () => {
           return axios.post("http://localhost:8088/user/sendMail", user)
             .then(response => {
+              console.log(response.status)
+              console.log(response.data)
               if (response.status === 200) {
                 Swal.fire(`密碼信已寄出,請前往${email}查看`, "༼ つ ◕_◕ ༽つ", "success");
                 return response.data;
@@ -215,4 +215,9 @@ export default {
     }
   },
 };
+//加下面3行防止使用鍵盤(指alt + 鍵盤左鍵等)、滑鼠手勢等方式返回前頁,點連結前往的有些不能擋
+history.pushState(null, null, document.URL);
+window.addEventListener('popstate', function () {
+  history.pushState(null, null, document.URL);
+});
 </script>

@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.eeit45.champion.vegetarian.dto.LoginRequest;
 import com.eeit45.champion.vegetarian.dto.UserQueryParams;
@@ -162,6 +163,25 @@ public class UserController {
 		}
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+    
+    @PostMapping("/user/register")
+    public ResponseEntity<User> register(@RequestBody UserRequest userRequest){
+    	
+    	String checkEmail = userRequest.getEmail();
+    	
+    	User user = userService.getUserByEmail(checkEmail);
+    	
+    	if(user != null) {
+    		throw new ResponseStatusException(HttpStatus.CONFLICT);
+    	}
+    	
+    	int insertResult = userService.createUser(userRequest);
+    	//測東東
+    	if(insertResult == 0) {
+    		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+    	}
+    	return ResponseEntity.status(HttpStatus.OK).build();
     }
 
 }
