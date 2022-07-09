@@ -28,7 +28,6 @@ public interface UserService {
 	
 	User resetPassword(LoginRequest loginRequest);
 
-
 //	boolean isBanned(UserRequest userRequest);
 
 }
