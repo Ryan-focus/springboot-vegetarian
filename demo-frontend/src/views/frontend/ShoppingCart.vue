@@ -6,7 +6,11 @@ import axios from "axios";
 const url = "localhost:8088";
 const urlParams = ref(
   {
-    category: null
+    limit: 10,
+    offset: 0,
+    category: null,
+    veganCategory: null,
+    search: null
 
   }
 );
@@ -17,6 +21,7 @@ const productList = ref(
 );
 
 const getAxios = function () {
+  console.log(urlParams)
   axios
     .get(`http://${url}/products`, { params: urlParams.value })
     .then((res) => {
@@ -110,10 +115,85 @@ getAxios();
         alt="" class="d-block w-100" />
     </BaseBlock>
   </div>
-
+  <!-- 這邊是查詢功能放的地方 -->
   <input type="text" v-model="urlParams.category">
+
+  <!-- 這邊是用radio box 選擇素食種類 -->
+  <div class="row g-sm">
+    <div class="col-2">
+      <div class="form-check form-block">
+        <input type="radio" class="form-check-input" id="example-radio-block1" name="example-radio-block" value="全素"
+          v-model="urlParams.veganCategory" />
+        <label class="form-check-label" for="example-radio-block1">
+          <span class="d-block fw-normal text-center my-3">
+            <span class="fs-4 fw-semibold">全素</span>
+          </span>
+        </label>
+      </div>
+    </div>
+    <div class="col-2">
+      <div class="form-check form-block">
+        <input type="radio" class="form-check-input" id="example-radio-block2" name="example-radio-block" value="蛋素"
+          v-model="urlParams.veganCategory" />
+        <label class="form-check-label" for="example-radio-block2">
+          <span class="d-block fw-normal text-center my-3">
+            <span class="fs-4 fw-semibold">蛋素</span>
+          </span>
+        </label>
+      </div>
+    </div>
+    <div class="col-2">
+      <div class="form-check form-block">
+        <input type="radio" class="form-check-input" id="example-radio-block3" name="example-radio-block" value="奶素"
+          v-model="urlParams.veganCategory" />
+        <label class="form-check-label" for="example-radio-block3">
+          <span class="d-block fw-normal text-center my-3">
+            <span class="fs-4 fw-semibold">奶素</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <div class="col-2">
+      <div class="form-check form-block">
+        <input type="radio" class="form-check-input" id="example-radio-block4" name="example-radio-block" value="蛋奶素"
+          v-model="urlParams.veganCategory" />
+        <label class="form-check-label" for="example-radio-block4">
+          <span class="d-block fw-normal text-center my-3">
+            <span class="fs-4 fw-semibold">蛋奶素</span>
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <div class="col-2">
+      <div class="form-check form-block">
+        <input type="radio" class="form-check-input" id="example-radio-block6" name="example-radio-block" value="五辛素"
+          v-model="urlParams.veganCategory" />
+        <label class="form-check-label" for="example-radio-block6">
+          <span class="d-block fw-normal text-center my-3">
+            <span class="fs-4 fw-semibold">五辛素</span>
+          </span>
+        </label>
+      </div>
+    </div>
+    <div class="col-2">
+      <div class="form-check form-block">
+        <input type="radio" class="form-check-input" id="example-radio-block7" name="example-radio-block" value="VEGAN"
+          v-model="urlParams.veganCategory" />
+        <label class="form-check-label" for="example-radio-block7">
+          <span class="d-block fw-normal text-center my-3">
+            <span class="fs-4 fw-semibold">VEGAN</span>
+          </span>
+        </label>
+      </div>
+    </div>
+  </div>
+  <!-- radio box 結束 -->
+
   <button class="btn btn-alt-primary" @click="getAxios()">Submit</button>
 
+  <!-- 這邊是商品頁 -->
   <!-- Page Content -->
   <div class="content">
     <!-- Modern Design -->
