@@ -10,22 +10,20 @@ const store = useTemplateStore();
     <!-- Hero -->
     <div id="one-vue-hero" class="bg-body-extra-light">
       <BaseBackground
-        image="/assets/media/vegan/index-bg.jpg"
-        inner-class="bg-black-25"
+        image="https://pixabay.com/get/gc9b236f4127bbf809ac7ee12fbb2c55859f5e8b7d7d1cc27fa9a25d0dac1b92eba28c5d45a7947dacba955334d1d0741dfbc02cdc9c89c24e337aeb5c246688e_1920.jpg"
+        inner-class="bg-white-25"
       >
         <div class="content content-full text-center">
-          <div class="my-1"></div>
-          <h1 class="h1 text-white mb-3"><b>想知道哪裡有素食 ?</b></h1>
-          <h3>
-            <span class="text-white-75"
-              ><b>從超過 50 家精選餐廳中，探索您不知道的熱門素食。</b></span
-            >
-          </h3>
+          <div class="my-3"></div>
+          <h1 class="h1 text-white mb-0"><b>想知道哪裡有素食 ?</b></h1>
+          <span class="text-white-75"
+            ><b>從超過 50 家精選餐廳中，探索您不知道的熱門素食。</b></span
+          >
         </div>
         <form @submit.prevent>
           <div class="row">
             <div class="col-md-5 offset-md-3 content content-full text-center">
-              <div class="mb-2">
+              <div class="mb-3">
                 <div>
                   <input
                     type="search"
@@ -45,31 +43,35 @@ const store = useTemplateStore();
                 </div>
                 <p class="space-x-1">
                   <span>搜尋:</span>
-                  <a href="#/frontend/SearchRestaurant">
-                    <span class="badge rounded-pill bg-black-50">中式</span></a
-                  >
                   <a href="#">
-                    <span class="badge rounded-pill bg-black-50">義式</span></a
-                  >
-                  <a href="#">
-                    <span class="badge rounded-pill bg-black-50">麵食</span></a
-                  >
-                  <a href="#">
-                    <span class="badge rounded-pill bg-black-50">印度</span></a
-                  >
-                  <a href="#">
-                    <span class="badge rounded-pill bg-black-50">美式</span></a
-                  >
-                  <a href="#">
-                    <span class="badge rounded-pill bg-black-50">日式</span></a
-                  >
-                  <a href="#">
-                    <span class="badge rounded-pill bg-black-50">簡餐</span></a
+                    <span class="badge rounded-pill bg-black-50">火鍋</span></a
                   >
                   <a href="#">
                     <span class="badge rounded-pill bg-black-50"
-                      >自助餐</span
+                      >早午餐</span
                     ></a
+                  >
+                  <a href="#">
+                    <span class="badge rounded-pill bg-black-50">屍體</span></a
+                  >
+                  <a href="#">
+                    <span class="badge rounded-pill bg-black-50">厭世</span></a
+                  >
+                  <a href="#">
+                    <span class="badge rounded-pill bg-black-50">地獄</span></a
+                  >
+                  <a href="#">
+                    <span class="badge rounded-pill bg-black-50"
+                      >吃到死</span
+                    ></a
+                  >
+                  <a href="#">
+                    <span class="badge rounded-pill bg-black-50"
+                      >飽到吐</span
+                    ></a
+                  >
+                  <a href="#">
+                    <span class="badge rounded-pill bg-black-50">Gary</span></a
                   >
                 </p>
               </div>
