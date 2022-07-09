@@ -438,7 +438,7 @@ th.sort {
                       <td class="d-none d-sm-table-cell fs-sm" style="min-width: 110px">
                         {{ row.veganCategory }}
                       </td>
-                      <td class="d-none d-sm-table-cell fs-sm" style="min-width: 110px">
+                      <td class="d-none d-sm-table-cell fs-sm" style="min-width: 80px">
                         {{ row.productPrice }}
                       </td>
                       <td class="d-none d-sm-table-cell fs-sm" style="min-width: 110px">
@@ -452,7 +452,7 @@ th.sort {
 
                         </div>
                       </td>
-                      <td class="d-none d-sm-table-cell fs-sm" style="min-width: 90px">
+                      <td class="d-none d-sm-table-cell fs-sm" style="min-width: 80px">
                         {{ row.stock }}
                       </td>
 
@@ -535,7 +535,7 @@ th.sort {
                 </div>
 
                 <!-- 價格 -->
-                <div class="mb-4">
+                <div class="mb-3">
                   <label class="form-label" for="example-ltf-email">價格</label>
                   <input type="number" class="form-control" id="productPrice" name="productPrice"
                     v-model="productPrice" />
