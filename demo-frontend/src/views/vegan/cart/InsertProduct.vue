@@ -59,7 +59,7 @@ const image = ref({
   imageUrl: null,
 });
 
-//檔案上傳方法，寫入後端後會吐回加入UUID之名稱，再url將寫入reactive裡的變數
+//檔案上傳方法，寫入後端後會吐回加入UUID之名稱，再回傳data寫入ref()裏
 function fileUpload() {
   var files = document.getElementById("input").files;
   var params = new FormData();
@@ -163,13 +163,11 @@ function createProduct() {
         <ol class="breadcrumb breadcrumb-alt">
           <li class="breadcrumb-item">
             <a class="link-fx" href="#/backend/cart/dashboard">
-              <i class="fa fa-cart-shopping"></i> 購物車管理</a
-            >
+              <i class="fa fa-cart-shopping"></i> 購物車管理</a>
           </li>
           <li class="breadcrumb-item" aria-current="page">
             <a class="link-fx" href="#/backend/cart/productInfo">
-              <i class="fa fa-leaf"></i> 商品管理</a
-            >
+              <i class="fa fa-leaf"></i> 商品管理</a>
           </li>
           <li class="breadcrumb-item" aria-current="page">
             <i class="fa fa-leaf"></i> 新增商品
@@ -192,39 +190,19 @@ function createProduct() {
           <div class="col-lg-8 col-xl-5">
             <!-- 商品名稱開始 -->
             <div class="mb-4">
-              <label class="form-label" for="val-productName"
-                >商品名稱 <span class="text-danger">*</span></label
-              >
-              <input
-                type="text"
-                id="val-productName"
-                class="form-control"
-                :class="{
-                  'is-invalid': v$.productName.$errors.length,
-                }"
-                v-model="state.productName"
-                @blur="v$.productName.$touch"
-                placeholder="請輸入產品名稱"
-              />
-              <div
-                v-if="v$.productName.$errors.length"
-                class="invalid-feedback animated fadeIn"
-              >
+              <label class="form-label" for="val-productName">商品名稱 <span class="text-danger">*</span></label>
+              <input type="text" id="val-productName" class="form-control" :class="{
+                'is-invalid': v$.productName.$errors.length,
+              }" v-model="state.productName" @blur="v$.productName.$touch" placeholder="請輸入產品名稱" />
+              <div v-if="v$.productName.$errors.length" class="invalid-feedback animated fadeIn">
                 請輸入商品名稱
               </div>
             </div>
 
             <!-- 商品分類開始 -->
             <div class="mb-4">
-              <label class="form-label" for="example-select"
-                >選擇商品分類</label
-              >
-              <select
-                class="form-select"
-                id="example-select"
-                name="example-select"
-                v-model="state.category"
-              >
+              <label class="form-label" for="example-select">選擇商品分類</label>
+              <select class="form-select" id="example-select" name="example-select" v-model="state.category">
                 <option selected>按我選擇</option>
                 <option value="生鮮">生鮮</option>
                 <option value="食品">食品</option>
@@ -239,15 +217,8 @@ function createProduct() {
             </div>
             <!-- 素食種類開始 -->
             <div class="mb-4">
-              <label class="form-label" for="example-select"
-                >選擇素食種類</label
-              >
-              <select
-                class="form-select"
-                id="example-select"
-                name="example-select"
-                v-model="state.veganCategory"
-              >
+              <label class="form-label" for="example-select">選擇素食種類</label>
+              <select class="form-select" id="example-select" name="example-select" v-model="state.veganCategory">
                 <option selected>按我選擇</option>
                 <option value="全素">全素</option>
                 <option value="蛋素">蛋素</option>
@@ -263,48 +234,22 @@ function createProduct() {
 
             <!-- 價格開始 -->
             <div class="mb-4">
-              <label class="form-label" for="val-productPrice"
-                >台幣 (NTD) <span class="text-danger">*</span></label
-              >
-              <input
-                type="text"
-                id="val-productPrice"
-                class="form-control"
-                :class="{
-                  'is-invalid': v$.productPrice.$errors.length,
-                }"
-                v-model="state.productPrice"
-                @blur="v$.productPrice.$touch"
-                placeholder="200"
-              />
-              <div
-                v-if="v$.productPrice.$errors.length"
-                class="invalid-feedback animated fadeIn"
-              >
+              <label class="form-label" for="val-productPrice">台幣 (NTD) <span class="text-danger">*</span></label>
+              <input type="text" id="val-productPrice" class="form-control" :class="{
+                'is-invalid': v$.productPrice.$errors.length,
+              }" v-model="state.productPrice" @blur="v$.productPrice.$touch" placeholder="200" />
+              <div v-if="v$.productPrice.$errors.length" class="invalid-feedback animated fadeIn">
                 請輸入數字!
               </div>
             </div>
 
             <!-- 庫存開始 -->
             <div class="mb-4">
-              <label class="form-label" for="val-stock"
-                >庫存 <span class="text-danger">*</span></label
-              >
-              <input
-                type="text"
-                id="val-stock"
-                class="form-control"
-                :class="{
-                  'is-invalid': v$.stock.$errors.length,
-                }"
-                v-model="state.stock"
-                @blur="v$.stock.$touch"
-                placeholder="200"
-              />
-              <div
-                v-if="v$.stock.$errors.length"
-                class="invalid-feedback animated fadeIn"
-              >
+              <label class="form-label" for="val-stock">庫存 <span class="text-danger">*</span></label>
+              <input type="text" id="val-stock" class="form-control" :class="{
+                'is-invalid': v$.stock.$errors.length,
+              }" v-model="state.stock" @blur="v$.stock.$touch" placeholder="200" />
+              <div v-if="v$.stock.$errors.length" class="invalid-feedback animated fadeIn">
                 請輸入數字!
               </div>
             </div>
@@ -312,28 +257,17 @@ function createProduct() {
             <!-- 選擇玩圖片後會自動寫入資料庫並帶回正確網址 -->
             <div>
               <label class="form-label" for="val-stock">圖片 </label>
-              <input
-                class="form-control"
-                id="input"
-                type="file"
-                ref="myFile"
-                @change="fileUpload()"
-              />
+              <input class="form-control" id="input" type="file" ref="myFile" @change="fileUpload()" />
               <br />
-              <img :src="image.imageUrl" />
+              <!-- 根據回傳值印出圖片 -->
+              <img :src="image.imageUrl" style="max-width:500px;width:100%" />
               <br />
             </div>
 
             <!-- 產品CK editor -->
             <div class="mb-4">
-              <label class="form-label" for="example-select"
-                >產品細節描述</label
-              >
-              <ckeditor
-                :editor="ClassicEditor"
-                :config="editorConfig"
-                v-model="state.description"
-              />
+              <label class="form-label" for="example-select">產品細節描述</label>
+              <ckeditor :editor="ClassicEditor" :config="editorConfig" v-model="state.description" />
             </div>
             <div class="row items-push">
               <div class="col-lg-7 offset-lg-4">

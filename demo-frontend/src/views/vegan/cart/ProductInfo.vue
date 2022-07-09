@@ -53,6 +53,12 @@ const productImage = ref();
 const description = ref();
 const stock = ref();
 
+//用reactive會無法及時反應所以用ref另外宣告
+const image = ref({
+  imageUrl: null,
+});
+
+
 //取得全部的資料
 const getAxios = function () {
   axios
@@ -83,7 +89,7 @@ function getSingle(number) {
       productPrice.value = res.data.productPrice;
       stock.value = res.data.stock;
       description.value = res.data.description;
-      productImage.value = res.data.productImage;
+      image.value.imageUrl = res.data.productImage;
     })
     .catch((error) => {
       console.log(error, "失敗");
@@ -123,7 +129,7 @@ function updateProduct(number) {
           productPrice: this.productPrice,
           stock: this.stock,
           description: this.description,
-          productImage: this.productImage,
+          productImage: image.value.imageUrl,
         };
         //執行put方法
         axios
@@ -139,6 +145,20 @@ function updateProduct(number) {
         toast.fire("更新失敗", "", "error");
       }
     });
+
+
+}
+//檔案上傳方法，寫入後端後會吐回加入UUID之名稱，再回傳data寫入ref()裏
+function fileUpload() {
+  var files = document.getElementById("input").files;
+  var params = new FormData();
+  params.append("file", files[0]);
+  console.log(params.get("file"));
+  axios.post("http://localhost:8088/fileUpload", params).then((res) => {
+    image.value = res.data;
+    //印出路徑
+    console.log(image);
+  });
 }
 
 //執行Axios
@@ -276,6 +296,18 @@ onMounted(() => {
   selectLength.classList.add("form-select");
   selectLength.style.width = "80px";
 });
+
+// Helper function to show a photo
+function showPhoto(index) {
+  gallery.index = index;
+  gallery.visible = true;
+}
+
+// Helper function to hide the lightbox
+function handleHide() {
+  gallery.visible = false;
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -287,6 +319,7 @@ onMounted(() => {
   width: 22px;
   height: 22px;
 }
+
 .gg-select::after,
 .gg-select::before {
   content: "";
@@ -298,26 +331,31 @@ onMounted(() => {
   left: 7px;
   transform: rotate(-45deg);
 }
+
 .gg-select::before {
   border-left: 2px solid;
   border-bottom: 2px solid;
   bottom: 4px;
   opacity: 0.3;
 }
+
 .gg-select::after {
   border-right: 2px solid;
   border-top: 2px solid;
   top: 4px;
   opacity: 0.3;
 }
+
 th.sort {
   cursor: pointer;
   user-select: none;
+
   &.asc {
     .gg-select::after {
       opacity: 1;
     }
   }
+
   &.desc {
     .gg-select::before {
       opacity: 1;
@@ -334,8 +372,7 @@ th.sort {
         <ol class="breadcrumb breadcrumb-alt">
           <li class="breadcrumb-item">
             <a class="link-fx" href="#/backend/cart/dashboard">
-              <i class="fa fa-cart-shopping"></i> 購物車管理</a
-            >
+              <i class="fa fa-cart-shopping"></i> 購物車管理</a>
           </li>
           <li class="breadcrumb-item" aria-current="page">
             <i class="fa fa-leaf"></i> 商品管理
@@ -349,19 +386,14 @@ th.sort {
   <!-- Page Content -->
   <div class="content">
     <BaseBlock title="訂單後台資料" content-full>
-      <Dataset
-        v-slot="{ ds }"
-        :ds-data="resData"
-        :ds-sortby="sortBy"
-        :ds-search-in="[
-          'productName',
-          'productCategory',
-          'veganCategory',
-          'price',
-          'imageUrl',
-          'description',
-        ]"
-      >
+      <Dataset v-slot="{ ds }" :ds-data="resData" :ds-sortby="sortBy" :ds-search-in="[
+        'productName',
+        'productCategory',
+        'veganCategory',
+        'price',
+        'imageUrl',
+        'description',
+      ]">
         <div class="row" :data-page-count="ds.dsPagecount">
           <div id="datasetLength" class="col-md-8 py-2">
             <DatasetShow />
@@ -386,12 +418,8 @@ th.sort {
                 <thead>
                   <tr>
                     <th scope="col" class="text-center">編號</th>
-                    <th
-                      v-for="(th, index) in cols"
-                      :key="th.field"
-                      :class="['sort', th.sort] && `d-none d-sm-table-cell`"
-                      @click="onSort($event, index)"
-                    >
+                    <th v-for="(th, index) in cols" :key="th.field"
+                      :class="['sort', th.sort] && `d-none d-sm-table-cell`" @click="onSort($event, index)">
                       {{ th.name }} <i class="gg-select float-end"></i>
                     </th>
                     <th class="text-center" style="width: 100px">動作</th>
@@ -404,86 +432,40 @@ th.sort {
                       <td class="text-center" style="min-width: 150px">
                         {{ row.productName }}
                       </td>
-                      <td
-                        class="d-none d-md-table-cell fs-sm"
-                        style="min-width: 110px"
-                      >
+                      <td class="d-none d-md-table-cell fs-sm" style="min-width: 110px">
                         {{ row.productCategory }}
                       </td>
-                      <td
-                        class="d-none d-sm-table-cell fs-sm"
-                        style="min-width: 110px"
-                      >
+                      <td class="d-none d-sm-table-cell fs-sm" style="min-width: 110px">
                         {{ row.veganCategory }}
                       </td>
-                      <td
-                        class="d-none d-sm-table-cell fs-sm"
-                        style="min-width: 110px"
-                      >
+                      <td class="d-none d-sm-table-cell fs-sm" style="min-width: 110px">
                         {{ row.productPrice }}
                       </td>
-                      <td
-                        class="d-none d-sm-table-cell fs-sm"
-                        style="min-width: 110px"
-                      >
+                      <td class="d-none d-sm-table-cell fs-sm" style="min-width: 110px">
                         <div class="options-container">
                           <!-- 抓出路徑後要用這個方式塞進去才會變動態的 :src -->
-                          <img
-                            class="img-fluid options-item"
-                            :src="row.productImage"
-                            alt="Image"
-                          />
-                          <div class="options-overlay bg-black-30">
-                            <div class="options-overlay-content">
-                              <h4 class="h6 text-white-75 fw-normal mb-1">
-                                點按鈕編輯
-                              </h4>
-                              <div class="space-x-2">
-                                <a
-                                  class="btn btn-sm btn-alt-secondary"
-                                  href="#/backend/cart/imageUpload"
-                                >
-                                  <i
-                                    class="fa fa-pencil-alt text-primary me-1"
-                                  ></i>
-                                  Edit
-                                </a>
-                                <a
-                                  class="btn btn-sm btn-alt-secondary"
-                                  href="javascript:void(0)"
-                                >
-                                  <i class="fa fa-times text-danger me-1"></i>
-                                  Delete
-                                </a>
-                              </div>
-                            </div>
-                          </div>
+                          <a href="javascript:void(0)" class="img-link img-link-zoom-in img-thumb img-lightbox"
+                            @click="showPhoto(index)">
+                            <img class="img-fluid" :src="row.productImage" alt="Photo"
+                              style="max-width:300px;width:100%" />
+                          </a>
+
                         </div>
                       </td>
-                      <td
-                        class="d-none d-sm-table-cell fs-sm"
-                        style="min-width: 90px"
-                      >
+                      <td class="d-none d-sm-table-cell fs-sm" style="min-width: 90px">
                         {{ row.stock }}
                       </td>
+
                       <td class="text-center">
                         <div class="btn-group">
                           <!-- 更新的按鈕 -->
-                          <button
-                            type="button"
-                            class="btn btn-sm btn-alt-secondary"
-                            data-bs-toggle="modal"
-                            data-bs-target="#updateProduct"
-                            @click="getSingle(row.productId)"
-                          >
+                          <button type="button" class="btn btn-sm btn-alt-secondary" data-bs-toggle="modal"
+                            data-bs-target="#updateProduct" @click="getSingle(row.productId)">
                             <!-- 上面的按鈕先取的單一個商品的資訊，綁定到最上面的CONST,下面vmodel在做顯示 -->
                             <i class="fa fa-fw fa-pencil-alt"></i>
                           </button>
-                          <button
-                            type="button"
-                            class="btn btn-sm btn-alt-secondary"
-                            @click="deleteRestaurant(row.productId)"
-                          >
+                          <button type="button" class="btn btn-sm btn-alt-secondary"
+                            @click="deleteRestaurant(row.productId)">
                             <i class="fa fa-fw fa-times"></i>
                           </button>
                         </div>
@@ -495,61 +477,33 @@ th.sort {
             </div>
           </div>
         </div>
-        <div
-          class="d-flex flex-md-row flex-column justify-content-between align-items-center"
-        >
+        <div class="d-flex flex-md-row flex-column justify-content-between align-items-center">
           <DatasetInfo class="py-3 fs-sm" />
           <DatasetPager class="flex-wrap py-3 fs-sm" />
         </div>
 
         <!-- 這邊以下是隱藏的更新表單，按下更新鈕之後會跳出來 -->
-        <div
-          class="modal fade"
-          id="updateProduct"
-          tabindex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
+        <div class="modal fade" id="updateProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <!-- 這邊是更新的標題 -->
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">修改商品</h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <!-- 內文開始 -->
               <div class="modal-body">
                 <!-- 商品名稱 -->
                 <div class="mb-3">
-                  <label for="exampleFormControlInput1" class="form-label"
-                    >商品名稱</label
-                  >
-                  <textarea
-                    type="textarea"
-                    class="form-control"
-                    id="exampleFormControlInput1"
-                    style="resize: none"
-                    rows="1"
-                    v-model="productName"
-                  ></textarea>
+                  <label for="exampleFormControlInput1" class="form-label">商品名稱</label>
+                  <textarea type="textarea" class="form-control" id="exampleFormControlInput1" style="resize: none"
+                    rows="1" v-model="productName"></textarea>
                 </div>
 
                 <!-- 商品種類 -->
                 <div class="mb-3">
-                  <label class="form-label" for="example-select"
-                    >選擇商品分類</label
-                  >
-                  <select
-                    class="form-select"
-                    id="example-select"
-                    name="example-select"
-                    v-model="productCategory"
-                  >
+                  <label class="form-label" for="example-select">選擇商品分類</label>
+                  <select class="form-select" id="example-select" name="example-select" v-model="productCategory">
                     <option selected>{{ productCategory }}</option>
                     <option value="生鮮">生鮮</option>
                     <option value="食品">食品</option>
@@ -565,15 +519,8 @@ th.sort {
 
                 <!-- 素食種類 -->
                 <div class="mb-3">
-                  <label class="form-label" for="example-select"
-                    >選擇素食種類</label
-                  >
-                  <select
-                    class="form-select"
-                    id="example-select"
-                    name="example-select"
-                    v-model="veganCategory"
-                  >
+                  <label class="form-label" for="example-select">選擇素食種類</label>
+                  <select class="form-select" id="example-select" name="example-select" v-model="veganCategory">
                     <option selected>{{ veganCategory }}</option>
                     <option value="全素">全素</option>
                     <option value="蛋素">蛋素</option>
@@ -590,63 +537,38 @@ th.sort {
                 <!-- 價格 -->
                 <div class="mb-4">
                   <label class="form-label" for="example-ltf-email">價格</label>
-                  <input
-                    type="number"
-                    class="form-control"
-                    id="productPrice"
-                    name="productPrice"
-                    v-model="productPrice"
-                  />
+                  <input type="number" class="form-control" id="productPrice" name="productPrice"
+                    v-model="productPrice" />
                 </div>
                 <!-- 圖片 -->
-                <!-- 預設不改路徑所以單純取值之後放回，使用隱藏屬性 -->
-                <input
-                  type="hidden"
-                  class="form-control"
-                  id="productImage"
-                  name="productImage"
-                  v-model="productImage"
-                />
+
+                <div class="mb-4">
+                  <label class="form-label" for="val-stock">圖片 </label>
+                  <input class="form-control" id="input" type="file" ref="myFile" @change="fileUpload()" />
+                  <div class="mb-3">
+                    <!-- 根據回傳值印出圖片 -->
+                    <img :src="image.imageUrl" style="max-width:500px;width:100%" />
+                  </div>
+                </div>
 
                 <!-- 庫存 -->
                 <div class="mb-4">
                   <label class="form-label" for="example-ltf-email">庫存</label>
-                  <input
-                    type="stock"
-                    class="form-control"
-                    id="stock"
-                    name="stock"
-                    v-model="stock"
-                  />
+                  <input type="stock" class="form-control" id="stock" name="stock" v-model="stock" />
                 </div>
 
                 <div class="mb-4">
-                  <label class="form-label" for="example-select"
-                    >產品細節描述</label
-                  >
-                  <ckeditor
-                    :editor="ClassicEditor"
-                    :config="editorConfig"
-                    v-model="description"
-                  />
+                  <label class="form-label" for="example-select">產品細節描述</label>
+                  <ckeditor :editor="ClassicEditor" :config="editorConfig" v-model="description" />
                 </div>
               </div>
               <!-- 表單內文在這裡結束 -->
               <!-- 送出button -->
               <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                   取消
                 </button>
-                <button
-                  type="submit"
-                  class="btn btn-primary"
-                  data-bs-dismiss="modal"
-                  @click="updateProduct(productId)"
-                >
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" @click="updateProduct(productId)">
                   送出
                 </button>
               </div>
