@@ -10,20 +10,22 @@ const store = useTemplateStore();
     <!-- Hero -->
     <div id="one-vue-hero" class="bg-body-extra-light">
       <BaseBackground
-        image="https://pixabay.com/get/gc9b236f4127bbf809ac7ee12fbb2c55859f5e8b7d7d1cc27fa9a25d0dac1b92eba28c5d45a7947dacba955334d1d0741dfbc02cdc9c89c24e337aeb5c246688e_1920.jpg"
-        inner-class="bg-white-25"
+        image="/assets/media/vegan/index-bg.jpg"
+        inner-class="bg-black-25"
       >
         <div class="content content-full text-center">
-          <div class="my-3"></div>
-          <h1 class="h1 text-white mb-0"><b>想知道哪裡有素食 ?</b></h1>
-          <span class="text-white-75"
-            ><b>從超過 50 家精選餐廳中，探索您不知道的熱門素食。</b></span
-          >
+          <div class="my-1"></div>
+          <h1 class="h1 text-white mb-3"><b>想知道哪裡有素食 ?</b></h1>
+          <h3>
+            <span class="text-white-75"
+              ><b>從超過 50 家精選餐廳中，探索您不知道的熱門素食。</b></span
+            >
+          </h3>
         </div>
         <form @submit.prevent>
           <div class="row">
             <div class="col-md-5 offset-md-3 content content-full text-center">
-              <div class="mb-3">
+              <div class="mb-2">
                 <div>
                   <input
                     type="search"

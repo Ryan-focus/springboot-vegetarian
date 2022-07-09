@@ -88,11 +88,10 @@ onMounted(() => {
           <!-- Logo -->
           <RouterLink :to="{ name: 'index' }" class="fw-semibold text-dual">
             <span class="smini-visible">
-              <i class="fa fa-circle-notch text-primary"></i>
+              <i class="fa fa-bars text-primary"></i>
             </span>
             <span class="smini-hide fs-3 tracking-wider">
-              愛蔬網
-              <!-- <span class="fw-normal"></span> -->
+              <img src="/assets/media/vegan/logo.png" alt="..." class="w-75" />
             </span>
           </RouterLink>
           <!-- END Logo -->

@@ -6,11 +6,9 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
-import com.eeit45.champion.vegetarian.dto.LoginRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.eeit45.champion.vegetarian.dto.LoginRequest;
 import com.eeit45.champion.vegetarian.dto.UserQueryParams;
 import com.eeit45.champion.vegetarian.dto.UserRequest;
 import com.eeit45.champion.vegetarian.model.User;
@@ -151,6 +150,18 @@ public class UserController {
 		}
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); //沒註冊
+    }
+    
+    @PostMapping("/user/sendMail")
+    public ResponseEntity<User> resetPassword(@RequestBody LoginRequest loginRequest){
+    	
+    	User user =  userService.resetPassword(loginRequest);
+    	
+    	if(user != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(user);
+		}
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
 }
