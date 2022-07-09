@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <img src="https://i.imgur.com/X4z0q8g.png" />
   <br /><br />
   <input
@@ -77,4 +77,4 @@ export default {
     this.thumb = this.thumbSample;
   },
 };
-</script>
+</script> -->

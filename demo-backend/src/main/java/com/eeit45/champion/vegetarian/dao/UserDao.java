@@ -32,5 +32,7 @@ public interface UserDao {
 	boolean isBanned(String loginEmail);
 	
 	void updateLastLoginTime(String account);
+	
+	String resetPassword(String account);
 
 }

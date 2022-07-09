@@ -9,6 +9,8 @@ import java.util.Map;
 import com.eeit45.champion.vegetarian.dto.LoginRequest;
 import com.eeit45.champion.vegetarian.model.customer.Business;
 import com.eeit45.champion.vegetarian.rowmapper.customer.BusinessRowMapper;
+
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -220,6 +222,22 @@ public class UserDaoImpl implements UserDao {
 		
 	}
 
+	@Override
+	public String resetPassword(String account) {
+		String sql = "UPDATE `user` SET password = :password where email= :email";
+		
+		String pw = RandomStringUtils.randomAlphanumeric(8, 20);
+		System.out.println(pw);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("password", new BCryptPasswordEncoder().encode(pw));
+		map.put("email", account);
+		
+		namedParameterJdbcTemplate.update(sql, map);
+		
+		return pw;
+	}
+	
 	private String filteringSQL(String sql, Map<String, Object> map, UserQueryParams userQueryParams) {
 		
 		if (userQueryParams.getSearch() != null) {
