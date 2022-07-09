@@ -134,17 +134,13 @@ getRestaurant();
   <!-- Hero -->
   <div class="content">
     <div
-      class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center py-2 text-center text-md-start"
-    >
+      class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center py-2 text-center text-md-start">
       <div class="flex-grow-1 mb-1 mb-md-0">
         <h1 class="h3 fw-bold mb-2">數據分析</h1>
         <h2 class="h6 fw-medium fw-medium text-muted mb-0">
           歡迎 管理員
-          <RouterLink
-            :to="{ name: 'backend-pages-generic-profile' }"
-            class="fw-semibold"
-            >{{ admin.data.user.userName }}</RouterLink
-          >
+          <RouterLink :to="{ name: 'backend-pages-generic-profile' }" class="fw-semibold">{{ admin.data.user.userName }}
+          </RouterLink>
         </h2>
       </div>
       <div class="mt-3 mt-md-0 ms-md-3 space-x-1">
@@ -156,43 +152,22 @@ getRestaurant();
           <span>設定</span>
         </a> -->
         <div class="dropdown d-inline-block">
-          <button
-            type="button"
-            class="btn btn-sm btn-alt-secondary space-x-1"
-            id="dropdown-analytics-overview"
-            data-bs-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
+          <button type="button" class="btn btn-sm btn-alt-secondary space-x-1" id="dropdown-analytics-overview"
+            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-fw fa-calendar-alt opacity-50"></i>
             <span>全部時間</span>
             <i class="fa fa-fw fa-angle-down"></i>
           </button>
-          <div
-            class="dropdown-menu dropdown-menu-end fs-sm"
-            aria-labelledby="dropdown-analytics-overview"
-          >
-            <a class="dropdown-item fw-medium" href="javascript:void(0)"
-              >最近30天</a
-            >
-            <a class="dropdown-item fw-medium" href="javascript:void(0)"
-              >最近一個月</a
-            >
-            <a class="dropdown-item fw-medium" href="javascript:void(0)"
-              >最近三個月</a
-            >
+          <div class="dropdown-menu dropdown-menu-end fs-sm" aria-labelledby="dropdown-analytics-overview">
+            <a class="dropdown-item fw-medium" href="javascript:void(0)">最近30天</a>
+            <a class="dropdown-item fw-medium" href="javascript:void(0)">最近一個月</a>
+            <a class="dropdown-item fw-medium" href="javascript:void(0)">最近三個月</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item fw-medium" href="javascript:void(0)"
-              >今年</a
-            >
-            <a class="dropdown-item fw-medium" href="javascript:void(0)"
-              >去年</a
-            >
+            <a class="dropdown-item fw-medium" href="javascript:void(0)">今年</a>
+            <a class="dropdown-item fw-medium" href="javascript:void(0)">去年</a>
             <div class="dropdown-divider"></div>
-            <a
-              class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-              href="javascript:void(0)"
-            >
+            <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
+              href="javascript:void(0)">
               <span>全部時間</span>
               <i class="fa fa-check"></i>
             </a>
@@ -211,9 +186,7 @@ getRestaurant();
         <!-- 待處理訂單 Pending Orders  :to 購物車模板-->
         <BaseBlock class="d-flex flex-column h-100 mb-0">
           <template #content>
-            <div
-              class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
-            >
+            <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
               <dl class="mb-0">
                 <dt class="fs-3 fw-bold">{{ restaurantsTotal }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
@@ -225,14 +198,10 @@ getRestaurant();
               </div>
             </div>
             <div class="bg-body-light rounded-bottom">
-              <a
-                class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
-                href="#/backend/restaurants/restaurantinfo"
-              >
+              <a class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
+                href="#/backend/restaurants/restaurantinfo">
                 <span>詳細</span>
-                <i
-                  class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
-                ></i>
+                <i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
               </a>
             </div>
           </template>
@@ -243,9 +212,7 @@ getRestaurant();
         <!-- New Customers -->
         <BaseBlock class="d-flex flex-column h-100 mb-0">
           <template #content>
-            <div
-              class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
-            >
+            <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
               <dl class="mb-0">
                 <dt class="fs-3 fw-bold">{{ newRestaurant }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
@@ -257,14 +224,10 @@ getRestaurant();
               </div>
             </div>
             <div class="bg-body-light rounded-bottom">
-              <a
-                class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
-              >
-                <a href="#newRestaurant">詳細</a>
-                <i
-                  class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
-                ></i>
+              <a class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
+                href="javascript:void(0)">
+                <a href="/#/backend/restaurants/dashboard#newRestaurant">詳細</a>
+                <i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
               </a>
             </div>
           </template>
@@ -278,10 +241,7 @@ getRestaurant();
     <div class="row">
       <div class="col-xl-12 col-xxl-9 d-flex flex-column">
         <!-- Earnings Summary -->
-        <BaseBlock
-          title="餐廳總數成長表"
-          class="flex-grow-1 d-flex flex-column"
-        >
+        <BaseBlock title="餐廳總數成長表" class="flex-grow-1 d-flex flex-column">
           <!-- <template #options>
             <button type="button" class="btn-block-option">
               <i class="si si-settings"></i>
@@ -289,22 +249,14 @@ getRestaurant();
           </template> -->
 
           <template #content>
-            <div
-              class="block-content block-content-full flex-grow-1 d-flex align-items-center"
-            >
-              <BarChart
-                :chart-data="earningsData"
-                :options="earningsOptions"
-                class="w-100"
-              />
+            <div class="block-content block-content-full flex-grow-1 d-flex align-items-center">
+              <BarChart :chart-data="earningsData" :options="earningsOptions" class="w-100" />
             </div>
             <div class="block-content bg-body-light">
               <div class="row items-push text-center w-100">
                 <div class="col-sm-4">
                   <dl class="mb-0">
-                    <dt
-                      class="fs-3 fw-bold d-inline-flex align-items-center space-x-2"
-                    >
+                    <dt class="fs-3 fw-bold d-inline-flex align-items-center space-x-2">
                       <i class="fa fa-caret-up fs-base text-success"></i>
                       <span>2.5%</span>
                     </dt>
@@ -313,9 +265,7 @@ getRestaurant();
                 </div>
                 <div class="col-sm-4">
                   <dl class="mb-0">
-                    <dt
-                      class="fs-3 fw-bold d-inline-flex align-items-center space-x-2"
-                    >
+                    <dt class="fs-3 fw-bold d-inline-flex align-items-center space-x-2">
                       <i class="fa fa-caret-up fs-base text-success"></i>
                       <span>3.8%</span>
                     </dt>
@@ -324,9 +274,7 @@ getRestaurant();
                 </div>
                 <div class="col-sm-4">
                   <dl class="mb-0">
-                    <dt
-                      class="fs-3 fw-bold d-inline-flex align-items-center space-x-2"
-                    >
+                    <dt class="fs-3 fw-bold d-inline-flex align-items-center space-x-2">
                       <i class="fa fa-caret-down fs-base text-danger"></i>
                       <span>1.7%</span>
                     </dt>
@@ -378,12 +326,7 @@ getRestaurant();
           <nav aria-label="Photos Search Navigation">
             <ul class="pagination pagination-sm justify-content-end mb-0">
               <li class="page-item">
-                <a
-                  class="page-link"
-                  href="javascript:void(0)"
-                  tabindex="-1"
-                  aria-label="Previous"
-                >
+                <a class="page-link" href="javascript:void(0)" tabindex="-1" aria-label="Previous">
                   上一頁
                 </a>
               </li>
@@ -400,11 +343,7 @@ getRestaurant();
                 <a class="page-link" href="javascript:void(0)">4</a>
               </li>
               <li class="page-item">
-                <a
-                  class="page-link"
-                  href="javascript:void(0)"
-                  aria-label="Next"
-                >
+                <a class="page-link" href="javascript:void(0)" aria-label="Next">
                   下一頁
                 </a>
               </li>
