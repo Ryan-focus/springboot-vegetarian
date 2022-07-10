@@ -1,13 +1,14 @@
 <script setup>
-import { reactive, computed, onBeforeUnmount, onBeforeMount } from "vue";
+import { reactive, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useTemplateStore } from "@/stores/template";
+import Swal from "sweetalert2";
 
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
 import useVuelidate from "@vuelidate/core";
-import { required, minLength, email, sameAs } from "@vuelidate/validators";
+import { required, minLength, email, sameAs, helpers } from "@vuelidate/validators";
 import axios from "axios";
-import district from "@/data/district.json";
+import data from "@/data/district.json";
 
 // Main store and Router
 const store = useTemplateStore();
@@ -23,10 +24,11 @@ const state = reactive({
   businessName: null,
   district: null,
   businessPic: null,
-  terms: null,
+  // terms: null,
 });
 
 // Validation rules
+const pwRule = helpers.regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/)
 const rules = computed(() => {
   return {
     email: {
@@ -35,7 +37,7 @@ const rules = computed(() => {
     },
     password: {
       required,
-      minLength: minLength(7),
+      pwRule,
     },
     confirmPassword: {
       required,
@@ -53,6 +55,7 @@ const rules = computed(() => {
     },
     district: {
       required,
+
     },
     terms: {
       sameAs: sameAs(true),
@@ -60,13 +63,13 @@ const rules = computed(() => {
   };
 });
 
-const pickCitys = computed(() => {
-  return (state.city === null ? "" : state.city[state.cityIndex].name);
-})
+// const pickCitys = computed(() => {
+//   return (state.city === null ? "" : state.city[state.cityIndex].name);
+// })
 
-const pickDistrict = computed(() => {
-  return (state.city === null ? "" : state.city[state.cityIndex].districts[state.districtIndex].name);
-})
+// const pickDistrict = computed(() => {
+//   return (state.city === null ? "" : state.city[state.cityIndex].districts[state.districtIndex].name);
+// })
 
 
 
@@ -76,14 +79,49 @@ const v$ = useVuelidate(rules, state);
 // On form submission
 async function onSubmit() {
   const result = await v$.value.$validate();
-
+  const bunsiness = {
+    "account": state.email,
+    "password": state.password,
+    "principalName": state.principalName,
+    "principalPhone": state.principalPhone,
+    "businessName": state.businessName,
+    "located": state.district,
+  };
   if (!result) {
     // notify user form is invalid
     return;
   }
 
   // Go to dashboard
-  router.push({ name: "backend-pages-auth" });
+  axios
+    .post("http://localhost:8088/business/register", bunsiness)
+    .then((res) => {
+      if (res.status === 201) {
+        Swal.fire({
+          title: "註冊成功",
+          text: "我們將盡快審核您的申請",
+          timer: 1500,
+          type: "success"
+        });
+        window.setTimeout(function () {
+          router.push({ name: "index" });
+        }, 1000);
+      }
+    })
+    .catch((err) => {
+      if (err.response.status === 400) {
+        Swal.fire({
+          title: "註冊失敗",
+          text: "帳號重複",
+          timer: 1000,
+          type: "error"
+        });
+      } else {
+        console.log(err.response.status);
+        console.log(err.response.data.error);
+      }
+    });
+  //  router.push({ name: "backend-pages-auth" });
 }
 </script>
 
@@ -117,44 +155,49 @@ async function onSubmit() {
               <form @submit.prevent="onSubmit">
                 <div class="py-3">
                   <div class="mb-4">
+                    <label class="form-label" for="val-district">帳號<span class="text-danger">*</span></label>
                     <input type="email" class="form-control form-control-lg form-control-alt" id="signup-email"
                       name="signup-email" placeholder="example@mail.com" :class="{
                         'is-invalid': v$.email.$errors.length,
-                      }" v-model="state.email" @blur="v$.email.$touch" />
+                      }" v-model="state.email" @blur="v$.email.$touch" autocomplete=username />
                     <div v-if="v$.email.$errors.length" class="invalid-feedback animated fadeIn">
                       請輸入正確格式的電子信箱
                     </div>
                   </div>
                   <div class="mb-4">
-                    <input type="new-password" class="form-control form-control-lg form-control-alt"
-                      id="signup-password" name="signup-password" placeholder="密碼" :class="{
+                    <label class="form-label" for="val-district">密碼<span class="text-danger">*</span></label>
+                    <input type="password" class="form-control form-control-lg form-control-alt" id="signup-password"
+                      name="signup-password" :class="{
                         'is-invalid': v$.password.$errors.length,
-                      }" v-model="state.password" @blur="v$.password.$touch" />
+                      }" v-model="state.password" @blur="v$.password.$touch" autocomplete=new-password />
                     <div v-if="v$.password.$errors.length" class="invalid-feedback animated fadeIn">
-                      請提供8位英文大小寫、數字混合的密碼
+                      請提供8-20位英文大小寫、數字混合的密碼
                     </div>
                   </div>
                   <div class="mb-4">
-                    <input type="new-password" class="form-control form-control-lg form-control-alt"
+                    <label class="form-label" for="val-district">確認密碼<span class="text-danger">*</span></label>
+                    <input type="password" class="form-control form-control-lg form-control-alt"
                       id="signup-password-confirm" name="signup-password-confirm" placeholder="確認密碼" :class="{
                         'is-invalid': v$.confirmPassword.$errors.length,
-                      }" v-model="state.confirmPassword" @blur="v$.confirmPassword.$touch" />
+                      }" v-model="state.confirmPassword" @blur="v$.confirmPassword.$touch" autocomplete=new-password />
                     <div v-if="v$.confirmPassword.$errors.length" class="invalid-feedback animated fadeIn">
                       請確認提供密碼
                     </div>
                   </div>
                   <div class="mb-4">
+                    <label class="form-label" for="val-district">申請人姓名<span class="text-danger">*</span></label>
                     <input type="text" class="form-control form-control-lg form-control-alt" id="signup-principalName"
-                      name="signup-principalName" placeholder="負責人" :class="{
+                      name="signup-principalName" :class="{
                         'is-invalid': v$.principalName.$errors.length,
                       }" v-model="state.principalName" @blur="v$.principalName.$touch" />
                     <div v-if="v$.principalName.$errors.length" class="invalid-feedback animated fadeIn">
-                      請輸入負責人名稱
+                      請輸入申請人名稱
                     </div>
                   </div>
                   <div class="mb-4">
+                    <label class="form-label" for="val-district">聯絡電話<span class="text-danger">*</span></label>
                     <input type="tel" class="form-control form-control-lg form-control-alt" id="signup-principalPhone"
-                      name="signup-principalPhone" placeholder="電話" :class="{
+                      name="signup-principalPhone" :class="{
                         'is-invalid': v$.principalPhone.$errors.length,
                       }" v-model="state.principalPhone" @blur="v$.principalPhone.$touch" />
                     <div v-if="v$.principalPhone.$errors.length" class="invalid-feedback animated fadeIn">
@@ -162,27 +205,40 @@ async function onSubmit() {
                     </div>
                   </div>
                   <div class="mb-4">
+                    <label class="form-label" for="val-district">營業餐廳名稱<span class="text-danger">*</span></label>
                     <input type="text" class="form-control form-control-lg form-control-alt" id="signup-businessName"
-                      name="signup-businessName" placeholder="營業餐廳名稱" :class="{
+                      name="signup-businessName" :class="{
                         'is-invalid': v$.businessName.$errors.length,
                       }" v-model="state.businessName" @blur="v$.businessName.$touch" />
                     <div v-if="v$.businessName.$errors.length" class="invalid-feedback animated fadeIn">
                       請輸入完整的餐廳名稱
                     </div>
                   </div>
+                  <!-- <div class="mb-4">
+                    營業餐廳位置:
+                    <select class="form-select" id="signup-district" name="signup-district" :class="{
+                      'is-invalid': v$.district.$errors.length,
+                    }" v-model="state.district" @blur="v$.district.$touch">
+                      <option v-for="city in district" :key="city.value" :value="city.value">
+                        {{ city.name }}
+                      </option>
+                      <div v-if="v$.district.$errors.length" class="invalid-feedback animated fadeIn">
+                        請選擇您所在的區域
+                      </div>
+                    </select>
+                  </div> -->
                   <div class="mb-4">
-                    <div class="form-selected">
-                      營業餐廳位置:
-                      <select class="form-selected" id="signup-selected" name="signup-selected" :class="{
-                        'is-invalid': v$.district.$errors.length,
-                      }" v-model="state.district" @blur="v$.district.$touch">
-                        <option v-for="city in district" :key="city.value" :value="city.value">
-                          {{ city.name }}
-                        </option>
-                        <div v-if="v$.district.$errors.length" class="invalid-feedback animated fadeIn">
-                          請選擇您所在的區域
-                        </div>
-                      </select>
+                    <label class="form-label" for="val-district">營業餐廳位置:<span class="text-danger">*</span></label>
+                    <select id="val-district" class="form-select" :class="{
+                      'is-invalid': v$.district.$errors.length,
+                    }" v-model="state.district">
+                      <option v-for="(city, index) in data" :value="city.name" :key="`city-${index}`"
+                        @blur="v$.district.$touch">
+                        {{ city.name }}
+                      </option>
+                    </select>
+                    <div v-if="v$.district.$errors.length" class="invalid-feedback animated fadeIn">
+                      請選擇您所在的區域
                     </div>
                   </div>
                   <div class="mb-4">
@@ -196,12 +252,13 @@ async function onSubmit() {
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="row mb-4">
-                  <div class="col-md-6 col-xl-5">
-                    <button type="submit" class="btn w-100 btn-alt-success">
-                      <i class="fa fa-fw fa-plus me-1 opacity-50"></i>註冊
-                    </button>
+
+                  <div class="row mb-4">
+                    <div class="col-md-6 col-xl-5">
+                      <button type="submit" class="btn w-100 btn-alt-success">
+                        <i class="fa fa-fw fa-plus me-1 opacity-50"></i>註冊
+                      </button>
+                    </div>
                   </div>
                 </div>
               </form>
