@@ -11,14 +11,20 @@ const urlParams = ref(
     category: null,
     veganCategory: null,
     search: null
-
   }
 );
 //接收的資料ref
 const resData = ref();
 const productsTotal = ref();
-const productList = ref(
-);
+const productList = ref();
+const singleProduct = ref(
+  {
+    // ref會自己抓值，這邊還要另外宣告圖片是因為:src會去抓路徑，沒有定義會變undefined當掉
+    //其他的值ref抓到後會自己帶入變成json
+    productImage: null,
+  }
+
+)
 
 const getAxios = function () {
   console.log(urlParams)
@@ -34,6 +40,17 @@ const getAxios = function () {
       console.log(error, "失敗");
     });
 };
+
+function getSingle(productId) {
+  axios
+    .get(`http://${url}/products/${productId}`)
+    .then((res) => {
+      singleProduct.value = res.data
+      console.log(singleProduct)
+    })
+
+
+}
 // 執行Axios;
 getAxios();
 // For Filters
@@ -202,17 +219,46 @@ getAxios();
       <div v-for="item in productList" :key="item.productId" class="col-md-5  col-xl-3">
         <BaseBlock tag="a" href="javascript:void(0)" class="text-center" link-shadow>
           <template #content>
+            <!-- 這邊是卡片種類 -->
             <div class="card" style="width: 18rem">
-              <img :src="item.productImage" class="card-img-top" alt="［素日子］好日子家常素肉圓 （不含醬料）（150g＊3顆）" />
+
+              <!-- 我是圖片 裡面方法顯示單一商品 -->
+              <img :src="item.productImage" class="card-img-top" alt="Photo" data-bs-toggle="modal"
+                data-bs-target="#showProduct" @click="getSingle(item.productId)" />
+
+              <!-- 這邊是商品名稱 裡面塞的方法是顯示單一個商品 -->
               <div class="card-body">
-                <h5 class="card-title">
+                <h5 class="card-title" data-bs-toggle="modal" data-bs-target="#showProduct"
+                  @click="getSingle(item.productId)">
                   {{ item.productName }}
                 </h5>
-                <p>${{ item.productPrice }}</p>
-                <html>
-                {{ item.description }}
 
-                </html>
+                <!-- 這邊是價格跟假的優惠 -->
+                <div class="mb-3">
+
+                  <s>{{ item.productPrice + 70 }}</s>
+                  <h3 class="text-danger">{{ item.productPrice }}</h3>
+                </div>
+
+                <!-- 庫存 -->
+                <!-- 判斷庫存量給予相對應的標籤並將值放進去 -->
+                <div class="mb-4">
+                  <div v-if="item.stock > 100">
+                    <span class="badge bg-success"><i class="fa fa-check"></i> 供貨正常{{ item.stock
+                    }}</span>
+                  </div>
+                  <div v-else-if="item.stock > 20">
+                    <span class="badge bg-info"><i class="fa fa-exclamation-circle"></i> 手刀搶購{{ item.stock
+                    }}</span>
+                  </div>
+                  <div v-else-if="item.stock > 0">
+                    <span class="badge bg-warning"><i class="fa fa-exclamation-circle"></i> 最後倒數{{ item.stock
+                    }}</span>
+                  </div>
+                  <div v-else>
+                    <span class="badge bg-danger"><i class="fa fa-times-circle"></i> 已無商品</span>
+                  </div>
+                </div>
                 <div class="block-content bg-body-light">
                   <div class="sc-fzXfOz jRhlbT">
                     <span class="d-inline"><i class="far fa-heart">收藏</i></span>
@@ -230,4 +276,96 @@ getAxios();
 
   </div>
   <!-- END Page Content -->
+
+
+  <!-- 這邊以下是隱藏的更新表單，按下更新鈕之後會跳出來 -->
+  <div class="modal fade" id="showProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <!-- 這邊是更新的標題 -->
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">商品詳細資訊</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <!-- 內文開始 -->
+        <div class="modal-body">
+          <!-- 商品名稱 -->
+          <div class="mb-3">
+            <h5>{{ singleProduct.productName }}</h5>
+          </div>
+
+          <!-- 圖片 -->
+          <div class="mb-4">
+            <label class="form-label" for="val-stock"> </label>
+            <div class="mb-3">
+              <!-- 根據回傳值印出圖片 -->
+              <img :src="singleProduct.productImage" style="max-width:500px;width:100%" />
+            </div>
+          </div>
+
+          <!-- 商品種類  素食種類標籤-->
+
+          <div class="row text-white fw-semibold">
+            <div class="col-2">
+              <p class="p-2 bg-warning">{{ singleProduct.productCategory }}</p>
+            </div>
+
+            <div class="col-2">
+              <p class="p-2 bg-success">{{ singleProduct.veganCategory }}</p>
+            </div>
+          </div>
+
+          <!-- 價格 -->
+          <div class="mb-3">
+
+            <s>{{ singleProduct.productPrice + 70 }}</s>
+            <h3 class="text-danger">{{ singleProduct.productPrice }}</h3>
+
+          </div>
+
+
+          <!-- 庫存 -->
+          <!-- 判斷庫存量給予相對應的標籤並將值放進去 -->
+          <div class="mb-4">
+            <div v-if="singleProduct.stock > 100">
+              <span class="badge bg-success"><i class="fa fa-check"></i> 供貨正常{{ singleProduct.stock
+              }}</span>
+            </div>
+            <div v-else-if="singleProduct.stock > 20">
+              <span class="badge bg-info"><i class="fa fa-exclamation-circle"></i> 手刀搶購{{ singleProduct.stock
+              }}</span>
+            </div>
+            <div v-else-if="singleProduct.stock > 0">
+              <span class="badge bg-warning"><i class="fa fa-exclamation-circle"></i> 最後倒數{{ singleProduct.stock
+              }}</span>
+            </div>
+            <div v-else>
+              <span class="badge bg-danger"><i class="fa fa-times-circle"></i> 已無商品</span>
+            </div>
+          </div>
+          <!-- 下拉顯示選單 -->
+          <BaseBlock :title="`  商品詳細描述 `" btn-option-content>
+            <template #subtitle>
+              這裡可以放副標題
+            </template>
+            <div class="row items-push-2x text-center">
+              這裡會顯示商品的詳細描述
+              {{ singleProduct.description }}
+            </div>
+          </BaseBlock>
+
+        </div>
+        <!-- 表單內文在這裡結束 -->
+        <!-- 送出button -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+            收藏
+          </button>
+          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" @click="updateProduct(productId)">
+            加入購物車
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>

@@ -137,6 +137,8 @@ function updateProduct(number) {
           .then(() => {
             console.log(product);
             getAxios();
+            toast.fire("更新成功", "", "success");
+
           })
           .catch((error) => {
             console.log(error, "失敗");
@@ -556,11 +558,11 @@ th.sort {
                   <label class="form-label" for="example-ltf-email">庫存</label>
                   <input type="stock" class="form-control" id="stock" name="stock" v-model="stock" />
                 </div>
+              </div>
 
-                <div class="mb-4">
-                  <label class="form-label" for="example-select">產品細節描述</label>
-                  <ckeditor :editor="ClassicEditor" :config="editorConfig" v-model="description" />
-                </div>
+              <div class="mb-4">
+                <label class="form-label" for="example-select">產品細節描述</label>
+                <ckeditor :editor="ClassicEditor" :config="editorConfig" v-model="description" />
               </div>
               <!-- 表單內文在這裡結束 -->
               <!-- 送出button -->
@@ -568,7 +570,7 @@ th.sort {
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                   取消
                 </button>
-                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" @click="updateProduct(productId)">
+                <button type="submit" class="btn btn-primary" @click="updateProduct(productId)" data-bs-dismiss="modal">
                   送出
                 </button>
               </div>
