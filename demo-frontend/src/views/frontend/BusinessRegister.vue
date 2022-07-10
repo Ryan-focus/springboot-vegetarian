@@ -101,8 +101,9 @@ async function onSubmit() {
           title: "註冊成功",
           text: "我們將盡快審核您的申請",
           timer: 1500,
-          type: "success"
+          icon: "success"
         });
+        Swal.fire
         window.setTimeout(function () {
           router.push({ name: "index" });
         }, 1000);
@@ -114,7 +115,7 @@ async function onSubmit() {
           title: "註冊失敗",
           text: "帳號重複",
           timer: 1000,
-          type: "error"
+          icon: "error"
         });
       } else {
         console.log(err.response.status);
