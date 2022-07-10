@@ -50,9 +50,16 @@ export const useTemplateStore = defineStore({
   }),
   actions: {
     getStates(payload) {
-      this.users.admin = payload.admin;
-      this.users.business = payload.business;
-      this.users.user = payload.user;
+      if (payload.admin) {
+        localStorage.setItem("admin", payload.admin);
+        this.users.admin = payload.admin;
+      } else if (payload.business) {
+        localStorage.setItem("business", payload.business);
+        this.users.business = payload.business;
+      } else {
+        localStorage.setItem("user", payload.user);
+        this.users.user = payload.user;
+      }
     },
     // Sets the layout, useful for setting different layouts (under layouts/variations/)
     setLayout(payload) {
@@ -254,5 +261,14 @@ export const useTemplateStore = defineStore({
     setSideTransitions(payload) {
       this.settings.sideTransitions = payload.transitions;
     },
+  },
+  persist: {
+    enabled: true,
+    strategies: [
+      {
+        storage: localStorage,
+        paths: ["admin", "business", "user"],
+      },
+    ],
   },
 });

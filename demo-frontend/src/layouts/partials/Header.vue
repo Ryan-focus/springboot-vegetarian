@@ -7,6 +7,7 @@ import Swal from "sweetalert2";
 // Grab example data
 import notifications from "@/data/notifications";
 
+
 // Main store and Router
 const store = useTemplateStore();
 const router = useRouter();
@@ -250,15 +251,3 @@ function logout() {
   </header>
   <!-- END Header -->
 </template>
-<script>
-export default {
-  data() {
-    return {
-      admin: "",
-    };
-  },
-  created() {
-    this.admin = JSON.parse(window.localStorage.getItem("access-admin"));
-  },
-};
-</script>

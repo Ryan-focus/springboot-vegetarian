@@ -49,6 +49,7 @@
     "highlightjs": "^9.16.2",
     "nprogress": "^0.2.0",
     "pinia": "^2.0.12",
+    "pinia-plugin-persist": "^1.0.0",
     "simplebar": "^5.3.6",
     "sweetalert2": "^11.4.6",
     "vue": "^3.2.31",

@@ -56,6 +56,7 @@ async function onSubmit() {
         if (response.data.data.user != null) {
           localStorage.setItem("access-admin", JSON.stringify(response.data));
           store.getStates({ admin: response.data })
+
           location.replace("http://localhost:8080/#/backend/dashboard");
         } else {
           localStorage.setItem("access-business", JSON.stringify(response.data));

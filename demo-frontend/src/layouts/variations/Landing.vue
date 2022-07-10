@@ -1,10 +1,12 @@
 <script setup>
 import { ref } from "vue";
 import { useTemplateStore } from "@/stores/template";
-
+import { useRouter } from "vue-router";
 import BaseLayout from "@/layouts/BaseLayout.vue";
 
 import BaseNavigation from "@/components/BaseNavigation.vue";
+
+import Swal from "sweetalert2";
 
 // Grab menu navigation arrays
 import menu from "@/data/menu";
@@ -13,7 +15,7 @@ import menu from "@/data/menu";
 const mobileVisibleNavHoverCentered = ref(false);
 // Main store
 const store = useTemplateStore();
-
+const router = useRouter();
 // Set default elements for this layout
 store.setLayout({
   header: true,
@@ -25,6 +27,25 @@ store.setLayout({
 // Set various template options for this layout variation
 store.headerStyle({ mode: "light" });
 store.mainContent({ mode: "boxed" });
+
+//登出
+function logOut() {
+  // this.admin = null;
+  store.getStates({ admin: "", business: "", user: "" });
+  localStorage.removeItem("access-admin");
+  localStorage.removeItem("access-business");
+  localStorage.removeItem("access-user");
+  location.replace("http://localhost:8080/#/"); //登出後防止返回上頁
+  Swal.fire({
+    title: "登出",
+    text: "您已登出",
+    timer: 1000,
+    icon: "Info"
+  });
+  window.setTimeout(function () {
+    router.push({ name: "index" });
+  }, 1000);
+}
 </script>
 
 
@@ -79,10 +100,55 @@ store.mainContent({ mode: "boxed" });
     <template #header-content-right>
 
 
-      <div v-if="store.users.admin">admin已登入</div>
-      <div v-if="store.users.business">
-        <div class="me-3">
-          business已登入
+      <div v-if="admin">
+        <div class="dropdown">
+          <label class="form-check-label me-2" for="example-radio-block1">管理員:</label>
+          <button type="button" class="btn btn-alt-secondary me-2" id="sidebar-themes-dropdown"
+            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-fw fa-user opacity-50"></i>{{ admin.data }}
+          </button>
+          <div class="dropdown-menu dropdown-menu-end fs-sm smini-hide border-0"
+            aria-labelledby="sidebar-themes-dropdown">
+
+            <RouterLink @click="logOut()" :to="{ name: '' }"
+              class="dropdown-item d-flex align-items-center justify-content-between">
+              <span class="fs-sm fw-medium">登出</span>
+            </RouterLink>
+          </div>
+        </div>
+      </div>
+      <div v-else-if="business">
+        <div class="dropdown">
+          <label class="form-check-label me-2" for="example-radio-block1">商家用戶</label>
+          <button type="button" class="btn btn-alt-secondary me-2" id="sidebar-themes-dropdown"
+            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-fw fa-user opacity-50"></i>{{ business.data.business.principalName }}
+          </button>
+          <div class="dropdown-menu dropdown-menu-end fs-sm smini-hide border-0"
+            aria-labelledby="sidebar-themes-dropdown">
+
+            <RouterLink @click="logOut()" :to="{ name: '' }"
+              class="dropdown-item d-flex align-items-center justify-content-between">
+              <span class="fs-sm fw-medium">登出</span>
+            </RouterLink>
+          </div>
+        </div>
+      </div>
+      <div v-else-if="user">
+        <div class="dropdown">
+          <label class="form-check-label me-2" for="example-radio-block1">商家用戶</label>
+          <button type="button" class="btn btn-alt-secondary me-2" id="sidebar-themes-dropdown"
+            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
+            <i class="fa fa-fw fa-user opacity-50"></i>{{ user.data }}
+          </button>
+          <div class="dropdown-menu dropdown-menu-end fs-sm smini-hide border-0"
+            aria-labelledby="sidebar-themes-dropdown">
+
+            <RouterLink @click="logOut()" :to="{ name: '' }"
+              class="dropdown-item d-flex align-items-center justify-content-between">
+              <span class="fs-sm fw-medium">登出</span>
+            </RouterLink>
+          </div>
         </div>
       </div>
       <div v-else>
@@ -103,17 +169,29 @@ store.mainContent({ mode: "boxed" });
     <!-- END Header Content Right -->
   </BaseLayout>
 </template>
-<!-- <script>
+<script>
+
 export default {
   data() {
     return {
-      admin: null,
-      business: null,
+      admin: "",
+      business: "",
+      user: ""
     };
   },
   created() {
     this.admin = JSON.parse(window.localStorage.getItem("access-admin"));
     this.business = JSON.parse(window.localStorage.getItem("access-business"));
   },
+  persist: {
+    enabled: true,
+    strategies: [
+      {
+        storage: localStorage,
+        paths: ['admin', 'business', "user"]
+      }
+    ]
+  }
 };
-</script> -->
+
+</script>
