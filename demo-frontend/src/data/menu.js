@@ -819,27 +819,5 @@ export default {
         },
       ],
     },
-    {
-      name: "Personal",
-      heading: true,
-    },
-    {
-      name: "Profile",
-      icon: "far fa-user",
-      sub: [
-        {
-          name: "Edit",
-          to: "#",
-        },
-        {
-          name: "Settings",
-          to: "#",
-        },
-        {
-          name: "Log out",
-          to: "#",
-        },
-      ],
-    },
   ],
 };

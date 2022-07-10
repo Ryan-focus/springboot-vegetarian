@@ -42,8 +42,18 @@ export const useTemplateStore = defineStore({
       sideTransitions: true,
       mainContent: "", // 'boxed', ''narrow'
     },
+    users: {
+      admin: "",
+      business: "",
+      user: "",
+    },
   }),
   actions: {
+    getStates(payload) {
+      this.users.admin = payload.admin;
+      this.users.business = payload.business;
+      this.users.user = payload.user;
+    },
     // Sets the layout, useful for setting different layouts (under layouts/variations/)
     setLayout(payload) {
       this.layout.header = payload.header;
