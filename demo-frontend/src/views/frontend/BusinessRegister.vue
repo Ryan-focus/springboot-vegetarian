@@ -103,7 +103,6 @@ async function onSubmit() {
           timer: 1500,
           icon: "success"
         });
-        Swal.fire
         window.setTimeout(function () {
           router.push({ name: "index" });
         }, 1000);

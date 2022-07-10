@@ -334,65 +334,37 @@ getBusiness();
   <!-- Hero -->
   <div class="content">
     <div
-      class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center py-2 text-center text-md-start"
-    >
+      class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center py-2 text-center text-md-start">
       <div class="flex-grow-1 mb-1 mb-md-0">
         <h1 class="h3 fw-bold mb-2">管理員系統</h1>
         <h2 class="h6 fw-medium fw-medium text-muted mb-0">
           歡迎 管理員
-          <RouterLink
-            :to="{ name: 'backend-pages-generic-profile' }"
-            class="fw-semibold"
-            >{{ admin.data.user.userName }}</RouterLink
-          >
+          <RouterLink :to="{ name: 'backend-pages-generic-profile' }" class="fw-semibold">{{ admin.data.user.userName }}
+          </RouterLink>
         </h2>
       </div>
       <div class="mt-3 mt-md-0 ms-md-3 space-x-1">
-        <a
-          href="javascript:void(0)"
-          class="btn btn-sm btn-alt-secondary space-x-1"
-        >
+        <a href="javascript:void(0)" class="btn btn-sm btn-alt-secondary space-x-1">
           <i class="fa fa-cogs opacity-50"></i>
           <span>設定</span>
         </a>
         <div class="dropdown d-inline-block">
-          <button
-            type="button"
-            class="btn btn-sm btn-alt-secondary space-x-1"
-            id="dropdown-analytics-overview"
-            data-bs-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
+          <button type="button" class="btn btn-sm btn-alt-secondary space-x-1" id="dropdown-analytics-overview"
+            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-fw fa-calendar-alt opacity-50"></i>
             <span>全部時間</span>
             <i class="fa fa-fw fa-angle-down"></i>
           </button>
-          <div
-            class="dropdown-menu dropdown-menu-end fs-sm"
-            aria-labelledby="dropdown-analytics-overview"
-          >
-            <a class="dropdown-item fw-medium" href="javascript:void(0)"
-              >最近30天</a
-            >
-            <a class="dropdown-item fw-medium" href="javascript:void(0)"
-              >最近一個月</a
-            >
-            <a class="dropdown-item fw-medium" href="javascript:void(0)"
-              >最近三個月</a
-            >
+          <div class="dropdown-menu dropdown-menu-end fs-sm" aria-labelledby="dropdown-analytics-overview">
+            <a class="dropdown-item fw-medium" href="javascript:void(0)">最近30天</a>
+            <a class="dropdown-item fw-medium" href="javascript:void(0)">最近一個月</a>
+            <a class="dropdown-item fw-medium" href="javascript:void(0)">最近三個月</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item fw-medium" href="javascript:void(0)"
-              >今年</a
-            >
-            <a class="dropdown-item fw-medium" href="javascript:void(0)"
-              >去年</a
-            >
+            <a class="dropdown-item fw-medium" href="javascript:void(0)">今年</a>
+            <a class="dropdown-item fw-medium" href="javascript:void(0)">去年</a>
             <div class="dropdown-divider"></div>
-            <a
-              class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-              href="javascript:void(0)"
-            >
+            <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
+              href="javascript:void(0)">
               <span>全部時間</span>
               <i class="fa fa-check"></i>
             </a>
@@ -411,9 +383,7 @@ getBusiness();
         <!-- 待處理訂單 Pending Orders  :to 購物車模板-->
         <BaseBlock class="d-flex flex-column h-100 mb-0">
           <template #content>
-            <div
-              class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
-            >
+            <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
               <dl class="mb-0">
                 <dt class="fs-3 fw-bold">{{ restaurantTotal }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
@@ -425,14 +395,9 @@ getBusiness();
               </div>
             </div>
             <div class="bg-body-light rounded-bottom">
-              <RouterLink
-                :to="{ name: 'backend-restaurants-restaurant-info' }"
-                class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
-                ><span>查看全部餐廳</span
-                ><i
-                  class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
-                ></i
-              ></RouterLink>
+              <RouterLink :to="{ name: 'backend-restaurants-restaurant-info' }"
+                class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between">
+                <span>查看全部餐廳</span><i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i></RouterLink>
             </div>
           </template>
         </BaseBlock>
@@ -442,9 +407,7 @@ getBusiness();
         <!-- New Customers -->
         <BaseBlock class="d-flex flex-column h-100 mb-0">
           <template #content>
-            <div
-              class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
-            >
+            <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
               <dl class="mb-0">
                 <dt class="fs-3 fw-bold">{{ productsTotal }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
@@ -456,14 +419,9 @@ getBusiness();
               </div>
             </div>
             <div class="bg-body-light rounded-bottom">
-              <RouterLink
-                :to="{ name: 'backend-cart-product-info' }"
-                class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
-                ><span>查看全部商品</span
-                ><i
-                  class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
-                ></i
-              ></RouterLink>
+              <RouterLink :to="{ name: 'backend-cart-product-info' }"
+                class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between">
+                <span>查看全部商品</span><i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i></RouterLink>
             </div>
           </template>
         </BaseBlock>
@@ -473,9 +431,7 @@ getBusiness();
         <!-- Messages -->
         <BaseBlock class="d-flex flex-column h-100 mb-0">
           <template #content>
-            <div
-              class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
-            >
+            <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
               <dl class="mb-0">
                 <dt class="fs-3 fw-bold">{{ businessTotal }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
@@ -487,14 +443,9 @@ getBusiness();
               </div>
             </div>
             <div class="bg-body-light rounded-bottom">
-              <RouterLink
-                :to="{ name: 'backend-reserve-info' }"
-                class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
-                ><span>查看全部合作商家</span
-                ><i
-                  class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
-                ></i
-              ></RouterLink>
+              <RouterLink :to="{ name: 'backend-reserve-info' }"
+                class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between">
+                <span>查看全部合作商家</span><i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i></RouterLink>
             </div>
           </template>
         </BaseBlock>
@@ -504,9 +455,7 @@ getBusiness();
         <!-- Conversion Rate -->
         <BaseBlock class="d-flex flex-column h-100 mb-0">
           <template #content>
-            <div
-              class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
-            >
+            <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
               <dl class="mb-0">
                 <dt class="fs-3 fw-bold">15.99%</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
@@ -518,14 +467,10 @@ getBusiness();
               </div>
             </div>
             <div class="bg-body-light rounded-bottom">
-              <a
-                class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
-              >
+              <a class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
+                href="javascript:void(0)">
                 <span>查看統計數據</span>
-                <i
-                  class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
-                ></i>
+                <i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
               </a>
             </div>
           </template>
@@ -711,59 +656,39 @@ getBusiness();
     <BaseBlock title="最近訂單">
       <template #options>
         <div class="space-x-1">
-          <button
-            type="button"
-            class="btn btn-sm btn-alt-secondary"
-            @click="
-              () => {
-                orderSearch = !orderSearch;
-              }
-            "
-          >
+          <button type="button" class="btn btn-sm btn-alt-secondary" @click="
+            () => {
+              orderSearch = !orderSearch;
+            }
+          ">
             <i class="fa fa-search"></i>
           </button>
           <div class="dropdown d-inline-block">
-            <button
-              type="button"
-              class="btn btn-sm btn-alt-secondary"
-              id="dropdown-recent-orders-filters"
-              data-bs-toggle="dropdown"
-              aria-haspopup="true"
-              aria-expanded="false"
-            >
+            <button type="button" class="btn btn-sm btn-alt-secondary" id="dropdown-recent-orders-filters"
+              data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <i class="fa fa-fw fa-flask"></i>
               篩選器
               <i class="fa fa-angle-down ms-1"></i>
             </button>
-            <div
-              class="dropdown-menu dropdown-menu-md dropdown-menu-end fs-sm"
-              aria-labelledby="dropdown-recent-orders-filters"
-            >
-              <a
-                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
-              >
+            <div class="dropdown-menu dropdown-menu-md dropdown-menu-end fs-sm"
+              aria-labelledby="dropdown-recent-orders-filters">
+              <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
+                href="javascript:void(0)">
                 未審核
                 <span class="badge bg-primary rounded-pill">20</span>
               </a>
-              <a
-                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
-              >
+              <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
+                href="javascript:void(0)">
                 審核中
                 <span class="badge bg-primary rounded-pill">72</span>
               </a>
-              <a
-                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
-              >
+              <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
+                href="javascript:void(0)">
                 已完成
                 <span class="badge bg-primary rounded-pill">890</span>
               </a>
-              <a
-                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
-              >
+              <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
+                href="javascript:void(0)">
                 全部
                 <span class="badge bg-primary rounded-pill">997</span>
               </a>
@@ -773,22 +698,13 @@ getBusiness();
       </template>
 
       <template #content>
-        <div
-          v-if="orderSearch"
-          id="one-dashboard-search-orders"
-          class="block-content border-bottom"
-        >
+        <div v-if="orderSearch" id="one-dashboard-search-orders" class="block-content border-bottom">
           <!-- Search Form -->
           <form @sumit.prevent>
             <div class="push">
               <div class="input-group">
-                <input
-                  type="text"
-                  class="form-control form-control-alt"
-                  id="one-ecom-orders-search"
-                  name="one-ecom-orders-search"
-                  placeholder="搜尋所有訂單.."
-                />
+                <input type="text" class="form-control form-control-alt" id="one-ecom-orders-search"
+                  name="one-ecom-orders-search" placeholder="搜尋所有訂單.." />
                 <span class="input-group-text bg-body border-0">
                   <i class="fa fa-search"></i>
                 </span>
@@ -820,33 +736,21 @@ getBusiness();
                     <p class="fs-sm fw-medium text-muted mb-0">Premium</p>
                   </td>
                   <td class="d-none d-xl-table-cell">
-                    <a class="fw-semibold" href="javascript:void(0)"
-                      >Marie Duncan</a
-                    >
+                    <a class="fw-semibold" href="javascript:void(0)">Marie Duncan</a>
                     <p class="fs-sm fw-medium text-muted mb-0">Photographer</p>
                   </td>
                   <td>
                     <span
-                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success"
-                      >Completed</span
-                    >
+                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success">Completed</span>
                   </td>
                   <td class="d-none d-sm-table-cell">
                     <div class="progress mb-1" style="height: 5px">
-                      <div
-                        class="progress-bar bg-success"
-                        role="progressbar"
-                        style="width: 8%"
-                        aria-valuenow="8"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      ></div>
+                      <div class="progress-bar bg-success" role="progressbar" style="width: 8%" aria-valuenow="8"
+                        aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                     <p class="fs-xs fw-semibold mb-0">8%</p>
                   </td>
-                  <td
-                    class="d-none d-sm-table-cell fw-semibold text-muted text-end"
-                  >
+                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-end">
                     7 min ago
                   </td>
                   <td class="d-none d-sm-table-cell text-end">
@@ -861,33 +765,21 @@ getBusiness();
                     <p class="fs-sm fw-medium text-muted mb-0">Premium</p>
                   </td>
                   <td class="d-none d-xl-table-cell">
-                    <a class="fw-semibold" href="javascript:void(0)"
-                      >Jack Estrada</a
-                    >
+                    <a class="fw-semibold" href="javascript:void(0)">Jack Estrada</a>
                     <p class="fs-sm fw-medium text-muted mb-0">Photographer</p>
                   </td>
                   <td>
                     <span
-                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-info-light text-info"
-                      >Active</span
-                    >
+                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-info-light text-info">Active</span>
                   </td>
                   <td class="d-none d-sm-table-cell">
                     <div class="progress mb-1" style="height: 5px">
-                      <div
-                        class="progress-bar bg-success"
-                        role="progressbar"
-                        style="width: 6%"
-                        aria-valuenow="6"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      ></div>
+                      <div class="progress-bar bg-success" role="progressbar" style="width: 6%" aria-valuenow="6"
+                        aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                     <p class="fs-xs fw-semibold mb-0">6%</p>
                   </td>
-                  <td
-                    class="d-none d-sm-table-cell fw-semibold text-muted text-end"
-                  >
+                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-end">
                     26 min ago
                   </td>
                   <td class="d-none d-sm-table-cell text-end">
@@ -902,33 +794,21 @@ getBusiness();
                     <p class="fs-sm fw-medium text-muted mb-0">Premium</p>
                   </td>
                   <td class="d-none d-xl-table-cell">
-                    <a class="fw-semibold" href="javascript:void(0)"
-                      >Megan Fuller</a
-                    >
+                    <a class="fw-semibold" href="javascript:void(0)">Megan Fuller</a>
                     <p class="fs-sm fw-medium text-muted mb-0">Web developer</p>
                   </td>
                   <td>
                     <span
-                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success"
-                      >Completed</span
-                    >
+                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success">Completed</span>
                   </td>
                   <td class="d-none d-sm-table-cell">
                     <div class="progress mb-1" style="height: 5px">
-                      <div
-                        class="progress-bar bg-success"
-                        role="progressbar"
-                        style="width: 25%"
-                        aria-valuenow="25"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      ></div>
+                      <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25"
+                        aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                     <p class="fs-xs fw-semibold mb-0">25%</p>
                   </td>
-                  <td
-                    class="d-none d-sm-table-cell fw-semibold text-muted text-end"
-                  >
+                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-end">
                     19 min ago
                   </td>
                   <td class="d-none d-sm-table-cell text-end">
@@ -943,35 +823,23 @@ getBusiness();
                     <p class="fs-sm fw-medium text-muted mb-0">Premium</p>
                   </td>
                   <td class="d-none d-xl-table-cell">
-                    <a class="fw-semibold" href="javascript:void(0)"
-                      >Lisa Jenkins</a
-                    >
+                    <a class="fw-semibold" href="javascript:void(0)">Lisa Jenkins</a>
                     <p class="fs-sm fw-medium text-muted mb-0">
                       Application Manager
                     </p>
                   </td>
                   <td>
                     <span
-                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning"
-                      >Pending</span
-                    >
+                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning">Pending</span>
                   </td>
                   <td class="d-none d-sm-table-cell">
                     <div class="progress mb-1" style="height: 5px">
-                      <div
-                        class="progress-bar bg-success"
-                        role="progressbar"
-                        style="width: 18%"
-                        aria-valuenow="18"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      ></div>
+                      <div class="progress-bar bg-success" role="progressbar" style="width: 18%" aria-valuenow="18"
+                        aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                     <p class="fs-xs fw-semibold mb-0">18%</p>
                   </td>
-                  <td
-                    class="d-none d-sm-table-cell fw-semibold text-muted text-end"
-                  >
+                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-end">
                     13 min ago
                   </td>
                   <td class="d-none d-sm-table-cell text-end">
@@ -986,33 +854,21 @@ getBusiness();
                     <p class="fs-sm fw-medium text-muted mb-0">Premium</p>
                   </td>
                   <td class="d-none d-xl-table-cell">
-                    <a class="fw-semibold" href="javascript:void(0)"
-                      >Brian Stevens</a
-                    >
+                    <a class="fw-semibold" href="javascript:void(0)">Brian Stevens</a>
                     <p class="fs-sm fw-medium text-muted mb-0">Photographer</p>
                   </td>
                   <td>
                     <span
-                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success"
-                      >Completed</span
-                    >
+                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success">Completed</span>
                   </td>
                   <td class="d-none d-sm-table-cell">
                     <div class="progress mb-1" style="height: 5px">
-                      <div
-                        class="progress-bar bg-success"
-                        role="progressbar"
-                        style="width: 10%"
-                        aria-valuenow="10"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      ></div>
+                      <div class="progress-bar bg-success" role="progressbar" style="width: 10%" aria-valuenow="10"
+                        aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                     <p class="fs-xs fw-semibold mb-0">10%</p>
                   </td>
-                  <td
-                    class="d-none d-sm-table-cell fw-semibold text-muted text-end"
-                  >
+                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-end">
                     4 min ago
                   </td>
                   <td class="d-none d-sm-table-cell text-end">
@@ -1027,33 +883,21 @@ getBusiness();
                     <p class="fs-sm fw-medium text-muted mb-0">Premium</p>
                   </td>
                   <td class="d-none d-xl-table-cell">
-                    <a class="fw-semibold" href="javascript:void(0)"
-                      >Jesse Fisher</a
-                    >
+                    <a class="fw-semibold" href="javascript:void(0)">Jesse Fisher</a>
                     <p class="fs-sm fw-medium text-muted mb-0">Digital Nomad</p>
                   </td>
                   <td>
                     <span
-                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning"
-                      >Pending</span
-                    >
+                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning">Pending</span>
                   </td>
                   <td class="d-none d-sm-table-cell">
                     <div class="progress mb-1" style="height: 5px">
-                      <div
-                        class="progress-bar bg-success"
-                        role="progressbar"
-                        style="width: 23%"
-                        aria-valuenow="23"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      ></div>
+                      <div class="progress-bar bg-success" role="progressbar" style="width: 23%" aria-valuenow="23"
+                        aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                     <p class="fs-xs fw-semibold mb-0">23%</p>
                   </td>
-                  <td
-                    class="d-none d-sm-table-cell fw-semibold text-muted text-end"
-                  >
+                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-end">
                     23 min ago
                   </td>
                   <td class="d-none d-sm-table-cell text-end">
@@ -1068,33 +912,21 @@ getBusiness();
                     <p class="fs-sm fw-medium text-muted mb-0">Premium</p>
                   </td>
                   <td class="d-none d-xl-table-cell">
-                    <a class="fw-semibold" href="javascript:void(0)"
-                      >Carol Ray</a
-                    >
+                    <a class="fw-semibold" href="javascript:void(0)">Carol Ray</a>
                     <p class="fs-sm fw-medium text-muted mb-0">Web developer</p>
                   </td>
                   <td>
                     <span
-                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-info-light text-info"
-                      >Active</span
-                    >
+                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-info-light text-info">Active</span>
                   </td>
                   <td class="d-none d-sm-table-cell">
                     <div class="progress mb-1" style="height: 5px">
-                      <div
-                        class="progress-bar bg-success"
-                        role="progressbar"
-                        style="width: 14%"
-                        aria-valuenow="14"
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                      ></div>
+                      <div class="progress-bar bg-success" role="progressbar" style="width: 14%" aria-valuenow="14"
+                        aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                     <p class="fs-xs fw-semibold mb-0">14%</p>
                   </td>
-                  <td
-                    class="d-none d-sm-table-cell fw-semibold text-muted text-end"
-                  >
+                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-end">
                     15 min ago
                   </td>
                   <td class="d-none d-sm-table-cell text-end">
@@ -1111,12 +943,7 @@ getBusiness();
           <nav aria-label="Photos Search Navigation">
             <ul class="pagination pagination-sm justify-content-end mb-0">
               <li class="page-item">
-                <a
-                  class="page-link"
-                  href="javascript:void(0)"
-                  tabindex="-1"
-                  aria-label="Previous"
-                >
+                <a class="page-link" href="javascript:void(0)" tabindex="-1" aria-label="Previous">
                   上一頁
                 </a>
               </li>
@@ -1133,11 +960,7 @@ getBusiness();
                 <a class="page-link" href="javascript:void(0)">4</a>
               </li>
               <li class="page-item">
-                <a
-                  class="page-link"
-                  href="javascript:void(0)"
-                  aria-label="Next"
-                >
+                <a class="page-link" href="javascript:void(0)" aria-label="Next">
                   下一頁
                 </a>
               </li>
@@ -1156,10 +979,22 @@ export default {
   data() {
     return {
       admin: "",
+      business: "",
     };
   },
   created() {
     this.admin = JSON.parse(window.localStorage.getItem("access-admin"));
+    this.business = JSON.parse(window.localStorage.getItem("access-business"));
   },
+  persist: {
+    enabled: true,
+    strategies: [
+      {
+        storage: localStorage,
+        paths: ['admin', 'business']
+      }
+    ]
+  }
 };
+
 </script>
