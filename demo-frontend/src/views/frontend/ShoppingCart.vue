@@ -141,9 +141,9 @@ getAxios();
       <div class="dropdown">
         <button type="button" class="btn btn-alt-info dropdown-toggle" id="dropdown-default-alt-info"
           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <div v-if="urlParams.veganCategory == null">
+          <a v-if="urlParams.veganCategory == null">
             素種類
-          </div>
+          </a>
           {{ urlParams.veganCategory }}
         </button>
         <div class="dropdown-menu fs-sm" aria-labelledby="dropdown-default-alt-info">
@@ -212,9 +212,9 @@ getAxios();
       <div class="dropdown">
         <button type="button" class="btn btn-alt-info dropdown-toggle" id="dropdown-default-alt-info"
           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <div v-if="urlParams.category == null">
+          <a v-if="urlParams.category == null">
             商品種類
-          </div>
+          </a>
           {{ urlParams.category }}
         </button>
         <div class="dropdown-menu fs-sm" aria-labelledby="dropdown-default-alt-info">
