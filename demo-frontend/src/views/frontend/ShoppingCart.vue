@@ -133,82 +133,169 @@ getAxios();
     </BaseBlock>
   </div>
   <!-- 這邊是查詢功能放的地方 -->
-  <input type="text" v-model="urlParams.category">
 
-  <!-- 這邊是用radio box 選擇素食種類 -->
-  <div class="row g-sm">
-    <div class="col-2">
-      <div class="form-check form-block">
-        <input type="radio" class="form-check-input" id="example-radio-block1" name="example-radio-block" value="全素"
-          v-model="urlParams.veganCategory" @change="getAxios()" />
-        <label class="form-check-label" for="example-radio-block1">
-          <span class="d-block fw-normal text-center my-3">
-            <span class="fs-4 fw-semibold">全素</span>
-          </span>
-        </label>
-      </div>
-    </div>
-    <div class="col-2">
-      <div class="form-check form-block">
-        <input type="radio" class="form-check-input" id="example-radio-block2" name="example-radio-block" value="蛋素"
-          v-model="urlParams.veganCategory" @change="getAxios()" />
-        <label class="form-check-label" for="example-radio-block2">
-          <span class="d-block fw-normal text-center my-3">
-            <span class="fs-4 fw-semibold">蛋素</span>
-          </span>
-        </label>
-      </div>
-    </div>
-    <div class="col-2">
-      <div class="form-check form-block">
-        <input type="radio" class="form-check-input" id="example-radio-block3" name="example-radio-block" value="奶素"
-          v-model="urlParams.veganCategory" @change="getAxios()" />
-        <label class="form-check-label" for="example-radio-block3">
-          <span class="d-block fw-normal text-center my-3">
-            <span class="fs-4 fw-semibold">奶素</span>
-          </span>
-        </label>
-      </div>
-    </div>
+  <!-- 這邊是下拉式選單 -->
+  <!-- 素種類選單 -->
+  <div class="row items-push mb-4">
+    <div class="col-sm-6 col-xl-4">
+      <div class="dropdown">
+        <button type="button" class="btn btn-alt-info dropdown-toggle" id="dropdown-default-alt-info"
+          data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <div v-if="urlParams.veganCategory == null">
+            素種類
+          </div>
+          {{ urlParams.veganCategory }}
+        </button>
+        <div class="dropdown-menu fs-sm" aria-labelledby="dropdown-default-alt-info">
 
-    <div class="col-2">
-      <div class="form-check form-block">
-        <input type="radio" class="form-check-input" id="example-radio-block4" name="example-radio-block" value="蛋奶素"
-          v-model="urlParams.veganCategory" @change="getAxios()" />
-        <label class="form-check-label" for="example-radio-block4">
-          <span class="d-block fw-normal text-center my-3">
-            <span class="fs-4 fw-semibold">蛋奶素</span>
-          </span>
-        </label>
-      </div>
-    </div>
+          <!-- 這邊開始是一格會打勾的radio -->
+          <div class="form-check form-block">
+            <input type="radio" class="form-check-input" id="example-radio-block1" name="example-radio-block" value="全素"
+              v-model="urlParams.veganCategory" @change="getAxios()" />
+            <label class="form-check-label" for="example-radio-block1">
+              <span class="fs-4 fw-semibold">全素</span>
+            </label>
+          </div>
+          <!-- 這裡結束一格-->
 
-    <div class="col-2">
-      <div class="form-check form-block">
-        <input type="radio" class="form-check-input" id="example-radio-block6" name="example-radio-block" value="五辛素"
-          v-model="urlParams.veganCategory" @change="getAxios()" />
-        <label class="form-check-label" for="example-radio-block6">
-          <span class="d-block fw-normal text-center my-3">
-            <span class="fs-4 fw-semibold">五辛素</span>
-          </span>
-        </label>
+          <div class="form-check form-block">
+            <input type="radio" class="form-check-input" id="example-radio-block2" name="example-radio-block" value="蛋素"
+              v-model="urlParams.veganCategory" @change="getAxios()" />
+            <label class="form-check-label" for="example-radio-block2">
+              <span class="fs-4 fw-semibold">蛋素</span>
+            </label>
+          </div>
+
+          <div class="form-check form-block">
+            <input type="radio" class="form-check-input" id="example-radio-block3" name="example-radio-block" value="奶素"
+              v-model="urlParams.veganCategory" @change="getAxios()" />
+            <label class="form-check-label" for="example-radio-block3">
+              <span class="fs-4 fw-semibold">奶素</span>
+            </label>
+          </div>
+
+          <div class="form-check form-block">
+            <input type="radio" class="form-check-input" id="example-radio-block4" name="example-radio-block"
+              value="蛋奶素" v-model="urlParams.veganCategory" @change="getAxios()" />
+            <label class="form-check-label" for="example-radio-block4">
+              <span class="fs-4 fw-semibold">蛋奶素</span>
+            </label>
+          </div>
+
+          <div class="form-check form-block">
+            <input type="radio" class="form-check-input" id="example-radio-block5" name="example-radio-block"
+              value="五辛素" v-model="urlParams.veganCategory" @change="getAxios()" />
+            <label class="form-check-label" for="example-radio-block5">
+              <span class="fs-4 fw-semibold">五辛素</span>
+            </label>
+          </div>
+
+          <div class="form-check form-block">
+            <input type="radio" class="form-check-input" id="example-radio-block6" name="example-radio-block"
+              value="VEGAN" v-model="urlParams.veganCategory" @change="getAxios()" />
+            <label class="form-check-label" for="example-radio-block6">
+              <span class="fs-4 fw-semibold">VEGAN</span>
+            </label>
+          </div>
+          <!-- <div class="form-check form-block">
+            <input type="radio" class="form-check-input" id="example-radio-block7" name="example-radio-block"
+              value="null" v-model="urlParams.veganCategory" @change="getAxios()" />
+            <label class="form-check-label" for="example-radio-block7">
+              <span class="fs-4 fw-semibold">全選</span>
+            </label>
+          </div> -->
+        </div>
       </div>
     </div>
-    <div class="col-2">
-      <div class="form-check form-block">
-        <input type="radio" class="form-check-input" id="example-radio-block7" name="example-radio-block" value="VEGAN"
-          v-model="urlParams.veganCategory" @change="getAxios()" />
-        <label class="form-check-label" for="example-radio-block7">
-          <span class="d-block fw-normal text-center my-3">
-            <span class="fs-4 fw-semibold">VEGAN</span>
-          </span>
-        </label>
+    <!--    種類選單 -->
+    <div class="col-sm-6 col-xl-4">
+      <div class="dropdown">
+        <button type="button" class="btn btn-alt-info dropdown-toggle" id="dropdown-default-alt-info"
+          data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <div v-if="urlParams.category == null">
+            商品種類
+          </div>
+          {{ urlParams.category }}
+        </button>
+        <div class="dropdown-menu fs-sm" aria-labelledby="dropdown-default-alt-info">
+
+          <!-- 這邊開始是一格會打勾的radio -->
+          <div class="form-check form-block">
+            <input type="radio" class="form-check-input" id="category1" name="category" value="生鮮"
+              v-model="urlParams.category" @change="getAxios()" />
+            <label class="form-check-label" for="category1">
+              <span class="fs-4 fw-semibold">生鮮</span>
+            </label>
+          </div>
+          <!-- 這裡結束一格-->
+
+          <div class="form-check form-block">
+            <input type="radio" class="form-check-input" id="category2" name="category" value="食品"
+              v-model="urlParams.category" @change="getAxios()" />
+            <label class="form-check-label" for="category2">
+              <span class="fs-4 fw-semibold">食品</span>
+            </label>
+          </div>
+
+          <div class="form-check form-block">
+            <input type="radio" class="form-check-input" id="category3" name="category" value="寵物"
+              v-model="urlParams.category" @change="getAxios()" />
+            <label class="form-check-label" for="category3">
+              <span class="fs-4 fw-semibold">寵物</span>
+            </label>
+          </div>
+
+          <div class="form-check form-block">
+            <input type="radio" class="form-check-input" id="category4" name="category" value="居家百貨"
+              v-model="urlParams.category" @change="getAxios()" />
+            <label class="form-check-label" for="category4">
+              <span class="fs-4 fw-semibold">居家百貨</span>
+            </label>
+          </div>
+
+          <div class="form-check form-block">
+            <input type="radio" class="form-check-input" id="category5" name="category" value="飾品"
+              v-model="urlParams.category" @change="getAxios()" />
+            <label class="form-check-label" for="category5">
+              <span class="fs-4 fw-semibold">飾品</span>
+            </label>
+          </div>
+
+          <div class="form-check form-block">
+            <input type="radio" class="form-check-input" id="category6" name="category" value="保健"
+              v-model="urlParams.category" @change="getAxios()" />
+            <label class="form-check-label" for="category6">
+              <span class="fs-4 fw-semibold">保健</span>
+            </label>
+          </div>
+          <div class="form-check form-block">
+            <input type="radio" class="form-check-input" id="category7" name="category" value="書籍影音"
+              v-model="urlParams.category" @change="getAxios()" />
+            <label class="form-check-label" for="category7">
+              <span class="fs-4 fw-semibold">書籍影音</span>
+            </label>
+          </div>
+
+          <div class="form-check form-block">
+            <input type="radio" class="form-check-input" id="category8" name="category" value="美妝保養"
+              v-model="urlParams.category" @change="getAxios()" />
+            <label class="form-check-label" for="category8">
+              <span class="fs-4 fw-semibold">美妝保養</span>
+            </label>
+          </div>
+
+          <div class="form-check form-block">
+            <input type="radio" class="form-check-input" id="category9" name="category" value="量販批發"
+              v-model="urlParams.category" @change="getAxios()" />
+            <label class="form-check-label" for="category9">
+              <span class="fs-4 fw-semibold">量販批發</span>
+            </label>
+          </div>
+
+        </div>
       </div>
     </div>
   </div>
-  <!-- radio box 結束 -->
-
-  <button class="btn btn-alt-primary" @click="getAxios()">Submit</button>
 
   <!-- 這邊是商品頁 -->
   <!-- Page Content -->
@@ -232,6 +319,17 @@ getAxios();
                   @click="getSingle(item.productId)">
                   {{ item.productName }}
                 </h5>
+
+                <div class="row text-white fw-semibold">
+                  <div class="col-3">
+                    <p class="badge bg-info">{{ item.productCategory }}</p>
+                  </div>
+
+                  <div class="col-3">
+                    <p class="badge bg-success">{{ item.veganCategory
+                    }}</p>
+                  </div>
+                </div>
 
                 <!-- 這邊是價格跟假的優惠 -->
                 <div class="mb-3">
@@ -258,13 +356,16 @@ getAxios();
                   <div v-else>
                     <span class="badge bg-danger"><i class="fa fa-times-circle"></i> 已無商品</span>
                   </div>
+                  <!-- 購物車按鈕 -->
                 </div>
-                <div class="block-content bg-body-light">
-                  <div class="sc-fzXfOz jRhlbT">
-                    <span class="d-inline"><i class="far fa-heart">收藏</i></span>
-                    &ensp;&ensp;&ensp;&ensp;
-                    <span class="d-inline"><i class="fa fa-cart-shopping">加入購物車</i></span>
-                  </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn 
+btn-outline-danger" data-bs-dismiss="modal">
+                    <i class="far fa-heart">收藏</i>
+                  </button>
+                  <button type="submit" class="btn btn-outline-primary" data-bs-dismiss="modal">
+                    <i class="fa fa-cart-shopping">加入購物車</i>
+                  </button>
                 </div>
               </div>
             </div>
@@ -306,12 +407,12 @@ getAxios();
           <!-- 商品種類  素食種類標籤-->
 
           <div class="row text-white fw-semibold">
-            <div class="col-2">
-              <p class="p-2 bg-warning">{{ singleProduct.productCategory }}</p>
+            <div class="col-1">
+              <p class="badge bg-info">{{ singleProduct.productCategory }}</p>
             </div>
 
-            <div class="col-2">
-              <p class="p-2 bg-success">{{ singleProduct.veganCategory }}</p>
+            <div class="col-1">
+              <p class="badge bg-success">{{ singleProduct.veganCategory }}</p>
             </div>
           </div>
 
@@ -358,12 +459,15 @@ getAxios();
         <!-- 表單內文在這裡結束 -->
         <!-- 送出button -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
-            收藏
+          <button type="button" class="btn 
+btn-outline-danger" data-bs-dismiss="modal">
+            <i class="far fa-heart">收藏</i>
           </button>
-          <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" @click="updateProduct(productId)">
-            加入購物車
+          &ensp;&ensp;&ensp;
+          <button type="submit" class="btn btn-outline-primary" data-bs-dismiss="modal">
+            <i class="fa fa-cart-shopping">加入購物車</i>
           </button>
+
         </div>
       </div>
     </div>
