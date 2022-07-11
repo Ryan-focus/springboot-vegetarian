@@ -1195,8 +1195,17 @@ router.afterEach((to, from) => {
 export default router;
 
 router.beforeEach((to) => {
-  const isLogin = localStorage.getItem('access-admin');
-  if (to.name !== 'login' && !isLogin && to.name !== 'index' && to.name !== 'userRegister') {
-    return { name: 'login'}
+  const admin = localStorage.getItem("access-admin"); //取admin 登入資訊
+  const business = localStorage.getItem("access-business"); //business 登入資訊
+  const user = localStorage.getItem("access-user"); //user 登入資訊
+  const isLogin = admin || business || user; //若有取得到1種就表示有登入
+
+  if (
+    !isLogin &&
+    to.name !== "login" &&
+    to.name !== "index" &&
+    to.name !== "userRegister"
+  ) {
+    return { name: "login" };
   }
-})
+});
