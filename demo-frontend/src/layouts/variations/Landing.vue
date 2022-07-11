@@ -134,12 +134,12 @@ function logOut() {
             <!-- <img class="rounded-circle" src="/assets/media/avatars/avatar10.jpg" alt="Header Avatar"
               style="width: 21px" /> -->
             <span class="badge bg-secondary rounded-pill">商家</span>
-            <span class="d-none d-sm-inline-block ms-2">{{ business.data.business.principalName }}</span>
+            <span class="d-none d-sm-inline-block ms-2">{{ business.data.business.businessName }}</span>
             <i class="fa fa-fw fa-angle-down d-none d-sm-inline-block opacity-50 ms-1 mt-1"></i>
           </button>
           <div class="dropdown-menu dropdown-menu-end fs-sm smini-hide border-0"
             aria-labelledby="sidebar-themes-dropdown">
-            <RouterLink @click="logOut()" :to="{ name: '' }"
+            <RouterLink :to="{ name: 'businessBackend' }"
               class="dropdown-item d-flex align-items-center justify-content-between">
               <span class="fs-sm fw-medium">商家後台</span>
               <i class="si si-logout  fa-angle-down d-none d-sm-inline-block opacity-50 ms-1 mt-1s"></i>

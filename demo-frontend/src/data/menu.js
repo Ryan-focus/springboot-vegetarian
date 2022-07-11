@@ -845,8 +845,8 @@ export default {
       sub: [
         {
           name: "商家後台",
-          icon: "fa fa-explore",
-          to: "BusinessRegister",
+          icon: "si si-compass",
+          to: "businessBackend",
         },
       ],
     },
@@ -874,13 +874,7 @@ export default {
     {
       name: "商家",
       icon: "fa fa-shop",
-      sub: [
-        {
-          name: "商家後台",
-          icon: "fa fa-explore",
-          to: "BusinessRegister",
-        },
-      ],
+      to: "index",
     },
     {
       name: "返回後台",
