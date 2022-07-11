@@ -1,15 +1,57 @@
 <script setup>
+import { ref } from "vue";
 import { useTemplateStore } from "@/stores/template";
 import Swal from "sweetalert2";
 import axios from "axios";
-
-
+// 宣告的直放這裡
+const url = "localhost:8088";
 const user = JSON.parse(window.localStorage.getItem("access-admin"));
-console.log(user.data.user.userId)
+const userId = user.data.user.userId
+const orderList = ref()
+const orderItem = ref();
+const orderData = ref(
+    {
+        "limit": 10,
+        "offset": 0,
+        "total": null,
+    }
+);
 
+
+// 功能放這裡
+const getAxios = function () {
+    axios
+        .get(`http://${url}/${userId}/order`)
+        .then((res) => {
+            //獲取伺服器的回傳資料
+            orderData.value = res.data;
+            orderList.value = orderData.value.results
+            console.log(orderData)
+            console.log(orderList)
+        })
+        .catch((error) => {
+            console.log(error, "失敗");
+        });
+};
+getAxios();
 </script>
 
 <template >
+
+
+    <div v-for="item in orderList" :key="item.orderId" :value='item.value' :label="item.label">
+        <div>訂單總價：{{ item.payment }}</div>
+        <div>訂單狀態：{{ item.status }}</div>
+        <div>訂單產生時間：{{ item.updateTime }}</div>
+        <div v-for="arry in item.orderItemList" :key="arry.orderItemId" :value='item.value' :label="item.label">
+            <div>商品ID{{ arry.productId }}商品數量{{ arry.quantity }}商品小計{{ arry.amount }}</div>
+            <div></div>
+
+        </div>
+    </div>
+
+
+
     <div class="content">
         <form @submit.prevent>
             <div class="input-group">
@@ -64,21 +106,21 @@ console.log(user.data.user.userId)
                     <div class="tab-pane fade fade-up show active" id="search-projects" role="tabpanel"
                         aria-labelledby="search-projects-tab">
                         <div class="fs-4 fw-semibold p-2 mb-4 border-start border-4 border-primary bg-body-light">
-                            總訂單數: <span class="text-primary fw-bold">6</span>
+                            總訂單數: <span class="text-primary fw-bold">{{ orderData.total }}</span>
 
                         </div>
                         <table class="table table-striped table-vcenter">
                             <!-- 欄位名稱 -->
                             <thead>
                                 <tr>
-                                    <th style="width: 50%">商品</th>
+                                    <th style="width: 50%">商品(點開看詳細資訊)</th>
                                     <th class="d-none d-lg-table-cell text-center" style="width: 15%">
-                                        狀態
+                                        訂單狀態
                                     </th>
                                     <th class="d-none d-lg-table-cell text-center" style="width: 15%">
-                                        總金額
+                                        訂單時間
                                     </th>
-                                    <th class="text-center" style="width: 20%">要放什麼？</th>
+                                    <th class="text-center" style="width: 20%">訂單狀態</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -95,115 +137,18 @@ console.log(user.data.user.userId)
                                     </td>
                                     <td class="d-none d-lg-table-cell text-center text-sm">
                                         <span
-                                            class="fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success fs-sm">Completed</span>
+                                            class="fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success fs-sm">
+
+                                        </span>
                                     </td>
                                     <td class="d-none d-lg-table-cell font-size-xl text-center fw-semibold">
                                         1603
                                     </td>
                                     <td class="font-size-xl text-center fw-semibold">$ 35,287</td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <h4 class="h5 mt-3 mb-2">
-                                            <a href="javascript:void(0)">Wordpress Theme</a>
-                                        </h4>
-                                        <p class="d-none d-sm-block text-muted">
-                                            Maecenas ultrices, justo vel imperdiet gravida, urna
-                                            ligula hendrerit nibh, ac cursus nibh sapien in purus.
-                                            Mauris tincidunt tincidunt turpis in porta.
-                                        </p>
-                                    </td>
-                                    <td class="d-none d-lg-table-cell text-center">
-                                        <span
-                                            class="fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning fs-sm">In
-                                            Progress</span>
-                                    </td>
-                                    <td class="d-none d-lg-table-cell font-size-xl text-center fw-semibold">
-                                        1285
-                                    </td>
-                                    <td class="font-size-xl text-center fw-semibold">$ 16,250</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h4 class="h5 mt-3 mb-2">
-                                            <a href="javascript:void(0)">Mobile Application</a>
-                                        </h4>
-                                        <p class="d-none d-sm-block text-muted">
-                                            Maecenas ultrices, justo vel imperdiet gravida, urna
-                                            ligula hendrerit nibh, ac cursus nibh sapien in purus.
-                                            Mauris tincidunt tincidunt turpis in porta.
-                                        </p>
-                                    </td>
-                                    <td class="d-none d-lg-table-cell text-center">
-                                        <span
-                                            class="fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success fs-sm">Completed</span>
-                                    </td>
-                                    <td class="d-none d-lg-table-cell font-size-xl text-center fw-semibold">
-                                        4850
-                                    </td>
-                                    <td class="font-size-xl text-center fw-semibold">$ 18,111</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h4 class="h5 mt-3 mb-2">
-                                            <a href="javascript:void(0)">UI Kit</a>
-                                        </h4>
-                                        <p class="d-none d-sm-block text-muted">
-                                            Maecenas ultrices, justo vel imperdiet gravida, urna
-                                            ligula hendrerit nibh, ac cursus nibh sapien in purus.
-                                            Mauris tincidunt tincidunt turpis in porta.
-                                        </p>
-                                    </td>
-                                    <td class="d-none d-lg-table-cell text-center">
-                                        <span
-                                            class="fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success fs-sm">Completed</span>
-                                    </td>
-                                    <td class="d-none d-lg-table-cell font-size-xl text-center fw-semibold">
-                                        698
-                                    </td>
-                                    <td class="font-size-xl text-center fw-semibold">$ 9,200</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h4 class="h5 mt-3 mb-2">
-                                            <a href="javascript:void(0)">Admin Template</a>
-                                        </h4>
-                                        <p class="d-none d-sm-block text-muted">
-                                            Maecenas ultrices, justo vel imperdiet gravida, urna
-                                            ligula hendrerit nibh, ac cursus nibh sapien in purus.
-                                            Mauris tincidunt tincidunt turpis in porta.
-                                        </p>
-                                    </td>
-                                    <td class="d-none d-lg-table-cell text-center">
-                                        <span
-                                            class="fw-semibold d-inline-block py-1 px-3 rounded-pill bg-danger-light text-danger fs-sm">Canceled</span>
-                                    </td>
-                                    <td class="d-none d-lg-table-cell font-size-xl text-center fw-semibold">
-                                        1693
-                                    </td>
-                                    <td class="font-size-xl text-center fw-semibold">$ 10,589</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <h4 class="h5 mt-3 mb-2">
-                                            <a href="javascript:void(0)">Flat Icon Set</a>
-                                        </h4>
-                                        <p class="d-none d-sm-block text-muted">
-                                            Maecenas ultrices, justo vel imperdiet gravida, urna
-                                            ligula hendrerit nibh, ac cursus nibh sapien in purus.
-                                            Mauris tincidunt tincidunt turpis in porta.
-                                        </p>
-                                    </td>
-                                    <td class="d-none d-lg-table-cell text-center">
-                                        <span
-                                            class="fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success fs-sm">Completed</span>
-                                    </td>
-                                    <td class="d-none d-lg-table-cell font-size-xl text-center fw-semibold">
-                                        1500
-                                    </td>
-                                    <td class="font-size-xl text-center fw-semibold">$ 19,670</td>
-                                </tr>
+                                <!-- 到這裡是一格 -->
                             </tbody>
+                            <!-- 這裡是分頁 -->
                         </table>
                         <nav aria-label="Projects Search Navigation">
                             <ul class="pagination pagination-sm">
