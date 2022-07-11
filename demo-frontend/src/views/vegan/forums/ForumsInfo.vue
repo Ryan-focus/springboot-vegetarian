@@ -1,6 +1,5 @@
 <script setup>
 import { ref, reactive, computed, onMounted } from "vue";
-// Sweetalert2, for more info and examples, you can check out https://github.com/sweetalert2/sweetalert2
 import Swal from "sweetalert2";
 
 import axios from "axios";
@@ -30,10 +29,17 @@ let toast = Swal.mixin({
 const url = "localhost:8088";
 //接收的資料ref
 const resData = ref();
-
+const forumCategory = ref();
 const resForumId = ref();
 const resForumTitle = ref();
 const resForumContent = ref();
+const resForumCategory = ref();
+const resForumImage = ref();
+
+//用reactive會無法及時反應所以用ref另外宣告
+const image = ref({
+  imageUrl: null,
+});
 
 const getAxios = function () {
   axios
@@ -48,11 +54,11 @@ const getAxios = function () {
     });
 };
 //執行Axios
+
 getAxios();
 
 
-// Get example data
-import users from "@/data/usersDataset.json";
+
 
 // Helper variables
 //在這邊去設定Table :th的欄位名稱
@@ -68,11 +74,21 @@ const cols = reactive([
     sort: "",
   },
   {
+    name: "文章分類",
+    field: "forumCategory",
+    sort: "",
+  },
+  {
+    name: "文章圖片",
+    field: "forumImage",
+    sort: "",
+  },
+  {
     name: "發表時間",
     field: "forumCreateTime",
     sort: "",
   },
-    {
+  {
     name: "更新時間",
     field: "forumUpdateTime",
     sort: "",
@@ -142,18 +158,21 @@ function updateForum(number) {
       resForumId.value = res.data.forumId;
       resForumTitle.value = res.data.forumTitle;
       resForumContent.value = res.data.forumContent;
-     
+      resForumCategory.value = res.data.forumCategory;
+      resForumImage.value = res.data.imageUrl;
     })
     .catch((error) => {
       console.log(error, "失敗");
     });
 }
 
-function sendForum(number, title, content) {
+function sendForum(number, title, content, category, imageUrl) {
   var data = {
     forumId: number,
     forumTitle: title,
     forumContent: content,
+    forumCategory: category,
+    forumImageUrl: imageUrl,
   };
 
   axios
@@ -167,7 +186,7 @@ function sendForum(number, title, content) {
 
 
     })
-     .catch((error) => {
+    .catch((error) => {
       console.log(error, "失敗");
     });
 }
@@ -214,10 +233,23 @@ function deleteForum(number) {
         toast.fire("文章刪除失敗", "");
       }
     });
+
+  //檔案上傳方法，寫入後端後會吐回加入UUID之名稱，再回傳data寫入ref()裏
+  function fileUpload() {
+    var files = document.getElementById("input").files;
+    var params = new FormData();
+    params.append("file", files[0]);
+    console.log(params.get("file"));
+    axios.post("http://localhost:8088/fileUpload", params).then((res) => {
+      image.value = res.data;
+      //印出路徑
+      console.log(image);
+    });
+  }
 }
 
 
-        
+
 
 
 
@@ -237,6 +269,16 @@ onMounted(() => {
   selectLength.classList.add("form-select");
   selectLength.style.width = "80px";
 });
+// Helper function to show a photo
+function showPhoto(index) {
+  gallery.index = index;
+  gallery.visible = true;
+}
+// Helper function to hide the lightbox
+function handleHide() {
+  gallery.visible = false;
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -248,6 +290,7 @@ onMounted(() => {
   width: 22px;
   height: 22px;
 }
+
 .gg-select::after,
 .gg-select::before {
   content: "";
@@ -259,32 +302,38 @@ onMounted(() => {
   left: 7px;
   transform: rotate(-45deg);
 }
+
 .gg-select::before {
   border-left: 2px solid;
   border-bottom: 2px solid;
   bottom: 4px;
   opacity: 0.3;
 }
+
 .gg-select::after {
   border-right: 2px solid;
   border-top: 2px solid;
   top: 4px;
   opacity: 0.3;
 }
+
 th.sort {
   cursor: pointer;
   user-select: none;
+
   &.asc {
     .gg-select::after {
       opacity: 1;
     }
   }
+
   &.desc {
     .gg-select::before {
       opacity: 1;
     }
   }
 }
+
 @import "sweetalert2/dist/sweetalert2.min.css";
 </style>
 
@@ -295,9 +344,8 @@ th.sort {
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-alt">
           <li class="breadcrumb-item">
-            <a class="link-fx" href="#/backend/cart/dashboard">
-              <i class="fab fa-wpforms"></i> 網誌管理</a
-            >
+            <a class="link-fx" href="#/backend/forums/dashboard">
+              <i class="fab fa-wpforms"></i> 網誌管理</a>
           </li>
           <li class="breadcrumb-item" aria-current="page">
             <i class="si si-book-open"></i> 文章管理
@@ -311,22 +359,35 @@ th.sort {
   <!-- Page Content -->
   <div class="content">
     <BaseBlock title="文章後台資料" content-full>
-      <Dataset
-        v-slot="{ ds }"
-        :ds-data="resData"
-        :ds-sortby="sortBy"
-        :ds-search-in="['forumTitle', 'forumContent', 'forumCreateTime', 'forumUpdateTime']"
-      >
+      <Dataset v-slot="{ ds }" :ds-data="resData" :ds-sortby="sortBy" :ds-search-in="[
+        'forumTitle',
+        'forumContent',
+        'forumCategory',
+        'imageUrl',
+        'forumCreateTime',
+        'forumUpdateTime'
+      ]">
+
         <div class="row" :data-page-count="ds.dsPagecount">
-          <div class="col-md-4 py-2">
-            <DatasetSearch ds-search-placeholder="請輸入關鍵字..." />
-          </div>
           <div id="datasetLength" class="col-md-8 py-2">
             <DatasetShow />
           </div>
+          <div class="col-md-4 py-2">
+            <DatasetSearch ds-search-placeholder="請輸入關鍵字..." />
+          </div>
+        </div>
+        <div class="col-sm-6 col-xl-4">
+          <br />
 
+          <a href="#/backend/forums/InsertForum">
+            <button type="button" class="btn rounded-pill btn-outline-success">
+              新增文章
+            </button>
+          </a>
         </div>
         <hr />
+
+
         <div class="row">
           <div class="col-md-12">
             <div class="table-responsive">
@@ -334,13 +395,9 @@ th.sort {
                 <thead>
                   <tr>
                     <th scope="col" class="text-center">編號</th>
-                   <!-- <th scope="col" class="text-center">標題</th>  -->
-                    <th
-                      v-for="(th, index) in cols"
-                      :key="th.field"
-                      :class="['sort', th.sort] && `d-none d-sm-table-cell`"
-                      @click="onSort($event, index)"
-                    >
+                    <!-- <th scope="col" class="text-center">標題</th>  -->
+                    <th v-for="(th, index) in cols" :key="th.field"
+                      :class="['sort', th.sort] && `d-none d-sm-table-cell`" @click="onSort($event, index)">
                       {{ th.name }} <i class="gg-select float-end"></i>
                     </th>
                     <th class="text-center" style="width: 100px">操作</th>
@@ -351,43 +408,51 @@ th.sort {
                     <tr style="width: 100px">
                       <th scope="row">{{ row.forumId }}</th>
 
-                      <td class="d-none d-md-table-cell fs-sm" style="width: 85px">
+                      <td class="d-none d-md-table-cell fs-sm" style="width: 200px">
                         {{ row.forumTitle }}
                       </td>
-                      <td
-                        class="d-none d-sm-table-cell"
-                        style="min-width: 150px"
-                      >
+
+                      <td class="d-none d-sm-table-cell" style="overflow: hidden;
+                          white-space: nowrap;
+                          text-overflow: ellipsis;
+                          max-width: 110px;">
                         {{ row.forumContent }}
                       </td>
-                      <td
-                        class="d-none d-sm-table-cell"
-                        style="min-width: 150px"
-                      >
+
+                      <td class="d-none d-sm-table-cell" style="min-width: 50px">
+                        {{ row.forumCategory }}
+                      </td>
+
+                      <td class="d-none d-sm-table-cell fs-sm" style="min-width: 110px">
+                        <div class="options-container">
+                          <!-- 抓出路徑後要用這個方式塞進去才會變動態的 :src -->
+                          <a href="javascript:void(0)" class="img-link img-link-zoom-in img-thumb img-lightbox"
+                            @click="showPhoto(index)">
+                            <img class="img-fluid" :src="row.forumImage" alt="Photo"
+                              style="max-width:300px;width:100%" />
+                          </a>
+
+                        </div>
+                      </td>
+
+
+
+
+
+                      <td class="d-none d-sm-table-cell" style="min-width: 150px">
                         {{ row.forumCreateTime }}
                       </td>
-                      <td
-                        class="d-none d-sm-table-cell"
-                        style="min-width: 150px"
-                      >
+                      <td class="d-none d-sm-table-cell" style="min-width: 150px">
                         {{ row.forumUpdateTime }}
                       </td>
                       <td class="text-center">
                         <div class="btn-group">
-                          <button
-                            type="button"
-                            class="btn btn-sm btn-alt-secondary"
-                            data-bs-toggle="modal"
-                            data-bs-target="#updateForum"
-                            @click.prevent="updateForum(row.forumId)"
-                          >
+                          <button type="button" class="btn btn-sm btn-alt-secondary" data-bs-toggle="modal"
+                            data-bs-target="#updateForum" @click.prevent="updateForum(row.forumId)">
                             <i class="fa fa-fw fa-pencil-alt"></i>
                           </button>
-                          <button
-                            type="button"
-                            class="btn btn-sm btn-alt-secondary"
-                            @click.prevent="deleteForum(row.forumId)"
-                          >
+                          <button type="button" class="btn btn-sm btn-alt-secondary"
+                            @click.prevent="deleteForum(row.forumId)">
                             <i class="fa fa-fw fa-times"></i>
                           </button>
                         </div>
@@ -399,94 +464,62 @@ th.sort {
             </div>
           </div>
         </div>
-        <div
-          class="d-flex flex-md-row flex-column justify-content-between align-items-center"
-        >
+        <div class="d-flex flex-md-row flex-column justify-content-between align-items-center">
           <DatasetInfo class="py-3 fs-sm" />
           <DatasetPager class="flex-wrap py-3 fs-sm" />
         </div>
 
-         <div
-          class="modal fade"
-          id="updateForum"
-          tabindex="-1"
-          aria-labelledby="exampleModalLabel"
-          aria-hidden="true"
-        >
+        <div class="modal fade" id="updateForum" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <div class="modal-dialog modal-lg">
             <form class="row g-3" id="forum">
-             <div class="modal-content">
+              <div class="modal-content">
                 <div class="modal-header">
                   <h5 class="modal-title" id="exampleModalLabel">修改文章</h5>
-                <button
-                  type="button"
-                  class="btn-close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                ></button>
-              </div>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
 
-              <div class="modal-body">
+                <div class="modal-body">
 
-                 <div class="mb-3">
-                    <label for="exampleFormControlInput1" class="form-label"
-                      >編號</label
-                    ><br />
-                    <textarea
-                      type="textarea"
-                      class="form-control"
-                      id="exampleFormControlInput1"
-                      style="resize: none"
-                      
-                      rows="1"
-                      v-model="resForumId"
-                    ></textarea>
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">編號</label><br />
+                    <textarea type="textarea" class="form-control" id="exampleFormControlInput1" style="resize: none"
+                      rows="1" v-model="resForumId"></textarea>
                   </div>
 
-                <div class="mb-3">
-                  <label for="exampleFormControlInput1" class="form-label"
-                    >標題</label
-                  >
-                  <textarea
-                    type="textarea"
-                    class="form-control"
-                    id="exampleFormControlInput1"
-                    style="resize: none"
-                    
-                    
-                    rows="1"
-                    v-model="resForumTitle"
-                  ></textarea>
+                  <div class="mb-3">
+                    <label class="form-label" for="example-select">文章分類</label>
+                    <select class="form-select" id="example-select" name="example-select" v-model="resForumCategory">
+                      <option selected>{{ forumCategory }}</option>
+                      <option value="環保">環保</option>
+                      <option value="養身">養身</option>
+                      <option value="公益資訊">公益資訊</option>
+                      <option value="健康">健康</option>
+                    </select>
+                  </div>
+
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label">標題</label>
+                    <textarea type="textarea" class="form-control" id="exampleFormControlInput1" style="resize: none"
+                      rows="1" v-model="resForumTitle"></textarea>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleFormControlTextarea1" class="form-label">內文</label>
+                    <textarea class="form-control" id="exampleFormControlTextarea1" rows="12" style="resize: none"
+                      v-model="resForumContent"></textarea>
+                  </div>
+
+
+
+
                 </div>
-                <div class="mb-3">
-                  <label for="exampleFormControlTextarea1" class="form-label"
-                    >內文</label
-                  >
-                  <textarea
-                    class="form-control"
-                    id="exampleFormControlTextarea1"
-                    rows="12"
-                    style="resize: none"
-                    
-                    
-                    v-model="resForumContent"
-                  ></textarea>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    取消
+                  </button>
+                  <button type="submit" class="btn btn-primary"
+                    @click.prevent="sendForum(resForumId, resForumTitle, resForumContent, resForumCategory)">送出</button>
                 </div>
-               
               </div>
-              <div class="modal-footer">
-                <button
-                  type="button"
-                  class="btn btn-secondary"
-                  data-bs-dismiss="modal"
-                >
-                  取消
-                </button>
-                <button type="submit" class="btn btn-primary"
-                @click.prevent="sendForum(resForumId, resForumTitle, resForumContent)"
-                >送出</button>
-              </div>
-            </div>
             </form>
           </div>
         </div>

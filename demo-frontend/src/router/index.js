@@ -21,11 +21,14 @@ const Login = () => import("@/views/frontend/Login.vue");
 const UserRegister = () => import("@/views/frontend/Register.vue");
 const BusinessRegister = () => import("@/views/frontend/BusinessRegister.vue");
 const ShoppingCart = () => import("@/views/frontend/ShoppingCart.vue");
+const ShoppingOrder = () => import("@/views/frontend/ShoppingOrder.vue");
 const Post = () => import("@/views/frontend/Post.vue");
 const SearchRestaurant = () => import("@/views/frontend/SearchRestaurant.vue");
 const BusinessBackend = () => import("@/views/frontend/BusinessBackend.vue");
 const BusinessProfileView = () =>
   import("@/views/frontend/businessBackend/BusinessProfileView.vue");
+const BusinessCalendar = () =>
+  import("@/views/frontend/businessBackend/BusinessCalendar.vue");
 
 // Backend Boxed: Dashboard
 const BackendBoxedDashboard = () =>
@@ -58,6 +61,8 @@ const VeganForumsDashboard = () =>
   import("@/views/vegan/forums/DashboardView.vue");
 const VeganForumsForumsInfo = () =>
   import("@/views/vegan/forums/ForumsInfo.vue");
+const VeganForumsInsertForum = () =>
+  import("@/views/vegan/forums/InsertForum.vue");
 //愛蔬網後台: posts
 const VeganPostsDashboard = () =>
   import("@/views/vegan/posts/DashboardView.vue");
@@ -308,6 +313,11 @@ const routes = [
         component: ShoppingCart,
       },
       {
+        path: "/shopping/order",
+        name: "shoppingOrder",
+        component: ShoppingOrder,
+      },
+      {
         path: "/post",
         name: "postIndex",
         component: Post,
@@ -492,6 +502,11 @@ const routes = [
             path: "forumsinfo",
             name: "backend-forums-forums-info",
             component: VeganForumsForumsInfo,
+          },
+          {
+            path: "insertForum",
+            name: "backend-forums-insert-forum",
+            component: VeganForumsInsertForum,
           },
         ],
       },
@@ -1181,9 +1196,14 @@ const routes = [
         component: BusinessBackend,
       },
       {
-        path: "/business/backend/profile",
+        path: "/profile",
         name: "business-backend-profile",
         component: BusinessProfileView,
+      },
+      {
+        path: "/reserve",
+        name: "business-backend-reserve",
+        component: BusinessCalendar,
       },
     ],
   },

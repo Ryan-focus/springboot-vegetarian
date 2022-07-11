@@ -139,7 +139,8 @@ getAxios();
     <div class="col-sm-6 col-xl-4">
       <!-- 這邊是輸入名稱搜尋 -->
       <div class="input-group ">
-        <input type="text" class="form-control fs-base" v-model="urlParams.search" @change="getAxios()" />
+        <input type="text" class="form-control fs-base" placeholder="想要找什麼呢？" v-model="urlParams.search"
+          @keyup="getAxios()" />
         <span class="input-group-text">
           <i class="fa fa-search"></i>
         </span>
