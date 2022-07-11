@@ -27,6 +27,8 @@ const SearchRestaurant = () => import("@/views/frontend/SearchRestaurant.vue");
 const BusinessBackend = () => import("@/views/frontend/BusinessBackend.vue");
 const BusinessProfileView = () =>
   import("@/views/frontend/businessBackend/BusinessProfileView.vue");
+const BusinessCalendar = () =>
+  import("@/views/frontend/businessBackend/BusinessCalendar.vue");
 
 // Backend Boxed: Dashboard
 const BackendBoxedDashboard = () =>
@@ -1187,9 +1189,14 @@ const routes = [
         component: BusinessBackend,
       },
       {
-        path: "/business/backend/profile",
+        path: "/profile",
         name: "business-backend-profile",
         component: BusinessProfileView,
+      },
+      {
+        path: "/reserve",
+        name: "business-backend-reserve",
+        component: BusinessCalendar,
       },
     ],
   },
