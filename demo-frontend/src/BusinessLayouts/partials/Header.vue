@@ -125,8 +125,8 @@ console.log(business.data.business);
               <div class="dropdown d-inline-block ms-2">
                 <button type="button" class="btn btn-sm btn-alt-secondary d-flex align-items-center"
                   id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  <img class="rounded-circle" src="/assets/media/avatars/avatar10.jpg" alt="Header Avatar"
-                    style="width: 21px" />
+                  <img class="rounded-circle" :src="`/assets/media/business/${business.data.business.businessPic}.jpg`"
+                    alt="Header Avatar" style="width: 21px" />
                   <span class="d-none d-sm-inline-block ms-2">{{
                       business.data.business.businessName
                   }}</span>
@@ -135,12 +135,12 @@ console.log(business.data.business);
                 <div class="dropdown-menu dropdown-menu-md dropdown-menu-end p-0 border-0"
                   aria-labelledby="page-header-user-dropdown">
                   <div class="p-3 text-center bg-body-light border-bottom rounded-top">
-                    <img class="img-avatar img-avatar48 img-avatar-thumb" src="/assets/media/avatars/avatar10.jpg"
-                      alt="Header Avatar" />
+                    <img class="img-avatar img-avatar48 img-avatar-thumb"
+                      :src="`/assets/media/business/${business.data.business.businessPic}.jpg`" alt="Header Avatar" />
                     <p class="mt-2 mb-0 fw-medium">
                       {{ business.data.business.businessName }}
                     </p>
-                    <p class="mb-0 text-muted fs-sm fw-medium">Web Developer</p>
+                    <p class="mb-0 text-muted fs-sm fw-medium">{{ business.data.business.principalName }}</p>
                   </div>
                   <div class="p-2">
                     <a class="dropdown-item d-flex align-items-center justify-content-between"
@@ -184,7 +184,7 @@ console.log(business.data.business);
                   aria-labelledby="page-header-notifications-dropdown">
                   <div class="p-2 bg-body-light border-bottom text-center rounded-top">
                     <h5 class="dropdown-header text-uppercase">
-                      Notifications
+                      最新通知
                     </h5>
                   </div>
                   <ul class="nav-items mb-0">

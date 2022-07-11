@@ -17,7 +17,7 @@ export default {
     },
     {
       name: "訂位",
-      to: "business-backend-dashboard",
+      to: "business-backend-reserve",
       icon: "far fa-calendar-check",
     },
     {
