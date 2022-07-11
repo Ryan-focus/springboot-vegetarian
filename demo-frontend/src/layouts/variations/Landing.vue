@@ -16,6 +16,10 @@ const mobileVisibleNavHoverCentered = ref(false);
 // Main store
 const store = useTemplateStore();
 const router = useRouter();
+// 取狀態
+const admin = JSON.parse(window.localStorage.getItem("access-admin"));
+const business = JSON.parse(window.localStorage.getItem("access-business"));
+
 // Set default elements for this layout
 store.setLayout({
   header: true,
@@ -56,15 +60,11 @@ function logOut() {
     <template #header-content-left>
       <!-- Logo -->
 
-      <div>
-        <RouterLink :to="{ name: 'index' }" class="fw-bold fs-lg tracking-wider text-dual me-2">
-          <span class="smini-hide fs-3 tracking-wider">
-            <img src="/assets/media/vegan/logo.png" alt="logo" class="w-50" />
-          </span>
-        </RouterLink>
-      </div>
-
-
+      <RouterLink :to="{ name: 'index' }" class="fw-bold fs-lg tracking-wider text-dual ">
+        <span class="smini-hide fs-3 tracking-wider">
+          <img src="/assets/media/vegan/logo.png" alt="logo" class="w-50" />
+        </span>
+      </RouterLink>
       <!-- END Logo -->
     </template>
     <!-- END Header Content Left -->
@@ -90,7 +90,10 @@ function logOut() {
         <div class="d-lg-block mt-2 mt-lg-0" :class="{
           'd-none': !mobileVisibleNavHoverCentered,
         }">
-          <BaseNavigation :nodes="menu.demo" horizontal horizontal-hover horizontal-center />
+          <BaseNavigation v-if="admin" :nodes="menu.admin" horizontal horizontal-hover horizontal-center />
+          <BaseNavigation v-else-if="business" :nodes="menu.business" horizontal horizontal-hover horizontal-center />
+          <BaseNavigation v-else-if="user" :nodes="menu.user" horizontal horizontal-hover horizontal-center />
+          <BaseNavigation v-else :nodes="menu.demo" horizontal horizontal-hover horizontal-center />
         </div>
       </div>
       <!-- END Navigation -->
@@ -102,10 +105,17 @@ function logOut() {
 
       <div v-if="admin">
         <div class="dropdown">
-          <label class="form-check-label me-2" for="example-radio-block1">管理員:</label>
-          <button type="button" class="btn btn-alt-secondary me-2" id="sidebar-themes-dropdown"
-            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-fw fa-user opacity-50"></i>{{ admin.data.user.userName }}
+          <!-- <label class="form-check-label me-2" for="example-radio-block1">
+            <span class="badge bg-danger rounded-pill">管理員</span></label> -->
+          <button type="button" class="btn btn-alt-secondary me-2" id="page-header-user-dropdown"
+            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="badge bg-danger rounded-pill">管理員</span>
+            <!-- <img class="rounded-circle" src="/assets/media/avatars/avatar10.jpg" alt="Header Avatar"
+              style="width: 21px" /> -->
+            <span class="d-none d-sm-inline-block ms-2">{{
+                admin.data.user.userName
+            }}</span>
+            <i class="fa fa-fw fa-angle-down d-none d-sm-inline-block opacity-50 ms-1 mt-1"></i>
           </button>
           <div class="dropdown-menu dropdown-menu-end fs-sm smini-hide border-0"
             aria-labelledby="sidebar-themes-dropdown">
@@ -119,34 +129,51 @@ function logOut() {
       </div>
       <div v-else-if="business">
         <div class="dropdown">
-          <label class="form-check-label me-2" for="example-radio-block1">商家用戶</label>
-          <button type="button" class="btn btn-alt-secondary me-2" id="sidebar-themes-dropdown"
-            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-fw fa-user opacity-50"></i>{{ business.data.business.principalName }}
+          <button type="button" class="btn btn-alt-secondary me-2" id="page-header-user-dropdown"
+            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <!-- <img class="rounded-circle" src="/assets/media/avatars/avatar10.jpg" alt="Header Avatar"
+              style="width: 21px" /> -->
+            <span class="badge bg-secondary rounded-pill">商家</span>
+            <span class="d-none d-sm-inline-block ms-2">{{ business.data.business.principalName }}</span>
+            <i class="fa fa-fw fa-angle-down d-none d-sm-inline-block opacity-50 ms-1 mt-1"></i>
           </button>
           <div class="dropdown-menu dropdown-menu-end fs-sm smini-hide border-0"
             aria-labelledby="sidebar-themes-dropdown">
-
+            <RouterLink @click="logOut()" :to="{ name: '' }"
+              class="dropdown-item d-flex align-items-center justify-content-between">
+              <span class="fs-sm fw-medium">商家後台</span>
+              <i class="si si-logout  fa-angle-down d-none d-sm-inline-block opacity-50 ms-1 mt-1s"></i>
+            </RouterLink>
             <RouterLink @click="logOut()" :to="{ name: '' }"
               class="dropdown-item d-flex align-items-center justify-content-between">
               <span class="fs-sm fw-medium">登出</span>
+              <i class="si si-logout  fa-angle-down d-none d-sm-inline-block opacity-50 ms-1 mt-1s"></i>
             </RouterLink>
           </div>
         </div>
       </div>
       <div v-else-if="user">
         <div class="dropdown">
-          <label class="form-check-label me-2" for="example-radio-block1">商家用戶</label>
-          <button type="button" class="btn btn-alt-secondary me-2" id="sidebar-themes-dropdown"
-            data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-fw fa-user opacity-50"></i>{{ user.data }}
+          <!-- <label class="form-check-label me-2" for="example-radio-block1"><span
+              class="badge bg-warning rounded-pill">會員</span></label> -->
+          <button type="button" class="btn btn-alt-secondary me-2" id="page-header-user-dropdown"
+            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="badge bg-warning rounded-pill">會員</span>
+            <!-- <img class="rounded-circle" src="/assets/media/avatars/avatar10.jpg" alt="Header Avatar"
+              style="width: 21px" /> -->
+            <span class="d-none d-sm-inline-block ms-2">{{ user.data.user.userName }}</span>
+            <i class="fa fa-fw fa-angle-down d-none d-sm-inline-block opacity-50 ms-1 mt-1"></i>
           </button>
           <div class="dropdown-menu dropdown-menu-end fs-sm smini-hide border-0"
             aria-labelledby="sidebar-themes-dropdown">
-
             <RouterLink @click="logOut()" :to="{ name: '' }"
               class="dropdown-item d-flex align-items-center justify-content-between">
+              <span class="fs-sm fw-medium">會員後台</span>
+            </RouterLink>
+            <RouterLink @click="logOut()" :to="{ name: index }"
+              class="dropdown-item d-flex align-items-center justify-content-between">
               <span class="fs-sm fw-medium">登出</span>
+              <i class="si si-logout  fa-angle-down d-none d-sm-inline-block opacity-50 ms-1 mt-1s"></i>
             </RouterLink>
           </div>
         </div>
@@ -169,29 +196,3 @@ function logOut() {
     <!-- END Header Content Right -->
   </BaseLayout>
 </template>
-<script>
-
-export default {
-  data() {
-    return {
-      admin: "",
-      business: "",
-      user: ""
-    };
-  },
-  created() {
-    this.admin = JSON.parse(window.localStorage.getItem("access-admin"));
-    this.business = JSON.parse(window.localStorage.getItem("access-business"));
-  },
-  persist: {
-    enabled: true,
-    strategies: [
-      {
-        storage: localStorage,
-        paths: ['admin', 'business', "user"]
-      }
-    ]
-  }
-};
-
-</script>

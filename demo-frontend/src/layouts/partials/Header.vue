@@ -261,15 +261,6 @@ export default {
   },
   created() {
     this.admin = JSON.parse(window.localStorage.getItem("access-admin"));
-  },
-  persist: {
-    enabled: true,
-    strategies: [
-      {
-        storage: localStorage,
-        paths: ['admin']
-      }
-    ]
   }
 };
 
