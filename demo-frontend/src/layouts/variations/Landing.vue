@@ -40,7 +40,7 @@ function logOut() {
     title: "登出",
     text: "您已登出",
     timer: 1000,
-    icon: "Info"
+    icon: "info"
   });
   window.setTimeout(function () {
     router.push({ name: "index" });
@@ -105,7 +105,7 @@ function logOut() {
           <label class="form-check-label me-2" for="example-radio-block1">管理員:</label>
           <button type="button" class="btn btn-alt-secondary me-2" id="sidebar-themes-dropdown"
             data-bs-toggle="dropdown" data-bs-auto-close="outside" aria-haspopup="true" aria-expanded="false">
-            <i class="fa fa-fw fa-user opacity-50"></i>{{ admin.data }}
+            <i class="fa fa-fw fa-user opacity-50"></i>{{ admin.data.user.userName }}
           </button>
           <div class="dropdown-menu dropdown-menu-end fs-sm smini-hide border-0"
             aria-labelledby="sidebar-themes-dropdown">
