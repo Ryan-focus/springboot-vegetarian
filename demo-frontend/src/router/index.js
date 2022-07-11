@@ -10,6 +10,11 @@ import LayoutBackend from "@/layouts/variations/Backend.vue";
 import LayoutBackendBoxed from "@/layouts/variations/BackendBoxed.vue";
 import LayoutBackendMegaMenu from "@/layouts/variations/BackendMegaMenu.vue";
 
+//設定Business LayOuting 模板
+import BLayoutBackend from "@/BusinessLayouts/variations/Backend.vue";
+import BLayoutBackendBoxed from "@/BusinessLayouts/variations/BackendBoxed.vue";
+import BLayoutBackendMegaMenu from "@/BusinessLayouts/variations/BackendMegaMenu.vue";
+
 // Frontend: Index
 const Index = () => import("@/views/frontend/Index.vue");
 const Login = () => import("@/views/frontend/Login.vue");
@@ -313,13 +318,13 @@ const routes = [
         component: SearchRestaurant,
       },
       {
-        path: "/business/backend",
-        name: "businessBackend",
+        path: "/business/backend/dashboard",
+        name: "business-backend-dashboard",
         component: BusinessBackend,
       },
       {
-        path: "/business/profile",
-        name: "businessProfile",
+        path: "/business/backend/profile",
+        name: "business-backend-profile",
         component: BusinessProfileView,
       },
     ],
@@ -1162,6 +1167,23 @@ const routes = [
         path: "503",
         name: "error-503",
         component: Error503,
+      },
+    ],
+  },
+  {
+    path: "/business/backend",
+    redirect: "/business/backend/dashboard",
+    component: BLayoutBackend,
+    children: [
+      {
+        path: "dashboard",
+        name: "business-backend-dashboard",
+        component: BusinessBackend,
+      },
+      {
+        path: "/business/backend/profile",
+        name: "business-backend-profile",
+        component: BusinessProfileView,
       },
     ],
   },

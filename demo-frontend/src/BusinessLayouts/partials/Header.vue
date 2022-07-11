@@ -41,7 +41,7 @@ onUnmounted(() => {
 //登出
 function logout() {
   // this.admin = null;
-  store.getStates({ admin: "", business: "", user: "" });
+  store.getStates({ business: "" });
   localStorage.removeItem("access-admin");
   localStorage.removeItem("access-business");
   localStorage.removeItem("access-user");
@@ -57,6 +57,8 @@ function logout() {
     router.go(0)
   }, 200);
 }
+const business = JSON.parse(window.localStorage.getItem("access-business"));
+console.log(business.data.business);
 </script>
 
 <template>
@@ -126,7 +128,7 @@ function logout() {
                   <img class="rounded-circle" src="/assets/media/avatars/avatar10.jpg" alt="Header Avatar"
                     style="width: 21px" />
                   <span class="d-none d-sm-inline-block ms-2">{{
-                      admin.data.user.userName
+                      business.data.business.businessName
                   }}</span>
                   <i class="fa fa-fw fa-angle-down d-none d-sm-inline-block opacity-50 ms-1 mt-1"></i>
                 </button>
@@ -136,7 +138,7 @@ function logout() {
                     <img class="img-avatar img-avatar48 img-avatar-thumb" src="/assets/media/avatars/avatar10.jpg"
                       alt="Header Avatar" />
                     <p class="mt-2 mb-0 fw-medium">
-                      {{ admin.data.user.userName }}
+                      {{ business.data.business.businessName }}
                     </p>
                     <p class="mb-0 text-muted fs-sm fw-medium">Web Developer</p>
                   </div>
@@ -262,17 +264,3 @@ function logout() {
   </header>
   <!-- END Header -->
 </template>
-<script>
-
-export default {
-  data() {
-    return {
-      admin: "",
-    };
-  },
-  created() {
-    this.admin = JSON.parse(window.localStorage.getItem("access-admin"));
-  }
-};
-
-</script>

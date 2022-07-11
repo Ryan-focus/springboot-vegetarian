@@ -2,9 +2,9 @@
 import { ref } from "vue";
 import { useTemplateStore } from "@/stores/template";
 import { useRouter } from "vue-router";
-import BaseLayout from "@/layouts/BaseLayout.vue";
+import BaseLayout from "@/BusinessLayouts/BaseLayout.vue";
 
-import BaseNavigation from "@/components/BaseNavigation.vue";
+import BaseNavigation from "@/BusinessLayouts/BaseNavigation.vue";
 
 import Swal from "sweetalert2";
 

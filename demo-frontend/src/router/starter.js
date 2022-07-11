@@ -6,11 +6,16 @@ import NProgress from "nprogress/nprogress.js";
 import LayoutBackend from "@/layouts/variations/BackendStarter.vue";
 import LayoutSimple from "@/layouts/variations/Simple.vue";
 
+//BusinessLayouts
+import BLayoutBackend from "@/BusinessLayouts/variations/BackendStarter.vue";
+// import BLayoutSimple from "@/BusinessLayouts/variations/Simple.vue";
+
 // Frontend: Landing
 const Landing = () => import("@/views/starter/LandingView.vue");
 
 // Backend: Dashboard
 const Dashboard = () => import("@/views/starter/DashboardView.vue");
+const BDashboard = () => import("@/views/starter/DashboardView.vue");
 
 // Set all routes
 const routes = [
@@ -34,6 +39,18 @@ const routes = [
         path: "dashboard",
         name: "backend-dashboard",
         component: Dashboard,
+      },
+    ],
+  },
+  {
+    path: "/business/backend",
+    redirect: "/business/backend/dashboard",
+    component: BLayoutBackend,
+    children: [
+      {
+        path: "dashboard",
+        name: "business-backend-dashboard",
+        component: BDashboard,
       },
     ],
   },

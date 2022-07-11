@@ -340,7 +340,7 @@ const business = JSON.parse(window.localStorage.getItem("access-business"));
         <h1 class="h3 fw-bold mb-2">商家系統</h1>
         <h2 class="h6 fw-medium fw-medium text-muted mb-0">
           歡迎 合作商家
-          <RouterLink :to="{ name: 'businessProfile' }" class="fw-semibold">{{
+          <RouterLink :to="{ name: 'business-backend-profile' }" class="fw-semibold">{{
               business.data.business.businessName
           }}
           </RouterLink>
