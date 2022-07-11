@@ -43,13 +43,13 @@ function logOut() {
   Swal.fire({
     title: "登出",
     text: "您已登出",
-    timer: 1000,
+    timer: 500,
     icon: "info"
   });
   window.setTimeout(function () {
     // router.push({ name: "index" });
     router.go(0)
-  }, 1000);
+  }, 200);
 }
 </script>
 
