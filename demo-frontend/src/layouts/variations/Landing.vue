@@ -47,7 +47,8 @@ function logOut() {
     icon: "info"
   });
   window.setTimeout(function () {
-    router.push({ name: "index" });
+    // router.push({ name: "index" });
+    router.go(0)
   }, 1000);
 }
 </script>
