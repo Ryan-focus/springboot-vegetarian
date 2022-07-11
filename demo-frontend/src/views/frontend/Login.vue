@@ -52,17 +52,21 @@ async function onSubmit() {
     .then(function (response) {
       // console.log(response.data);
       if (response.status === 200) {
-        Swal.fire("登入成功 ~", "｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡", "success");
+        // Swal.fire("登入成功 ~", "｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡", "success");
+        Swal.fire({
+          title: "登入成功 ~",
+          text: "｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡",
+          timer: 1000,
+          icon: "success"
+        });
         if (response.data.data.user != null) {
           localStorage.setItem("access-admin", JSON.stringify(response.data));
-          store.getStates({ admin: response.data })
-
+          store.getStates({ admin: response.data });
           location.replace("http://localhost:8080/#/backend/dashboard");
         } else {
           localStorage.setItem("access-business", JSON.stringify(response.data));
-          store.getStates({ business: response.data })
-          console.log(response.data);
-          router.push({ name: "index" });
+          store.getStates({ business: response.data });
+          router.replace({ path: '/business/backend' });
         }
       }
     })

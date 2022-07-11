@@ -792,7 +792,6 @@ export default {
       name: "回首頁",
       to: "index",
       icon: "fa fa-home",
-      badge: 0,
     },
     {
       name: "Manage",
@@ -819,5 +818,105 @@ export default {
         },
       ],
     },
+  ],
+  business: [
+    {
+      name: "回首頁",
+      to: "index",
+      icon: "fa fa-home",
+    },
+    {
+      name: "Manage",
+      heading: true,
+    },
+    {
+      name: "購物車",
+      icon: "fa fa-cart-shopping",
+      to: "shoppingCart",
+    },
+    {
+      name: "食記",
+      icon: "fa fa-pen-to-square",
+      to: "postIndex",
+    },
+    {
+      name: "商家",
+      icon: "fa fa-shop",
+      sub: [
+        {
+          name: "商家後台",
+          icon: "si si-compass",
+          to: "business-backend-dashboard",
+        },
+      ],
+    },
+  ],
+  admin: [
+    {
+      name: "回首頁",
+      to: "index",
+      icon: "fa fa-home",
+    },
+    {
+      name: "Manage",
+      heading: true,
+    },
+    {
+      name: "購物車",
+      icon: "fa fa-cart-shopping",
+      to: "shoppingCart",
+    },
+    {
+      name: "食記",
+      icon: "fa fa-pen-to-square",
+      to: "postIndex",
+    },
+    {
+      name: "商家",
+      icon: "fa fa-shop",
+      to: "index",
+    },
+    {
+      name: "返回後台",
+      icon: "si si-compass",
+      to: "backend-dashboard",
+    },
+  ],
+  user: [
+    {
+      name: "回首頁",
+      to: "index",
+      icon: "fa fa-home",
+    },
+    {
+      name: "Manage",
+      heading: true,
+    },
+    {
+      name: "購物車",
+      icon: "fa fa-cart-shopping",
+      to: "shoppingCart",
+    },
+    {
+      name: "食記",
+      icon: "fa fa-pen-to-square",
+      to: "postIndex",
+    },
+    {
+      name: "會員後台",
+      icon: "fa fa-suer",
+      to: "index",
+    },
+    // {
+    //   name: "商家",
+    //   icon: "fa fa-shop",
+    //   sub: [
+    //     {
+    //       name: "商家後台",
+    //       icon: "fa fa-explore",
+    //       to: "BusinessRegister",
+    //     },
+    //   ],
+    // },
   ],
 };

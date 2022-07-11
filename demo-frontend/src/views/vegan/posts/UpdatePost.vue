@@ -59,7 +59,7 @@ const options = reactive([
   { value: "蛋素", text: "蛋素" },
   { value: "奶素", text: "奶素" },
   { value: "蛋奶素", text: "蛋奶素" },
-  { value: "五辛素", text: "五辛素" },
+  { value: "植物五辛素", text: "植物五辛素" },
 ]);
 
 // Validation rules

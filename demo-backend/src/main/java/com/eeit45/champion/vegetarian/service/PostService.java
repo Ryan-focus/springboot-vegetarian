@@ -30,6 +30,12 @@ boolean addPostImage(Post post);
 	
 	List<Post> findPostByNoPass();
 	
+	List<Post> findPostByCategory1();
+	List<Post> findPostByCategory2();
+	List<Post> findPostByCategory3();
+	List<Post> findPostByCategory4();
+	List<Post> findPostByCategory5();
+	
 	void addFavPost(int pid,int uid);
 	
 	PostFavorite findByFavorite(int pid , int uid);
