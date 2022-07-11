@@ -21,6 +21,7 @@ const Login = () => import("@/views/frontend/Login.vue");
 const UserRegister = () => import("@/views/frontend/Register.vue");
 const BusinessRegister = () => import("@/views/frontend/BusinessRegister.vue");
 const ShoppingCart = () => import("@/views/frontend/ShoppingCart.vue");
+const ShoppingOrder = () => import("@/views/frontend/ShoppingOrder.vue");
 const Post = () => import("@/views/frontend/Post.vue");
 const SearchRestaurant = () => import("@/views/frontend/SearchRestaurant.vue");
 const BusinessBackend = () => import("@/views/frontend/BusinessBackend.vue");
@@ -306,6 +307,11 @@ const routes = [
         path: "/shopping",
         name: "shoppingCart",
         component: ShoppingCart,
+      },
+      {
+        path: "/shopping/order",
+        name: "shoppingOrder",
+        component: ShoppingOrder,
       },
       {
         path: "/post",
