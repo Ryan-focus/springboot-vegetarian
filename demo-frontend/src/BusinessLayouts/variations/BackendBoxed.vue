@@ -3,21 +3,20 @@ import { ref } from "vue";
 import { useTemplateStore } from "@/stores/template";
 
 import BaseLayout from "@/BusinessLayouts/BaseLayout.vue";
-import BaseNavigation from "@/components/BaseNavigation.vue";
+// import BaseNavigation from "@/components/BaseNavigation.vue";
 
 // Grab example data
 import notifications from "@/data/notifications";
 
 // Grab menu navigation arrays
-import menu from "@/data/menu";
+// import menu from "@/data/businessMenu";
 
-const navigation = menu.boxed;
 
 // Main store
 const store = useTemplateStore();
 
 // Reactive variables
-const mobileNav = ref(false);
+
 const baseSearchTerm = ref("");
 
 // Set default elements for this layout
@@ -169,27 +168,7 @@ store.mainContent({ mode: "boxed" });
       <div class="bg-primary-darker">
         <div class="bg-black-10">
           <div class="content py-3">
-            <!-- Toggle Navigation -->
-            <div class="d-lg-none">
-              <button type="button"
-                class="btn w-100 btn-alt-secondary d-flex justify-content-between align-items-center" @click="
-                  () => {
-                    mobileNav = !mobileNav;
-                  }
-                ">
-                Menu
-                <i class="fa fa-bars"></i>
-              </button>
-            </div>
-            <!-- END Toggle Navigation -->
 
-            <!-- Navigation -->
-            <div id="main-navigation" class="d-lg-block mt-2 mt-lg-0" :class="{
-              'd-none': !mobileNav,
-            }">
-              <BaseNavigation :nodes="navigation" horizontal horizontal-hover dark />
-            </div>
-            <!-- END Navigation -->
           </div>
         </div>
       </div>
