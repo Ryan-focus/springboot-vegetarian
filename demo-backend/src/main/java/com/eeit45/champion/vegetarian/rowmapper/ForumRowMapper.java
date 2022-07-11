@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 
 import org.springframework.jdbc.core.RowMapper;
 
+import com.eeit45.champion.vegetarian.constant.ForumCategory;
 import com.eeit45.champion.vegetarian.model.Forum;
 
 public class ForumRowMapper implements RowMapper<Forum> {
@@ -22,8 +23,13 @@ public class ForumRowMapper implements RowMapper<Forum> {
 		Timestamp forumUpdateTime = rs.getTimestamp("forumUpdateTime");
 		forum.setForumUpdateTime(forumUpdateTime);
 		
+		String forumCategoryStr = rs.getString("forumCategory");
+		ForumCategory forumCategory = ForumCategory.valueOf(forumCategoryStr);
+		forum.setForumCategory(forumCategory);
+		
 		forum.setForumTitle(rs.getString("forumTitle"));
 		forum.setForumContent(rs.getString("forumContent"));
+		forum.setForumImage(rs.getString("forumImage"));
 
 		
 		return forum;

@@ -18,8 +18,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.eeit45.champion.vegetarian.constant.ForumCategory;
 import com.eeit45.champion.vegetarian.model.Forum;
 import com.eeit45.champion.vegetarian.service.ForumService;
+import com.eeit45.champion.vegetarian.util.Page;
 
 @Validated
 @RestController
@@ -33,6 +35,7 @@ public class ForumController {
 			@RequestParam(required = false) Integer forumId,
 			@RequestParam(required = false) String  forumTitle,
 			@RequestParam(required = false) String  forumContent,
+			@RequestParam(required = false) ForumCategory forumCategory,
 			@RequestParam(required = false) Date    forumCreateTime,
 			@RequestParam(required = false) Date    forumUpdateTime	
 			){
@@ -40,13 +43,16 @@ public class ForumController {
 		forum.setForumId(forumId);
 		forum.setForumTitle(forumTitle);
 		forum.setForumContent(forumContent);
+		forum.setForumCategory(forumCategory);
 		forum.setForumCreateTime(forumCreateTime);
 		forum.setForumUpdateTime(forumUpdateTime);
 		
 		List<Forum> forums = forumService.getForums(forum);
 		
-		
-		
+//		Integer total = forumService.totalForum(forum);
+//		Page<Forum> page = new Page<>();
+//		page.setTotal(total);
+//		page.setResults(forums);
 		return ResponseEntity.status(HttpStatus.OK).body(forums);
 		
 	}

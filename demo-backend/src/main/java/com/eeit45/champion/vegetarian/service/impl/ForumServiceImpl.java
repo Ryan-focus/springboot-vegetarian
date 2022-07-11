@@ -16,7 +16,11 @@ public class ForumServiceImpl implements ForumService {
 	@Autowired
 	private ForumDao forumDao;
 	
-
+	@Override
+	public Integer totalForum(Forum forum) {
+		
+		return forumDao.totalForum(forum);
+	}
 	
 	@Override
 	public List<Forum> getForums(Forum forum) {	
@@ -43,6 +47,8 @@ public class ForumServiceImpl implements ForumService {
 	public void deleteForumById(Integer forumId) {
 		forumDao.deleteForumById(forumId);
 	}
+
+	
 
 	
 

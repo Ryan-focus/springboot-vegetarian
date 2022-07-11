@@ -20,6 +20,8 @@ public interface ForumDao {
 	
 	void deleteForumById(Integer forumId);
 	
+	Integer totalForum (Forum forum);
+	
 	
 	
 	

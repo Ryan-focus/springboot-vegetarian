@@ -18,5 +18,7 @@ public interface ForumService {
 	void updateForum(Integer forumId, Forum forum);
 	
 	void deleteForumById(Integer forumId);
+	
+	Integer totalForum (Forum forum);
 
 }
