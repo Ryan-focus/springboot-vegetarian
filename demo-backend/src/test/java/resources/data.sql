@@ -19,23 +19,23 @@ INSERT INTO `user` ( email, password, userName, status, userPic, registerTime, l
 
 -- business
 INSERT INTO business ( email, password,principalName,principalPhone, businessName,located, status, businessPic, createdTime, lastLoginTime, updateTime) VALUES
-('bt213485@gmail.com', 'aa00d00s01','宋振宏','0914378265', '艾格企業有限公司','桃園市龜山區','試用中', 'a001', now(), now() ,now())
-,('test2@gmail.com', 'ra0fgh02','李慧菁','02-29995660', '馬亞科技iWare','新北市三重區' ,'試用中', 'a002', now(), now(),now())
-,('kemfsl3@gmail.com', 'ra12hg3','方亦聖','04-22301313', '藝誠網頁設計公司','台中市北區','開通中', 'a003', now(), now(),now())
-,('en4@gmail.com', 'ca00ffd004','曾富美','0968288068', '墨宇網頁設計公司','台中市北區', '未開通', 'a004', now(), now(),now())
-,('fgen5@gmail.com', 'da0d23h005','吳晧民','02 8951 2121', '亞惿股份有限公司','新北市板橋區', '未開通', 'a005', now(), now(),now())
-,('en6@gmail.com', 'ba0fgh06','李孟陽','022395 5080','Larvata果子云數位科技','臺北市信義區', '未開通', 'a006', now(), now(),now())
+('delisoys@gmail.com', 'Aa123456','嚴心鏞','0912345678', '善果餐飲集團','台北市中山區','試用中', 'b@01', now(), now() ,now())
+,('xiaoxiao@gmail.com', 'Bb123456','劉千瑞','0938978938', '航博瑞樸股份有限公司','台北市大安區' ,'開通中', 'b@02', now(), now(),now())
+,('hanlie@gmail.com', 'Cc123456','賴宗成','(07)213-5788', '漢來美食股份有限公司','高雄市前金區','開通中', 'b@03', now(), now(),now())
+,('miacucina@gmail.com', 'Dd123456','劉人銘','02-8866-2679', '佐上椿有限公司','台北市內湖區', '未審核', 'b@04', now(), now(),now())
+,('vegecreek@gmail.com', 'Ee123456','許淞堡','02-26626766', '蔬河有限公司','台北市文山區', '未審核', 'b@05', now(), now(),now())
+,('urban@gmail.com', 'Ff123456','吳逸如','02 8773 7033','二本餐飲股份有限公司','台北市大安區', '未審核', 'b@06', now(), now(),now())
 ;
 update business set password = MD5(password);
 
 -- pos
 INSERT INTO pos(businessId,validDate,expiryDate) VALUES
  (6,'未開通',NOW())
-,(5,'試用期14日',NOW() + INTERVAL 14 DAY)
-,(4,'試用期7日',NOW() + INTERVAL 7 DAY)
-,(3,'試用期14日',NOW() + INTERVAL 14 DAY)
+,(5,'未開通',NOW())
+,(4,'未開通',NOW())
+,(3,'開通中',NOW() + INTERVAL 6 MONTH)
 ,(2,'開通中',NOW() + INTERVAL 12 MONTH )
-,(1,'開通中',NOW() + INTERVAL 6 MONTH);
+,(1,'試用期14日',NOW() + INTERVAL 14 DAY);
 
 -- PosBusiness
 INSERT INTO posBusiness(posId,businessId,visitors,turnOver,businessName) VALUES
@@ -298,7 +298,7 @@ VALUES
 
 
 -- 食記文章
-INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postAuditDate) VALUES
+INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postCategory,postAuditDate) VALUES
 ('【新莊聚餐推薦】廣泰樓小館，港式小點、香酥芋頭鴨、蒜香脆皮雞必點',now(),'【廣泰樓小館】是提供粵式+港式小點的中餐廳，位在新莊區幸福路
 
 特色餐點有 香酥芋頭鴨、蒜香脆皮雞、港式小點等人氣美食
@@ -307,7 +307,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postAuditDate
 
 有方桌和圓桌，適合2-14人的座位區，相當適合家庭、朋友聚餐
 
-不想在店內用餐、也能外帶餐點回家喔~','p01','待審核',now() )
+不想在店內用餐、也能外帶餐點回家喔~','p01','待審核','植物五辛素',now() )
 
 ,('【台北東區美食】熟菜豚屋 復興本店 超好吃韓式烤肉餐廳推薦！生菜免費續加吃到飽',now(), '   台北東區、捷運忠孝復興站這家《熟・菜豚屋》，絕對是我目前在台北吃過，最喜歡的高級韓式燒肉餐廳
 
@@ -337,7 +337,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postAuditDate
 
 沒有一道菜是不喜歡的，搭配專業又親切的服務、低調奢華的用餐空間，都加深了《熟・菜豚屋》的推薦指數
 
-喜歡吃韓式燒肉、日本料理的人，拜託你一定要收藏《熟・菜豚屋》，找一天犒賞自己一下來吃吧！','p02','待審核',now()),
+喜歡吃韓式燒肉、日本料理的人，拜託你一定要收藏《熟・菜豚屋》，找一天犒賞自己一下來吃吧！','p02','待審核','蛋素',now()),
 
 ('【桃園食記】漢來蔬食 超好吃推薦！不一樣的素食饗宴 台茂購物中心',now(),'家中有多位長輩茹素
 
@@ -381,7 +381,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postAuditDate
 
 印象中每人算起來大概7、800元，屬於中高價位並不便宜
 
-可是真得物有所值，打完食記後好想衝去桃園再吃一次啊' ,'p03','待審核',now()),
+可是真得物有所值，打完食記後好想衝去桃園再吃一次啊' ,'p03','待審核','奶素',now()),
 
 ('【屏東市美食推薦】一碗豆腐 文青創新臭豆腐專賣店！菜單甜鹹口味都有素食也能吃',now(),'在發掘屏東美食小吃這件事上，我一直都是跟著在地人推薦吃
 
@@ -403,7 +403,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postAuditDate
 
 尤其是酸甜大根泡菜的好表現，把美味度又再往上提升，加點辣椒醬更是好吃極了，風味相當有特色
 
-《一碗豆腐》營業時間從下午開始，一路賣到晚上10點，無論當成下午茶點心，或是宵夜都很不錯呢','p04','發布中',now()),
+《一碗豆腐》營業時間從下午開始，一路賣到晚上10點，無論當成下午茶點心，或是宵夜都很不錯呢','p04','發布中','全素',now()),
 
 ('【新店大坪林美食】原粹蔬食作 菜單料理講究素食料理，特色飛龍頭咖哩、味噌豆漿拉麵',now(),'《原粹蔬食作》是新北市新店區、捷運大坪林站附近，人氣很高的素食餐廳
 
@@ -449,7 +449,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postAuditDate
 但可以理解的是，講求品嚐食材原味的精神，讓素食料理吃來沒有太多負擔
 
 在新店大坪林一帶想找家舒適的蔬食餐廳，我還是會推薦《原粹蔬食作》啦，畢竟套餐價格不貴，食材工法也有講究
-','p05','待審核',now()),
+','p05','待審核','蛋奶素',now()),
 
 ('【萬華西門町美食】從心茶館 守舊時尚中式早午餐！好吃素食飯糰、包子饅頭、鍋煮奶茶',now(),'位在萬華區、西門町商圈的《從心茶館》，是我們無意間發現的素食美食
 
@@ -489,7 +489,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postAuditDate
 最好吃首推紅茶葉滷蛋，滷得夠味飄散著清新紅茶香，我們愛到相互搶食這顆蛋，不知道可不可以加價「增蛋」啊
 
 烤牛蒡天婦羅味道也很棒，我平常沒有很愛酸菜，但《從心茶館》的酸菜不會臭，完全吃得出老闆選用好的原物料，飯糰真的好好吃
-','p06','待審核',now()),
+','p06','待審核','蛋奶素',now()),
 
 ('【台東池上美食】舒食男孩二號店 臺東慢食評鑑二星推薦！在地食材無菜單素食料理',now(),'私以為台東美食最迷人之處，在於大量在地食材的應用
 
@@ -517,7 +517,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postAuditDate
 
 新鮮直送的蔬菜水果，搭配宜人氣候、池上悠閒，讓人能好好靜下心來品味舒食料理，感謝大自然的恩惠
 
-若來到《伯朗大道》騎腳踏車，不妨來《舒食男孩二號店》吃個飯，即使是葷食者也會喜歡的舒食美食','p07','未通過',now()),
+若來到《伯朗大道》騎腳踏車，不妨來《舒食男孩二號店》吃個飯，即使是葷食者也會喜歡的舒食美食','p07','未通過','奶素',now()),
 
 ('【台北食記】御蓮齋 素食吃到飽buffet推薦！多達200道料理，素食外燴婚宴一應俱全',now(),'
 素食飲食已經變成一股時代趨勢
@@ -555,7 +555,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postAuditDate
 
 最後提醒大家，文章內看到的素食餐點，都可以再向《御蓮齋》詢問，是否提供外燴服務
 
-想訂購素食外燴的人，也請記得先打電話確認，以免撲空唷','p08','未通過',now());
+想訂購素食外燴的人，也請記得先打電話確認，以免撲空唷','p08','未通過','植物五辛素',now());
 
 -- forum
 INSERT INTO forum ( forumTitle, forumContent, forumCreateTime, forumUpdateTime) VALUES

@@ -16,6 +16,8 @@ public interface UserService {
 	List<User> getAllUser();
 	User getUserById(Integer userId);
 	
+	User getUserByEmail(String loginEmail);
+	
 	Integer createUser(UserRequest userRequest);
 	
 	int updateUser(Integer userId, UserRequest userRequest);
@@ -27,7 +29,6 @@ public interface UserService {
 	User login(LoginRequest loginRequest);
 	
 	User resetPassword(LoginRequest loginRequest);
-
 
 //	boolean isBanned(UserRequest userRequest);
 

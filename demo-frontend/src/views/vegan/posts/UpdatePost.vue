@@ -59,7 +59,7 @@ const options = reactive([
   { value: "蛋素", text: "蛋素" },
   { value: "奶素", text: "奶素" },
   { value: "蛋奶素", text: "蛋奶素" },
-  { value: "五辛素", text: "五辛素" },
+  { value: "植物五辛素", text: "植物五辛素" },
 ]);
 
 // Validation rules
@@ -118,7 +118,7 @@ function sendPost(title, postedText) {
         // title: "Auto close alert!",
         text: "發表成功",
         timer: 500,
-        type: "success",
+        icon: "success",
       });
       window.setTimeout(function () {
         window.location.href = "http://localhost:8080/#/post";
@@ -144,8 +144,7 @@ function sendPost(title, postedText) {
           </li>
           <li class="breadcrumb-item" aria-current="page">
             <a class="link-fx" href="#/backend/cart/productInfo">
-              <i class="fa fa-leaf">分類</i></a
-            >
+              <i class="fa fa-leaf">分類</i></a>
           </li>
           <li class="breadcrumb-item" aria-current="page">
             <i class="fa fa-leaf">分類</i>
@@ -161,11 +160,7 @@ function sendPost(title, postedText) {
     <div class="row">
       <div class="col-lg-9">
         <!-- Basic -->
-        <form
-          @submit.prevent="onSubmit"
-          method="post"
-          enctype="multipart/form-data"
-        >
+        <form @submit.prevent="onSubmit" method="post" enctype="multipart/form-data">
           <BaseBlock title=" " content-full>
             <div class="row push">
               <div class="col-lg-12">
@@ -174,55 +169,26 @@ function sendPost(title, postedText) {
               <div class="col-lg-4 col-xl-12">
                 <!-- 商品名稱開始 -->
                 <div class="mb-4">
-                  <label class="form-label" for="val-username"
-                    >文章標題 <span class="text-danger">*</span></label
-                  >
-                  <input
-                    type="text"
-                    id="val-username"
-                    class="form-control"
-                    :class="{
-                      'is-invalid': v$.title.$errors.length,
-                    }"
-                    v-model="state.title"
-                    @blur="v$.title.$touch"
-                  />
-                  <div
-                    v-if="v$.title.$errors.length"
-                    class="invalid-feedback animated fadeIn"
-                  >
+                  <label class="form-label" for="val-username">文章標題 <span class="text-danger">*</span></label>
+                  <input type="text" id="val-username" class="form-control" :class="{
+                    'is-invalid': v$.title.$errors.length,
+                  }" v-model="state.title" @blur="v$.title.$touch" />
+                  <div v-if="v$.title.$errors.length" class="invalid-feedback animated fadeIn">
                     請輸入文章標題
                   </div>
                 </div>
 
                 <!-- 素食種類開始 -->
                 <div class="mb-4">
-                  <label class="form-label" for="example-select"
-                    >文章分類</label
-                  >
-                  <select
-                    class="form-select"
-                    id="example-select"
-                    name="example-select"
-                    required
-                    :class="{
-                      'is-invalid': v$.category.$errors.length,
-                    }"
-                    @blur="v$.category.$touch"
-                    v-model="state.category"
-                  >
-                    <option
-                      v-for="(option, index) in options"
-                      :value="option.value"
-                      :key="`option-${index}`"
-                    >
+                  <label class="form-label" for="example-select">文章分類</label>
+                  <select class="form-select" id="example-select" name="example-select" required :class="{
+                    'is-invalid': v$.category.$errors.length,
+                  }" @blur="v$.category.$touch" v-model="state.category">
+                    <option v-for="(option, index) in options" :value="option.value" :key="`option-${index}`">
                       {{ option.text }}
                     </option>
                   </select>
-                  <div
-                    v-if="v$.category.$errors.length"
-                    class="invalid-feedback animated fadeIn"
-                  >
+                  <div v-if="v$.category.$errors.length" class="invalid-feedback animated fadeIn">
                     請選擇文章分類!
                   </div>
                 </div>
@@ -231,37 +197,20 @@ function sendPost(title, postedText) {
                 <div class="row push">
                   <div class="col-lg-12 col-xl-12 overflow-hidden">
                     <div class="mb-4">
-                      <label class="form-label" for="example-file-input"
-                        >圖片上傳（一張）</label
-                      >
-                      <input
-                        class="form-control"
-                        type="file"
-                        id="example-file-input"
-                        name="file"
-                      />
+                      <label class="form-label" for="example-file-input">圖片上傳（一張）</label>
+                      <input class="form-control" type="file" id="example-file-input" name="file" />
                     </div>
                   </div>
                 </div>
 
                 <!-- 產品CK editor -->
                 <div class="mb-4">
-                  <label class="form-label" for="example-select"
-                    >文章內文</label
-                  >
-                  <ckeditor
-                    :editor="ClassicEditor"
-                    :config="editorConfig"
-                    v-model="resPostText"
-                  />
+                  <label class="form-label" for="example-select">文章內文</label>
+                  <ckeditor :editor="ClassicEditor" :config="editorConfig" v-model="resPostText" />
                 </div>
                 <div class="row items-push">
                   <div class="col-lg-6 offset-lg-5">
-                    <button
-                      type="submit"
-                      class="btn btn-alt-primary"
-                      @click="sendPost(state.title, resPostText)"
-                    >
+                    <button type="submit" class="btn btn-alt-primary" @click="sendPost(state.title, resPostText)">
                       送出文章
                     </button>
                   </div>

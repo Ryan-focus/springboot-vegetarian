@@ -7,7 +7,7 @@ import axios from "axios";
 
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
 import useVuelidate from "@vuelidate/core";
-import { required, minLength, url } from "@vuelidate/validators";
+import { required, url } from "@vuelidate/validators";
 
 // Main store
 const store = useTemplateStore();
@@ -24,11 +24,9 @@ const rules = computed(() => {
   return {
     account: {
       required,
-      // minLength: minLength(3),
     },
     password: {
       required,
-      // minLength: minLength(5),
     },
   };
 });
@@ -39,11 +37,49 @@ const v$ = useVuelidate(rules, state);
 // On form submission
 async function onSubmit() {
   const result = await v$.value.$validate();
+  const user = {
+    account: state.account,
+    password: state.password,
+  };
 
   if (!result) {
     // notify user form is invalid
     return;
   }
+
+  axios
+    .post("http://localhost:8088/login", user)
+    .then(function (response) {
+      // console.log(response.data);
+      if (response.status === 200) {
+        // Swal.fire("登入成功 ~", "｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡", "success");
+        Swal.fire({
+          title: "登入成功 ~",
+          text: "｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡",
+          timer: 1000,
+          icon: "success"
+        });
+        if (response.data.data.user != null) {
+          localStorage.setItem("access-admin", JSON.stringify(response.data));
+          store.getStates({ admin: response.data });
+          location.replace("http://localhost:8080/#/backend/dashboard");
+        } else {
+          localStorage.setItem("access-business", JSON.stringify(response.data));
+          store.getStates({ business: response.data });
+          router.replace({ path: '/business/backend' });
+        }
+      }
+    })
+    .catch(function (error) {
+      if (error.response.status === 401) {
+        Swal.fire("登入失敗,帳號異常", "∑(￣□￣;)", "error");
+      } else if (error.response.status === 400) {
+        Swal.fire("登入失敗,帳號或密碼錯誤", "(〒︿〒)", "error");
+      } else {
+        console.log(error.code); // 印錯誤狀態代碼
+        console.log(error.message); // 印錯誤內容
+      }
+    });
 
   // Go to dashboard
   // router.push({ name: "backend-pages-auth" });
@@ -67,7 +103,7 @@ async function onSubmit() {
             <template #options>
               <RouterLink :to="{ name: '' }" class="btn-block-option fs-sm" @click="forgetPassword"><b>忘記密碼?</b>
               </RouterLink>
-              <RouterLink :to="{ name: 'auth-signup' }" class="btn-block-option">
+              <RouterLink :to="{ name: 'userRegister' }" class="btn-block-option">
                 <i class="fa fa-user-plus"></i>
               </RouterLink>
             </template>
@@ -80,13 +116,13 @@ async function onSubmit() {
               同意<a href="#">服務條款</a>及<a href="#">隱私政策</a>
 
               <!-- Sign In Form -->
-              <form @submit.prevent="onSubmit" @submit="login">
+              <form @submit.prevent="onSubmit">
                 <div class="py-3">
                   <div class="mb-4">
                     <input type="text" class="form-control form-control-alt form-control-lg" id="login-username"
                       name="login-username" placeholder="E-mail" :class="{
                         'is-invalid': v$.account.$errors.length,
-                      }" v-model="state.account" @blur="v$.account.$touch" />
+                      }" v-model="state.account" @blur="v$.account.$touch" autocomplete="username" />
                     <div v-if="v$.account.$errors.length" class="invalid-feedback animated fadeIn">
                       請輸入你的帳號
                     </div>
@@ -95,7 +131,7 @@ async function onSubmit() {
                     <input type="password" class="form-control form-control-alt form-control-lg" id="login-password"
                       name="login-password" placeholder="密碼" :class="{
                         'is-invalid': v$.password.$errors.length,
-                      }" v-model="state.password" @blur="v$.password.$touch" />
+                      }" v-model="state.password" @blur="v$.password.$touch" autocomplete="current-password" />
                     <div v-if="v$.password.$errors.length" class="invalid-feedback animated fadeIn">
                       請輸入你的密碼
                     </div>
@@ -152,62 +188,6 @@ export default {
     };
   },
   methods: {
-    login() {
-      const user = {
-        account: this.state.account,
-        password: this.state.password,
-      };
-      axios
-        .post("http://localhost:8088/login", user)
-        .then(function (response) {
-          console.log(response.data);
-          if (response.status === 200) {
-            localStorage.setItem("access-admin", JSON.stringify(response.data));
-
-            location.replace("http://localhost:8080/#/backend/dashboard"); //登入成功擋返回前頁回到登入頁
-            Swal.fire("登入成功 ~", "｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡", "success");
-          }
-        })
-        .catch(function (error) {
-          if (error.response.status === 401) {
-            Swal.fire("登入失敗,帳號異常", "∑(￣□￣;)", "error");
-          } else if (error.response.status === 400) {
-            Swal.fire("登入失敗,帳號或密碼錯誤", "(〒︿〒)", "error");
-          } else {
-            console.log(error.response.status); // 印錯誤狀態代碼
-            console.log(error.response.data.error); // 印錯誤內容
-          }
-        });
-    },
-  },
-  methods: {
-    login() {
-      const user = {
-        account: this.state.account,
-        password: this.state.password,
-      };
-      axios
-        .post("http://localhost:8088/login", user)
-        .then(function (response) {
-          console.log(response.data);
-          if (response.status === 200) {
-            localStorage.setItem("access-admin", JSON.stringify(response.data));
-
-            location.replace("http://localhost:8080/#/backend/dashboard"); //登入成功擋返回前頁回到登入頁
-            Swal.fire("登入成功 ~", "｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡", "success");
-          }
-        })
-        .catch(function (error) {
-          if (error.response.status === 401) {
-            Swal.fire("登入失敗,帳號異常", "∑(￣□￣;)", "error");
-          } else if (error.response.status === 400) {
-            Swal.fire("登入失敗,帳號或密碼錯誤", "(〒︿〒)", "error");
-          } else {
-            console.log(error.response.status); // 印錯誤狀態代碼
-            console.log(error.response.data.error); // 印錯誤內容
-          }
-        });
-    },
     forgetPassword() {
       const user = {
         account: this.state.account,
@@ -222,11 +202,13 @@ export default {
         confirmButtonText: "確認",
         cancelButtonText: '取消',
         showLoaderOnConfirm: true,
-        allowOutsideClick: false,
+        allowOutsideClick: true,
 
         preConfirm: async () => {
           return axios.post("http://localhost:8088/user/sendMail", user)
             .then(response => {
+              console.log(response.status)
+              console.log(response.data)
               if (response.status === 200) {
                 Swal.fire(`密碼信已寄出,請前往${email}查看`, "༼ つ ◕_◕ ༽つ", "success");
                 return response.data;
@@ -245,4 +227,9 @@ export default {
     }
   },
 };
+//加下面3行防止使用鍵盤(指alt + 鍵盤左鍵等)、滑鼠手勢等方式返回前頁,點連結前往的有些不能擋
+history.pushState(null, null, document.URL);
+window.addEventListener('popstate', function () {
+  history.pushState(null, null, document.URL);
+});
 </script>

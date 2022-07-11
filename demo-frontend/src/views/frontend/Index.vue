@@ -5,6 +5,7 @@ import { useTemplateStore } from "@/stores/template";
 const store = useTemplateStore();
 </script>
 
+
 <template>
   <div>
     <!-- Hero -->

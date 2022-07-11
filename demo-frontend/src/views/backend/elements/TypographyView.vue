@@ -2,10 +2,8 @@
 
 <template>
   <!-- Hero -->
-  <BasePageHeading
-    title="Typography"
-    subtitle="Good Typography not only looks good but also reinforces the meaning of the content."
-  >
+  <BasePageHeading title="Typography"
+    subtitle="Good Typography not only looks good but also reinforces the meaning of the content.">
     <template #extra>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-alt">
@@ -118,24 +116,12 @@
             <span class="badge bg-danger">Danger</span>
           </p>
           <p class="space-x-1">
-            <span class="badge bg-black-50"
-              ><i class="fa fa-home"></i> Home</span
-            >
-            <span class="badge bg-primary"
-              ><i class="fa fa-cog"></i> Settings</span
-            >
-            <span class="badge bg-success"
-              ><i class="fa fa-check"></i> Great!</span
-            >
-            <span class="badge bg-info"
-              ><i class="fa fa-info-circle"></i> More Info</span
-            >
-            <span class="badge bg-warning"
-              ><i class="fa fa-exclamation-circle"></i> Attention</span
-            >
-            <span class="badge bg-danger"
-              ><i class="fa fa-times-circle"></i> Error</span
-            >
+            <span class="badge bg-black-50"><i class="fa fa-home"></i> Home</span>
+            <span class="badge bg-primary"><i class="fa fa-cog"></i> Settings</span>
+            <span class="badge bg-success"><i class="fa fa-check"></i> Great!</span>
+            <span class="badge bg-info"><i class="fa fa-info-circle"></i> More Info</span>
+            <span class="badge bg-warning"><i class="fa fa-exclamation-circle"></i> Attention</span>
+            <span class="badge bg-danger"><i class="fa fa-times-circle"></i> Error</span>
           </p>
         </div>
         <div class="col-md-6">
@@ -149,24 +135,12 @@
             <span class="badge rounded-pill bg-danger">Danger</span>
           </p>
           <p class="space-x-1">
-            <span class="badge rounded-pill bg-black-50"
-              ><i class="fa fa-fw fa-home"></i> Home</span
-            >
-            <span class="badge rounded-pill bg-primary"
-              ><i class="fa fa-fw fa-cog"></i> Settings</span
-            >
-            <span class="badge rounded-pill bg-success"
-              ><i class="fa fa-fw fa-check"></i> Great!</span
-            >
-            <span class="badge rounded-pill bg-info"
-              ><i class="fa fa-fw fa-info-circle"></i> More Info</span
-            >
-            <span class="badge rounded-pill bg-warning"
-              ><i class="fa fa-fw fa-exclamation-circle"></i> Attention</span
-            >
-            <span class="badge rounded-pill bg-danger"
-              ><i class="fa fa-fw fa-times-circle"></i> Error</span
-            >
+            <span class="badge rounded-pill bg-black-50"><i class="fa fa-fw fa-home"></i> Home</span>
+            <span class="badge rounded-pill bg-primary"><i class="fa fa-fw fa-cog"></i> Settings</span>
+            <span class="badge rounded-pill bg-success"><i class="fa fa-fw fa-check"></i> Great!</span>
+            <span class="badge rounded-pill bg-info"><i class="fa fa-fw fa-info-circle"></i> More Info</span>
+            <span class="badge rounded-pill bg-warning"><i class="fa fa-fw fa-exclamation-circle"></i> Attention</span>
+            <span class="badge rounded-pill bg-danger"><i class="fa fa-fw fa-times-circle"></i> Error</span>
           </p>
         </div>
       </div>
@@ -221,31 +195,21 @@
             <a class="link-fx" href="javascript:void(0)">Link with effect</a>
           </p>
           <p>
-            <a class="link-fx text-success" href="javascript:void(0)"
-              >Success link with effect</a
-            >
+            <a class="link-fx text-success" href="javascript:void(0)">Success link with effect</a>
           </p>
           <p>
-            <a class="link-fx text-info" href="javascript:void(0)"
-              >Info link with effect</a
-            >
+            <a class="link-fx text-info" href="javascript:void(0)">Info link with effect</a>
           </p>
           <p>
-            <a class="link-fx text-warning" href="javascript:void(0)"
-              >Warning link with effect</a
-            >
+            <a class="link-fx text-warning" href="javascript:void(0)">Warning link with effect</a>
           </p>
           <p>
-            <a class="link-fx text-danger" href="javascript:void(0)"
-              >Danger link with effect</a
-            >
+            <a class="link-fx text-danger" href="javascript:void(0)">Danger link with effect</a>
           </p>
         </div>
         <div class="col-md-4">
           <p>
-            <a class="link-fx text-amethyst" href="javascript:void(0)"
-              >Amethyst</a
-            >
+            <a class="link-fx text-amethyst" href="javascript:void(0)">Amethyst</a>
           </p>
           <p>
             <a class="link-fx text-city" href="javascript:void(0)">City</a>

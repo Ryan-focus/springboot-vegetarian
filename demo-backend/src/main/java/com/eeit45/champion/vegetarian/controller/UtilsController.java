@@ -38,8 +38,8 @@ public class UtilsController {
             //命名方式為uuid+上傳圖片名字
             String fileLocation = new File("target/classes/static").getAbsolutePath() + "/" + uuid + file.getOriginalFilename();
             file.transferTo(new File(fileLocation));
-            System.out.println("有");
             //將網址塞到物件
+            //image 物件裡只包含imageUrl
             Image image = new Image();
             image.setImageUrl("http://localhost:8088/" + uuid + file.getOriginalFilename());
 
