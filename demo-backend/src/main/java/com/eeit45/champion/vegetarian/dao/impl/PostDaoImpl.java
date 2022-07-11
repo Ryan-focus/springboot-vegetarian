@@ -171,4 +171,40 @@ public class PostDaoImpl implements PostDao {
 		return null;
 	}
 
+	//前台文章分類(全素)
+	@Override
+	public List<Post> findPostByCategory1() {
+		String sql = "SELECT *  FROM post where 1=1 AND postCategory = '全素' order by postId desc";
+		List<Post> postList = namedParameterJdbcTemplate.query(sql, new PostRowMapper());
+		return postList;
+	}
+	//前台文章分類(蛋素)
+	@Override
+	public List<Post> findPostByCategory2() {
+		String sql = "SELECT *  FROM post where 1=1 AND postCategory = '蛋素' order by postId desc";
+		List<Post> postList = namedParameterJdbcTemplate.query(sql, new PostRowMapper());
+		return postList;
+	}
+	//前台文章分類(奶素)
+	@Override
+	public List<Post> findPostByCategory3() {
+		String sql = "SELECT *  FROM post where 1=1 AND postCategory = '奶素' order by postId desc";
+		List<Post> postList = namedParameterJdbcTemplate.query(sql, new PostRowMapper());
+		return postList;
+	}
+	//前台文章分類(蛋奶素)
+	@Override
+	public List<Post> findPostByCategory4() {
+		String sql = "SELECT *  FROM post where 1=1 AND postCategory = '蛋奶素' order by postId desc";
+		List<Post> postList = namedParameterJdbcTemplate.query(sql, new PostRowMapper());
+		return postList;
+	}
+	//前台文章分類(植物五辛素)
+	@Override
+	public List<Post> findPostByCategory5() {
+		String sql = "SELECT *  FROM post where 1=1 AND postCategory = '植物五辛素' order by postId desc";
+		List<Post> postList = namedParameterJdbcTemplate.query(sql, new PostRowMapper());
+		return postList;
+	}
+
 }

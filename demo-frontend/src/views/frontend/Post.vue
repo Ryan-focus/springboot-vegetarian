@@ -40,6 +40,76 @@ const getAxios = function () {
 //執行Axios
 getAxios();
 // For Filters
+
+//發布中文章(全素)
+function Category1() {
+  //send request to server
+  axios
+    .get(`http://${url}/postCategory1`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+//發布中文章(蛋素)
+function Category2() {
+  //send request to server
+  axios
+    .get(`http://${url}/postCategory2`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+//發布中文章(奶素)
+function Category3() {
+  //send request to server
+  axios
+    .get(`http://${url}/postCategory3`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+//發布中文章(蛋奶素)
+function Category4() {
+  //send request to server
+  axios
+    .get(`http://${url}/postCategory4`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+//發布中文章(植物五辛素)
+function Category5() {
+  //send request to server
+  axios
+    .get(`http://${url}/postCategory5`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+
+
+
+
 </script>
 <style>
 .card-text {
@@ -60,13 +130,15 @@ getAxios();
     <!-- 上方主題分類 -->
 
     <div class="row justify-content-center text-center">
-      <div class="col-md-3 mb-4">
+      <div class="col-md-12 mb-4">
         <BaseBackground>
-          <div class="d-grid gap-2 d-md-flex">
-            <button type="button" class="btn btn-alt-info">Info</button>
-            <button type="button" class="btn btn-alt-info">Left</button>
-            <button type="button" class="btn btn-alt-info">Middle</button>
-            <button type="button" class="btn btn-alt-info">Right</button>
+          <div class="col-xs-4">
+            <button type="button" class="btn btn-alt-info" @click.prevent="getAxios">全部</button>
+            <button type="button" class="btn btn-alt-info" @click.prevent="Category1()">全素</button>
+            <button type="button" class="btn btn-alt-info" @click.prevent="Category2()">蛋素</button>
+            <button type="button" class="btn btn-alt-info" @click.prevent="Category3()">奶素</button>
+            <button type="button" class="btn btn-alt-info" @click.prevent="Category4()">蛋奶素</button>
+            <button type="button" class="btn btn-alt-info" @click.prevent="Category5()">植物五辛素</button>
           </div>
         </BaseBackground>
       </div>

@@ -76,6 +76,31 @@ public class PostServiceImpl implements PostService {
 		return postDao.findPostByNoPass();
 	}
 
+	@Override
+	public List<Post> findPostByCategory1() {
+		return postDao.findPostByCategory1();
+	}
+
+	@Override
+	public List<Post> findPostByCategory2() {
+		return postDao.findPostByCategory2();
+	}
+
+	@Override
+	public List<Post> findPostByCategory3() {
+		return postDao.findPostByCategory3();
+	}
+
+	@Override
+	public List<Post> findPostByCategory4() {
+		return postDao.findPostByCategory4();
+	}
+
+	@Override
+	public List<Post> findPostByCategory5() {
+		return postDao.findPostByCategory5();
+	}
+
 
 
 }

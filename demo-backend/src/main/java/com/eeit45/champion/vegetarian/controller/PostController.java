@@ -28,14 +28,11 @@ public class PostController {
 
 	@Autowired
 	private PostService postService;
-	
-	
 
+	// @RestController 沒有辦法返回View-model視圖給使用者
+	// 且前後端分離，也不需在後端編寫前端頁面。
 
-	//@RestController 沒有辦法返回View-model視圖給使用者
-	//且前後端分離，也不需在後端編寫前端頁面。
-
-	//食記發表頁面
+	// 食記發表頁面
 //	@GetMapping("/newFoodPost")
 //	public String processMainAction(Model m) {
 //
@@ -44,7 +41,7 @@ public class PostController {
 //		return "createPost";
 //	}
 
-	//發表食記
+	// 發表食記
 	@PostMapping("/PostNew")
 	public ResponseEntity<Boolean> createPostImage(@RequestParam(value = "title") String title,
 			@RequestParam(value = "postedText") String postedText,
@@ -69,7 +66,7 @@ public class PostController {
 			}
 			System.out.println(saveDir);
 
-			imageUrl = fileFolderName + "/" + newFileName;  // 儲存資料庫路徑
+			imageUrl = fileFolderName + "/" + newFileName; // 儲存資料庫路徑
 			System.out.println(imageUrl);
 			File headImage = new File(saveDir, newFileName);
 			postImage.transferTo(headImage);
@@ -78,7 +75,6 @@ public class PostController {
 			imageUrl = defaultImgurl;
 		}
 
-		
 		ZoneId zoneId = ZoneId.systemDefault();
 		LocalDateTime localDateTime = LocalDateTime.now();
 		ZonedDateTime zdt = localDateTime.atZone(zoneId);
@@ -95,7 +91,7 @@ public class PostController {
 
 	}
 
-	//後台食記文章總覽(全部文章)
+	// 後台食記文章總覽(全部文章)
 	@GetMapping(path = "/postIndex")
 	public ResponseEntity<List<Post>> showAllPost() {
 		List<Post> findallPost = postService.findallPost();
@@ -108,8 +104,7 @@ public class PostController {
 
 	}
 
-
-	//後台食記文章(待審核文章)
+	// 後台食記文章(待審核文章)
 	@GetMapping(path = "/postNoAudit")
 	public ResponseEntity<List<Post>> showAllNoAuditPost() {
 		List<Post> findallPost = postService.findPostByNoAudit();
@@ -121,11 +116,89 @@ public class PostController {
 		}
 
 	}
+
+	// 後台食記文章(待審核文章)
+	@GetMapping(path = "/postNoPass")
+	public ResponseEntity<List<Post>> showAllNoPassPost() {
+		List<Post> findallPost = postService.findPostByNoPass();
+
+		if (findallPost != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(findallPost);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+
+	}
+
+	// 前台食記文章總覽(發布中文章)
+	@GetMapping(path = "/postStatusList")
+	public ResponseEntity<List<Post>> showAllPostFront() {
+		List<Post> findallPost = postService.findPostByStatus();
+
+		if (findallPost != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(findallPost);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+
+	}
+
+	// 前台食記分類(全素)
+	@GetMapping(path = "/postCategory1")
+	public ResponseEntity<List<Post>> showPostFront1() {
+		List<Post> findallPost = postService.findPostByCategory1();
+
+		if (findallPost != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(findallPost);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+
+	}
+
+	// 前台食記分類(蛋素)
+	@GetMapping(path = "/postCategory2")
+	public ResponseEntity<List<Post>> showPostFront2() {
+		List<Post> findallPost = postService.findPostByCategory2();
+
+		if (findallPost != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(findallPost);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+
+	}
+
+	// 前台食記分類(奶素)
+	@GetMapping(path = "postCategory3")
+	public ResponseEntity<List<Post>> showPostFront3() {
+		List<Post> findallPost = postService.findPostByCategory3();
+
+		if (findallPost != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(findallPost);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+
+	}
+
+	// 前台食記分類(蛋奶素)
+	@GetMapping(path = "postCategory4")
+	public ResponseEntity<List<Post>> showPostFront4() {
+		List<Post> findallPost = postService.findPostByCategory4();
+
+		if (findallPost != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(findallPost);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+
+	}
 	
-	//後台食記文章(待審核文章)
-		@GetMapping(path = "/postNoPass")
-		public ResponseEntity<List<Post>> showAllNoPassPost() {
-			List<Post> findallPost = postService.findPostByNoPass();
+	//前台食記分類(植物五辛素)
+		@GetMapping(path = "postCategory5")
+		public ResponseEntity<List<Post>> showPostFront5() {
+			List<Post> findallPost = postService.findPostByCategory5();
 
 			if (findallPost != null) {
 				return ResponseEntity.status(HttpStatus.OK).body(findallPost);
@@ -134,24 +207,11 @@ public class PostController {
 			}
 
 		}
-	
-	//前台食記文章總覽(發布中文章)
-		@GetMapping(path = "/postStatusList")
-		public ResponseEntity<List<Post>> showAllPostFront() {
-			List<Post> findallPost = postService.findPostByStatus();
 
-			if (findallPost != null) {
-				return ResponseEntity.status(HttpStatus.OK).body(findallPost);
-			} else {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-			}
-
-		}
-
-	//後台審核食記
+	// 後台審核食記
 	@GetMapping("/auditPost/{id}")
 	public ResponseEntity<Post> auditPost(@PathVariable("id") Integer id) {
-		
+
 		Post post = postService.findPost(id);
 		if (post != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(post);
@@ -160,12 +220,12 @@ public class PostController {
 		}
 
 	}
-	
-	@PutMapping(path = "/auditPost/{id}"  )
-	//後台更新審核文章
+
+	@PutMapping(path = "/auditPost/{id}")
+	// 後台更新審核文章
 	public ResponseEntity<Post> sendauditPost(@PathVariable("id") Integer id,
 			@RequestParam("postStatus") String condition, Post post) {
-		
+
 		Post checkPost = postService.findPost(id);
 		if (checkPost == null) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -181,11 +241,11 @@ public class PostController {
 		Post updateCondition = postService.updateCondition(checkPost);
 
 		return ResponseEntity.status(HttpStatus.CREATED).body(updateCondition);
-		
+
 	}
 
-	//與@GetMapping("/auditPost/{id}") 方法重複
-	//查詢單筆文章
+	// 與@GetMapping("/auditPost/{id}") 方法重複
+	// 查詢單筆文章
 //	@GetMapping(value = "/showPost/{id}")
 //	public ResponseEntity<Post> showPost(@PathVariable("id") int id,HttpServletRequest request) {
 //
@@ -197,7 +257,7 @@ public class PostController {
 //		}
 //	}
 
-	//刪除文章
+	// 刪除文章
 	@GetMapping(value = "/deletePost/{id}")
 	public ResponseEntity<Post> deletePost(@PathVariable("id") int id) {
 
@@ -210,7 +270,7 @@ public class PostController {
 
 	@GetMapping(value = "/editPost/{id}")
 	public ResponseEntity<Post> editPost(@PathVariable("id") int id) {
-		
+
 		Post post = postService.findPost(id);
 		if (post != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(post);
@@ -223,10 +283,8 @@ public class PostController {
 	@PostMapping(path = "/editPost/{id}")
 	public ResponseEntity<Boolean> UpdatePostImage(@RequestParam(value = "title") String title,
 			@RequestParam(value = "postedText") String postedText,
-			@RequestPart(value = "postImage") MultipartFile postImage, 
-			@PathVariable("id") int id ,
-			Post post, HttpServletRequest request 
-			) throws IOException {
+			@RequestPart(value = "postImage") MultipartFile postImage, @PathVariable("id") int id, Post post,
+			HttpServletRequest request) throws IOException {
 		String imageUrl = post.getImgurl();
 		String fileFolderName = "testimages/PostsPhoto";
 		String defaultImgurl = "images/PostsPhoto/defaultPostImage.jpg";
@@ -245,7 +303,7 @@ public class PostController {
 			}
 			System.out.println(saveDir);
 
-			imageUrl = fileFolderName + "/" + newFileName;  // 儲存資料庫路徑
+			imageUrl = fileFolderName + "/" + newFileName; // 儲存資料庫路徑
 			System.out.println(imageUrl);
 			File headImage = new File(saveDir, newFileName);
 			postImage.transferTo(headImage);
@@ -257,8 +315,7 @@ public class PostController {
 		LocalDateTime localDateTime = LocalDateTime.now();
 		ZonedDateTime zdt = localDateTime.atZone(zoneId);
 		Date date = Date.from(zdt.toInstant());
-		
-		
+
 		post.setPostId(id);
 		post.setTitle(title);
 		post.setPostedText(postedText);
@@ -269,44 +326,43 @@ public class PostController {
 		Boolean addresult = postService.updatePost(post);
 		return ResponseEntity.status(HttpStatus.CREATED).body(addresult);
 	}
-	
-	//搜尋收藏文章
-	@GetMapping(value = "/favtest/{id}")
-	public ResponseEntity<PostFavorite> showfav(@PathVariable("id") Integer id,HttpServletRequest request) {
 
-		 User user = (User) request.getSession().getAttribute("user");
-		 
-		 Integer userId;//用户id
-	        if(user == null){
-	            return null;
-	        }else{
-	            userId = user.getUserId();
-	        }
-		//Integer userId = 1564;
-		PostFavorite post = postService.findByFavorite(id,userId);
-		//boolean flag = postService.isFavorite(id, userId);
-		
-		if (post !=null) {
+	// 搜尋收藏文章
+	@GetMapping(value = "/favtest/{id}")
+	public ResponseEntity<PostFavorite> showfav(@PathVariable("id") Integer id, HttpServletRequest request) {
+
+		User user = (User) request.getSession().getAttribute("user");
+
+		Integer userId;// 用户id
+		if (user == null) {
+			return null;
+		} else {
+			userId = user.getUserId();
+		}
+		// Integer userId = 1564;
+		PostFavorite post = postService.findByFavorite(id, userId);
+		// boolean flag = postService.isFavorite(id, userId);
+
+		if (post != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(post);
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
-	
-	
+
 	@PostMapping("/favtest/{id}")
-	public ResponseEntity<Boolean> addfav(@PathVariable("id") int id, Post post,HttpServletRequest request)
+	public ResponseEntity<Boolean> addfav(@PathVariable("id") int id, Post post, HttpServletRequest request)
 			throws IOException {
 
 		User user = (User) request.getSession().getAttribute("user");
-		 Integer userId;//用户id
-	        if(user == null){
-	            return null;
-	        }else{
-	            userId = user.getUserId();
-	        }
-		//Integer userId = user.getUserId();
-		//Integer userId = 1564;
+		Integer userId;// 用户id
+		if (user == null) {
+			return null;
+		} else {
+			userId = user.getUserId();
+		}
+		// Integer userId = user.getUserId();
+		// Integer userId = 1564;
 
 		postService.addFavPost(id, userId);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
