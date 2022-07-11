@@ -12,8 +12,8 @@ import LayoutBackendMegaMenu from "@/layouts/variations/BackendMegaMenu.vue";
 
 //設定Business LayOuting 模板
 import BLayoutBackend from "@/BusinessLayouts/variations/Backend.vue";
-import BLayoutBackendBoxed from "@/BusinessLayouts/variations/BackendBoxed.vue";
-import BLayoutBackendMegaMenu from "@/BusinessLayouts/variations/BackendMegaMenu.vue";
+// import BLayoutBackendBoxed from "@/BusinessLayouts/variations/BackendBoxed.vue";
+// import BLayoutBackendMegaMenu from "@/BusinessLayouts/variations/BackendMegaMenu.vue";
 
 // Frontend: Index
 const Index = () => import("@/views/frontend/Index.vue");

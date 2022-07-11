@@ -846,7 +846,7 @@ export default {
         {
           name: "商家後台",
           icon: "si si-compass",
-          to: "businessBackend",
+          to: "business-backend-dashboard",
         },
       ],
     },
