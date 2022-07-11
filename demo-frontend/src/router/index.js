@@ -1194,16 +1194,9 @@ router.afterEach((to, from) => {
 
 export default router;
 
-// router.beforeEach(() => {
-//   if(to.path.startsWith('/signin')) {
-//     window.localStorage.removeItem('access-admin')
-//     next()
-//   } else {
-//     let admin = JSON.parse(window.localStorage.getItem('access-admin'))
-//     if(!admin){
-//       next({path:'/signin'})
-//     } else {
-//       next()
-//     }
-//   }
-// })
+router.beforeEach((to) => {
+  const isLogin = localStorage.getItem('access-admin');
+  if (to.name !== 'login' && !isLogin && to.name !== 'index' && to.name !== 'userRegister') {
+    return { name: 'login'}
+  }
+})
