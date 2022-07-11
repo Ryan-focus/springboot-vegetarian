@@ -178,11 +178,12 @@ CREATE TABLE post(
 -- forum
 DROP TABLE IF EXISTS forum;
 CREATE TABLE forum(
-                      forumId int NOT NULL auto_increment primary key,
-                      forumTitle nvarchar(128) NOT NULL,
-                      forumContent nvarchar(512) NOT NULL,
-                      forumCreateTime TIMESTAMP NOT NULL,
-                      forumUpdateTime TIMESTAMP NOT NULL
-);
+	forumId int NOT NULL auto_increment primary key,
+	forumTitle nvarchar(50) NOT NULL,
+	forumContent nvarchar(1024) NOT NULL,
+	forumCategory VARCHAR(64) NOT NULL,
+	forumImage nvarchar(640),
+	forumCreateTime TIMESTAMP NOT NULL,
+	forumUpdateTime TIMESTAMP NOT NULL);
 
 drop table if exists users;
