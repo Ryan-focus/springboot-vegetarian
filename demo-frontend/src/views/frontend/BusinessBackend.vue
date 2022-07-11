@@ -339,15 +339,10 @@ const business = JSON.parse(window.localStorage.getItem("access-business"));
       <div class="flex-grow-1 mb-1 mb-md-0">
         <h1 class="h3 fw-bold mb-2">商家系統</h1>
         <h2 class="h6 fw-medium fw-medium text-muted mb-0">
-          歡迎 合作商家 -
-
-          <RouterLink :to="{ name: 'business-backend-profile' }" class="fw-semibold">
-            <img class="rounded-circle" :src="`/assets/media/business/${business.data.business.businessPic}.jpg`"
-              alt="Header Avatar" style="width: 21px" />
-
-            {{
-                business.data.business.businessName
-            }}
+          歡迎 合作商家
+          <RouterLink :to="{ name: 'business-backend-profile' }" class="fw-semibold">{{
+              business.data.business.businessName
+          }}
           </RouterLink>
         </h2>
       </div>
@@ -412,8 +407,256 @@ const business = JSON.parse(window.localStorage.getItem("access-business"));
         </BaseBlock>
         <!-- END Pending Orders -->
       </div>
+      <div class="col-sm-6 col-xxl-3">
+        <!-- New Customers -->
+        <BaseBlock class="d-flex flex-column h-100 mb-0">
+          <template #content>
+            <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
+              <dl class="mb-0">
+                <dt class="fs-3 fw-bold">{{ productsTotal }}</dt>
+                <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
+                  現有商品總數
+                </dd>
+              </dl>
+              <div class="item item-rounded-lg bg-body-light">
+                <i class="fa-solid fa-basket-shopping fs-3 text-primary"></i>
+              </div>
+            </div>
+            <div class="bg-body-light rounded-bottom">
+              <RouterLink :to="{ name: 'backend-cart-product-info' }"
+                class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between">
+                <span>查看全部商品</span><i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
+              </RouterLink>
+            </div>
+          </template>
+        </BaseBlock>
+        <!-- END New Customers -->
+      </div>
+      <div class="col-sm-6 col-xxl-3">
+        <!-- Messages -->
+        <BaseBlock class="d-flex flex-column h-100 mb-0">
+          <template #content>
+            <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
+              <dl class="mb-0">
+                <dt class="fs-3 fw-bold">{{ businessTotal }}</dt>
+                <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
+                  全部合作商家
+                </dd>
+              </dl>
+              <div class="item item-rounded-lg bg-body-light">
+                <i class="fa fa-shop fs-3 text-primary"></i>
+              </div>
+            </div>
+            <div class="bg-body-light rounded-bottom">
+              <RouterLink :to="{ name: 'backend-reserve-info' }"
+                class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between">
+                <span>查看全部合作商家</span><i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
+              </RouterLink>
+            </div>
+          </template>
+        </BaseBlock>
+        <!-- END Messages -->
+      </div>
+      <div class="col-sm-6 col-xxl-3">
+        <!-- Conversion Rate -->
+        <BaseBlock class="d-flex flex-column h-100 mb-0">
+          <template #content>
+            <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
+              <dl class="mb-0">
+                <dt class="fs-3 fw-bold">15.99%</dt>
+                <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
+                  消費轉換率
+                </dd>
+              </dl>
+              <div class="item item-rounded-lg bg-body-light">
+                <i class="fa fa-chart-bar fs-3 text-primary"></i>
+              </div>
+            </div>
+            <div class="bg-body-light rounded-bottom">
+              <a class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
+                href="javascript:void(0)">
+                <span>查看統計數據</span>
+                <i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
+              </a>
+            </div>
+          </template>
+        </BaseBlock>
+        <!-- END Conversion Rate-->
+      </div>
     </div>
     <!-- END Overview -->
+
+    <!-- Statistics -->
+    <div class="row">
+      <div class="col-xl-8 col-xxl-9 d-flex flex-column">
+        <!-- Earnings Summary -->
+        <!-- <BaseBlock
+          title="Earnings Summary"
+          class="flex-grow-1 d-flex flex-column"
+        >
+          <template #options>
+            <button type="button" class="btn-block-option">
+              <i class="si si-settings"></i>
+            </button>
+          </template>
+
+          <template #content>
+            <div
+              class="block-content block-content-full flex-grow-1 d-flex align-items-center"
+            >
+              <BarChart
+                :chart-data="earningsData"
+                :options="earningsOptions"
+                class="w-100"
+              />
+            </div>
+            <div class="block-content bg-body-light">
+              <div class="row items-push text-center w-100">
+                <div class="col-sm-4">
+                  <dl class="mb-0">
+                    <dt
+                      class="fs-3 fw-bold d-inline-flex align-items-center space-x-2"
+                    >
+                      <i class="fa fa-caret-up fs-base text-success"></i>
+                      <span>2.5%</span>
+                    </dt>
+                    <dd class="fs-sm fw-medium text-muted mb-0">
+                      Customer Growth
+                    </dd>
+                  </dl>
+                </div>
+                <div class="col-sm-4">
+                  <dl class="mb-0">
+                    <dt
+                      class="fs-3 fw-bold d-inline-flex align-items-center space-x-2"
+                    >
+                      <i class="fa fa-caret-up fs-base text-success"></i>
+                      <span>3.8%</span>
+                    </dt>
+                    <dd class="fs-sm fw-medium text-muted mb-0">Page Views</dd>
+                  </dl>
+                </div>
+                <div class="col-sm-4">
+                  <dl class="mb-0">
+                    <dt
+                      class="fs-3 fw-bold d-inline-flex align-items-center space-x-2"
+                    >
+                      <i class="fa fa-caret-down fs-base text-danger"></i>
+                      <span>1.7%</span>
+                    </dt>
+                    <dd class="fs-sm fw-medium text-muted mb-0">
+                      New Products
+                    </dd>
+                  </dl>
+                </div>
+              </div>
+            </div>
+          </template>
+        </BaseBlock> -->
+        <!-- END Earnings Summary -->
+        <!-- </div>
+      <div class="col-xl-4 col-xxl-3 d-flex flex-column"> -->
+        <!-- Last 2 Weeks -->
+        <!-- <div class="row items-push flex-grow-1">
+          <div class="col-md-6 col-xl-12">
+            <BaseBlock class="d-flex flex-column h-100 mb-0">
+              <template #content>
+                <div
+                  class="block-content flex-grow-1 d-flex justify-content-between"
+                >
+                  <dl class="mb-0">
+                    <dt class="fs-3 fw-bold">570</dt>
+                    <dd class="fs-sm fw-medium text-muted mb-0">
+                      Total Orders
+                    </dd>
+                  </dl>
+                  <div>
+                    <div
+                      class="d-inline-block px-2 py-1 rounded-3 fs-xs fw-semibold text-danger bg-danger-light"
+                    >
+                      <i class="fa fa-caret-down me-1"></i>
+                      2.2%
+                    </div>
+                  </div>
+                </div>
+                <div class="block-content p-1 text-center overflow-hidden">
+                  <LineChart
+                    :chart-data="totalOrdersData"
+                    :options="totalOrdersOptions"
+                    style="height: 90px"
+                  />
+                </div>
+              </template>
+            </BaseBlock>
+          </div>
+          <div class="col-md-6 col-xl-12">
+            <BaseBlock class="d-flex flex-column h-100 mb-0">
+              <template #content>
+                <div
+                  class="block-content flex-grow-1 d-flex justify-content-between"
+                >
+                  <dl class="mb-0">
+                    <dt class="fs-3 fw-bold">$5,234.21</dt>
+                    <dd class="fs-sm fw-medium text-muted mb-0">
+                      Total Earnings
+                    </dd>
+                  </dl>
+                  <div>
+                    <div
+                      class="d-inline-block px-2 py-1 rounded-3 fs-xs fw-semibold text-success bg-success-light"
+                    >
+                      <i class="fa fa-caret-up me-1"></i>
+                      4.2%
+                    </div>
+                  </div>
+                </div>
+                <div class="block-content p-1 text-center overflow-hidden">
+                  <LineChart
+                    :chart-data="totalEarningsData"
+                    :options="totalEarningsOptions"
+                    style="height: 90px"
+                  />
+                </div>
+              </template>
+            </BaseBlock>
+          </div> -->
+        <!-- <div class="col-xl-12">
+            <BaseBlock class="d-flex flex-column h-100 mb-0">
+              <template #content>
+                <div
+                  class="block-content flex-grow-1 d-flex justify-content-between"
+                >
+                  <dl class="mb-0">
+                    <dt class="fs-3 fw-bold">264</dt>
+                    <dd class="fs-sm fw-medium text-muted mb-0">
+                      New Customers
+                    </dd>
+                  </dl>
+                  <div>
+                    <div
+                      class="d-inline-block px-2 py-1 rounded-3 fs-xs fw-semibold text-success bg-success-light"
+                    >
+                      <i class="fa fa-caret-up me-1"></i>
+                      9.3%
+                    </div>
+                  </div>
+                </div>
+                <div class="block-content p-1 text-center overflow-hidden"> -->
+        <!-- New Customers Chart Container -->
+        <!-- <LineChart
+                    :chart-data="newCustomersData"
+                    :options="newCustomersOptions"
+                    style="height: 90px"
+                  />
+                </div>
+              </template>
+            </BaseBlock>
+          </div>
+        </div> -->
+        <!-- END Last 2 Weeks -->
+      </div>
+    </div>
+    <!-- END Statistics -->
 
     <!-- Recent Orders -->
     <BaseBlock title="最近訂單">

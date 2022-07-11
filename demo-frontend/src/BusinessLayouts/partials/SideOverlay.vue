@@ -61,8 +61,7 @@ const business = JSON.parse(window.localStorage.getItem("access-business"));
         <slot name="header">
           <!-- User Avatar -->
           <a class="img-link me-1" href="javascript:void(0)">
-            <img class="img-avatar img-avatar32"
-              :src="`/assets/media/business/${business.data.business.businessPic}.jpg`" alt="Avatar" />
+            <img class="img-avatar img-avatar32" src="/assets/media/avatars/avatar10.jpg" alt="Avatar" />
           </a>
           <!-- END User Avatar -->
 
@@ -120,7 +119,7 @@ const business = JSON.parse(window.localStorage.getItem("access-business"));
                             <div class="fw-semibold">{{ appEvent.title }}</div>
                             <div>{{ appEvent.subtitle }}</div>
                             <small class="text-muted">{{
-                            appEvent.time
+                                appEvent.time
                             }}</small>
                           </div>
                         </a>
