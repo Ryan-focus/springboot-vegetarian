@@ -83,7 +83,7 @@ public class ForumDaoImpl implements ForumDao {
 		map.put("forumId", forumId);
 		map.put("forumTitle", forum.getForumTitle());
 		map.put("forumContent", forum.getForumContent());
-		map.put("forumCategory", forum.getForumCategory());
+		map.put("forumCategory", forum.getForumCategory().toString());
 		map.put("forumImage", forum.getForumImage());
 		
 		Date now = new Date();
