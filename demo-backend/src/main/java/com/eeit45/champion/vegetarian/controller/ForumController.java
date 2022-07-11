@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.eeit45.champion.vegetarian.constant.ForumCategory;
 import com.eeit45.champion.vegetarian.model.Forum;
 import com.eeit45.champion.vegetarian.service.ForumService;
+import com.eeit45.champion.vegetarian.util.Page;
 
 @Validated
 @RestController
@@ -48,8 +49,10 @@ public class ForumController {
 		
 		List<Forum> forums = forumService.getForums(forum);
 		
-		
-		
+//		Integer total = forumService.totalForum(forum);
+//		Page<Forum> page = new Page<>();
+//		page.setTotal(total);
+//		page.setResults(forums);
 		return ResponseEntity.status(HttpStatus.OK).body(forums);
 		
 	}

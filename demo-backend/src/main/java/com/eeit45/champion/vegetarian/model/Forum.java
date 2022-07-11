@@ -16,6 +16,7 @@ public class Forum {
 	private Date forumUpdateTime;
 	
 	
+	
 	public Integer getForumId() {
 		return forumId;
 	}
@@ -72,6 +73,8 @@ public class Forum {
 	public void setForumCategory(ForumCategory forumCategory) {
 		this.forumCategory = forumCategory;
 	}
+
+
 
 
 }

@@ -4,6 +4,7 @@ import { ref, reactive, computed, toRefs } from "vue";
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
 import useVuelidate from "@vuelidate/core";
 import Swal from "sweetalert2";
+
 import {
     required,
     minLength,
@@ -17,11 +18,10 @@ import {
 // CKEditor 5, for more info and examples you can check out https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/vuejs-v3.html
 import CKEditor from "@ckeditor/ckeditor5-vue";
 
-
 import axios from "axios";
 import path from "path";
 // You can import one of the following CKEditor variation (only one at a time)
-import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic/build/ckeditor.js";
 
 //import InlineEditor from '@ckeditor/ckeditor5-build-inline'
 //import BalloonEditor from '@ckeditor/ckeditor5-build-balloon'
@@ -189,7 +189,7 @@ function createForum() {
                         <!-- 分類 -->
                         <div class="mb-4">
                             <label class="form-label" for="example-select">請選擇發布類別</label>
-                            <select class="form-select" id="example-select" name="example-select"
+                            <select class="form-select" id="example-select" name="example-select" htmlEscape="false"
                                 v-model="state.forumCategory">
                                 <option value="環保">環保</option>
                                 <option value="養身">養身</option>

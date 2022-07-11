@@ -54,6 +54,7 @@ const getAxios = function () {
     });
 };
 //執行Axios
+
 getAxios();
 
 
@@ -378,7 +379,7 @@ th.sort {
         <div class="col-sm-6 col-xl-4">
           <br />
 
-          <a href="#/backend/forums/insertForum">
+          <a href="#/backend/forums/InsertForum">
             <button type="button" class="btn rounded-pill btn-outline-success">
               新增文章
             </button>
@@ -407,13 +408,18 @@ th.sort {
                     <tr style="width: 100px">
                       <th scope="row">{{ row.forumId }}</th>
 
-                      <td class="d-none d-md-table-cell fs-sm" style="width: 85px">
+                      <td class="d-none d-md-table-cell fs-sm" style="width: 200px">
                         {{ row.forumTitle }}
                       </td>
-                      <td class="d-none d-sm-table-cell" style="min-width: 150px">
+
+                      <td class="d-none d-sm-table-cell" style="overflow: hidden;
+                          white-space: nowrap;
+                          text-overflow: ellipsis;
+                          max-width: 110px;">
                         {{ row.forumContent }}
                       </td>
-                      <td class="d-none d-sm-table-cell" style="min-width: 150px">
+
+                      <td class="d-none d-sm-table-cell" style="min-width: 50px">
                         {{ row.forumCategory }}
                       </td>
 
