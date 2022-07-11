@@ -1,6 +1,5 @@
 <script setup>
 import { ref, reactive, computed, onMounted } from "vue";
-// Sweetalert2, for more info and examples, you can check out https://github.com/sweetalert2/sweetalert2
 import Swal from "sweetalert2";
 
 import axios from "axios";
@@ -233,6 +232,19 @@ function deleteForum(number) {
         toast.fire("文章刪除失敗", "");
       }
     });
+
+  //檔案上傳方法，寫入後端後會吐回加入UUID之名稱，再回傳data寫入ref()裏
+  function fileUpload() {
+    var files = document.getElementById("input").files;
+    var params = new FormData();
+    params.append("file", files[0]);
+    console.log(params.get("file"));
+    axios.post("http://localhost:8088/fileUpload", params).then((res) => {
+      image.value = res.data;
+      //印出路徑
+      console.log(image);
+    });
+  }
 }
 
 
@@ -256,6 +268,16 @@ onMounted(() => {
   selectLength.classList.add("form-select");
   selectLength.style.width = "80px";
 });
+// Helper function to show a photo
+function showPhoto(index) {
+  gallery.index = index;
+  gallery.visible = true;
+}
+// Helper function to hide the lightbox
+function handleHide() {
+  gallery.visible = false;
+}
+
 </script>
 
 <style lang="scss" scoped>
@@ -335,7 +357,7 @@ th.sort {
 
   <!-- Page Content -->
   <div class="content">
-    <BaseBlock title="文章後台資料" content-full="">
+    <BaseBlock title="文章後台資料" content-full>
       <Dataset v-slot="{ ds }" :ds-data="resData" :ds-sortby="sortBy" :ds-search-in="[
         'forumTitle',
         'forumContent',
@@ -355,7 +377,8 @@ th.sort {
         </div>
         <div class="col-sm-6 col-xl-4">
           <br />
-          <a href="#/backend/forums/InsertForum">
+
+          <a href="#/backend/forums/insertForum">
             <button type="button" class="btn rounded-pill btn-outline-success">
               新增文章
             </button>
@@ -393,9 +416,23 @@ th.sort {
                       <td class="d-none d-sm-table-cell" style="min-width: 150px">
                         {{ row.forumCategory }}
                       </td>
-                      <td class="d-none d-sm-table-cell" style="min-width: 150px">
-                        {{ row.imageUrl }}
+
+                      <td class="d-none d-sm-table-cell fs-sm" style="min-width: 110px">
+                        <div class="options-container">
+                          <!-- 抓出路徑後要用這個方式塞進去才會變動態的 :src -->
+                          <a href="javascript:void(0)" class="img-link img-link-zoom-in img-thumb img-lightbox"
+                            @click="showPhoto(index)">
+                            <img class="img-fluid" :src="row.forumImage" alt="Photo"
+                              style="max-width:300px;width:100%" />
+                          </a>
+
+                        </div>
                       </td>
+
+
+
+
+
                       <td class="d-none d-sm-table-cell" style="min-width: 150px">
                         {{ row.forumCreateTime }}
                       </td>

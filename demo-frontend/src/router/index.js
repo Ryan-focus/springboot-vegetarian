@@ -50,6 +50,8 @@ const VeganForumsDashboard = () =>
   import("@/views/vegan/forums/DashboardView.vue");
 const VeganForumsForumsInfo = () =>
   import("@/views/vegan/forums/ForumsInfo.vue");
+const VeganForumsInsertForum = () =>
+  import("@/views/vegan/forums/InsertForum.vue");
 //愛蔬網後台: posts
 const VeganPostsDashboard = () =>
   import("@/views/vegan/posts/DashboardView.vue");
@@ -474,6 +476,11 @@ const routes = [
             path: "forumsinfo",
             name: "backend-forums-forums-info",
             component: VeganForumsForumsInfo,
+          },
+          {
+            path: "insertForum",
+            name: "backend-forums-insert-forum",
+            component: VeganForumsInsertForum,
           },
         ],
       },

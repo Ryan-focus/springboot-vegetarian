@@ -17,6 +17,7 @@ import {
 // CKEditor 5, for more info and examples you can check out https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/vuejs-v3.html
 import CKEditor from "@ckeditor/ckeditor5-vue";
 
+
 import axios from "axios";
 import path from "path";
 // You can import one of the following CKEditor variation (only one at a time)
@@ -106,8 +107,8 @@ async function onSubmit() {
 function createForum() {
     toast
         .fire({
-            title: "確定要新增嗎?",
-            text: "新增後將跳轉至商品列表",
+            title: "確定要新增文章嗎?",
+            text: "",
             icon: "warning",
             showCancelButton: true,
             customClass: {
@@ -115,7 +116,7 @@ function createForum() {
                 cancelButton: "btn btn-secondary m-1",
             },
             confirmButtonText: "新增資料",
-            cancelButtonText: "繼續填寫",
+            cancelButtonText: "繼續編輯",
 
             html: false,
             preConfirm: () => {
@@ -163,7 +164,7 @@ function createForum() {
                             <i class="fa fa-cart-shopping"></i> 文章管理</a>
                     </li>
                     <li class="breadcrumb-item" aria-current="page">
-                        <a class="link-fx" href="#/backend/forums/foruminfo">
+                        <a class="link-fx" href="#/backend/forums/forumInfo">
                             <i class="fa fa-leaf"></i> 文章管理</a>
                     </li>
                     <li class="breadcrumb-item" aria-current="page">
@@ -182,12 +183,12 @@ function createForum() {
             <BaseBlock title="Validation Form" content-full>
                 <div class="row push">
                     <div class="col-lg-4">
-                        <p class="fs-sm text-muted">請盡量填寫完整資訊</p>
+                        <p class="fs-sm text-muted">新增文章</p>
                     </div>
                     <div class="col-lg-8 col-xl-5">
-                        <!-- 商品分類開始 -->
+                        <!-- 分類 -->
                         <div class="mb-4">
-                            <label class="form-label" for="example-select">選擇商品分類</label>
+                            <label class="form-label" for="example-select">請選擇發布類別</label>
                             <select class="form-select" id="example-select" name="example-select"
                                 v-model="state.forumCategory">
                                 <option value="環保">環保</option>
@@ -196,7 +197,7 @@ function createForum() {
                                 <option value="健康">健康</option>
                             </select>
                         </div>
-                        <!-- 商品名稱開始 -->
+                        <!-- 文章標題 -->
                         <div class="mb-4">
                             <label class="form-label" for="val-forumTitle">文章標題 <span
                                     class="text-danger">*</span></label>
@@ -204,19 +205,12 @@ function createForum() {
                                 'is-invalid': v$.forumTitle.$errors.length,
                             }" v-model="state.forumTitle" @blur="v$.forumTitle.$touch" />
                             <div v-if="v$.forumTitle.$errors.length" class="invalid-feedback animated fadeIn">
-                                請輸標題
+                                請輸入標題
                             </div>
                         </div>
                         <div class="mb-4">
-                            <label class="form-label" for="val-forumContent">文章內容 <span
-                                    class="text-danger">*</span></label>
-                            <ckeditor :editor="ClassicEditor" :config="editorConfig" v-model="state.description" />
-                            <input type="text" id="val-forumTitle" class="form-control" :class="{
-                                'is-invalid': v$.forumContent.$errors.length,
-                            }" v-model="state.forumContent" @blur="v$.forumContent.$touch" />
-                            <div v-if="v$.forumContent.$errors.length" class="invalid-feedback animated fadeIn">
-                                請輸文章內容
-                            </div>
+                            <label class="form-label" for="example-select">請輸入文章</label>
+                            <ckeditor :editor="ClassicEditor" :config="editorConfig" v-model="state.forumContent" />
                         </div>
 
 
