@@ -51,11 +51,13 @@ public class ForumDaoImpl implements ForumDao {
 
 	@Override
 	public Integer createForum(Forum forum) {
-		String sql = "INSERT INTO forum (forumTitle, forumContent, forumCreateTime, forumUpdateTime)"+
-					 "VALUES (:forumTitle, :forumContent, :forumCreateTime, :forumUpdateTime)";	
+		String sql = "INSERT INTO forum (forumTitle, forumContent, forumCategory,forumImage,forumCreateTime, forumUpdateTime)"+
+					 "VALUES (:forumTitle, :forumContent, :forumCategory, :forumImage,:forumCreateTime, :forumUpdateTime)";	
 		Map<String, Object> map = new HashMap<>();
 		map.put("forumTitle", forum.getForumTitle());
 		map.put("forumContent", forum.getForumContent());
+		map.put("forumCategory", forum.getForumCategory().toString());
+		map.put("forumImage", forum.getForumImage());
 		
 		Date nowTime = new Date();
 		Timestamp timestamp = new Timestamp(nowTime.getTime());
@@ -74,13 +76,15 @@ public class ForumDaoImpl implements ForumDao {
 	
 	@Override
 	public void updateForum(Integer forumId, Forum forum) {
-		String sql ="UPDATE forum SET forumTitle = :forumTitle, forumContent = :forumContent,"
-				+ "  forumUpdateTime = :forumUpdateTime WHERE forumId = :forumId";
+		String sql ="UPDATE forum SET forumTitle = :forumTitle, forumContent = :forumContent, forumCategory = :forumCategory,"
+				+ "  forumImage = :forumImage, forumUpdateTime = :forumUpdateTime WHERE forumId = :forumId";
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("forumId", forumId);
 		map.put("forumTitle", forum.getForumTitle());
 		map.put("forumContent", forum.getForumContent());
+		map.put("forumCategory", forum.getForumCategory());
+		map.put("forumImage", forum.getForumImage());
 		
 		Date now = new Date();
 		Timestamp timestamp = new Timestamp(now.getTime());
