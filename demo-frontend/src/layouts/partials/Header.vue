@@ -251,3 +251,26 @@ function logout() {
   </header>
   <!-- END Header -->
 </template>
+<script>
+
+export default {
+  data() {
+    return {
+      admin: "",
+    };
+  },
+  created() {
+    this.admin = JSON.parse(window.localStorage.getItem("access-admin"));
+  },
+  persist: {
+    enabled: true,
+    strategies: [
+      {
+        storage: localStorage,
+        paths: ['admin']
+      }
+    ]
+  }
+};
+
+</script>
