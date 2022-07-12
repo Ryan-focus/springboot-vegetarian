@@ -3,6 +3,7 @@
 // eslint-disable-next-line no-unused-vars
 import { reactive, ref } from "vue";
 import axios from "axios";
+import moment from 'moment';
 
 // vue-chart-3, for more info and examples you can check out https://vue-chart-3.netlify.app/ and http://www.chartjs.org/docs/ -->
 // import { LineChart, BarChart } from "vue-chart-3";
@@ -314,6 +315,7 @@ const getReserveList = function () {
 }
 
 getReserveList();
+
 </script>
 
 <template>
@@ -492,10 +494,10 @@ getReserveList();
               <thead>
                 <tr>
                   <!-- <th>訂單編號</th> -->
-                  <th class="d-none d-xl-table-cell">消費者</th>
-                  <th class="d-none d-sm-table-cell text-center">預計前往人數</th>
-                  <th class="d-none d-sm-table-cell text-end">預訂時間</th>
-                  <th class="d-none d-sm-table-cell text-end">訂單建立時間</th>
+                  <th class="d-none d-sm-table-cell fw-semibold text-muted text-end">消費者</th>
+                  <th class="d-none d-sm-table-cell fw-semibold text-muted text-end">預計前往人數</th>
+                  <th class="d-none d-sm-table-cell fw-semibold text-muted text-end">預訂時間</th>
+                  <th class="d-none d-sm-table-cell fw-semibold text-muted text-end">訂單建立時間</th>
                   <th class="d-none d-sm-table-cell text-center">處理狀態</th>
                 </tr>
               </thead>
@@ -528,10 +530,11 @@ getReserveList();
                     <i class="fa fa-baby-carriage me-3">{{ row.baby }}</i>
                   </td>
                   <td class="d-none d-sm-table-cell text-end">
-                    <strong>{{ row.reserveTime }}</strong>
+                    <strong>{{ moment(row.reserveTime).format("MM/D(dd)") }}</strong>
                   </td>
-                  <td class="d-none d-sm-table-cell text-end">
-                    <strong>{{ row.reserveDateTime }}</strong>
+                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-end">
+                    <strong>{{ moment(row.reserveDateTime).startOf().fromNow() }}</strong>
+
                   </td>
                   <td>
                     <span
