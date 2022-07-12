@@ -47,8 +47,8 @@ public class ReserveDaoImpl implements ReserveDao {
     @Override
     public Integer createReserve(Integer businessId, ReserveRequest reserveRequest) {
 
-        String sql = "INSERT INTO reserve ( reserveDateTime, adult, child, baby, reserveTime, restaurantId,businessId, userId)"  +
-                "VALUES (:reserveDate, :adult , :child , :baby , :reserveTime, :restaurantId, :businessId, :userId)";
+        String sql = "INSERT INTO reserve ( reserveDateTime, adult, child, baby, reserveTime, restaurantId,businessId, reserveName , reservePhone)"  +
+                "VALUES (:reserveDate, :adult , :child , :baby , :reserveTime, :restaurantId, :businessId, :reserveName , :reservePhone)";
 
         Map<String, Object> map = new HashMap<>();
 
@@ -68,7 +68,8 @@ public class ReserveDaoImpl implements ReserveDao {
 
         map.put("restaurantId", reserveRequest.getRestaurantId());
         map.put("businessId", businessId);
-        map.put("userId", reserveRequest.getUserId());
+        map.put("reserveName", reserveRequest.getReserveName());
+        map.put("reservePhone", reserveRequest.getReservePhone());
 
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
@@ -82,7 +83,7 @@ public class ReserveDaoImpl implements ReserveDao {
 
     @Override
     public List<Reserve> getAllReserve(Integer businessId) {
-        String sql = "select * from reserve WHERE businessId = :businessId";
+        String sql = "select * from reserve WHERE businessId = :businessId ORDER BY reserveDateTime  DESC";
 
         Map<String , Object > map = new HashMap<>();
         map.put("businessId",businessId);

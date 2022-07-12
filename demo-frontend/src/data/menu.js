@@ -808,6 +808,11 @@ export default {
       to: "postIndex",
     },
     {
+      name: "前往論壇",
+      icon: "fa fa-book-quran",
+      to: "Forum-index",
+    },
+    {
       name: "商家",
       icon: "fa fa-shop",
       sub: [
@@ -838,6 +843,11 @@ export default {
       name: "食記",
       icon: "fa fa-pen-to-square",
       to: "postIndex",
+    },
+    {
+      name: "前往論壇",
+      icon: "fa fa-book-quran",
+      to: "Forum-index",
     },
     {
       name: "商家",
@@ -877,6 +887,11 @@ export default {
       to: "index",
     },
     {
+      name: "前往論壇",
+      icon: "fa fa-book-quran",
+      to: "Forum-index",
+    },
+    {
       name: "返回後台",
       icon: "si si-compass",
       to: "backend-dashboard",
@@ -901,6 +916,11 @@ export default {
       name: "食記",
       icon: "fa fa-pen-to-square",
       to: "postIndex",
+    },
+    {
+      name: "前往論壇",
+      icon: "fa fa-book-quran",
+      to: "Forum-index",
     },
     {
       name: "會員後台",

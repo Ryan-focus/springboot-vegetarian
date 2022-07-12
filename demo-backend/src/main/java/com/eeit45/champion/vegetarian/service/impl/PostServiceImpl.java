@@ -11,7 +11,6 @@ import com.eeit45.champion.vegetarian.model.Post;
 import com.eeit45.champion.vegetarian.model.PostFavorite;
 import com.eeit45.champion.vegetarian.service.PostService;
 
-
 @Service
 @Transactional
 public class PostServiceImpl implements PostService {
@@ -42,29 +41,38 @@ public class PostServiceImpl implements PostService {
 		return postDao.findallPost();
 
 	}
-	
+
 	public Post updateCondition(Post post) {
 		return postDao.updateCondition(post);
 	}
-	
+
 	public List<Post> findPostByStatus() {
 		return postDao.findPostByStatus();
 	}
-	
+
 	@Override
-	public void addFavPost(int pid,int uid) {
-		 postDao.addFavPost(pid, uid);
+	public void addFavPost(int pid, int uid) {
+		postDao.addFavPost(pid, uid);
 	}
-	
-	public PostFavorite findByFavorite(int pid , int uid) {
+
+	public PostFavorite findByFavorite(int pid, int uid) {
 		return postDao.findByFavorite(pid, uid);
-		
+
 	}
-	
+
 	public boolean isFavorite(int pid, int uid) {
-        PostFavorite favorite = postDao.findByFavorite(pid, uid);
-        return favorite != null;//如果对象有值，则为true，反之，则为false
-    }
+		PostFavorite favorite = postDao.findByFavorite(pid, uid);
+		if (favorite != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	@Override
+	public boolean delFavPost(int pid, int uid) {
+		return postDao.delFavPost(pid, uid);
+	}
 
 	@Override
 	public List<Post> findPostByNoAudit() {
@@ -100,7 +108,5 @@ public class PostServiceImpl implements PostService {
 	public List<Post> findPostByCategory5() {
 		return postDao.findPostByCategory5();
 	}
-
-
 
 }

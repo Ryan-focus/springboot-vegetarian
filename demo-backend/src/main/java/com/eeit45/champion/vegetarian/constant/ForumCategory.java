@@ -4,6 +4,6 @@ public enum ForumCategory {
 	環保,
 	養身,
 	健康,
-	公益資訊,
+	公益,
 
 }

@@ -200,9 +200,8 @@ function findPost(id) {
             <div class="card">
               <!--Card image-->
               <div class="view overlay">
-                <img
-                  class="card-img-top"
-                  src="https://mdbootstrap.com/img/Photos/Others/images/14.jpg"
+                <img :src="item.imgurl"
+                  class="card-img-top"             
                   alt="Card image cap"
                 />
                 <a href="#!">

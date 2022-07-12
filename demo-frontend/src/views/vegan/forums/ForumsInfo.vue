@@ -47,7 +47,7 @@ const getAxios = function () {
     .then((res) => {
       console.log(res);
       //獲取伺服器的回傳資料
-      resData.value = res.data;
+      resData.value = res.data.results;
     })
     .catch((error) => {
       console.log(error, "失敗");
@@ -399,6 +399,7 @@ th.sort {
                     <th v-for="(th, index) in cols" :key="th.field"
                       :class="['sort', th.sort] && `d-none d-sm-table-cell`" @click="onSort($event, index)">
                       {{ th.name }} <i class="gg-select float-end"></i>
+
                     </th>
                     <th class="text-center" style="width: 100px">操作</th>
                   </tr>
@@ -416,10 +417,11 @@ th.sort {
                           white-space: nowrap;
                           text-overflow: ellipsis;
                           max-width: 110px;">
-                        {{ row.forumContent }}
+                        <div v-html="row.forumContent" style="overflow:hidden">
+                        </div>
                       </td>
 
-                      <td class="d-none d-sm-table-cell" style="min-width: 50px">
+                      <td class=" d-none d-sm-table-cell" style="min-width: 50px">
                         {{ row.forumCategory }}
                       </td>
 
@@ -492,7 +494,7 @@ th.sort {
                       <option selected>{{ forumCategory }}</option>
                       <option value="環保">環保</option>
                       <option value="養身">養身</option>
-                      <option value="公益資訊">公益資訊</option>
+                      <option value="公益">公益</option>
                       <option value="健康">健康</option>
                     </select>
                   </div>

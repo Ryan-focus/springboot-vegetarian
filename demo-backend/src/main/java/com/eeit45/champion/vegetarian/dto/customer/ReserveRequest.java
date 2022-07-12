@@ -23,8 +23,12 @@ public class ReserveRequest {
     @NotNull
     private Integer restaurantId;
 
-    @NotNull
-    private Integer userId;
+
+    @NotBlank
+    private String reserveName ;
+
+    @NotBlank
+    private String reservePhone;
 
     public String getReserveDate() {
         return reserveDate;
@@ -74,11 +78,19 @@ public class ReserveRequest {
         this.restaurantId = restaurantId;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getReserveName() {
+        return reserveName;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setReserveName(String reserveName) {
+        this.reserveName = reserveName;
+    }
+
+    public String getReservePhone() {
+        return reservePhone;
+    }
+
+    public void setReservePhone(String reservePhone) {
+        this.reservePhone = reservePhone;
     }
 }

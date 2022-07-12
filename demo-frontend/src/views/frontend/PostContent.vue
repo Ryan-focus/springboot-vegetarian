@@ -25,10 +25,13 @@ const resPostId = ref();
 const resPostTitle = ref();
 const resPostText = ref();
 const resPostDate = ref();
+const resPostImgurl = ref();
+const resfavData = ref();
 const resPostStatus = ref("待審核");
 
 const route = useRoute();
-
+const user = JSON.parse(window.localStorage.getItem("access-admin"));
+const userId = user.data.user.userId
 let postId = route.params.postId;
 
 const getAxios = function () {
@@ -42,14 +45,59 @@ const getAxios = function () {
       resPostTitle.value = res.data.title;
       resPostText.value = res.data.postedText;
       resPostDate.value = res.data.postedDate;
+      resPostImgurl.value = res.data.imgurl;
       console.log(res);
+     
     })
     .catch((error) => {
       console.log(error, "失敗");
     });
+
+    if(userId != null){
+    axios
+    .get(`http://${url}/favtest/${postId}/${userId}`)
+    //.get(`http://${url}/postStatusList`, { params: { status: urlParams } })
+    .then((res) => {
+      //獲取伺服器的回傳資料
+       resfavData.value = res.data;
+      console.log(res.data);
+     
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+
+  }
 };
 //執行Axios
 getAxios();
+
+function addfavpost(){
+  axios
+    .post(`http://${url}/favtest/${postId}/${userId}`,{
+    })
+    .then((res) => {
+      getAxios();
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+
+}
+
+function delfavpost(){
+  axios
+    .delete(`http://${url}/favtest/${postId}/${userId}`)
+    .then((res) => {
+      getAxios();
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+
+
+}
+
 </script>
 <style>
 .card-text {
@@ -104,10 +152,13 @@ getAxios();
             <button
               type="button"
               class="btn rounded-pill btn btn-alt-warning me-1 mb-3 float-end"
+              @click="addfavpost()"
+              :disabled="resfavData"
             >
               <i class="bi bi-bookmark-star"></i>
               收藏文章
             </button>
+            
             <span>{{ resPostDate }}</span>
             <button
               type="button"
@@ -119,8 +170,7 @@ getAxios();
 
             <div class="row">
               <div class="col-md-8">
-                <img
-                  src="https://cdn.barnimages.com/wp-content/uploads/2021/10/20211001-barnimages-8-740x493@2x.jpg"
+                 <img :src="resPostImgurl"
                   class="img-fluid img-thumbnail"
                   alt="..."
                 />

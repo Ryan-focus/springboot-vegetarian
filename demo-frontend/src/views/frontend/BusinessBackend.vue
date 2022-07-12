@@ -3,6 +3,7 @@
 // eslint-disable-next-line no-unused-vars
 import { reactive, ref } from "vue";
 import axios from "axios";
+import moment from 'moment';
 
 // vue-chart-3, for more info and examples you can check out https://vue-chart-3.netlify.app/ and http://www.chartjs.org/docs/ -->
 // import { LineChart, BarChart } from "vue-chart-3";
@@ -282,53 +283,37 @@ const orderSearch = ref(false);
 // });
 
 //預設傳值伺服器與[params]
-const url = "localhost:8088";
-const urlParams = "warning";
-//接收的資料ref
-const restaurantTotal = ref();
-const productsTotal = ref();
-const businessTotal = ref();
-
-const getRestaurant = function () {
-  axios
-    .get(`http://${url}/restaurantList`, { params: { status: urlParams } })
-    .then((res) => {
-      //獲取伺服器的回傳資料
-      restaurantTotal.value = res.data.total;
-    })
-    .catch((error) => {
-      console.log(error, "失敗");
-    });
-};
-const getProducts = function () {
-  axios
-    .get(`http://${url}/products`, { params: { status: urlParams } })
-    .then((res) => {
-      //獲取伺服器的回傳資料
-      productsTotal.value = res.data.total;
-    })
-    .catch((error) => {
-      console.log(error, "失敗");
-    });
-};
-//取得全部的order
-const getBusiness = function () {
-  axios
-    .get(`http://${url}/pos`)
-    .then((res) => {
-      //獲取伺服器的回傳資料
-      businessTotal.value = res.data.total;
-    })
-    .catch((error) => {
-      console.log(error, "失敗");
-    });
-};
-
-//執行Axios
-getRestaurant();
-getProducts();
-getBusiness();
 const business = JSON.parse(window.localStorage.getItem("access-business"));
+const businessID = business.data.business.businessId;
+const url = "localhost:8088";
+//接收的資料ref
+//當日統計
+//取得全部人數
+//取得全部組數
+const CountTotal = ref(); //全部人數 
+const CountGroup = ref(); //全部組數
+
+const resData = ref();
+
+const getReserveList = function () {
+  axios.get(`http://${url}/${businessID}/reserves`)
+    .then((res) => {
+      console.log(res);
+      var total = 0;
+      var people = 0;
+      for (let i = 0; i <= res.data.length - 1; i++) {
+        people += res.data[i].adult + res.data[i].baby + res.data[i].child;
+        total++;
+      }
+      CountTotal.value = people; // 取得總人數
+      CountGroup.value = total; // 取得組數
+      resData.value = res.data;
+    })
+
+}
+
+getReserveList();
+
 </script>
 
 <template>
@@ -393,9 +378,9 @@ const business = JSON.parse(window.localStorage.getItem("access-business"));
           <template #content>
             <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
               <dl class="mb-0">
-                <dt class="fs-3 fw-bold">{{ restaurantTotal }}</dt>
+                <dt class="fs-3 fw-bold">{{ CountTotal }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                  現有餐廳總數
+                  全部預訂餐廳人數
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
@@ -405,7 +390,31 @@ const business = JSON.parse(window.localStorage.getItem("access-business"));
             <div class="bg-body-light rounded-bottom">
               <RouterLink :to="{ name: 'backend-restaurants-restaurant-info' }"
                 class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between">
-                <span>查看全部餐廳</span><i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
+                <span>查看全部預訂訂單</span><i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
+              </RouterLink>
+            </div>
+          </template>
+        </BaseBlock>
+        <!-- END Pending Orders -->
+      </div>
+      <div class="col-sm-6 col-xxl-3">
+        <BaseBlock class="d-flex flex-column h-100 mb-0">
+          <template #content>
+            <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
+              <dl class="mb-0">
+                <dt class="fs-3 fw-bold">{{ CountGroup }}</dt>
+                <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
+                  全部預訂餐廳組數
+                </dd>
+              </dl>
+              <div class="item item-rounded-lg bg-body-light">
+                <i class="far fa-gem fs-3 text-primary"></i>
+              </div>
+            </div>
+            <div class="bg-body-light rounded-bottom">
+              <RouterLink :to="{ name: 'backend-restaurants-restaurant-info' }"
+                class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between">
+                <span>查看全部預訂訂單</span><i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
               </RouterLink>
             </div>
           </template>
@@ -416,7 +425,7 @@ const business = JSON.parse(window.localStorage.getItem("access-business"));
     <!-- END Overview -->
 
     <!-- Recent Orders -->
-    <BaseBlock title="最近訂單">
+    <BaseBlock title="最新訂單">
       <template #options>
         <div class="space-x-1">
           <button type="button" class="btn btn-sm btn-alt-secondary" @click="
@@ -482,220 +491,55 @@ const business = JSON.parse(window.localStorage.getItem("access-business"));
             <table class="table table-hover table-vcenter">
               <thead>
                 <tr>
-                  <th>訂單編號</th>
-                  <th class="d-none d-xl-table-cell">消費者</th>
-                  <th>處理狀態</th>
-                  <th class="d-none d-sm-table-cell text-center">利潤</th>
-                  <th class="d-none d-sm-table-cell text-end">訂單建立時間</th>
-                  <th class="d-none d-sm-table-cell text-end">消費金額</th>
+                  <!-- <th>訂單編號</th> -->
+                  <th class="d-none d-sm-table-cell fw-semibold text-muted text-end">消費者</th>
+                  <th class="d-none d-sm-table-cell fw-semibold text-muted text-end">預計前往人數</th>
+                  <th class="d-none d-sm-table-cell fw-semibold text-muted text-end">預訂時間</th>
+                  <th class="d-none d-sm-table-cell fw-semibold text-muted text-end">訂單建立時間</th>
+                  <th class="d-none d-sm-table-cell text-center">處理狀態</th>
                 </tr>
               </thead>
               <tbody class="fs-sm">
-                <tr>
-                  <td>
+                <tr v-for="(row, index)  in resData" :key="index">
+                  <!-- <td>
                     <a class="fw-semibold" href="javascript:void(0)">
-                      ORD.00925
+                      {{ row.reserveId }}
                     </a>
-                    <p class="fs-sm fw-medium text-muted mb-0">Premium</p>
-                  </td>
+                    <p class="fs-sm fw-medium text-muted mb-0">一般客</p>
+                  </td> -->
                   <td class="d-none d-xl-table-cell">
-                    <a class="fw-semibold" href="javascript:void(0)">Marie Duncan</a>
-                    <p class="fs-sm fw-medium text-muted mb-0">Photographer</p>
+                    <a class="fw-semibold" href="javascript:void(0)">{{ row.reserveName }}
+                      <p class="fs-sm fw-medium text-muted mb-0"> {{ row.reservePhone }}
+                      </p>
+                    </a>
                   </td>
-                  <td>
-                    <span
-                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success">Completed</span>
-                  </td>
-                  <td class="d-none d-sm-table-cell">
+
+
+                  <!-- <td class="d-none d-sm-table-cell">
                     <div class="progress mb-1" style="height: 5px">
                       <div class="progress-bar bg-success" role="progressbar" style="width: 8%" aria-valuenow="8"
                         aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                     <p class="fs-xs fw-semibold mb-0">8%</p>
-                  </td>
+                  </td> -->
                   <td class="d-none d-sm-table-cell fw-semibold text-muted text-end">
-                    7 min ago
+                    <i class="fa fa-user-group me-3">{{ row.adult }}</i>
+                    <i class="fa fa-children me-3">{{ row.child }}</i>
+                    <i class="fa fa-baby-carriage me-3">{{ row.baby }}</i>
                   </td>
                   <td class="d-none d-sm-table-cell text-end">
-                    <strong>$786,81</strong>
+                    <strong>{{ moment(row.reserveTime).format("MM/D(dd)") }}</strong>
                   </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a class="fw-semibold" href="javascript:void(0)">
-                      ORD.00924
-                    </a>
-                    <p class="fs-sm fw-medium text-muted mb-0">Premium</p>
-                  </td>
-                  <td class="d-none d-xl-table-cell">
-                    <a class="fw-semibold" href="javascript:void(0)">Jack Estrada</a>
-                    <p class="fs-sm fw-medium text-muted mb-0">Photographer</p>
+                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-end">
+                    <strong>{{ moment(row.reserveDateTime).startOf().fromNow() }}</strong>
+
                   </td>
                   <td>
                     <span
-                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-info-light text-info">Active</span>
-                  </td>
-                  <td class="d-none d-sm-table-cell">
-                    <div class="progress mb-1" style="height: 5px">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: 6%" aria-valuenow="6"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <p class="fs-xs fw-semibold mb-0">6%</p>
-                  </td>
-                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-end">
-                    26 min ago
-                  </td>
-                  <td class="d-none d-sm-table-cell text-end">
-                    <strong>$1184,20</strong>
+                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-danger-light text-danger">尚未通知</span>
                   </td>
                 </tr>
-                <tr>
-                  <td>
-                    <a class="fw-semibold" href="javascript:void(0)">
-                      ORD.00923
-                    </a>
-                    <p class="fs-sm fw-medium text-muted mb-0">Premium</p>
-                  </td>
-                  <td class="d-none d-xl-table-cell">
-                    <a class="fw-semibold" href="javascript:void(0)">Megan Fuller</a>
-                    <p class="fs-sm fw-medium text-muted mb-0">Web developer</p>
-                  </td>
-                  <td>
-                    <span
-                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success">Completed</span>
-                  </td>
-                  <td class="d-none d-sm-table-cell">
-                    <div class="progress mb-1" style="height: 5px">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: 25%" aria-valuenow="25"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <p class="fs-xs fw-semibold mb-0">25%</p>
-                  </td>
-                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-end">
-                    19 min ago
-                  </td>
-                  <td class="d-none d-sm-table-cell text-end">
-                    <strong>$2379,44</strong>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a class="fw-semibold" href="javascript:void(0)">
-                      ORD.00922
-                    </a>
-                    <p class="fs-sm fw-medium text-muted mb-0">Premium</p>
-                  </td>
-                  <td class="d-none d-xl-table-cell">
-                    <a class="fw-semibold" href="javascript:void(0)">Lisa Jenkins</a>
-                    <p class="fs-sm fw-medium text-muted mb-0">
-                      Application Manager
-                    </p>
-                  </td>
-                  <td>
-                    <span
-                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning">Pending</span>
-                  </td>
-                  <td class="d-none d-sm-table-cell">
-                    <div class="progress mb-1" style="height: 5px">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: 18%" aria-valuenow="18"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <p class="fs-xs fw-semibold mb-0">18%</p>
-                  </td>
-                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-end">
-                    13 min ago
-                  </td>
-                  <td class="d-none d-sm-table-cell text-end">
-                    <strong>$458,52</strong>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a class="fw-semibold" href="javascript:void(0)">
-                      ORD.00921
-                    </a>
-                    <p class="fs-sm fw-medium text-muted mb-0">Premium</p>
-                  </td>
-                  <td class="d-none d-xl-table-cell">
-                    <a class="fw-semibold" href="javascript:void(0)">Brian Stevens</a>
-                    <p class="fs-sm fw-medium text-muted mb-0">Photographer</p>
-                  </td>
-                  <td>
-                    <span
-                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success">Completed</span>
-                  </td>
-                  <td class="d-none d-sm-table-cell">
-                    <div class="progress mb-1" style="height: 5px">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: 10%" aria-valuenow="10"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <p class="fs-xs fw-semibold mb-0">10%</p>
-                  </td>
-                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-end">
-                    4 min ago
-                  </td>
-                  <td class="d-none d-sm-table-cell text-end">
-                    <strong>$476,82</strong>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a class="fw-semibold" href="javascript:void(0)">
-                      ORD.00920
-                    </a>
-                    <p class="fs-sm fw-medium text-muted mb-0">Premium</p>
-                  </td>
-                  <td class="d-none d-xl-table-cell">
-                    <a class="fw-semibold" href="javascript:void(0)">Jesse Fisher</a>
-                    <p class="fs-sm fw-medium text-muted mb-0">Digital Nomad</p>
-                  </td>
-                  <td>
-                    <span
-                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning">Pending</span>
-                  </td>
-                  <td class="d-none d-sm-table-cell">
-                    <div class="progress mb-1" style="height: 5px">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: 23%" aria-valuenow="23"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <p class="fs-xs fw-semibold mb-0">23%</p>
-                  </td>
-                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-end">
-                    23 min ago
-                  </td>
-                  <td class="d-none d-sm-table-cell text-end">
-                    <strong>$1939,58</strong>
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <a class="fw-semibold" href="javascript:void(0)">
-                      ORD.00919
-                    </a>
-                    <p class="fs-sm fw-medium text-muted mb-0">Premium</p>
-                  </td>
-                  <td class="d-none d-xl-table-cell">
-                    <a class="fw-semibold" href="javascript:void(0)">Carol Ray</a>
-                    <p class="fs-sm fw-medium text-muted mb-0">Web developer</p>
-                  </td>
-                  <td>
-                    <span
-                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-info-light text-info">Active</span>
-                  </td>
-                  <td class="d-none d-sm-table-cell">
-                    <div class="progress mb-1" style="height: 5px">
-                      <div class="progress-bar bg-success" role="progressbar" style="width: 14%" aria-valuenow="14"
-                        aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <p class="fs-xs fw-semibold mb-0">14%</p>
-                  </td>
-                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-end">
-                    15 min ago
-                  </td>
-                  <td class="d-none d-sm-table-cell text-end">
-                    <strong>$2200,10</strong>
-                  </td>
-                </tr>
+
               </tbody>
             </table>
           </div>

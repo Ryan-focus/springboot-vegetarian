@@ -26,6 +26,7 @@ CREATE TABLE business(
                          located nvarchar(64) not null,
                          businessPic nvarchar(64),
                          status nvarchar (32) not null,
+                         UUID nvarchar(256) ,
                          createdTime TIMESTAMP not null ,
                          lastLoginTime TIMESTAMP not null,
                          updateTime  TIMESTAMP not null
@@ -42,7 +43,8 @@ CREATE TABLE reserve (
                          reserveTime DATETIME not null ,
                          restaurantId int not null,
                          businessId int not null,
-                         userId int
+                         reserveName nvarchar(64) not null ,
+                         reservePhone nvarchar(64) not null
 );
 
 -- pos
@@ -173,6 +175,15 @@ CREATE TABLE post(
                      postStatus NVARCHAR(256),
                      postAuditDate DATETIME,
                      postCategory NVARCHAR(256)
+);
+
+-- favorite post
+drop table if exists fav_post;
+CREATE TABLE fav_post(
+                     postId INT NOT NULL ,
+                     favDate DATETIME NOT NULL,
+                     userId INT NOT NULL
+                    
 );
 
 -- forum

@@ -210,14 +210,16 @@ public class PostController {
 
 	// 後台審核食記
 	@GetMapping("/auditPost/{id}")
-	public ResponseEntity<Post> auditPost(@PathVariable("id") Integer id) {
+	public ResponseEntity<Post> auditPost(@PathVariable("id") Integer id,HttpServletRequest request) {
 
 		Post post = postService.findPost(id);
 		if (post != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(post);
+			
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
+		
 
 	}
 
@@ -328,41 +330,36 @@ public class PostController {
 	}
 
 	// 搜尋收藏文章
-	@GetMapping(value = "/favtest/{id}")
-	public ResponseEntity<PostFavorite> showfav(@PathVariable("id") Integer id, HttpServletRequest request) {
+	@GetMapping(value = "/favtest/{id}/{userId}")
+	public ResponseEntity<Boolean> showfav(@PathVariable("id") Integer id,@PathVariable("userId") Integer userId) {
 
-		User user = (User) request.getSession().getAttribute("user");
 
-		Integer userId;// 用户id
-		if (user == null) {
-			return null;
-		} else {
-			userId = user.getUserId();
-		}
-		// Integer userId = 1564;
-		PostFavorite post = postService.findByFavorite(id, userId);
-		// boolean flag = postService.isFavorite(id, userId);
-
-		if (post != null) {
+		boolean post = postService.isFavorite(id, userId);
+		boolean out = false;
+		if (post != false) {
 			return ResponseEntity.status(HttpStatus.OK).body(post);
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			return ResponseEntity.status(HttpStatus.OK).body(out);
+		}
+	}
+	
+	@DeleteMapping(value = "/favtest/{id}/{userId}")
+	public ResponseEntity<Boolean> delfav(@PathVariable("id") Integer id,@PathVariable("userId") Integer userId) {
+
+
+		boolean post = postService.delFavPost(id, userId);
+		boolean out = false;
+		if (post != false) {
+			return ResponseEntity.status(HttpStatus.OK).body(post);
+		} else {
+			return ResponseEntity.status(HttpStatus.OK).body(out);
 		}
 	}
 
-	@PostMapping("/favtest/{id}")
-	public ResponseEntity<Boolean> addfav(@PathVariable("id") int id, Post post, HttpServletRequest request)
+	//加入收藏文章
+	@PostMapping("/favtest/{id}/{userId}")
+	public ResponseEntity<Boolean> addfav(@PathVariable("id") Integer id,@PathVariable("userId") Integer userId, Post post)
 			throws IOException {
-
-		User user = (User) request.getSession().getAttribute("user");
-		Integer userId;// 用户id
-		if (user == null) {
-			return null;
-		} else {
-			userId = user.getUserId();
-		}
-		// Integer userId = user.getUserId();
-		// Integer userId = 1564;
 
 		postService.addFavPost(id, userId);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();

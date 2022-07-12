@@ -34,6 +34,7 @@ public interface PostDao {
 	List<Post> findPostByCategory5();
 	
 	void addFavPost(int pid, int uid);
+	boolean delFavPost(int pid, int uid);
 	
 	PostFavorite findByFavorite(int pid , int uid);
 

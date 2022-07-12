@@ -193,7 +193,7 @@ function createForum() {
                                 v-model="state.forumCategory">
                                 <option value="環保">環保</option>
                                 <option value="養身">養身</option>
-                                <option value="公益資訊">公益資訊</option>
+                                <option value="公益">公益</option>
                                 <option value="健康">健康</option>
                             </select>
                         </div>
