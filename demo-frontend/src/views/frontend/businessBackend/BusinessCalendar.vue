@@ -18,7 +18,6 @@ const inputAddEvent = ref(null);
 const calendarOptions = reactive({
   events: [],
   plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin, resourceTimelinePlugin],
-  defaultView: 'resourceTimelineDay',
   firstDay: 1,
   editable: true,
   aspectRatio: 2,
@@ -246,6 +245,7 @@ onMounted(() => {
     <!-- Calendar -->
     <BaseBlock>
       <div class="row items-push">
+
         <div class="col-md-4 col-lg-5 col-xl-3">
           <!-- Add Event Form -->
           <form class="push" @submit.prevent="addNewEvent">
