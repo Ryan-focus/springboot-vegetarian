@@ -30,6 +30,8 @@ const url = "localhost:8088";
 //接收的資料ref
 const resData = ref();
 const resImg = ref();
+const getSingleData = ref();
+const posId = ref();
 
 const getImg = function () {
 
@@ -61,13 +63,15 @@ const getAxios = function () {
 getAxios();
 getImg();
 
-//取得單一筆訂單，number用來抓id
-function getSingle() {
+//取得單一POS , 顯示抓值
+function getSingle(prams) {
   axios
-    .get(`http://${url}/pos?statusCategory=試用期7日`)
+    .get(`http://${url}/pos/${prams}`)
     .then((res) => {
       //獲取伺服器的回傳資料
       console.log(res);
+      posId.value = res.data;
+      getSingleData.value = res.data;
     })
     .catch((error) => {
       console.log(error, "失敗");
@@ -129,10 +133,10 @@ function onSort(event, i) {
   sortEl.sort = toset;
 }
 //更新訂單功能
-function updateOrder(number) {
+function updateStatus(number) {
   toast
     .fire({
-      title: "確定要更新嗎?",
+      title: "確定是否要送出審核?",
       // text: "更新後不能返回",
       icon: "warning",
       showCancelButton: true,
@@ -140,8 +144,8 @@ function updateOrder(number) {
         confirmButton: "btn btn-danger m-1",
         cancelButton: "btn btn-secondary m-1",
       },
-      confirmButtonText: "審核通過",
-      cancelButtonText: "取消更新",
+      confirmButtonText: "送出",
+      cancelButtonText: "取消",
 
       html: false,
       preConfirm: () => {
@@ -161,11 +165,12 @@ function updateOrder(number) {
         };
         //執行put方法
         axios
-          .put(`http://localhost:8088/order/${number}`, order)
+          .put(`http://${url}/pos/${number}`, order)
           .then(() => {
-            console.log(order);
-            getAxios();
             toast.fire("更新成功!", "", "success");
+            // console.log(order);
+            getAxios();
+
           })
           .catch((error) => {
             console.log(error, "失敗");
@@ -381,7 +386,7 @@ th.sort {
                       <td class="text-center">
                         <div class="btn-group">
                           <button type="button" class="btn btn-sm btn-alt-secondary" data-bs-toggle="modal"
-                            data-bs-target="#updateProduct" @click="getSingle(row.orderId)">
+                            data-bs-target="#getPosId" @click="getSingle(row.posId)">
                             <i class="fa fa-fw fa-pencil-alt"></i>
                           </button>
                         </div>
@@ -399,12 +404,12 @@ th.sort {
         </div>
 
         <!-- 這邊以下是隱藏的更新表單，按下更新鈕之後會跳出來 -->
-        <div class="modal fade" id="updateProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="getPosId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <!-- 這邊是更新的標題 -->
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">修改商品</h5>
+                <h5 class="modal-title" id="exampleModalLabel">審核商家</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <!-- 內文開始 -->
@@ -415,15 +420,29 @@ th.sort {
                     rows="1" />
                 </div>
 
+
+                <!-- <div class="mb-4">
+                  <label class="form-label" for="example-ltf-businessName">申請編號</label>
+                  <input type="text" class="form-control" id="example-ltf-businessName" name="example-ltf-email"
+                    :placeholder="`${getSingleData.posId}`" readonly />
+                </div>
+
+                <div class="mb-4">
+                  <label class="form-label" for="example-ltf-businessName">商家名稱</label>
+                  <input type="text" class="form-control" id="example-ltf-businessName" name="example-ltf-email"
+                    :placeholder="`${getSingleData.posBusinessList[0].businessName}`" readonly />
+                </div> -->
+
+
                 <!-- 商品種類 -->
                 <div class="mb-3">
-                  <label class="form-label" for="example-select">更新訂單狀態</label>
+                  <label class="form-label" for="example-select">審核商家狀態</label>
                   <select class="form-select" id="example-select" name="example-select">
                     <option selected></option>
-                    <option value="未付款">未付款</option>
-                    <option value="已付款">已付款</option>
-                    <option value="已出貨">已出貨</option>
-                    <option value="訂單完成">訂單完成</option>
+                    <option value="審核未過">審核未過</option>
+                    <option value="試用期7日">試用期7日</option>
+                    <option value="試用期14日">試用期14日</option>
+                    <option value="開通中">開通中</option>
                   </select>
                 </div>
               </div>
@@ -433,9 +452,10 @@ th.sort {
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                   取消
                 </button>
-                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" @click="updateOrder(orderId)">
+                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" @click="updateStatus(posId)">
                   送出
                 </button>
+                <!-- // <button type=" submit" class="btn btn-primary" data-bs-dismiss="modal" // -->
               </div>
             </div>
           </div>
