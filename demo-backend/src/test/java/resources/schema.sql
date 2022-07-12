@@ -26,6 +26,7 @@ CREATE TABLE business(
                          located nvarchar(64) not null,
                          businessPic nvarchar(64),
                          status nvarchar (32) not null,
+                         UUID nvarchar(256) ,
                          createdTime TIMESTAMP not null ,
                          lastLoginTime TIMESTAMP not null,
                          updateTime  TIMESTAMP not null
