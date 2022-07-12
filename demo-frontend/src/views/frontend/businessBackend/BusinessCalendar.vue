@@ -2,31 +2,50 @@
 import { ref, reactive, onMounted } from "vue";
 
 // FullCalendar, for more info and examples you can check out https://fullcalendar.io/
-import "@fullcalendar/core/vdom"; // solves problem with Vite
+import "@fullcalendar/core/vdom"; // 解決 Vite 的問題
 import FullCalendar from "@fullcalendar/vue3";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin, { Draggable } from "@fullcalendar/interaction";
+import resourceTimelinePlugin from '@fullcalendar/resource-timeline'
 import listPlugin from "@fullcalendar/list";
 
-// Helper variables
+// Helper variables輔助變量
 const fullCalendar = ref(null);
 const inputAddEvent = ref(null);
 
-// Calendar options, variables and events
+// 日曆選項、變量和事件
 const calendarOptions = reactive({
   events: [],
-  plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin],
+  plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin, listPlugin, resourceTimelinePlugin],
+  defaultView: 'resourceTimelineDay',
   firstDay: 1,
   editable: true,
+  aspectRatio: 2,
   droppable: true,
   headerToolbar: {
-    left: "title",
-    right: "prev,next today dayGridMonth,timeGridWeek,timeGridDay,listWeek",
+    left: "prev,today,next",
+    center: "title",
+    right: "timeGridWeek,timeGridDay,listWeek",
+  },
+  buttonText: {
+    today: '今日',
+    month: '月',
+    week: '週',
+    day: '日',
+    list: '表單'
+  },
+  buttonIcons: {
+    prev: 'chevron-left',
+    next: 'chevron-right',
+    prevYear: 'chevrons-left', // double chevron
+    nextYear: 'chevrons-right' // double chevron
   },
   dateClick: handleDateClick,
   eventDrop: handleEventDrop,
   eventReceive: handleExternalDrop,
+  timeZone: 'local',
+  locale: 'zh-TW',
 });
 
 const calendarNewEvent = ref(null);
@@ -69,15 +88,15 @@ const calendarNewEvents = reactive([
   },
 ]);
 
-// Init Calendar
-// Get current year, month and day
+// 初始化日曆
+// 獲取當前年月日
 let date = new Date();
 
 let y = date.getFullYear();
 let m = date.getMonth();
 let d = date.getDate();
 
-// Populate calendar with predefined events
+// 使用預定義的事件填充日曆
 calendarOptions.events = [
   {
     title: "Gaming Day",
@@ -150,7 +169,7 @@ calendarOptions.events = [
   },
 ];
 
-// Add new event data to the calendar on date click
+// 單擊日期將新事件數據添加到日曆
 function handleDateClick(arg) {
   if (confirm("Would you like to add an event to " + arg.dateStr + " ?")) {
     calendarOptions.events.push({
@@ -161,17 +180,17 @@ function handleDateClick(arg) {
   }
 }
 
-// When dropping an existing event to another date
+// 將現有事件放到另一個日期時
 function handleEventDrop(eventDropInfo) {
   window.console.log(eventDropInfo);
 }
 
-// When dropping an external event and is added to the calendar
+// 刪除外部事件並添加到日曆時
 function handleExternalDrop(info) {
   window.console.log(info);
 }
 
-// Add event form submission
+// 添加事件表單提交
 function addNewEvent() {
   if (calendarNewEvent.value) {
     // Add the event to the draggable list
@@ -208,15 +227,14 @@ onMounted(() => {
 
 <template>
   <!-- Hero -->
-  <BasePageHeading title="Calendar"
-    subtitle="A solid foundation to build your calendar based web application. Powered by FullCalendar.">
+  <BasePageHeading title="訂位系統" subtitle="使用Calendar API">
     <template #extra>
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb breadcrumb-alt">
           <li class="breadcrumb-item">
-            <a class="link-fx" href="">Plugins</a>
+            <a class="link-fx" href="/#/business/backend/dashboard"> <i class="si si-speedometer" /> 總覽資訊</a>
           </li>
-          <li class="breadcrumb-item" aria-current="page">Calendar</li>
+          <li class="breadcrumb-item" aria-current="page"><i class="far fa-calendar-check" /> 訂位</li>
         </ol>
       </nav>
     </template>
@@ -228,15 +246,11 @@ onMounted(() => {
     <!-- Calendar -->
     <BaseBlock>
       <div class="row items-push">
-        <div class="col-md-8 col-lg-7 col-xl-9">
-          <!-- Calendar Container -->
-          <FullCalendar ref="fullCalendar" :options="calendarOptions"></FullCalendar>
-        </div>
         <div class="col-md-4 col-lg-5 col-xl-3">
           <!-- Add Event Form -->
           <form class="push" @submit.prevent="addNewEvent">
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Add Event.." v-model="calendarNewEvent"
+              <input type="text" class="form-control" placeholder="新增事件.." v-model="calendarNewEvent"
                 ref="inputAddEvent" />
               <span class="input-group-text">
                 <i class="fa fa-fw fa-plus-circle"></i>
@@ -255,12 +269,16 @@ onMounted(() => {
           </ul>
           <div class="text-center">
             <p class="fs-sm text-muted">
-              <i class="fa fa-arrows-alt"></i> Drag and drop events on the
-              calendar
+              <i class="fa fa-arrows-alt"></i> 拖放事件到日曆
             </p>
           </div>
           <!-- END Event List -->
         </div>
+        <div class="col-md-8 col-lg-7 col-xl-9">
+          <!-- Calendar Container -->
+          <FullCalendar ref="fullCalendar" :options="calendarOptions"></FullCalendar>
+        </div>
+
       </div>
     </BaseBlock>
     <!-- END Calendar -->
