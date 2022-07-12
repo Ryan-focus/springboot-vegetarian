@@ -182,7 +182,7 @@ drop table if exists fav_post;
 CREATE TABLE fav_post(
                      postId INT NOT NULL ,
                      favDate DATETIME NOT NULL,
-                     userId INT NOT NULL,
+                     userId INT NOT NULL
                     
 );
 
