@@ -25,6 +25,7 @@ const resPostId = ref();
 const resPostTitle = ref();
 const resPostText = ref();
 const resPostDate = ref();
+const resPostImgurl = ref();
 const resPostStatus = ref("待審核");
 
 const route = useRoute();
@@ -42,6 +43,7 @@ const getAxios = function () {
       resPostTitle.value = res.data.title;
       resPostText.value = res.data.postedText;
       resPostDate.value = res.data.postedDate;
+      resPostImgurl.value = res.data.imgurl;
       console.log(res);
     })
     .catch((error) => {
@@ -119,8 +121,7 @@ getAxios();
 
             <div class="row">
               <div class="col-md-8">
-                <img
-                  src="https://cdn.barnimages.com/wp-content/uploads/2021/10/20211001-barnimages-8-740x493@2x.jpg"
+                 <img :src="resPostImgurl"
                   class="img-fluid img-thumbnail"
                   alt="..."
                 />

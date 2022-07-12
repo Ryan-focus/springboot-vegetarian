@@ -17,10 +17,13 @@ public class PostRowMapper implements RowMapper<Post> {
         post.setPostedText(rs.getString("postedText"));
         post.setImgurl(rs.getString("imgUrl"));
         post.setPostStatus(rs.getString("postStatus"));
+        post.setPostCategory(rs.getString("postCategory"));
 
         //日期處理輸出
         Timestamp createdTime = rs.getTimestamp("postedDate");
         post.setPostedDate(createdTime);
+        Timestamp auditTime = rs.getTimestamp("postAuditDate");
+        post.setPostAuditDate(auditTime);
 
         return post;
     }
