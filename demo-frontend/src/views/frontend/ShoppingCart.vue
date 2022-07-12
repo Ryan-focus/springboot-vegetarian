@@ -459,11 +459,12 @@ btn-outline-danger" data-bs-dismiss="modal">
           <!-- 下拉顯示選單 -->
           <BaseBlock :title="`  商品詳細描述 `" btn-option-content>
             <template #subtitle>
-              這裡可以放副標題
+              <!-- 這裡可以放副標題 -->
             </template>
             <div class="row items-push-2x text-center">
-              這裡會顯示商品的詳細描述
-              {{ singleProduct.description }}
+              <!-- 這裡會顯示商品的詳細描述 -->
+              <div v-html="singleProduct.description">
+              </div>
             </div>
           </BaseBlock>
 

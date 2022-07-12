@@ -20,8 +20,10 @@ const Index = () => import("@/views/frontend/Index.vue");
 const Login = () => import("@/views/frontend/Login.vue");
 const UserRegister = () => import("@/views/frontend/Register.vue");
 const BusinessRegister = () => import("@/views/frontend/BusinessRegister.vue");
+//購物車
 const ShoppingCart = () => import("@/views/frontend/ShoppingCart.vue");
 const ShoppingOrder = () => import("@/views/frontend/ShoppingOrder.vue");
+const ShoppingCheckOut = () => import("@/views/frontend/CheckOut.vue");
 const Post = () => import("@/views/frontend/Post.vue");
 const PostContent = () => import("@/views/frontend/PostContent.vue");
 const SearchRestaurant = () => import("@/views/frontend/SearchRestaurant.vue");
@@ -308,6 +310,7 @@ const routes = [
         name: "BusinessRegister",
         component: BusinessRegister,
       },
+      // 購物車
       {
         path: "/shopping",
         name: "shoppingCart",
@@ -317,6 +320,11 @@ const routes = [
         path: "/shopping/order",
         name: "shoppingOrder",
         component: ShoppingOrder,
+      },
+      {
+        path: "/shopping/checkout",
+        name: "shoppingCheckOut",
+        component: ShoppingCheckOut,
       },
       {
         path: "/post",
