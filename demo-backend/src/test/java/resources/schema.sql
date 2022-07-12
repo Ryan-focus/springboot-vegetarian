@@ -177,6 +177,15 @@ CREATE TABLE post(
                      postCategory NVARCHAR(256)
 );
 
+-- favorite post
+drop table if exists fav_post;
+CREATE TABLE fav_post(
+                     postId INT NOT NULL PRIMARY KEY,
+                     favDate DATETIME NOT NULL,
+                     userId INT NOT NULL,
+                    
+);
+
 -- forum
 DROP TABLE IF EXISTS forum;
 CREATE TABLE forum(

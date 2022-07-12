@@ -324,7 +324,7 @@ const routes = [
         component: Post,
       },
       {
-        path: "/postContent",
+        path: "/postContent/:postId?",
         name: "postPage",
         component: PostContent,
       },
