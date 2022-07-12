@@ -18,7 +18,9 @@ public class Reserve {
 
     private Integer businessId;
 
-    private Integer userId;
+    private String reserveName;
+
+    private String  reservePhone;
 
     public Integer getReserveId() {
         return reserveId;
@@ -84,11 +86,19 @@ public class Reserve {
         this.businessId = businessId;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getReserveName() {
+        return reserveName;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setReserveName(String reserveName) {
+        this.reserveName = reserveName;
+    }
+
+    public String getReservePhone() {
+        return reservePhone;
+    }
+
+    public void setReservePhone(String reservePhone) {
+        this.reservePhone = reservePhone;
     }
 }

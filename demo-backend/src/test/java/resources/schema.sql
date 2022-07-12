@@ -42,7 +42,8 @@ CREATE TABLE reserve (
                          reserveTime DATETIME not null ,
                          restaurantId int not null,
                          businessId int not null,
-                         userId int
+                         reserveName nvarchar(64) not null ,
+                         reservePhone nvarchar(64) not null
 );
 
 -- pos

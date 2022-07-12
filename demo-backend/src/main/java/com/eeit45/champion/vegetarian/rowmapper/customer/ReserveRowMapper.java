@@ -26,9 +26,11 @@ public class ReserveRowMapper implements RowMapper<Reserve> {
 
         reserve.setRestaurantId(rs.getInt("restaurantId"));
 
-        reserve.setBusinessId(rs.getInt("restaurantId"));
+        reserve.setBusinessId(rs.getInt("businessId"));
 
-        reserve.setUserId(rs.getInt("userId"));
+        reserve.setReserveName(rs.getString("reserveName"));
+
+        reserve.setReservePhone(rs.getString("reservePhone"));
 
         return reserve;
     }
