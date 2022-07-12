@@ -15,6 +15,8 @@ public class Business {
     private String located;
     private String businessPic;
     private String status;
+
+    private String UUID ;
     private Date createdTime;
     private Date lastLoginTime;
     private Date updateTime;
@@ -89,6 +91,14 @@ public class Business {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getUUID() {
+        return UUID;
+    }
+
+    public void setUUID(String UUID) {
+        this.UUID = UUID;
     }
 
     public Date getCreatedTime() {
