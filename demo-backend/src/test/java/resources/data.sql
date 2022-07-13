@@ -19,32 +19,32 @@ INSERT INTO `user` ( email, password, userName, status, userPic, registerTime, l
 
 -- business
 INSERT INTO business ( email, password,principalName,principalPhone, businessName,located, status, businessPic, createdTime, lastLoginTime, updateTime) VALUES
-('delisoys@gmail.com', 'Aa123456','嚴心鏞','0912345678', '善果餐飲集團','台北市中山區','試用中', 'b@01', now(), now() ,now())
-,('xiaoxiao@gmail.com', 'Bb123456','劉千瑞','0938978938', '航博瑞樸股份有限公司','台北市大安區' ,'開通中', 'b@02', now(), now(),now())
-,('hanlie@gmail.com', 'Cc123456','賴宗成','(07)213-5788', '漢來美食股份有限公司','高雄市前金區','開通中', 'b@03', now(), now(),now())
-,('miacucina@gmail.com', 'Dd123456','劉人銘','02-8866-2679', '佐上椿有限公司','台北市內湖區', '未審核', 'b@04', now(), now(),now())
-,('vegecreek@gmail.com', 'Ee123456','許淞堡','02-26626766', '蔬河有限公司','台北市文山區', '未審核', 'b@05', now(), now(),now())
-,('urban@gmail.com', 'Ff123456','吳逸如','02 8773 7033','二本餐飲股份有限公司','台北市大安區', '未審核', 'b@06', now(), now(),now())
+('delisoys@gmail.com', 'Aa123456','嚴心鏞','0912345678', '善果餐飲集團','台北市中山區','未開通', 'b@01', now(), now() ,now())
+,('xiaoxiao@gmail.com', 'Bb123456','劉千瑞','0938978938', '航博瑞樸股份有限公司','台北市大安區' ,'未開通', 'b@02', now(), now(),now())
+,('hanlie@gmail.com', 'Cc123456','賴宗成','(07)213-5788', '漢來美食股份有限公司','高雄市前金區','未開通', 'b@03', now(), now(),now())
+,('miacucina@gmail.com', 'Dd123456','劉人銘','02-8866-2679', '佐上椿有限公司','台北市內湖區', '未開通', 'b@04', now(), now(),now())
+,('vegecreek@gmail.com', 'Ee123456','許淞堡','02-26626766', '蔬河有限公司','台北市文山區', '未開通', 'b@05', now(), now(),now())
+,('urban@gmail.com', 'Ff123456','吳逸如','02 8773 7033','二本餐飲股份有限公司','台北市大安區', '未開通', 'b@06', now(), now(),now())
 ;
 update business set password = MD5(password);
 
 -- pos
-INSERT INTO pos(businessId,validDate,expiryDate) VALUES
- (6,'未開通',NOW())
-,(5,'未開通',NOW())
-,(4,'未開通',NOW())
-,(3,'開通中',NOW() + INTERVAL 6 MONTH)
-,(2,'開通中',NOW() + INTERVAL 12 MONTH )
-,(1,'試用期14日',NOW() + INTERVAL 14 DAY);
+INSERT INTO pos(businessId,validDate,expiryDate,UUID) VALUES
+ (6,'未開通',NOW(),null)
+,(5,'未開通',NOW(),null)
+,(4,'未開通',NOW(),null)
+,(3,'未開通',NOW(),null)
+,(2,'未開通',NOW(),null)
+,(1,'未開通',NOW(),null);
 
 -- PosBusiness
-INSERT INTO posBusiness(posId,businessId,visitors,turnOver,businessName) VALUES
-(1,6,67842,100274896,'Larvata果子云數位科技')
-,(2,5,249,298432,'亞惿股份有限公司')
-,(3,4,367,367705,'墨宇網頁設計公司')
-,(4,3,142,122450,'藝誠網頁設計公司')
-,(5,2,2475,5379892,'馬亞科技iWare')
-,(6,1,6487,12568,'艾格企業有限公司');
+INSERT INTO posBusiness(posId,businessId,visitors,turnOver) VALUES
+(1,6,0,0)
+,(2,5,0,0)
+,(3,4,0,0)
+,(4,3,0,0)
+,(5,2,0,0)
+,(6,1,0,0);
 
 -- product
 INSERT INTO product ( productName, category,veganCategory, productPrice,stock,productImage,createdTime,updatedTime ) VALUES

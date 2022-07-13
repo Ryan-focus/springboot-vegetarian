@@ -21,6 +21,8 @@ public class PosRowMapper implements RowMapper<Pos> {
         Timestamp expiryDate = rs.getTimestamp("expiryDate");
         pos.setExpiryDate(expiryDate);
 
+        pos.setUUID(rs.getString("UUID"));
+
         return pos;
     }
 }

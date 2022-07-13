@@ -53,7 +53,8 @@ CREATE TABLE pos (
                   posId INT NOT NULL auto_increment primary key,
                   businessId Int not null UNIQUE,
                   validDate nvarchar(64) not null,
-                  expiryDate DATETIME
+                  expiryDate DATETIME,
+                  UUID nvarchar(256)
 );
 
 -- PosBusiness
@@ -63,8 +64,7 @@ CREATE TABLE posBusiness (
                      posId              INT NOT NULL,
                      businessId         INT NOT NULL,
                      visitors           INT NOT NULL,
-                     turnOver           INT NOT NULL,
-                     businessName       nvarchar(128) NOT NULL
+                     turnOver           INT NOT NULL
 );
 
 -- product

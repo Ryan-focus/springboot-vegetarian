@@ -47,8 +47,8 @@ public class PosDaoImpl implements PosDao {
     @Override
     public void buildPosBusiness(Integer posId, Integer businessId) {
         String bSql = "SELECT * FROM business WHERE businessId = :businessId";
-        String sql = "INSERT INTO posbusiness(posId, businessId , visitors , turnOver,businessName) " +
-                "VALUES(:posId , :businessId , :visitors, :turnOver, :businessName)";
+        String sql = "INSERT INTO posbusiness(posId, businessId , visitors , turnOver) " +
+                "VALUES(:posId , :businessId , :visitors, :turnOver)";
 
         Map<String , Object > mapBusiness = new HashMap<>();
         mapBusiness.put("businessId" , businessId);
@@ -61,7 +61,6 @@ public class PosDaoImpl implements PosDao {
         map.put("businessId", businessId);
         map.put("visitors", 0);
         map.put("turnOver", 0);
-        map.put("businessName" , business.getBusinessName());
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -91,13 +90,28 @@ public class PosDaoImpl implements PosDao {
 
         if(posQueryParams.getStatusCategory() != null ) {
             sql = sql + " AND validDate = :validDate";
-            System.out.println(posQueryParams.getStatusCategory().toString());
+//            System.out.println(posQueryParams.getStatusCategory().toString());
             map.put("validDate" ,posQueryParams.getStatusCategory().toString());
         }
 
         Integer total = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
 
         return total;
+    }
+
+    @Override
+    public void updateStatus(Integer posId, PosRequest posRequest) {
+        String sql = "UPDATE pos SET UUID = :UUID, validDate = :validDate WHERE  posId = :posId ";
+
+        Map<String, Object> map = new HashMap<>();
+
+        sql = sql + setStatusTransferTime(sql, posRequest);
+
+        map.put("UUID" , posRequest.getUUID());
+        map.put("validDate",posRequest.getValidDate().toString());
+        map.put("posId" , posId);
+
+        namedParameterJdbcTemplate.update(sql, map );
     }
 
     @Override
@@ -122,7 +136,7 @@ public class PosDaoImpl implements PosDao {
 
         Map<String, Object> map = new HashMap<>();
         map.put("businessId", businessId);
-        map.put("validDate", posRequest.getValidDate());
+        map.put("validDate", posRequest.getValidDate().name());
 
         map.put("expiryDate", posRequest.getExpiryDate());
 
@@ -157,4 +171,15 @@ public class PosDaoImpl implements PosDao {
         return namedParameterJdbcTemplate.query(sql,map , new PosRowMapper());
     }
 
+
+    private String setStatusTransferTime( String sql,PosRequest posRequest){
+
+        if(posRequest.getValidDate().name() == "開通中"){
+            sql = sql + " AND expiryDate = NOW() + INTERVAL 1 YEAR ";
+        }
+        if(posRequest.getValidDate().name() == "試用期"){
+            sql = sql + " AND expiryDate = NOW() + INTERVAL 14 DAY ";
+        }
+        return  sql;
+    }
 }

@@ -3,6 +3,7 @@ package com.eeit45.champion.vegetarian.controller.customer;
 import com.eeit45.champion.vegetarian.dto.customer.PosQueryParams;
 import com.eeit45.champion.vegetarian.dto.customer.PosRequest;
 import com.eeit45.champion.vegetarian.constant.StatusCategory;
+import com.eeit45.champion.vegetarian.dto.shopCart.ProductRequest;
 import com.eeit45.champion.vegetarian.model.customer.Pos;
 import com.eeit45.champion.vegetarian.model.shopCart.Product;
 import com.eeit45.champion.vegetarian.service.customer.BusinessService;
@@ -78,6 +79,22 @@ public class PosController {
         }else{
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
+    }
+    @PutMapping("/pos/{posId}")
+    public ResponseEntity<Pos> updateStatus(@PathVariable Integer posId,
+                                                 @RequestBody @Valid PosRequest posRequest){
+        //Check Pos 是否存在
+        Pos pos = posService.getPosById(posId);
+        if( pos == null ) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        // 修改pos的數據
+        posService.updateStatus(posId,posRequest);
+
+        Pos afterUpdatePos = posService.getPosById(posId);
+
+        return ResponseEntity.status(HttpStatus.OK).body(afterUpdatePos);
     }
 
 }
