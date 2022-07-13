@@ -174,7 +174,8 @@ CREATE TABLE post(
                      imgUrl NVARCHAR(256),
                      postStatus NVARCHAR(256),
                      postAuditDate DATETIME,
-                     postCategory NVARCHAR(256)
+                     postCategory NVARCHAR(256),
+                     likeCount INT default 0
 );
 
 -- favorite post
@@ -182,6 +183,14 @@ drop table if exists fav_post;
 CREATE TABLE fav_post(
                      postId INT NOT NULL ,
                      favDate DATETIME NOT NULL,
+                     userId INT NOT NULL
+                    
+);
+-- like post
+drop table if exists like_post;
+CREATE TABLE like_post(
+                     postId INT NOT NULL ,
+                     likeDate DATETIME NOT NULL,
                      userId INT NOT NULL
                     
 );

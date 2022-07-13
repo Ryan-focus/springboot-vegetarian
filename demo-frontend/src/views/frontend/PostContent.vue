@@ -27,11 +27,14 @@ const resPostText = ref();
 const resPostDate = ref();
 const resPostImgurl = ref();
 const resfavData = ref();
+const reslikeData = ref();
+const resLikeCount = ref();
 const resPostStatus = ref("待審核");
 
 const route = useRoute();
 const user = JSON.parse(window.localStorage.getItem("access-admin"));
 const userId = user.data.user.userId
+const userName = user.data.user.userName
 let postId = route.params.postId;
 
 const getAxios = function () {
@@ -46,6 +49,7 @@ const getAxios = function () {
       resPostText.value = res.data.postedText;
       resPostDate.value = res.data.postedDate;
       resPostImgurl.value = res.data.imgurl;
+      resLikeCount.value = res.data.likeCount;
       console.log(res);
      
     })
@@ -53,13 +57,27 @@ const getAxios = function () {
       console.log(error, "失敗");
     });
 
-    if(userId != null){
+    if(userId == null){
+      //window.location.href = "http://localhost:8080/#/signin";
+    }else{
     axios
     .get(`http://${url}/favtest/${postId}/${userId}`)
     //.get(`http://${url}/postStatusList`, { params: { status: urlParams } })
     .then((res) => {
       //獲取伺服器的回傳資料
        resfavData.value = res.data;
+      console.log(res.data);
+     
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+    axios
+    .get(`http://${url}/liketest/${postId}/${userId}`)
+    //.get(`http://${url}/postStatusList`, { params: { status: urlParams } })
+    .then((res) => {
+      //獲取伺服器的回傳資料
+       reslikeData.value = res.data;
       console.log(res.data);
      
     })
@@ -73,6 +91,10 @@ const getAxios = function () {
 getAxios();
 
 function addfavpost(){
+
+  if(userId == null){
+    window.location.href = "http://localhost:8080/#/signin";
+  }else{
   axios
     .post(`http://${url}/favtest/${postId}/${userId}`,{
     })
@@ -82,7 +104,24 @@ function addfavpost(){
     .catch((error) => {
       console.log(error, "失敗");
     });
+  }
+}
 
+function addlikepost(){
+
+  if(userId == null){
+    window.location.href = "http://localhost:8080/#/signin";
+  }else{
+  axios
+    .post(`http://${url}/liketest/${postId}/${userId}`,{
+    })
+    .then((res) => {
+      getAxios();
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+  }
 }
 
 function delfavpost(){
@@ -113,6 +152,11 @@ function delfavpost(){
 .text {
   white-space: pre-wrap;
   word-wrap: break-word;
+}
+
+u { 
+  background-color: white;
+  color: #83cfdd;
 }
 </style>
 
@@ -163,9 +207,20 @@ function delfavpost(){
             <button
               type="button"
               class="btn rounded-pill btn btn-alt-warning me-1 mb-3 float-end"
+              @click="addlikepost()"
+              v-if="!reslikeData"
             >
               <i class="bi bi-hand-thumbs-up"></i>
               讚
+            </button>
+            <button
+              type="button"
+              class="btn rounded-pill btn btn-alt-warning me-1 mb-3 float-end"
+              v-if="reslikeData"
+              disabled
+            >
+              <i class="bi bi-hand-thumbs-up"></i>
+              已按讚
             </button>
 
             <div class="row">
@@ -192,8 +247,16 @@ function delfavpost(){
                       <div class="fw-normal text-muted">Copywriter</div>
                     </div>
                   </a>
+                  <br>
                 </li>
+                 <div class =float-end  v-if="resLikeCount>0">
+                  <u>有{{resLikeCount}}人覺得這很讚<i class="bi bi-hand-thumbs-up"></i></u>
+                  </div>
+                  <div class =float-end v-else>
+                  <mark>趕快來當第一個按讚的人<i class="bi bi-hand-thumbs-up"></i></mark>
+                  </div>
               </ul>
+              
 
               <h5 class="page-header"><hr SIZE="5px" /></h5>
 

@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 import com.eeit45.champion.vegetarian.dao.PostDao;
 import com.eeit45.champion.vegetarian.model.Post;
 import com.eeit45.champion.vegetarian.model.PostFavorite;
+import com.eeit45.champion.vegetarian.model.PostLike;
 import com.eeit45.champion.vegetarian.rowmapper.PostRowMapper;
 
 @Component
@@ -157,6 +158,32 @@ public class PostDaoImpl implements PostDao {
 				namedParameterJdbcTemplate.update(sql, map);
 
 	}
+	
+	// 新增按讚文章
+		public void addLikePost(int pid, int uid) {
+
+			String sql = "INSERT INTO like_post ( userId, likeDate, postId )"+
+					"VALUES (:userId, :likeDate, :postId)";
+
+					Map<String, Object> map = new HashMap<>();
+					map.put("userId", uid);
+					map.put("likeDate",new Date());
+					map.put("postId", pid);
+
+					namedParameterJdbcTemplate.update(sql, map);
+
+		}
+		
+	//計算按讚數量	
+		public int findCountByPid(int pid) {
+	        String sql = "SELECT COUNT(*) FROM like_post WHERE postId = :postId";
+	        
+	        Map<String, Object> map = new HashMap<>();
+			map.put("postId", pid);
+
+	        return namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
+	    }	
+		
 	//刪除收藏文章
 	public boolean delFavPost(int pid, int uid) {
 
@@ -191,6 +218,25 @@ public class PostDaoImpl implements PostDao {
 		return pFavorite;
 	
 	}
+	
+	// 搜尋按讚文章
+		public PostLike findByLike(int pid, int uid)  {
+
+			String sql = "SELECT * FROM like_post where postId = :postId and userId = :userId ";
+			Map<String, Object> map = new HashMap<>();
+			map.put("postId", pid);
+			map.put("userId", uid);
+
+			PostLike pLike;
+			//List<Post> favPost = namedParameterJdbcTemplate.query(sql,map ,new PostRowMapper());
+			try {
+				pLike = namedParameterJdbcTemplate.queryForObject(sql,map ,new BeanPropertyRowMapper<PostLike>(PostLike.class));
+			} catch (EmptyResultDataAccessException e) {
+				return null;
+			}
+			return pLike;
+		
+		}
 
 	//前台文章分類(全素)
 	@Override

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.eeit45.champion.vegetarian.model.Post;
 import com.eeit45.champion.vegetarian.model.PostFavorite;
+import com.eeit45.champion.vegetarian.model.PostLike;
 
 
 
@@ -37,10 +38,14 @@ boolean addPostImage(Post post);
 	List<Post> findPostByCategory5();
 	
 	void addFavPost(int pid,int uid);
+	void addLikePost(int pid,int uid);
+	int findCountByPid(int pid);
 	boolean delFavPost(int pid, int uid);	
 	PostFavorite findByFavorite(int pid , int uid);
+	PostLike findByLike(int pid, int uid);
 	
 	boolean isFavorite(int pid, int uid);
+	boolean isLike(int pid, int uid);
 
 	
 
