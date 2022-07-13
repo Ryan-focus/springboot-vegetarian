@@ -24,6 +24,8 @@ const BusinessRegister = () => import("@/views/frontend/BusinessRegister.vue");
 const ShoppingCart = () => import("@/views/frontend/ShoppingCart.vue");
 const ShoppingOrder = () => import("@/views/frontend/ShoppingOrder.vue");
 const ShoppingCheckOut = () => import("@/views/frontend/CheckOut.vue");
+const ShoppingCheckOutSuccess = () =>
+  import("@/views/frontend/CheckOutSuccess.vue");
 const Post = () => import("@/views/frontend/Post.vue");
 const PostContent = () => import("@/views/frontend/PostContent.vue");
 const SearchRestaurant = () => import("@/views/frontend/SearchRestaurant.vue");
@@ -326,6 +328,11 @@ const routes = [
         path: "/shopping/checkout",
         name: "shoppingCheckOut",
         component: ShoppingCheckOut,
+      },
+      {
+        path: "/shopping/checkoutSuccess",
+        name: "shoppingCheckOutSuccess",
+        component: ShoppingCheckOutSuccess,
       },
       {
         path: "/post",

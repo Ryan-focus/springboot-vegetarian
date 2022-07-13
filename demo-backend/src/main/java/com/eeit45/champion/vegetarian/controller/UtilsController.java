@@ -1,5 +1,6 @@
 package com.eeit45.champion.vegetarian.controller;
 
+import com.eeit45.champion.vegetarian.dto.shopCart.PaypalRequest;
 import com.eeit45.champion.vegetarian.util.shopCart.Image;
 import com.eeit45.champion.vegetarian.util.shopCart.PayPalClient;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,13 +64,14 @@ public class UtilsController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
+    //
     @PostMapping(value = "/paypal/payment")
-    public Map<String, Object> makePayment(@RequestParam("sum") String sum){
+    public  Map<String, Object> makePayment(@RequestParam("sum") String sum){
         return payPalClient.createPayment(sum);
     }
 
     @PostMapping(value = "/complete/payment")
-    public Map<String, Object> completePayment(HttpServletRequest request){
-        return payPalClient.completePayment(request);
+    public Map<String, Object> completePayment(@RequestBody PaypalRequest paypalRequest){
+        return payPalClient.completePayment(paypalRequest);
     }
 }

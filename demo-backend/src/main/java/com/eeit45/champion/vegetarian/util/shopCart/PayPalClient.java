@@ -1,5 +1,6 @@
 package com.eeit45.champion.vegetarian.util.shopCart;
 
+import com.eeit45.champion.vegetarian.dto.shopCart.PaypalRequest;
 import com.paypal.api.payments.*;
 import com.paypal.base.rest.APIContext;
 import com.paypal.base.rest.PayPalRESTException;
@@ -35,7 +36,7 @@ public class PayPalClient {
 
         RedirectUrls redirectUrls = new RedirectUrls();
         redirectUrls.setCancelUrl("http://localhost:8080/#/shopping");
-        redirectUrls.setReturnUrl("http://localhost:8080/#/shopping/order");
+        redirectUrls.setReturnUrl("http://localhost:8080/#/shopping/checkoutSuccess");
         payment.setRedirectUrls(redirectUrls);
         Payment createdPayment;
         try {
@@ -59,19 +60,20 @@ public class PayPalClient {
         return response;
     }
 
-    public Map<String, Object> completePayment(HttpServletRequest req){
+    public Map<String, Object> completePayment(PaypalRequest paypalRequest){
         Map<String, Object> response = new HashMap();
         Payment payment = new Payment();
-        payment.setId(req.getParameter("paymentId"));
+        payment.setId(paypalRequest.getPaymentId());
 
         PaymentExecution paymentExecution = new PaymentExecution();
-        paymentExecution.setPayerId(req.getParameter("PayerID"));
+        paymentExecution.setPayerId(paypalRequest.getPayerID());
         try {
             APIContext context = new APIContext(clientId, clientSecret, "sandbox");
             Payment createdPayment = payment.execute(context, paymentExecution);
             if(createdPayment!=null){
+                System.out.println(createdPayment.toString());
                 response.put("status", "success");
-                response.put("payment", createdPayment);
+                response.put("payment", createdPayment.toString());
             }
         } catch (PayPalRESTException e) {
             System.err.println(e.getDetails());
