@@ -21,4 +21,6 @@ public interface PosDao {
     Pos getPosByBusinessId(Integer businessId);
 
     Integer totalPos(PosQueryParams posQueryParams);
+
+    void updateStatus(Integer posId, PosRequest posRequest);
 }

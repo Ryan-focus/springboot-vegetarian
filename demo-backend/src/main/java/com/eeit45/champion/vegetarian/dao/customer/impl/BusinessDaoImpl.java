@@ -87,11 +87,12 @@ public class BusinessDaoImpl implements BusinessDao {
     }
 
     @Override
-    public void updateStatus(Integer businessId, String status) {
-        String sql = "UPDATE business SET status = :status ,updateTime = :updateTime " +
+    public void updateStatus(Integer businessId, String status , String UUID) {
+        String sql = "UPDATE business SET status = :status ,updateTime = :updateTime , UUID = :UUID " +
                 "WHERE businessId = :businessId  " ;
         Map<String , Object > map = new HashMap<>();
         map.put("status" , status);
+        map.put("UUID" , UUID);
 
 
         Date now = new Date();

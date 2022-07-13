@@ -38,7 +38,7 @@ public class BusinessController {
     //商家用戶註冊
     @PostMapping("/business/register")
     public ResponseEntity<Business> register(@RequestBody @Valid BusinessRegisterRequest businessRegisterRequest){
-        if(businessRegisterRequest.getStatus() == null) businessRegisterRequest.setStatus("審核中");
+        if(businessRegisterRequest.getStatus() == null) businessRegisterRequest.setStatus("未開通");
 
         Integer businessId = businessService.register(businessRegisterRequest);
 

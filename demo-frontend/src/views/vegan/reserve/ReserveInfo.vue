@@ -70,8 +70,8 @@ function getSingle(prams) {
     .then((res) => {
       //獲取伺服器的回傳資料
       console.log(res);
-      posId.value = res.data;
-      getSingleData.value = res.data;
+      posId.value = res.data.posId;
+      getSingleData.value = res.data.posBusinessList[0].businessName;
     })
     .catch((error) => {
       console.log(error, "失敗");
@@ -159,13 +159,13 @@ function updateStatus(number) {
     .then((result) => {
       //send request to server
       if (result.value) {
-        const order = {
+        const pos = {
           payment: this.payment,
           status: this.status,
         };
         //執行put方法
         axios
-          .put(`http://${url}/pos/${number}`, order)
+          .put(`http://${url}/pos/${number}`, pos)
           .then(() => {
             toast.fire("更新成功!", "", "success");
             // console.log(order);
@@ -415,26 +415,21 @@ th.sort {
               <!-- 內文開始 -->
               <div class="modal-body">
                 <!-- 商品名稱 -->
+
                 <div class="mb-3">
-                  <input type="hidden" class="form-control" id="exampleFormControlInput1" style="resize: none"
-                    rows="1" />
+                  <label class="form-label" for="example-posId">申請編號</label>
+                  <input type="text" class="form-control" id="example-posId" name="example-posId" v-model="posId"
+                    readonly />
                 </div>
 
-
-                <!-- <div class="mb-4">
-                  <label class="form-label" for="example-ltf-businessName">申請編號</label>
-                  <input type="text" class="form-control" id="example-ltf-businessName" name="example-ltf-email"
-                    :placeholder="`${getSingleData.posId}`" readonly />
-                </div>
-
-                <div class="mb-4">
+                <div class=" mb-3">
                   <label class="form-label" for="example-ltf-businessName">商家名稱</label>
-                  <input type="text" class="form-control" id="example-ltf-businessName" name="example-ltf-email"
-                    :placeholder="`${getSingleData.posBusinessList[0].businessName}`" readonly />
-                </div> -->
+                  <input type="text" class="form-control" id="example-ltf-businessName" name="example-ltf-businessName"
+                    v-model="getSingleData" readonly />
+                </div>
 
 
-                <!-- 商品種類 -->
+                <!-- 審核商家的option -->
                 <div class="mb-3">
                   <label class="form-label" for="example-select">審核商家狀態</label>
                   <select class="form-select" id="example-select" name="example-select">

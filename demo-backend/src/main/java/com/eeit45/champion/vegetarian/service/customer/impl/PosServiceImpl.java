@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.UUID;
 
 @Component
 public class PosServiceImpl implements PosService {
@@ -49,7 +50,7 @@ public class PosServiceImpl implements PosService {
         }
 
         //更新business 系統狀態
-        businessDao.updateStatus(business.getBusinessId(),"開通中");
+        businessDao.updateStatus(business.getBusinessId(),"未開通" , null);
 
         Integer posId = posDao.buildPos(businessId,posRequest);
 
@@ -82,5 +83,27 @@ public class PosServiceImpl implements PosService {
     @Override
     public Integer totalPos(PosQueryParams posQueryParams) {
         return posDao.totalPos(posQueryParams);
+    }
+
+    @Override
+    public void updateStatus(Integer posId, PosRequest posRequest) {
+        Pos pos = posDao.getPosById(posId);
+        if(pos == null ) {
+            log.warn("posId :{}不存在，無法執行更新Pos Status功能權限",posId);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        Business business = businessDao.getBusinessById(pos.getBusinessId());
+        if(business == null ) {
+            log.warn("businessId :{}不存在，請透過正常方式建立pos申請",pos.getBusinessId());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+        String token = UUID.randomUUID().toString();
+        if(business != null) {
+            token = token.toUpperCase();
+            token = token.replaceAll("-","");
+            businessDao.updateStatus(pos.getBusinessId(),posRequest.getValidDate().toString() , token);
+            posRequest.setUUID(token);
+            posDao.updateStatus(posId,posRequest);
+        }
     }
 }

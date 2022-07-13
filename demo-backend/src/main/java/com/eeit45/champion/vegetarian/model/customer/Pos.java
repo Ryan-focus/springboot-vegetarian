@@ -9,6 +9,7 @@ public class Pos {
     private Integer businessId;
     private String validDate;
     private Date expiryDate;
+    private String UUID;
 
     private List<PosBusiness> posBusinessList;
     public Integer getPosId() {
@@ -49,5 +50,13 @@ public class Pos {
 
     public void setPosBusinessList(List<PosBusiness> posBusinessList) {
         this.posBusinessList = posBusinessList;
+    }
+
+    public String getUUID() {
+        return UUID;
+    }
+
+    public void setUUID(String UUID) {
+        this.UUID = UUID;
     }
 }
