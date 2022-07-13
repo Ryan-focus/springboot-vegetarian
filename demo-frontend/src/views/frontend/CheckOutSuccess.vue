@@ -15,6 +15,7 @@ axios.post(
 ).then(
     (res) => {
         console.log(res.data.payment)
+        window.location.href = "http://localhost:8080/#/shopping/order", 5000
     }
 )
 
