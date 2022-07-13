@@ -98,6 +98,10 @@ public class PostServiceImpl implements PostService {
 	public boolean delFavPost(int pid, int uid) {
 		return postDao.delFavPost(pid, uid);
 	}
+	@Override
+	public boolean delLikePost(int pid, int uid) {
+		return postDao.delLikePost(pid, uid);
+	}
 
 	@Override
 	public List<Post> findPostByNoAudit() {

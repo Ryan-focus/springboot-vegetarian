@@ -137,6 +137,19 @@ function delfavpost(){
 
 }
 
+function dellikepost(){
+  axios
+    .delete(`http://${url}/liketest/${postId}/${userId}`)
+    .then((res) => {
+      getAxios();
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+
+
+}
+
 </script>
 <style>
 .card-text {
@@ -197,10 +210,19 @@ u {
               type="button"
               class="btn rounded-pill btn btn-alt-warning me-1 mb-3 float-end"
               @click="addfavpost()"
-              :disabled="resfavData"
+              v-if="!resfavData"
             >
               <i class="bi bi-bookmark-star"></i>
               收藏文章
+            </button>
+            <button
+              type="button"
+              class="btn rounded-pill btn btn-alt-secondary me-1 mb-3 float-end"
+              @click="delfavpost()"
+              v-if="resfavData"
+            >
+              <i class="bi bi-bookmark-star"></i>
+              已收藏文章
             </button>
             
             <span>{{ resPostDate }}</span>
@@ -215,9 +237,9 @@ u {
             </button>
             <button
               type="button"
-              class="btn rounded-pill btn btn-alt-warning me-1 mb-3 float-end"
+              class="btn rounded-pill btn btn-alt-secondary me-1 mb-3 float-end"
               v-if="reslikeData"
-              disabled
+              @click="dellikepost()"
             >
               <i class="bi bi-hand-thumbs-up"></i>
               已按讚

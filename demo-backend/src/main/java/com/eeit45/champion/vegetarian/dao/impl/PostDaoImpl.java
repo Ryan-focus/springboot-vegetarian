@@ -184,7 +184,7 @@ public class PostDaoImpl implements PostDao {
 	        return namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
 	    }	
 		
-	//刪除收藏文章
+	//取消收藏文章
 	public boolean delFavPost(int pid, int uid) {
 
 		String sql = "DELETE FROM fav_post where postId = :postId AND userId = :userId";
@@ -193,12 +193,28 @@ public class PostDaoImpl implements PostDao {
 		map.put("postId", pid);
 		map.put("userId", uid);
 
-		String SQL = "DELETE from post where postId = :postId ";
-		namedParameterJdbcTemplate.update(SQL, map);
+		
+		namedParameterJdbcTemplate.update(sql, map);
 		System.out.println("Deleted Record with ID = " + pid);
 		return true;
 
 	}
+	
+	//取消按讚文章
+		public boolean delLikePost(int pid, int uid) {
+
+			String sql = "DELETE FROM like_post where postId = :postId AND userId = :userId";
+
+			Map<String, Object> map = new HashMap<>();
+			map.put("postId", pid);
+			map.put("userId", uid);
+
+			
+			namedParameterJdbcTemplate.update(sql, map);
+			System.out.println("Deleted Record with ID = " + pid);
+			return true;
+
+		}
 
 	// 搜尋收藏文章
 	public PostFavorite findByFavorite(int pid, int uid)  {

@@ -356,6 +356,7 @@ public class PostController {
 		}
 	}
 
+	//取消收藏
 	@DeleteMapping(value = "/favtest/{id}/{userId}")
 	public ResponseEntity<Boolean> delfav(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
 
@@ -386,6 +387,18 @@ public class PostController {
 		postService.addLikePost(id, userId);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
+	}
+	//取消按讚
+	@DeleteMapping(value = "/liketest/{id}/{userId}")
+	public ResponseEntity<Boolean> dellike(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
+
+		boolean post = postService.delLikePost(id, userId);
+		boolean out = false;
+		if (post != false) {
+			return ResponseEntity.status(HttpStatus.OK).body(post);
+		} else {
+			return ResponseEntity.status(HttpStatus.OK).body(out);
+		}
 	}
 
 }
