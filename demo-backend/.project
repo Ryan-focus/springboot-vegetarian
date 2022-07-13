@@ -31,4 +31,16 @@
 		<nature>org.eclipse.jdt.core.javanature</nature>
 		<nature>org.eclipse.m2e.core.maven2Nature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>target/classes/static/01.jpg</name>
+			<type>1</type>
+			<location>D:/restaurant/01.jpg</location>
+		</link>
+		<link>
+			<name>target/classes/static/05.jpg</name>
+			<type>1</type>
+			<location>D:/restaurant/05.jpg</location>
+		</link>
+	</linkedResources>
 </projectDescription>

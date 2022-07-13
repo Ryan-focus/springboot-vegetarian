@@ -4,58 +4,75 @@ use vegandb;
 INSERT INTO `user` ( email, password, userName, status, userPic, registerTime, lastLoginTime) VALUES
 ('a1kgkms11@gmail.com', '$2a$10$O969pkOXv/LwhDAgvZR/iuI62clH0djrmL8WGtgCTKLdG9XZFbBMW', '呱呱', '正常', 'a010', curdate(), now())
 ,('nsdk8853@gmail.com', '$2a$10$l0hfgZQLrYGOVRGL8vMqi.hqc64TmRJrSC.V88UrdJtsri9RkR9f6', 'guagua', '正常', 'a010', curdate(), now())
-,('abc01@mail.com', 'Aa000001', 'Jason', '正常', 'a010', curdate(), now())
-,('abc02@mail.com', 'Oa0fgh02', 'John', '正常', 'a010', curdate(), now())
-,('abc03@mail.com', 'Radghg3', 'David', '正常', 'a010', curdate(), now())
-,('abc04@mail.com', 'Ca00fghfd004', 'Jack', '正常', 'a010', curdate(), now())
-,('abc05@mail.com', 'Va0dfgh005', 'Anthony', '正常', 'a010', curdate(), now())
-,('abc06@mail.com', 'Ba0fgh06', 'Michael', '正常', 'a010', curdate(), now())
-,('abc07@mail.com', 'Naghg007', '傑森', '正常', 'a010', curdate(), now())
-,('abc08@mail.com', 'Ma0gbng008', '約翰', '正常', 'a010', curdate(), now())
-,('abc09@mail.com', 'Qa0fgdh009', '大衛', '正常', 'a010', curdate(), now())
-,('abc10@mail.com', 'La0gngn10', '傑克', '正常', 'a010', curdate(), now())
-,('abc11@mail.com', 'Pa0fdgdgh011', '安東尼', '正常', 'a010', curdate(), now())
-,('abc12@mail.com', 'Wafghfh12', '麥可', '正常', 'a010', curdate(), now());
+,('nsdf1h32@gmail.com', '$2a$10$uGR2IkaiC.RZsOZtoY7M7ugGapiiwOkFCSEigkix2aSN.u6b1UnWy', 'Jason', '正常', 'a010', curdate(), now())
+,('dsddmlm093@gmail.com', '$2a$10$1eCToqRxiCzgsoJoBp8Y..RO4wkwwFOd90nH1PkhGBGBeBl4BFonO', 'John', '正常', 'a010', curdate(), now())
+,('sdsdk457@gmail.com', '$2a$10$6oYKJpvvwFkoJxZOi0ogOO4ta1.gds9vP4FlIzMnnK2H.LM5GcAhK', 'David', '正常', 'a010', curdate(), now())
+,('dnfjn003@gmail.com', '$2a$10$1N2w5TMU0OOjSB.9kVhb8OQKAZ726.AgyktmxoQnjdrtCkrQ31ziC', 'Jack', '正常', 'a010', curdate(), now())
+,('dsnjd25@gmail.com', '$2a$10$DKayHEMjcXVdN1E4jgn7SeesC/ZdJgHZzBzVficD.jyvszCBMd9Sq', 'Anthony', '正常', 'a010', curdate(), now())
+,('dkopm023@gmail.com', '$2a$10$8Y6fTr2MiNEH0hwH/wQC1ewCe/i3BUki3NAqCNm/SpQVENtjeY722', 'Michael', '正常', 'a010', curdate(), now())
+,('vmdns23@gmail.com', '$2a$10$kmbp2jSux5GWTt7UMeRHge2UaInt6UjQTmSl5nO.Ir6jdRV5hhu6y', '傑森', '正常', 'a010', curdate(), now())
+,('fdnfl983@gmail.com', '$2a$10$0RS4K7T9d84dlIY8J7wd3.1L/WFFtQzjMEOKeHmnxWAg93Mv9lFyC', '約翰', '正常', 'a010', curdate(), now())
+,('sdj4498@gmail.com', '$2a$10$fKJ.DT6U2lx.dpiAE.6nUedlCWvEkyPFKjeFJ1ioWnLE/uwMJ0xaK', '大衛', '正常', 'a010', curdate(), now())
+,('sdsndj12@gmail.com', '$2a$10$r8P1P1pM4.SwzqoCS6ZYWujqbuvku7B98k.iRpEpyJxhl7.ZnnKxq', '傑克', '正常', 'a010', curdate(), now())
+,('fdfnkn9@gmail.com', '$2a$10$VdMO7903g7YrTrdI.B4N7.iXJtAflnZTRe08hqSi4pBlJjKdaIYo2', '安東尼', '正常', 'a010', curdate(), now())
+,('dkd93@gmail.com', '$2a$10$dAXsizGzNbj2lvUqDyGqTuS1fuKGsAEOwFY/eZ1O1PMWbO2ayk4Wy', '麥可', '正常', 'a010', curdate(), now());
 
 -- business
-INSERT INTO business ( email, password,principalName,principalPhone, businessName,located, status, businessPic, createdTime, lastLoginTime) VALUES
-('bt213485@gmail.com', 'aa00d00s01','宋振宏','0914378265', '艾格企業有限公司','桃園市龜山區','試用中', 'a001', now(), now())
-,('test2@gmail.com', 'ra0fgh02','李慧菁','02-29995660', '馬亞科技iWare','新北市三重區' ,'試用中', 'a002', now(), now())
-,('kemfsl3@gmail.com', 'ra12hg3','方亦聖','04-22301313', '藝誠網頁設計公司','台中市北區','開通中', 'a003', now(), now())
-,('en4@gmail.com', 'ca00ffd004','曾富美','0968288068', '墨宇網頁設計公司','台中市北區', '未開通', 'a004', now(), now())
-,('fgen5@gmail.com', 'da0d23h005','吳晧民','02 8951 2121', '亞惿股份有限公司','新北市板橋區', '未開通', 'a005', now(), now())
-,('en6@gmail.com', 'ba0fgh06','李孟陽','022395 5080','Larvata果子云數位科技','臺北市信義區', '未開通', 'a006', now(), now())
+INSERT INTO business ( email, password,principalName,principalPhone, businessName,located, status, businessPic, createdTime, lastLoginTime, updateTime) VALUES
+('delisoys@gmail.com', 'Aa123456','嚴心鏞','0912345678', '善果餐飲集團','台北市中山區','試用中', 'b@01', now(), now() ,now())
+,('xiaoxiao@gmail.com', 'Bb123456','劉千瑞','0938978938', '航博瑞樸股份有限公司','台北市大安區' ,'開通中', 'b@02', now(), now(),now())
+,('hanlie@gmail.com', 'Cc123456','賴宗成','(07)213-5788', '漢來美食股份有限公司','高雄市前金區','開通中', 'b@03', now(), now(),now())
+,('miacucina@gmail.com', 'Dd123456','劉人銘','02-8866-2679', '佐上椿有限公司','台北市內湖區', '未審核', 'b@04', now(), now(),now())
+,('vegecreek@gmail.com', 'Ee123456','許淞堡','02-26626766', '蔬河有限公司','台北市文山區', '未審核', 'b@05', now(), now(),now())
+,('urban@gmail.com', 'Ff123456','吳逸如','02 8773 7033','二本餐飲股份有限公司','台北市大安區', '未審核', 'b@06', now(), now(),now())
 ;
 update business set password = MD5(password);
 
+-- pos
+INSERT INTO pos(businessId,validDate,expiryDate) VALUES
+ (6,'未開通',NOW())
+,(5,'未開通',NOW())
+,(4,'未開通',NOW())
+,(3,'開通中',NOW() + INTERVAL 6 MONTH)
+,(2,'開通中',NOW() + INTERVAL 12 MONTH )
+,(1,'試用期14日',NOW() + INTERVAL 14 DAY);
+
+-- PosBusiness
+INSERT INTO posBusiness(posId,businessId,visitors,turnOver,businessName) VALUES
+(1,6,67842,100274896,'Larvata果子云數位科技')
+,(2,5,249,298432,'亞惿股份有限公司')
+,(3,4,367,367705,'墨宇網頁設計公司')
+,(4,3,142,122450,'藝誠網頁設計公司')
+,(5,2,2475,5379892,'馬亞科技iWare')
+,(6,1,6487,12568,'艾格企業有限公司');
 
 -- product
-INSERT INTO product ( productName, category,veganCategory, productPrice,stock,createdTime,updatedTime ) VALUES
-('《UFUMI》純素無麩質米圈圈 紫薯腰果口味~無麩質全素甜甜圈 Q軟口感超好吃！','生鮮','全素',360,3060,now(),now())
-,('《吾時吾客》燕麥抹茶拿鐵~抹茶的醇香 優雅的滋味','食品','全素',250,9920,now(),now())
-,('《UFUMI》純素無麩質米圈圈 黑芝麻口味~無麩質全素甜甜圈 濃濃黑芝麻香超好吃！','生鮮','全素',360,8143,now(),now())
-,('《INAH 銀那》卡本內蘇維濃 橡木桶釀葡萄汁(無酒精紅酒)~清真認證 國際葡萄酒大賽非酒精類銅獎','生鮮','全素',780,6812,now(),now())
-,('《AMI 阿米》橘罐 素食狗罐頭(400g)~南瓜、地瓜口味','寵物','全素',200,1155,now(),now())
-,('《木酢達人》太陽洗衣精(附贈壓頭/1000g/瓶)~6倍濃縮 用量超省','居家百貨','VEGAN',450,1728,now(),now())
-,('《淨覺茶》天然茶籽洗衣素(2.3KG)~ph值6.5微酸性安全配方 自然分解汙垢','居家百貨','VEGAN',450,142,now(),now())
-,('設計師媽咪親手作‧可愛小女孩的日常＆外出服~設計師媽媽用愛製作的衣物','書籍影音','VEGAN',420,97,now(),now())
-,('手作潮包日常提案:30個初學者也能完成的肩背包','書籍影音','VEGAN',450,65,now(),now())
-,('【獨享包】《呷七碗》南瓜養生沖調-微鹹~中老年人的代餐養生聖品','食品','全素',28,56,now(),now())
-,('【獨享包】《逗留時光》堅果+厚豆奶(無加糖/20g/包)~醇濃多層次風味 搭配燕麥更香濃','食品','全素',25,54,now(),now())
-,('《Q-Link》純手工個性銀牌～著名設計師費德里科德Alzaga 阿根廷設計手工鍛造','飾品','VEGAN',12000,54,now(),now())
-,('麥蘆卡蜂蜜 乳化活性20+(250g)~芬芳甘甜、濃醇蜜香','保健','全素',1640,54,now(),now())
-,('麥蘆卡蜂蜜 乳化活性25+(250g)~芬芳甘甜、濃醇蜜香','保健','全素',1890,36,now(),now())
-,('《蓮廚》牛蒡大福丸(3KG)~新鮮牛蒡 風味獨特','生鮮','蛋素',690,44,now(),now())
-,('《蓮廚》香菇素排骨(3KG)~作為燉料、滷味、油炸鹽酥 魅力無法擋','生鮮','蛋素',690,36,now(),now())
-,('《《蓮廚》糖醋排骨(3KG)~酸酸甜甜超下飯 大人小孩都愛','生鮮','蛋素',690,28,now(),now())
-,('《蓮廚》蓮花菇(1.8KG)~大朵香菇 過癮口感','生鮮','蛋素',600,48,now(),now())
-,('《松珍》雞胸肉(3KG/袋)~運動後補充蛋白質！','生鮮','蛋奶素',770,45,now(),now())
-,('《松珍》素花枝揚(3KG/袋)~國民夜市小吃經典','生鮮','蛋奶素',910,12,now(),now())
-,('《自然緣素》鬆餅粉(1KG)~輕鬆DIY點心','量販批發','蛋奶素',200,68,now(),now())
-,('《松珍》頂級神戶牛排(3KG/袋)~香到隔壁鄰居都上門','生鮮','蛋奶素',1060,68,now(),now())
-,('《樂卉集》極淨 藍銅胜肽精華液(30ml)~高效保濕','美妝保養','VEGAN',1180,67,now(),now())
-,('【Alteya】保加利亞原裝進口 奧圖玫瑰原萃花露(120ml/噴瓶)~頂級奧圖玫瑰 保持肌膚平衡','美妝保養','VEGAN',580,42,now(),now())
-,('《潤覺茶 輕感淨化》茶樹茶籽綠茶潔顏慕斯(200ml)～清爽不緊繃 淨化控油效果佳','美妝保養','VEGAN',350,48,now(),now());
+INSERT INTO product ( productName, category,veganCategory, productPrice,stock,productImage,createdTime,updatedTime ) VALUES
+('《UFUMI》純素無麩質米圈圈 紫薯腰果口味~無麩質全素甜甜圈 Q軟口感超好吃！','生鮮','全素',360,3060,'https://media.fastretain.com/cdn-cgi/image/width=640,f=webp/media/magento/3/2/32pvnqi_-_imgur.jpg',now(),now())
+,('《吾時吾客》燕麥抹茶拿鐵~抹茶的醇香 優雅的滋味','食品','全素',250,9920,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《UFUMI》純素無麩質米圈圈 黑芝麻口味~無麩質全素甜甜圈 濃濃黑芝麻香超好吃！','生鮮','全素',360,8143,'https://mall.suiis.com/img/10077/1007727l.jpg',now(),now())
+,('《INAH 銀那》卡本內蘇維濃 橡木桶釀葡萄汁(無酒精紅酒)~清真認證 國際葡萄酒大賽非酒精類銅獎','生鮮','全素',780,6812,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《AMI 阿米》橘罐 素食狗罐頭(400g)~南瓜、地瓜口味','寵物','全素',200,1155,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《木酢達人》太陽洗衣精(附贈壓頭/1000g/瓶)~6倍濃縮 用量超省','居家百貨','VEGAN',450,1728,'https://purevegan.suiis.com/img/10056/1005607l.jpg',now(),now())
+,('《淨覺茶》天然茶籽洗衣素(2.3KG)~ph值6.5微酸性安全配方 自然分解汙垢','居家百貨','VEGAN',450,142,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('設計師媽咪親手作‧可愛小女孩的日常＆外出服~設計師媽媽用愛製作的衣物','書籍影音','VEGAN',420,97,'https://purevegan.suiis.com/img/10056/1005607l.jpg',now(),now())
+,('手作潮包日常提案:30個初學者也能完成的肩背包','書籍影音','VEGAN',450,65,'https://media.fastretain.com/cdn-cgi/image/width=640,f=webp/media/magento/7/b/7bc96bbf-b5ad-4878-923f-b92e99df1d14-4225-000003420732e366.jpg',now(),now())
+,('【獨享包】《呷七碗》南瓜養生沖調-微鹹~中老年人的代餐養生聖品','食品','全素',28,56,'https://media.fastretain.com/cdn-cgi/image/width=640,f=webp/media/magento/b/j/bj107_-_500g.jpg',now(),now())
+,('【獨享包】《逗留時光》堅果+厚豆奶(無加糖/20g/包)~醇濃多層次風味 搭配燕麥更香濃','食品','全素',25,54,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《Q-Link》純手工個性銀牌～著名設計師費德里科德Alzaga 阿根廷設計手工鍛造','飾品','VEGAN',12000,54,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('麥蘆卡蜂蜜 乳化活性20+(250g)~芬芳甘甜、濃醇蜜香','保健','全素',1640,54,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('麥蘆卡蜂蜜 乳化活性25+(250g)~芬芳甘甜、濃醇蜜香','保健','全素',1890,36,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《蓮廚》牛蒡大福丸(3KG)~新鮮牛蒡 風味獨特','生鮮','蛋素',690,44,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《蓮廚》香菇素排骨(3KG)~作為燉料、滷味、油炸鹽酥 魅力無法擋','生鮮','蛋素',690,36,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《《蓮廚》糖醋排骨(3KG)~酸酸甜甜超下飯 大人小孩都愛','生鮮','蛋素',690,28,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《蓮廚》蓮花菇(1.8KG)~大朵香菇 過癮口感','生鮮','蛋素',600,48,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《松珍》雞胸肉(3KG/袋)~運動後補充蛋白質！','生鮮','蛋奶素',770,45,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《松珍》素花枝揚(3KG/袋)~國民夜市小吃經典','生鮮','蛋奶素',910,12,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《自然緣素》鬆餅粉(1KG)~輕鬆DIY點心','量販批發','蛋奶素',200,68,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《松珍》頂級神戶牛排(3KG/袋)~香到隔壁鄰居都上門','生鮮','蛋奶素',1060,68,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《樂卉集》極淨 藍銅胜肽精華液(30ml)~高效保濕','美妝保養','VEGAN',1180,67,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('【Alteya】保加利亞原裝進口 奧圖玫瑰原萃花露(120ml/噴瓶)~頂級奧圖玫瑰 保持肌膚平衡','美妝保養','VEGAN',580,42,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now())
+,('《潤覺茶 輕感淨化》茶樹茶籽綠茶潔顏慕斯(200ml)～清爽不緊繃 淨化控油效果佳','美妝保養','VEGAN',350,48,'https://media.etmall.com.tw/nximg/003516/3516565/3516565-1_xxl.jpg?t=18374630690',now(),now());
 
 -- reserve
 INSERT INTO reserve (reserveDateTime, adult,child,baby, reserveTime, restaurantId,businessId, userId) VALUES
@@ -110,7 +127,7 @@ VALUES
 ('中平素食之家','03-4284290','桃園市中壢區新興路210號','中式','全素_奶素_蛋素','週一到週日
 10:30–13:30
 17:00–20:00
-無休息','4.2','test.jpg',now(),now() ),
+無休息','4.2','https://drive.google.com/file/d/1qYSPhIEshFBuaDgW84julpViYO4zR90K/view?usp=sharing',now(),now() ),
 
 ('九蓮素食','03-4378230','桃園市中壢區中山東路二段513號','中式','全素','週一到週二
 11:00–13:30
@@ -118,17 +135,17 @@ VALUES
 週三休息
 週四到週日
 11:00–13:30
-16:30–19:30','4.5','test.jpg',now(),now()),
+16:30–19:30','4.5','https://drive.google.com/file/d/1laJNsK6CTODuGlg9xfCMqzseUOkzBc0e/view?usp=sharing',now(),now()),
 
 
  ('可米素食餐館','03-4368509','桃園市中壢區中山東路一段311號','中式','全素','週一休息
 週二到週日
-11:00 - 20:00','4.2','test.jpg',now(),now()),
+11:00 - 20:00','4.2','https://drive.google.com/file/d/1QYKrl9xiIhRMq3ajwhuPSPHTsxIwhkM4/view?usp=sharing',now(),now()),
 
 
  ('靜點咖啡','03-4620060','桃園市中壢區南園二路296巷50號','義式','全素_奶素_蛋素_含五辛','週一二休息
 週三到週日
-11:00 - 18:00','4.8','',now(),now()),
+11:00 - 18:00','4.8','https://drive.google.com/file/d/1Y-QNx8F41QDJ4un6vLuAZm1DcptBVKr5/view?usp=sharing',now(),now()),
 
 
  ('義式美味素食','03-4553019','桃園市中壢區中華路一段616號','義式','全素','週一
@@ -137,7 +154,7 @@ VALUES
 週三到週五
 06:00 - 13:00
 週六到週日
-06:30 - 13:30','4.4','',now(),now()),
+06:30 - 13:30','4.4','https://drive.google.com/file/d/18YPhjIwCXxvm_ez3bIB1R4GsdKdcE2qF/view?usp=sharing',now(),now()),
 
 
  ('得來素蔬食早午餐-中壢福州店','03-4351449','桃園市中壢區福州二街348號','義式','全素','週一
@@ -146,7 +163,7 @@ VALUES
 週三到週五
 06:00 - 13:00
 週六到週日
-06:30 - 13:30','4.4','',now(),now()),
+06:30 - 13:30','4.4','https://drive.google.com/file/d/1B6-utrmepL-ushCUcxWE1GCORt_YbLUo/view?usp=sharing',now(),now()),
 
 
  ('素怡園素食自助餐','03-4562163','桃園市中壢區大仁四街20號1樓','自助餐','全素','週一到週五
@@ -154,43 +171,43 @@ VALUES
 16:30 - 19:30
 週六
 11:00 - 14:00
-週日休息','4.5','',now(),now()),
+週日休息','4.5','https://drive.google.com/file/d/1H332Vucit4B7Mnl_pN_XX2zz1Fe3tvX3/view?usp=sharing',now(),now()),
 
 
  ('廣田素食店','03-4910680','桃園市中壢區中央西路二段20號','自助餐','全素','週一到週六
 10:30 - 14:00
 16:30 - 19:00
-週日休息','4.4','',now(),now()),
+週日休息','4.4','https://drive.google.com/file/d/17sCE6-0dS6v8mGDOFWz4WA-h-rCMTK-F/view?usp=sharing',now(),now()),
 
 
  ('綠野鮮蹤','03-4163090','桃園市中壢區弘揚路85號','自助餐','全素_奶素_蛋素','週一到週日
 10:30–13:50
 16:30–20:10
-無休息','4.5','',now(),now()),
+無休息','4.5','https://drive.google.com/file/d/1qTrO1JlqMWhhqy8wJ6fDbIBisMwn3BW0/view?usp=sharing',now(),now()),
 
 
  ('新德素食','03-4936572','桃園市中壢區義民路1號','麵食','全素','週一到週六
 10:30–13:30
 17:00–19:30
-週日休息','4.2','',now(),now()),
+週日休息','4.2','https://drive.google.com/file/d/14iyad8-eFHrwVAIxUGkPIDUNFqCMGyJ3/view?usp=sharing',now(),now()),
 
 
 ('文大叔蔬食麵線','02-25573337','台北市大同區民生西路169之2號','麵食','全素_奶素_蛋素','週一到週二
 11:30–20:00
 週三四休息
 週五到週日
-11:30–20:00','4.7','',now(),now()),
+11:30–20:00','4.7','https://drive.google.com/file/d/1vNjsEfY5W24HCVn23qwXHwvDS9wuga_L/view?usp=sharing',now(),now()),
 
 
 ('普門茶品','02-86720599','新北市三峽區國際二街11號','中式','全素_蛋素','週二到週日
 11:30–14:00
 17:30–20:00
-週一休息','4.3','',now(),now()),
+週一休息','4.3','https://drive.google.com/file/d/1BeYdGhhbdqc1ICqN2QN7mTeXqsyzFGcK/view?usp=sharing',now(),now()),
 
 ('韓楓1080素食新潮流','03-5540899','新竹縣竹北市光明五街339號','韓式','全素_蛋素','週三到週日
 12:00–14:00
 17:00–21:00
-週一二休息','4.1','',now(),now()),
+週一二休息','4.1','https://drive.google.com/file/d/1jw3CeZpqKYfDhxvR46Q_StMmD9oaS85_/view?usp=sharing',now(),now()),
 
 ('佛光素食館','03-7330699','苗栗縣苗栗市至公路598-15號','簡餐','全素_蛋素','週一到週二
 11:30–13:30
@@ -198,86 +215,86 @@ VALUES
 週四到週日
 11:30–13:30
 17:00–19:30
-週三休息','4.2','',now(),now()),
+週三休息','4.2','https://drive.google.com/file/d/1Oe2ZvqXzdTGtkTziHw9gjC8vxvJgqP9V/view?usp=sharing',now(),now()),
 
 ('江之島 蔬食丼飯','04-71176626','彰化縣彰化市延平路126號','日式','全素','週二到週日
 11:30–14:00
 17:00–20:30
-週一休息','4.8','',now(),now()),
+週一休息','4.8','https://drive.google.com/file/d/1GNG2Av1qv701iTiF6pLfVIXEyKPaKuow/view?usp=sharing',now(),now()),
 
 
 ('舒邦印度蔬食餐廳','04-23023025','台中市西區向上路一段95-3號','印度','全素','週三到週一
 11:00–14:30
 17:00–21:00
-週二休息','4.9','',now(),now()),
+週二休息','4.9','https://drive.google.com/file/d/1XdzCkOBlTAnT75YWZDVbW6Gf_zppFMET/view?usp=sharing',now(),now()),
 
 ('蔬食趣','02-28322600','台北市士林區德行東路152號','簡餐','全素_奶素_蛋素','週三到週一
 11:00–20:00
-週二休息','4.7','',now(),now()),
+週二休息','4.7','https://drive.google.com/file/d/1Nl_cjmoxi8AsJrmuN2uLAv3DFeXW888j/view?usp=sharing',now(),now()),
 
 ('梅門六調通','03-25633838','台北市中山區林森北路107巷69號1樓','簡餐','全素','週二到週日
 11:00–21:00
-週一休息','4.6','',now(),now()),
+週一休息','4.6','https://drive.google.com/file/d/10CShwCsIk_E38uxv_YjFvQOTFb9Yy0uY/view?usp=sharing',now(),now()),
 
 ('草蔬宴義式蔬食','02-37651616','台北市信義區忠孝東路四段553巷18號','美式','全素_奶素_蛋素','週一到週六
 11:30–15:00
 17:00–21:00
-週二三四休息','4.5','',now(),now()),
+週二三四休息','4.5','https://drive.google.com/file/d/1Opg__SJsTIEe2EYdBlNEHK3viTobgdVp/view?usp=sharing',now(),now()),
 
 ('讓我想享','03-25794135','台北市松山區南京東路四段52巷8號','美式','全素_奶素','週二到週日
 11:00–19:00
-週一休息','4.9','',now(),now()),
+週一休息','4.9','https://drive.google.com/file/d/1pv4LjRiZOoPhdXdful7XO9Y1lle84Z4M/view?usp=sharing',now(),now()),
 
 ('菊子日式蔬食','02-27773843','台北市中山區長安東路二段171-9號','日式','全素','週一到週六
 11:30–14:00 
 17:30–20:30
-週日休息','4.4','',now(),now()),
+週日休息','4.4','https://drive.google.com/file/d/1mhWKXeK1QQ4DStr8xS2MVOrVQFXCZxWq/view?usp=sharing',now(),now()),
 
 ('植日生手作蔬食','02-27484533','台北市松山區南京東路五段250巷11-6號','日式','全素','週二到週日
 11:00–15:00 
 17:00–20:30
-週一休息','4.6','',now(),now()),
+週一休息','4.6','https://drive.google.com/file/d/1EUltnTsrbuHbJRzNrrK_gyI_LqqojByG/view?usp=sharing',now(),now()),
 
 ('郭家素食壽司','02-27265548','台北市信義區福德街219號','日式','全素_蛋素','週一到週日
 06:00–12:00
-無休息','4.1','',now(),now()),
+無休息','4.1','https://drive.google.com/file/d/11L2Wrg9vcFXkiL_4UwQYOpQucB9tsGNi/view?usp=sharing',now(),now()),
 
 ('青靜緣','02-29360688','台北市文山區老泉街45巷2號','日式','全素','週二到週三
 11:00–20:00
 週五到週日
 11:00–20:00
-週一四休息','4.6','',now(),now()),
+週一四休息','4.6','https://drive.google.com/file/d/1oDr5KZqpiRx3SmJzW6s-TuYlAAIfWTHg/view?usp=sharing',now(),now()),
 
 ('采月居素食日本料理','02-26381529','台北市松山區南京東路五段250巷18弄2號','日式','全素_奶素_蛋素','週三到週日
 11:30–14:00
 17:00–20:00
-週一二休息','4.7','',now(),now()),
+週一二休息','4.7','https://drive.google.com/file/d/1ysu6Y2-khpT07RfNKJh1-fka0gs-oJP7/view?usp=sharing',now(),now()),
 
 ('品·印度蔬食餐廳','02-27392799','台北市大安區和平東路三段34號','印度','全素_奶素','週二到週日
 11:30–14:30
 17:30–20:30
-週一休息','4.6','',now(),now()),
+週一休息','4.6','https://drive.google.com/file/d/1pFPTyppH35AjI3abURhfeN1aVZqZr_jL/view?usp=sharing',now(),now()),
 
 ('三個傻瓜印度蔬食-南京店','02-87705848','台北市中山區長春路318號','印度','全素','週一到週五
 11:30–14:30
 17:00–21:30
 週六到週日
 11:30–21:30
-無休息','4.6','',now(),now()),
+無休息','4.6','https://drive.google.com/file/d/1q92kpBQPH6VPxSc-KP7gDDQrb6OoZhCT/view?usp=sharing',now(),now()),
 
 ('誠食健康素食忠孝本店','02-27212388','台北市大安區忠孝東路四段216巷27弄6號','自助餐','全素_奶素_蛋素','週一到週日
 11:00–14:15
 17:00–20:00
-無休息','4.5','',now(),now()),
+無休息','4.5','https://drive.google.com/file/d/1YruOr2yn1a8SFVwJA79B_3NxosXV24mV/view?usp=sharing',now(),now()),
 
 ('慈軒園素食','02-25700715','台北市松山區延吉街59號','自助餐','全素','週一到週六
 11:00–14:00
 17:00–20:00
-週日休息','4.3','',now(),now()),
+週日休息','4.3','https://drive.google.com/file/d/13QdxO7SE8PoORJlzn5MwWqZ_-QiCH0GK/view?usp=sharing',now(),now()),
 
 ('東興素食自助餐廳','02-23050184','台北市萬華區萬大路486巷59弄3號','自助餐','全素_奶素','週一到週六
 06:00–14:00
-週日休息','4.6','',now(),now());
+週日休息','4.6','https://drive.google.com/file/d/1e15UjUjGzHGzlLdx-6yRFZhWi1YaNowj/view?usp=sharing',now(),now());
 
 
 -- 食記文章
@@ -386,7 +403,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postAuditDate
 
 尤其是酸甜大根泡菜的好表現，把美味度又再往上提升，加點辣椒醬更是好吃極了，風味相當有特色
 
-《一碗豆腐》營業時間從下午開始，一路賣到晚上10點，無論當成下午茶點心，或是宵夜都很不錯呢','p04','通過',now()),
+《一碗豆腐》營業時間從下午開始，一路賣到晚上10點，無論當成下午茶點心，或是宵夜都很不錯呢','p04','發布中',now()),
 
 ('【新店大坪林美食】原粹蔬食作 菜單料理講究素食料理，特色飛龍頭咖哩、味噌豆漿拉麵',now(),'《原粹蔬食作》是新北市新店區、捷運大坪林站附近，人氣很高的素食餐廳
 
