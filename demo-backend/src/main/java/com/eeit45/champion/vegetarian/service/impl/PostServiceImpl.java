@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.eeit45.champion.vegetarian.dao.PostDao;
 import com.eeit45.champion.vegetarian.model.Post;
 import com.eeit45.champion.vegetarian.model.PostFavorite;
+import com.eeit45.champion.vegetarian.model.PostLike;
 import com.eeit45.champion.vegetarian.service.PostService;
 
 @Service
@@ -54,10 +55,19 @@ public class PostServiceImpl implements PostService {
 	public void addFavPost(int pid, int uid) {
 		postDao.addFavPost(pid, uid);
 	}
+	
+	@Override
+	public void addLikePost(int pid, int uid) {
+		postDao.addLikePost(pid, uid);
+	}
 
 	public PostFavorite findByFavorite(int pid, int uid) {
 		return postDao.findByFavorite(pid, uid);
 
+	}
+	
+	public PostLike findByLike(int pid, int uid) {
+		return postDao.findByLike(pid, uid);
 	}
 
 	public boolean isFavorite(int pid, int uid) {
@@ -68,10 +78,29 @@ public class PostServiceImpl implements PostService {
 			return false;
 		}
 	}
+	
+	public boolean isLike(int pid, int uid) {
+		PostLike plike = postDao.findByLike(pid, uid);
+		if (plike != null) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
+	public int findCountByPid(int pid) {
+		int count = postDao.findCountByPid(pid);
+		return count;
+	}
 
 	@Override
 	public boolean delFavPost(int pid, int uid) {
 		return postDao.delFavPost(pid, uid);
+	}
+	@Override
+	public boolean delLikePost(int pid, int uid) {
+		return postDao.delLikePost(pid, uid);
 	}
 
 	@Override
@@ -108,5 +137,7 @@ public class PostServiceImpl implements PostService {
 	public List<Post> findPostByCategory5() {
 		return postDao.findPostByCategory5();
 	}
+
+	
 
 }
