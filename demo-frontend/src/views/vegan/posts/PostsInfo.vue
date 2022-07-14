@@ -534,7 +534,7 @@ th.sort {
                           max-width: 150px;
                         "
                       >
-                        {{ row.imgurl }}
+                        <img :src="row.imgurl" class="img-thumbnail" alt="...">
                       </td>
 
                       <td class="text-center">

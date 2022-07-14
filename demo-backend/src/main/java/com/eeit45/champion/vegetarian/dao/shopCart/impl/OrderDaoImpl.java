@@ -30,7 +30,7 @@ public class OrderDaoImpl implements OrderDao {
     //查詢訂單資料返回Controller 使用 Join Table
     @Override
     public List<OrderItem> getOrderItemsByOrderId(Integer orderId) {
-        String sql = "SELECT oi.order_item_id, oi.order_id, oi.product_id, oi.quantity, oi.amount, p.productName " +
+        String sql = "SELECT oi.order_item_id, oi.order_id, oi.product_id, oi.quantity, oi.amount, p.productName,p.productImage " +
                 "FROM order_item as oi " +
                 "LEFT JOIN product as p ON oi.product_id = p.productId " +
                 "WHERE oi.order_id = :orderId";

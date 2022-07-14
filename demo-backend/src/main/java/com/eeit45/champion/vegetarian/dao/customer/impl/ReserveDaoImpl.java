@@ -83,7 +83,7 @@ public class ReserveDaoImpl implements ReserveDao {
 
     @Override
     public List<Reserve> getAllReserve(Integer businessId) {
-        String sql = "select * from reserve WHERE businessId = :businessId ORDER BY reserveTime  DESC";
+        String sql = "select * from reserve WHERE businessId = :businessId ORDER BY reserveDateTime  DESC";
 
         Map<String , Object > map = new HashMap<>();
         map.put("businessId",businessId);

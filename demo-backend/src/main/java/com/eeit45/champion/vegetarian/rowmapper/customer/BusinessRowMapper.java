@@ -22,6 +22,7 @@ public class BusinessRowMapper implements RowMapper<Business> {
         business.setBusinessName(rs.getString("businessName"));
         business.setLocated(rs.getString("located"));
         business.setStatus(rs.getString("status"));
+        business.setUUID(rs.getString("UUID"));
         business.setBusinessPic(rs.getString("businessPic"));
         business.setCreatedTime(rs.getTimestamp("createdTime"));
         business.setLastLoginTime(rs.getTimestamp("lastLoginTime"));

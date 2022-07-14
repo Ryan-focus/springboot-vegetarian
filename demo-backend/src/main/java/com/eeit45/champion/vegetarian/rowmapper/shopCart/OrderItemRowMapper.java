@@ -12,6 +12,8 @@ public class OrderItemRowMapper implements RowMapper<OrderItem> {
 
     @Override
     public OrderItem mapRow(ResultSet rs, int rowNum) throws SQLException {
+
+        System.out.println(rs.toString());
         OrderItem orderItem = new OrderItem();
         orderItem.setOrderItemId(rs.getInt("order_item_id"));
         orderItem.setOrderId(rs.getInt("order_id"));
@@ -21,8 +23,8 @@ public class OrderItemRowMapper implements RowMapper<OrderItem> {
         
         //可以選擇使用擴充原有的class 去接這個variable
         //或者可以選擇創建新的Class 去接這些值
-//        orderItem.setProductName(rs.getString("name"));
-//        orderItem.setImage(rs.getString("image"));
+        orderItem.setProductName(rs.getString("p.productName"));
+        orderItem.setImage(rs.getString("productImage"));
 
         return orderItem;
     }

@@ -18,9 +18,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.util.*;
 
 @Component
 public class PosDaoImpl implements PosDao {
@@ -47,8 +46,8 @@ public class PosDaoImpl implements PosDao {
     @Override
     public void buildPosBusiness(Integer posId, Integer businessId) {
         String bSql = "SELECT * FROM business WHERE businessId = :businessId";
-        String sql = "INSERT INTO posbusiness(posId, businessId , visitors , turnOver,businessName) " +
-                "VALUES(:posId , :businessId , :visitors, :turnOver, :businessName)";
+        String sql = "INSERT INTO posbusiness(posId, businessId , visitors , turnOver) " +
+                "VALUES(:posId , :businessId , :visitors, :turnOver)";
 
         Map<String , Object > mapBusiness = new HashMap<>();
         mapBusiness.put("businessId" , businessId);
@@ -61,7 +60,6 @@ public class PosDaoImpl implements PosDao {
         map.put("businessId", businessId);
         map.put("visitors", 0);
         map.put("turnOver", 0);
-        map.put("businessName" , business.getBusinessName());
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -91,13 +89,44 @@ public class PosDaoImpl implements PosDao {
 
         if(posQueryParams.getStatusCategory() != null ) {
             sql = sql + " AND validDate = :validDate";
-            System.out.println(posQueryParams.getStatusCategory().toString());
+//            System.out.println(posQueryParams.getStatusCategory().toString());
             map.put("validDate" ,posQueryParams.getStatusCategory().toString());
         }
 
         Integer total = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
 
         return total;
+    }
+
+    @Override
+    public void updateStatus(Integer posId,Integer businessId,  PosRequest posRequest) {
+        String sql = "UPDATE pos SET businessId = :businessId , validDate = :validDate,expiryDate = :expiryDate,  UUID =:UUID " +
+                " WHERE posId = :posId ";
+
+        //時間邏輯判斷
+        Date now = new Date();
+        Timestamp ts = new Timestamp(now.getTime());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(ts);
+        if(posRequest.getValidDate().name() == "試用期"){
+            cal.add(Calendar.DAY_OF_WEEK, 14);
+        }
+        if(posRequest.getValidDate().name() == "開通中"){
+            cal.add(Calendar.MONTH, 12);
+        }
+
+        ts = new Timestamp(cal.getTime().getTime());
+
+        Map<String, Object> map = new HashMap<>();
+
+        map.put("businessId", businessId);
+        map.put("validDate",posRequest.getValidDate().name());
+        map.put("expiryDate", ts);
+        map.put("UUID" , posRequest.getUUID());
+        map.put("posId" , posId);
+
+        namedParameterJdbcTemplate.update(sql, map );
+
     }
 
     @Override
@@ -122,9 +151,11 @@ public class PosDaoImpl implements PosDao {
 
         Map<String, Object> map = new HashMap<>();
         map.put("businessId", businessId);
-        map.put("validDate", posRequest.getValidDate());
+        map.put("validDate", posRequest.getValidDate().name());
 
-        map.put("expiryDate", posRequest.getExpiryDate());
+        Date now = new Date();
+        Timestamp timestamp = new Timestamp(now.getTime());
+        map.put("expiryDate", timestamp);
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -156,5 +187,4 @@ public class PosDaoImpl implements PosDao {
 
         return namedParameterJdbcTemplate.query(sql,map , new PosRowMapper());
     }
-
 }

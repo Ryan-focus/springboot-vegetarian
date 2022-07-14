@@ -282,14 +282,13 @@ const newCustomersOptions = reactive({
 
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
-const urlParams = "warning";
 //接收的資料ref
 const resData = ref();
 const forumsTotal = ref();
 
 const getAxios = function () {
   axios
-    .get(`http://${url}/forums`, { params: { status: urlParams } })
+    .get(`http://${url}/forums`)
     .then((res) => {
       //獲取伺服器的回傳資料
       resData.value = res.data;

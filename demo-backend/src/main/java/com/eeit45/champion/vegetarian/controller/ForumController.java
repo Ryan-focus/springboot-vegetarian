@@ -31,7 +31,7 @@ public class ForumController {
 	private ForumService forumService;
 	
 	@GetMapping("/forums")
-	public ResponseEntity<List<Forum>> getForums(
+	public ResponseEntity<Page<Forum>> getForums(
 			@RequestParam(required = false) Integer forumId,
 			@RequestParam(required = false) String  forumTitle,
 			@RequestParam(required = false) String  forumContent,
@@ -49,11 +49,11 @@ public class ForumController {
 		
 		List<Forum> forums = forumService.getForums(forum);
 		
-//		Integer total = forumService.totalForum(forum);
-//		Page<Forum> page = new Page<>();
-//		page.setTotal(total);
-//		page.setResults(forums);
-		return ResponseEntity.status(HttpStatus.OK).body(forums);
+		Integer total = forumService.totalForum(forum);
+		Page<Forum> page = new Page<>();
+		page.setTotal(total);
+		page.setResults(forums);
+		return ResponseEntity.status(HttpStatus.OK).body(page);
 		
 	}
 	

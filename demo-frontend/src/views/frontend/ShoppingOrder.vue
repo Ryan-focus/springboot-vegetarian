@@ -17,6 +17,25 @@ const orderData = ref(
         "total": null,
     }
 );
+// Main store
+const store = useTemplateStore();
+
+// Print Page
+function printPage() {
+    // Get current sidebar visibility
+    let sidebarVisibility = store.settings.sidebarVisibleDesktop;
+
+    // Close the sidebar
+    store.sidebar({ mode: "close" });
+
+    // Print the page
+    window.print();
+
+    // Restore previous sidebar visibility
+    if (sidebarVisibility) {
+        store.sidebar({ mode: "open" });
+    }
+}
 
 
 // 功能放這裡
@@ -314,6 +333,105 @@ getAxios();
             </template>
         </BaseBlock>
         <!-- END Results -->
+    </div>
+    <!-- Page Content -->
+    <div class="content content-boxed">
+        <!-- Invoice -->
+        <BaseBlock title="#INV0625">
+            <template #options>
+                <button type="button" class="btn-block-option" @click="printPage()">
+                    <i class="si si-printer me-1"></i> Print Invoice
+                </button>
+            </template>
+
+            <div class="p-sm-4 p-xl-7">
+                <!-- Invoice Info -->
+                <div class="row mb-4">
+                    <!-- Company Info -->
+                    <div class="col-6 fs-sm">
+                        <p class="h3">Company</p>
+                        <address>
+                            Street Address<br />
+                            State, City<br />
+                            Region, Postal Code<br />
+                            ltd@example.com
+                        </address>
+                    </div>
+                    <!-- END Company Info -->
+
+                    <!-- Client Info -->
+                    <div class="col-6 text-end fs-sm">
+                        <p class="h3">Client</p>
+                        <address>
+                            Street Address<br />
+                            State, City<br />
+                            Region, Postal Code<br />
+                            ctr@example.com
+                        </address>
+                    </div>
+                    <!-- END Client Info -->
+                </div>
+                <!-- END Invoice Info -->
+
+                <!-- Table -->
+                <div class="table-responsive push">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="width: 60px"></th>
+                                <th>產品名稱</th>
+                                <th class="text-center" style="width: 90px">數量</th>
+                                <th class="text-end" style="width: 120px">單價</th>
+                                <th class="text-end" style="width: 120px">小計</th>
+                            </tr>
+                        </thead>
+                        <tbody v-for="item in orderList" :key="item.orderId" :value='item.value' :label="item.label">
+                            <!-- 這邊開始是一格商品 -->
+                            <tr v-for="arry in item.orderItemList" :key="arry.orderItemId" :value='item.value'
+                                :label="item.label">
+                                <td class="text-center">{{ arry.orderItemId }}</td>
+                                <td>
+                                    <p class="fw-semibold mb-1">{{ arry.productName }}</p>
+                                </td>
+                                <td class="text-center">
+                                    <span class="badge rounded-pill bg-primary">{{ arry.quantity }}</span>
+                                </td>
+                                <td class="text-end">{{ arry.amount / arry.quantity }}</td>
+                                <td class="text-end">{{ arry.amount }}</td>
+                            </tr>
+
+                            <!-- 這邊是總價 -->
+                            <tr>
+                                <td colspan="4" class="fw-semibold text-end">總價</td>
+                                <td class="text-end">{{ item.payment }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="fw-semibold text-end">運費</td>
+                                <td class="text-end">0</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="fw-semibold text-end">狀態</td>
+                                <td class="text-end">{{ item.status }}</td>
+                            </tr>
+                            <tr>
+                                <td colspan="4" class="fw-bold text-uppercase text-end bg-body-light">
+                                    訂單價格
+                                </td>
+                                <td class="fw-bold text-end bg-body-light">{{ item.payment }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- END Table -->
+
+                <!-- Footer -->
+                <p class="fs-sm text-muted text-center">
+                    下次再來買
+                </p>
+                <!-- END Footer -->
+            </div>
+        </BaseBlock>
+        <!-- END Invoice -->
     </div>
     <!-- END Page Content -->
 </template>

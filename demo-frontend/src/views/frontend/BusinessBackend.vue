@@ -305,8 +305,6 @@ const getReserveList = function () {
         people += res.data[i].adult + res.data[i].baby + res.data[i].child;
         total++;
       }
-
-
       CountTotal.value = people; // 取得總人數
       CountGroup.value = total; // 取得組數
       resData.value = res.data;

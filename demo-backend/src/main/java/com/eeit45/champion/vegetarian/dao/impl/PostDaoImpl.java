@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Component;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Component;
 import com.eeit45.champion.vegetarian.dao.PostDao;
 import com.eeit45.champion.vegetarian.model.Post;
 import com.eeit45.champion.vegetarian.model.PostFavorite;
+import com.eeit45.champion.vegetarian.model.PostLike;
 import com.eeit45.champion.vegetarian.rowmapper.PostRowMapper;
 
 @Component
@@ -143,33 +146,113 @@ public class PostDaoImpl implements PostDao {
 
 	// 新增收藏文章
 	public void addFavPost(int pid, int uid) {
-//
-//		String sql = "INSERT INTO fav_post ( userId, favDate, postId )"+
-//				"VALUES (:userId, :favDate, :postId)";
-//
-//				Map<String, Object> map = new HashMap<>();
-//				map.put("userId", uid);
-//				map.put("favDate",new Date());
-//				map.put("postId", pid);
-//
-//				namedParameterJdbcTemplate.update(sql, map);
-//
+
+		String sql = "INSERT INTO fav_post ( userId, favDate, postId )"+
+				"VALUES (:userId, :favDate, :postId)";
+
+				Map<String, Object> map = new HashMap<>();
+				map.put("userId", uid);
+				map.put("favDate",new Date());
+				map.put("postId", pid);
+
+				namedParameterJdbcTemplate.update(sql, map);
+
 	}
+	
+	// 新增按讚文章
+		public void addLikePost(int pid, int uid) {
+
+			String sql = "INSERT INTO like_post ( userId, likeDate, postId )"+
+					"VALUES (:userId, :likeDate, :postId)";
+
+					Map<String, Object> map = new HashMap<>();
+					map.put("userId", uid);
+					map.put("likeDate",new Date());
+					map.put("postId", pid);
+
+					namedParameterJdbcTemplate.update(sql, map);
+
+		}
+		
+	//計算按讚數量	
+		public int findCountByPid(int pid) {
+	        String sql = "SELECT COUNT(*) FROM like_post WHERE postId = :postId";
+	        
+	        Map<String, Object> map = new HashMap<>();
+			map.put("postId", pid);
+
+	        return namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
+	    }	
+		
+	//取消收藏文章
+	public boolean delFavPost(int pid, int uid) {
+
+		String sql = "DELETE FROM fav_post where postId = :postId AND userId = :userId";
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("postId", pid);
+		map.put("userId", uid);
+
+		
+		namedParameterJdbcTemplate.update(sql, map);
+		System.out.println("Deleted Record with ID = " + pid);
+		return true;
+
+	}
+	
+	//取消按讚文章
+		public boolean delLikePost(int pid, int uid) {
+
+			String sql = "DELETE FROM like_post where postId = :postId AND userId = :userId";
+
+			Map<String, Object> map = new HashMap<>();
+			map.put("postId", pid);
+			map.put("userId", uid);
+
+			
+			namedParameterJdbcTemplate.update(sql, map);
+			System.out.println("Deleted Record with ID = " + pid);
+			return true;
+
+		}
 
 	// 搜尋收藏文章
-	public PostFavorite findByFavorite(int pid, int uid) {
-//
-//		String sql = "SELECT * FROM fav_post where postId = :postId and userId = :userId ";
-//		Map<String, Object> map = new HashMap<>();
-//		map.put("postId", pid);
-//		map.put("userId", uid);
-//
-//		//List<Post> favPost = namedParameterJdbcTemplate.query(sql,map ,new PostRowMapper());
-//		PostFavorite pFavorite = namedParameterJdbcTemplate.queryForObject(sql,map ,new BeanPropertyRowMapper<PostFavorite>(PostFavorite.class));
-//
-//		return pFavorite;
-		return null;
+	public PostFavorite findByFavorite(int pid, int uid)  {
+
+		String sql = "SELECT * FROM fav_post where postId = :postId and userId = :userId ";
+		Map<String, Object> map = new HashMap<>();
+		map.put("postId", pid);
+		map.put("userId", uid);
+
+		PostFavorite pFavorite;
+		//List<Post> favPost = namedParameterJdbcTemplate.query(sql,map ,new PostRowMapper());
+		try {
+			pFavorite = namedParameterJdbcTemplate.queryForObject(sql,map ,new BeanPropertyRowMapper<PostFavorite>(PostFavorite.class));
+		} catch (EmptyResultDataAccessException e) {
+			return null;
+		}
+		return pFavorite;
+	
 	}
+	
+	// 搜尋按讚文章
+		public PostLike findByLike(int pid, int uid)  {
+
+			String sql = "SELECT * FROM like_post where postId = :postId and userId = :userId ";
+			Map<String, Object> map = new HashMap<>();
+			map.put("postId", pid);
+			map.put("userId", uid);
+
+			PostLike pLike;
+			//List<Post> favPost = namedParameterJdbcTemplate.query(sql,map ,new PostRowMapper());
+			try {
+				pLike = namedParameterJdbcTemplate.queryForObject(sql,map ,new BeanPropertyRowMapper<PostLike>(PostLike.class));
+			} catch (EmptyResultDataAccessException e) {
+				return null;
+			}
+			return pLike;
+		
+		}
 
 	//前台文章分類(全素)
 	@Override

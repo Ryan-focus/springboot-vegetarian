@@ -98,6 +98,7 @@ const urlParams = "warning";
 const resData = ref();
 const restaurantsTotal = ref();
 const newRestaurant = ref();
+const total = ref();
 
 //restaurantsTotal
 const getAxios = function () {
@@ -128,6 +129,22 @@ const getRestaurant = function () {
     });
 };
 getRestaurant();
+
+//取得合作商家
+const getPass = function () {
+  axios
+    .get(`http://${url}/pos`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+      total.value = res.data.total;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+getPass();
+
 </script>
 
 <template>
@@ -214,9 +231,9 @@ getRestaurant();
           <template #content>
             <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
               <dl class="mb-0">
-                <dt class="fs-3 fw-bold">{{ newRestaurant }}</dt>
+                <dt class="fs-3 fw-bold">{{ total }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                  新註冊餐廳
+                  合作商家
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
@@ -237,7 +254,7 @@ getRestaurant();
     </div>
     <!-- END Overview -->
 
-    <!-- Statistics -->
+    <!-- 餐廳總數成長表 -->
     <div class="row">
       <div class="col-xl-12 col-xxl-9 d-flex flex-column">
         <!-- Earnings Summary -->
@@ -290,11 +307,10 @@ getRestaurant();
     </div>
     <!-- END Statistics -->
 
-    <!-- Recent Orders -->
-    <BaseBlock title="最新餐廳" id="newRestaurant">
+    <!-- 最新餐廳 -->
+    <!-- <BaseBlock title="最新餐廳" id="newRestaurant">
       <template #content>
         <div class="block-content block-content-full">
-          <!-- Recent Orders Table -->
           <div class="table-responsive">
             <table class="table table-hover table-vcenter">
               <thead>
@@ -308,22 +324,22 @@ getRestaurant();
                 </tr>
               </thead>
               <tbody class="fs-sm">
-                <tr>
-                  <td>{{ restaurantNumber }}</td>
-                  <td>{{ restaurantName }}</td>
-                  <td>{{ restaurantAddress }}</td>
-                  <td>{{ restaurantCategory }}</td>
-                  <td>{{ restaurantType }}</td>
-                  <td>{{ restaurantScore }}</td>
+
+                <tr v-for="item in res" :key="item.restaurantNumber">
+                  <td>{{ item.restaurantNumber }}</td>
+                  <td>{{ item.restaurantName }}</td>
+                  <td>{{ item.restaurantAddress }}</td>
+                  <td>{{ item.restaurantCategory }}</td>
+                  <td>{{ item.restaurantType }}</td>
+                  <td>{{ item.restaurantScore }}</td>
                 </tr>
               </tbody>
             </table>
           </div>
-          <!-- END Recent Orders Table -->
         </div>
-        <div class="block-content block-content-full bg-body-light">
-          <!-- Pagination -->
-          <nav aria-label="Photos Search Navigation">
+        <div class="block-content block-content-full bg-body-light"> -->
+    <!-- 換頁 -->
+    <!-- <nav aria-label="Photos Search Navigation">
             <ul class="pagination pagination-sm justify-content-end mb-0">
               <li class="page-item">
                 <a class="page-link" href="javascript:void(0)" tabindex="-1" aria-label="Previous">
@@ -348,12 +364,12 @@ getRestaurant();
                 </a>
               </li>
             </ul>
-          </nav>
-          <!-- END Pagination -->
-        </div>
+          </nav> -->
+    <!-- 換頁結束 -->
+    <!-- </div>
       </template>
-    </BaseBlock>
-    <!-- END Recent Orders -->
+    </BaseBlock> -->
+    <!-- 最新餐廳結束 -->
   </div>
   <!-- END Page Content -->
 </template>

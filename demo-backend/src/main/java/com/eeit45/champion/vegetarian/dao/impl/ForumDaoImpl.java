@@ -25,7 +25,7 @@ public class ForumDaoImpl implements ForumDao {
 
 	@Override
 	public Integer totalForum(Forum forum) {
-		String sql = "SELECT count(*) FROM forum WHERE 1=1";
+		String sql = "SELECT count(*) FROM forum WHERE 1=1 ORDER BY forumUpdateTime DESC ";
 		
 		Map<String, Object> map = new HashMap<>();
 		Integer total = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);

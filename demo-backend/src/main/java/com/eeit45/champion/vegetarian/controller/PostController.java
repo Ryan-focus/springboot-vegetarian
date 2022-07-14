@@ -194,27 +194,30 @@ public class PostController {
 		}
 
 	}
-	
-	//前台食記分類(植物五辛素)
-		@GetMapping(path = "postCategory5")
-		public ResponseEntity<List<Post>> showPostFront5() {
-			List<Post> findallPost = postService.findPostByCategory5();
 
-			if (findallPost != null) {
-				return ResponseEntity.status(HttpStatus.OK).body(findallPost);
-			} else {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-			}
+	// 前台食記分類(植物五辛素)
+	@GetMapping(path = "postCategory5")
+	public ResponseEntity<List<Post>> showPostFront5() {
+		List<Post> findallPost = postService.findPostByCategory5();
 
+		if (findallPost != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(findallPost);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
+
+	}
 
 	// 後台審核食記
 	@GetMapping("/auditPost/{id}")
-	public ResponseEntity<Post> auditPost(@PathVariable("id") Integer id) {
+	public ResponseEntity<Post> auditPost(@PathVariable("id") Integer id, HttpServletRequest request) {
 
 		Post post = postService.findPost(id);
+		int likeCount = postService.findCountByPid(id);
+		post.setLikeCount(likeCount);
 		if (post != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(post);
+
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
@@ -328,45 +331,74 @@ public class PostController {
 	}
 
 	// 搜尋收藏文章
-	@GetMapping(value = "/favtest/{id}")
-	public ResponseEntity<PostFavorite> showfav(@PathVariable("id") Integer id, HttpServletRequest request) {
+	@GetMapping(value = "/favtest/{id}/{userId}")
+	public ResponseEntity<Boolean> showfav(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
 
-		User user = (User) request.getSession().getAttribute("user");
-
-		Integer userId;// 用户id
-		if (user == null) {
-			return null;
-		} else {
-			userId = user.getUserId();
-		}
-		// Integer userId = 1564;
-		PostFavorite post = postService.findByFavorite(id, userId);
-		// boolean flag = postService.isFavorite(id, userId);
-
-		if (post != null) {
+		boolean post = postService.isFavorite(id, userId);
+		boolean out = false;
+		if (post != false) {
 			return ResponseEntity.status(HttpStatus.OK).body(post);
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			return ResponseEntity.status(HttpStatus.OK).body(out);
 		}
 	}
 
-	@PostMapping("/favtest/{id}")
-	public ResponseEntity<Boolean> addfav(@PathVariable("id") int id, Post post, HttpServletRequest request)
-			throws IOException {
+	// 搜尋按讚文章
+	@GetMapping(value = "/liketest/{id}/{userId}")
+	public ResponseEntity<Boolean> showlike(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
 
-		User user = (User) request.getSession().getAttribute("user");
-		Integer userId;// 用户id
-		if (user == null) {
-			return null;
+		boolean post = postService.isLike(id, userId);
+		boolean out = false;
+		if (post != false) {
+			return ResponseEntity.status(HttpStatus.OK).body(post);
 		} else {
-			userId = user.getUserId();
+			return ResponseEntity.status(HttpStatus.OK).body(out);
 		}
-		// Integer userId = user.getUserId();
-		// Integer userId = 1564;
+	}
+
+	//取消收藏
+	@DeleteMapping(value = "/favtest/{id}/{userId}")
+	public ResponseEntity<Boolean> delfav(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
+
+		boolean post = postService.delFavPost(id, userId);
+		boolean out = false;
+		if (post != false) {
+			return ResponseEntity.status(HttpStatus.OK).body(post);
+		} else {
+			return ResponseEntity.status(HttpStatus.OK).body(out);
+		}
+	}
+
+	// 加入收藏文章
+	@PostMapping("/favtest/{id}/{userId}")
+	public ResponseEntity<Boolean> addfav(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId,
+			Post post) throws IOException {
 
 		postService.addFavPost(id, userId);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
+	}
+
+	// 加入按讚文章
+	@PostMapping("/liketest/{id}/{userId}")
+	public ResponseEntity<Boolean> addlike(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId,
+			Post post) throws IOException {
+
+		postService.addLikePost(id, userId);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+	}
+	//取消按讚
+	@DeleteMapping(value = "/liketest/{id}/{userId}")
+	public ResponseEntity<Boolean> dellike(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
+
+		boolean post = postService.delLikePost(id, userId);
+		boolean out = false;
+		if (post != false) {
+			return ResponseEntity.status(HttpStatus.OK).body(post);
+		} else {
+			return ResponseEntity.status(HttpStatus.OK).body(out);
+		}
 	}
 
 }
