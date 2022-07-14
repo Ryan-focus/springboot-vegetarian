@@ -1,6 +1,6 @@
 <script setup>
 // 已經宣告但從未使用過的Value (請勿刪除)
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import axios from "axios";
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
@@ -53,8 +53,50 @@ function getSingle(productId) {
 }
 // 執行Axios;
 getAxios();
-// For Filters
+//購物車
+const cartItem = ref([
+  {
+    productId: "",
+    qunatity: ""
+  }, {}
+])
 
+function minusOne(item) {
+  item.amountShow--
+  item.amountShow = (item.amountShow < 1) ? 1 : item.amountShow
+}
+function addOne(item) {
+  item.amountShow++
+  item.amountShow = (item.amountShow > 9) ? 9 : item.amountShow
+}
+
+function addToCart(product) {
+  product.amount += product.amountShow
+
+  product.showingIcon = true
+  setTimeout(() => {
+    product.showingIcon = false
+  }, 800)
+}
+
+let itemPrice = computed(() => {
+  return this.products
+    // 只顯示購買數量 > 0 的項目
+    .filter(p => p.amount)
+    // 算出每個產品的小計
+    .map(p => {
+      p.sum = p.amount * p.price
+      return p
+    })
+})
+
+let itemTotal = computed(() => {
+  return this.productsInCart
+    .reduce((sum, p) => (sum + p.sum), 0)
+}
+
+
+)
 
 </script>
 <template>
