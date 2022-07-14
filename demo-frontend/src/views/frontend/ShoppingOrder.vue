@@ -109,52 +109,104 @@ getAxios();
                     <!-- 全部 -->
                     <div class="tab-pane fade fade-up show active" id="search-projects" role="tabpanel"
                         aria-labelledby="search-projects-tab">
-                        <div class="fs-4 fw-semibold p-2 mb-4 border-start border-4 border-primary bg-body-light">
-                            總訂單數: <span class="text-primary fw-bold">{{ orderData.total }}</span>
-                        </div>
-                        <table class="table table-striped table-vcenter">
-                            <!-- 欄位名稱 -->
-                            <thead>
-                                <tr>
-                                    <th style="width: 50%">商品(點開看詳細資訊)</th>
-                                    <th class="d-none d-lg-table-cell text-center" style="width: 15%">
-                                        訂單總價
-                                    </th>
-                                    <th class="d-none d-lg-table-cell text-center" style="width: 15%">
-                                        訂單日期
-                                    </th>
-                                    <th class="text-center" style="width: 20%"> 訂單狀態</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr v-for="item in orderList" :key="item.orderId" :value='item.value'
-                                    :label="item.label">
-                                    <td>
-                                        <div v-for="arry in item.orderItemList" :key="arry.orderItemId"
-                                            :value='item.value' :label="item.label">
-                                            <div>商品ID{{ arry.productId }}商品數量{{ arry.quantity }}商品小計{{ arry.amount }}
+                        <!-- Page Content -->
+                        <div class="content content-boxed">
+                            <!-- Invoice -->
+                            <BaseBlock title="歷史訂單">
+                                <template #options>
+                                    <button type="button" class="btn-block-option" @click="printPage()">
+                                        <i class="si si-printer me-1"></i> 點我列印
+                                    </button>
+                                </template>
+
+                                <div class="p-sm-4 p-xl-7">
+                                    <!-- Table -->
+                                    <div class="table-responsive push" v-for="item in orderList" :key="item.orderId"
+                                        :value='item.value' :label="item.label">
+                                        <!-- Invoice Info -->
+                                        <div class="row mb-4">
+                                            <!-- Company Info -->
+                                            <div class="col-6 fs-sm">
                                             </div>
+                                            <!-- END Company Info -->
+
+                                            <!-- Client Info -->
+                                            <div class="col-6 text-end fs-sm">
+                                                <p class="h3">{{ user.data.user.userName }}</p>
+                                                <address>
+                                                    Street Address<br />
+                                                    State, City<br />
+                                                    Region, Postal Code<br />
+                                                    ctr@example.com
+                                                </address>
+                                            </div>
+                                            <!-- END Client Info -->
                                         </div>
-                                    </td>
-                                    <td class="d-none d-lg-table-cell text-center text-sm">
+                                        <!-- END Invoice Info -->
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center" style="width: 60px"></th>
+                                                    <th>產品名稱</th>
+                                                    <th class="text-center" style="width: 90px">數量</th>
+                                                    <th class="text-end" style="width: 120px">單價</th>
+                                                    <th class="text-end" style="width: 120px">小計</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- 這邊開始是一格商品 -->
+                                                <tr v-for="arry in item.orderItemList" :key="arry.orderItemId"
+                                                    :value='item.value' :label="item.label">
+                                                    <td class="text-center">{{ arry.orderItemId }}</td>
+                                                    <td>
+                                                        <p class="fw-semibold mb-1">{{ arry.productName }}</p>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <span class="badge rounded-pill bg-primary">{{ arry.quantity
+                                                        }}</span>
+                                                    </td>
+                                                    <td class="text-end">{{ arry.amount / arry.quantity }}</td>
+                                                    <td class="text-end">{{ arry.amount }}</td>
+                                                </tr>
 
-                                        {{ item.payment }}
+                                                <!-- 這邊是總價 -->
+                                                <tr>
+                                                    <td colspan="4" class="fw-semibold text-end">總價</td>
+                                                    <td class="text-end">{{ item.payment }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4" class="fw-semibold text-end">運費</td>
+                                                    <td class="text-end">0</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4" class="fw-semibold text-end">狀態</td>
+                                                    <td class="text-end">{{ item.status }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="4"
+                                                        class="fw-bold text-uppercase text-end bg-body-light">
+                                                        訂單價格
+                                                    </td>
+                                                    <td class="fw-bold text-end bg-body-light">{{ item.payment }}</td>
+                                                </tr>
+                                            </tbody>
+                                            <hr>
+                                            <hr>
+                                        </table>
 
-                                    </td>
-                                    <td class="d-none d-lg-table-cell font-size-xl text-center fw-semibold">
-                                        {{ item.updateTime }}
-                                    </td>
-                                    <td class="font-size-xl text-center fw-semibold">
-                                        <span
-                                            class="fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success fs-sm">
-                                            {{ item.status }}
-                                        </span>
-                                    </td>
-                                </tr>
-                                <!-- 到這裡是一格 -->
-                            </tbody>
-                            <!-- 這裡是分頁 -->
-                        </table>
+                                    </div>
+                                    <!-- END Table -->
+
+                                    <!-- Footer -->
+                                    <p class="fs-sm text-muted text-center">
+                                        下次再來買
+                                    </p>
+                                    <!-- END Footer -->
+                                </div>
+                            </BaseBlock>
+                            <!-- END Invoice -->
+                        </div>
+                        <!-- END Page Content -->
                     </div>
                     <!-- END Projects -->
 
@@ -163,53 +215,105 @@ getAxios();
                         aria-labelledby="search-users-tab">
                         <div class="tab-pane fade fade-up show active" id="search-projects" role="tabpanel"
                             aria-labelledby="search-projects-tab">
-                            <div class="fs-4 fw-semibold p-2 mb-4 border-start border-4 border-primary bg-body-light">
-                                總訂單數: <span class="text-primary fw-bold">{{ orderData.total }}</span>
-                            </div>
-                            <table class="table table-striped table-vcenter">
-                                <!-- 欄位名稱 -->
-                                <thead>
-                                    <tr>
-                                        <th style="width: 50%">商品(點開看詳細資訊)</th>
-                                        <th class="d-none d-lg-table-cell text-center" style="width: 15%">
-                                            訂單總價
-                                        </th>
-                                        <th class="d-none d-lg-table-cell text-center" style="width: 15%">
-                                            訂單日期
-                                        </th>
-                                        <th class="text-center" style="width: 20%"> 訂單狀態</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="item in orderList" :key="item.orderId" :value='item.value'
-                                        :label="item.label">
-                                        <td>
-                                            <div v-for="arry in item.orderItemList" :key="arry.orderItemId"
-                                                :value='item.value' :label="item.label">
-                                                <div>商品ID{{ arry.productId }}商品數量{{ arry.quantity }}商品小計{{ arry.amount
-                                                }}
+                            <!-- Page Content -->
+                            <div class="content content-boxed">
+                                <!-- Invoice -->
+                                <BaseBlock title="歷史訂單">
+                                    <template #options>
+                                        <button type="button" class="btn-block-option" @click="printPage()">
+                                            <i class="si si-printer me-1"></i> 點我列印
+                                        </button>
+                                    </template>
+
+                                    <div class="p-sm-4 p-xl-7">
+                                        <!-- Table -->
+                                        <div class="table-responsive push" v-for="item in orderList" :key="item.orderId"
+                                            :value='item.value' :label="item.label">
+                                            <!-- Invoice Info -->
+                                            <div class="row mb-4">
+                                                <!-- Company Info -->
+                                                <div class="col-6 fs-sm">
                                                 </div>
+                                                <!-- END Company Info -->
+
+                                                <!-- Client Info -->
+                                                <div class="col-6 text-end fs-sm">
+                                                    <p class="h3">{{ user.data.user.userName }}</p>
+                                                    <address>
+                                                        Street Address<br />
+                                                        State, City<br />
+                                                        Region, Postal Code<br />
+                                                        ctr@example.com
+                                                    </address>
+                                                </div>
+                                                <!-- END Client Info -->
                                             </div>
-                                        </td>
-                                        <td class="d-none d-lg-table-cell text-center text-sm">
+                                            <!-- END Invoice Info -->
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center" style="width: 60px"></th>
+                                                        <th>產品名稱</th>
+                                                        <th class="text-center" style="width: 90px">數量</th>
+                                                        <th class="text-end" style="width: 120px">單價</th>
+                                                        <th class="text-end" style="width: 120px">小計</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- 這邊開始是一格商品 -->
+                                                    <tr v-for="arry in item.orderItemList" :key="arry.orderItemId"
+                                                        :value='item.value' :label="item.label">
+                                                        <td class="text-center">{{ arry.orderItemId }}</td>
+                                                        <td>
+                                                            <p class="fw-semibold mb-1">{{ arry.productName }}</p>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span class="badge rounded-pill bg-primary">{{ arry.quantity
+                                                            }}</span>
+                                                        </td>
+                                                        <td class="text-end">{{ arry.amount / arry.quantity }}</td>
+                                                        <td class="text-end">{{ arry.amount }}</td>
+                                                    </tr>
 
-                                            {{ item.payment }}
+                                                    <!-- 這邊是總價 -->
+                                                    <tr>
+                                                        <td colspan="4" class="fw-semibold text-end">總價</td>
+                                                        <td class="text-end">{{ item.payment }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4" class="fw-semibold text-end">運費</td>
+                                                        <td class="text-end">0</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4" class="fw-semibold text-end">狀態</td>
+                                                        <td class="text-end">{{ item.status }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4"
+                                                            class="fw-bold text-uppercase text-end bg-body-light">
+                                                            訂單價格
+                                                        </td>
+                                                        <td class="fw-bold text-end bg-body-light">{{ item.payment }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <hr>
+                                                <hr>
+                                            </table>
 
-                                        </td>
-                                        <td class="d-none d-lg-table-cell font-size-xl text-center fw-semibold">
-                                            {{ item.updateTime }}
-                                        </td>
-                                        <td class="font-size-xl text-center fw-semibold">
-                                            <span
-                                                class="fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success fs-sm">
-                                                {{ item.status }}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <!-- 到這裡是一格 -->
-                                </tbody>
-                                <!-- 這裡是分頁 -->
-                            </table>
+                                        </div>
+                                        <!-- END Table -->
+
+                                        <!-- Footer -->
+                                        <p class="fs-sm text-muted text-center">
+                                            下次再來買
+                                        </p>
+                                        <!-- END Footer -->
+                                    </div>
+                                </BaseBlock>
+                                <!-- END Invoice -->
+                            </div>
+                            <!-- END Page Content -->
                         </div>
 
                     </div>
@@ -220,55 +324,105 @@ getAxios();
                         aria-labelledby="search-classic-tab">
                         <div class="tab-pane fade fade-up show active" id="search-projects" role="tabpanel"
                             aria-labelledby="search-projects-tab">
-                            <div class="fs-4 fw-semibold p-2 mb-4 border-start border-4 border-primary bg-body-light">
-                                總訂單數: <span class="text-primary fw-bold">{{ orderData.total }}</span>
-                            </div>
-                            <table class="table table-striped table-vcenter">
-                                <!-- 欄位名稱 -->
-                                <thead>
-                                    <tr>
-                                        <th style="width: 50%">商品(點開看詳細資訊)</th>
-                                        <th class="d-none d-lg-table-cell text-center" style="width: 15%">
-                                            訂單總價
-                                        </th>
-                                        <th class="d-none d-lg-table-cell text-center" style="width: 15%">
-                                            訂單日期
-                                        </th>
-                                        <th class="text-center" style="width: 20%"> 訂單狀態</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <!-- 第一層for 印出多個列所以寫在tr -->
-                                    <tr v-for="item in orderList" :key="item.orderId" :value='item.value'
-                                        :label="item.label">
-                                        <td>
-                                            <!-- 因為要把資料塞在同一個td裏面所以在td裡寫第二個div -->
-                                            <div v-for="arry in item.orderItemList" :key="arry.orderItemId"
-                                                :value='item.value' :label="item.label">
-                                                <div>商品ID{{ arry.productId }}商品數量{{ arry.quantity }}商品小計{{ arry.amount
-                                                }}
+                            <!-- Page Content -->
+                            <div class="content content-boxed">
+                                <!-- Invoice -->
+                                <BaseBlock title="歷史訂單">
+                                    <template #options>
+                                        <button type="button" class="btn-block-option" @click="printPage()">
+                                            <i class="si si-printer me-1"></i> 點我列印
+                                        </button>
+                                    </template>
+
+                                    <div class="p-sm-4 p-xl-7">
+                                        <!-- Table -->
+                                        <div class="table-responsive push" v-for="item in orderList" :key="item.orderId"
+                                            :value='item.value' :label="item.label">
+                                            <!-- Invoice Info -->
+                                            <div class="row mb-4">
+                                                <!-- Company Info -->
+                                                <div class="col-6 fs-sm">
                                                 </div>
+                                                <!-- END Company Info -->
+
+                                                <!-- Client Info -->
+                                                <div class="col-6 text-end fs-sm">
+                                                    <p class="h3">{{ user.data.user.userName }}</p>
+                                                    <address>
+                                                        Street Address<br />
+                                                        State, City<br />
+                                                        Region, Postal Code<br />
+                                                        ctr@example.com
+                                                    </address>
+                                                </div>
+                                                <!-- END Client Info -->
                                             </div>
-                                        </td>
-                                        <td class="d-none d-lg-table-cell text-center text-sm">
+                                            <!-- END Invoice Info -->
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center" style="width: 60px"></th>
+                                                        <th>產品名稱</th>
+                                                        <th class="text-center" style="width: 90px">數量</th>
+                                                        <th class="text-end" style="width: 120px">單價</th>
+                                                        <th class="text-end" style="width: 120px">小計</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- 這邊開始是一格商品 -->
+                                                    <tr v-for="arry in item.orderItemList" :key="arry.orderItemId"
+                                                        :value='item.value' :label="item.label">
+                                                        <td class="text-center">{{ arry.orderItemId }}</td>
+                                                        <td>
+                                                            <p class="fw-semibold mb-1">{{ arry.productName }}</p>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span class="badge rounded-pill bg-primary">{{ arry.quantity
+                                                            }}</span>
+                                                        </td>
+                                                        <td class="text-end">{{ arry.amount / arry.quantity }}</td>
+                                                        <td class="text-end">{{ arry.amount }}</td>
+                                                    </tr>
 
-                                            {{ item.payment }}
+                                                    <!-- 這邊是總價 -->
+                                                    <tr>
+                                                        <td colspan="4" class="fw-semibold text-end">總價</td>
+                                                        <td class="text-end">{{ item.payment }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4" class="fw-semibold text-end">運費</td>
+                                                        <td class="text-end">0</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4" class="fw-semibold text-end">狀態</td>
+                                                        <td class="text-end">{{ item.status }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4"
+                                                            class="fw-bold text-uppercase text-end bg-body-light">
+                                                            訂單價格
+                                                        </td>
+                                                        <td class="fw-bold text-end bg-body-light">{{ item.payment }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <hr>
+                                                <hr>
+                                            </table>
 
-                                        </td>
-                                        <td class="d-none d-lg-table-cell font-size-xl text-center fw-semibold">
-                                            {{ item.updateTime }}
-                                        </td>
-                                        <td class="font-size-xl text-center fw-semibold">
-                                            <span
-                                                class="fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success fs-sm">
-                                                {{ item.status }}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <!-- 到這裡是一格 -->
-                                </tbody>
-                                <!-- 這裡是分頁 -->
-                            </table>
+                                        </div>
+                                        <!-- END Table -->
+
+                                        <!-- Footer -->
+                                        <p class="fs-sm text-muted text-center">
+                                            下次再來買
+                                        </p>
+                                        <!-- END Footer -->
+                                    </div>
+                                </BaseBlock>
+                                <!-- END Invoice -->
+                            </div>
+                            <!-- END Page Content -->
                         </div>
 
                     </div>
@@ -279,53 +433,105 @@ getAxios();
                         aria-labelledby="search-photos-tab">
                         <div class="tab-pane fade fade-up show active" id="search-projects" role="tabpanel"
                             aria-labelledby="search-projects-tab">
-                            <div class="fs-4 fw-semibold p-2 mb-4 border-start border-4 border-primary bg-body-light">
-                                總訂單數: <span class="text-primary fw-bold">{{ orderData.total }}</span>
-                            </div>
-                            <table class="table table-striped table-vcenter">
-                                <!-- 欄位名稱 -->
-                                <thead>
-                                    <tr>
-                                        <th style="width: 50%">商品(點開看詳細資訊)</th>
-                                        <th class="d-none d-lg-table-cell text-center" style="width: 15%">
-                                            訂單總價
-                                        </th>
-                                        <th class="d-none d-lg-table-cell text-center" style="width: 15%">
-                                            訂單日期
-                                        </th>
-                                        <th class="text-center" style="width: 20%"> 訂單狀態</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="item in orderList" :key="item.orderId" :value='item.value'
-                                        :label="item.label">
-                                        <td>
-                                            <div v-for="arry in item.orderItemList" :key="arry.orderItemId"
-                                                :value='item.value' :label="item.label">
-                                                <div>商品ID{{ arry.productId }}商品數量{{ arry.quantity }}商品小計{{ arry.amount
-                                                }}
+                            <!-- Page Content -->
+                            <div class="content content-boxed">
+                                <!-- Invoice -->
+                                <BaseBlock title="歷史訂單">
+                                    <template #options>
+                                        <button type="button" class="btn-block-option" @click="printPage()">
+                                            <i class="si si-printer me-1"></i> 點我列印
+                                        </button>
+                                    </template>
+
+                                    <div class="p-sm-4 p-xl-7">
+                                        <!-- Table -->
+                                        <div class="table-responsive push" v-for="item in orderList" :key="item.orderId"
+                                            :value='item.value' :label="item.label">
+                                            <!-- Invoice Info -->
+                                            <div class="row mb-4">
+                                                <!-- Company Info -->
+                                                <div class="col-6 fs-sm">
                                                 </div>
+                                                <!-- END Company Info -->
+
+                                                <!-- Client Info -->
+                                                <div class="col-6 text-end fs-sm">
+                                                    <p class="h3">{{ user.data.user.userName }}</p>
+                                                    <address>
+                                                        Street Address<br />
+                                                        State, City<br />
+                                                        Region, Postal Code<br />
+                                                        ctr@example.com
+                                                    </address>
+                                                </div>
+                                                <!-- END Client Info -->
                                             </div>
-                                        </td>
-                                        <td class="d-none d-lg-table-cell text-center text-sm">
+                                            <!-- END Invoice Info -->
+                                            <table class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="text-center" style="width: 60px"></th>
+                                                        <th>產品名稱</th>
+                                                        <th class="text-center" style="width: 90px">數量</th>
+                                                        <th class="text-end" style="width: 120px">單價</th>
+                                                        <th class="text-end" style="width: 120px">小計</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <!-- 這邊開始是一格商品 -->
+                                                    <tr v-for="arry in item.orderItemList" :key="arry.orderItemId"
+                                                        :value='item.value' :label="item.label">
+                                                        <td class="text-center">{{ arry.orderItemId }}</td>
+                                                        <td>
+                                                            <p class="fw-semibold mb-1">{{ arry.productName }}</p>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <span class="badge rounded-pill bg-primary">{{ arry.quantity
+                                                            }}</span>
+                                                        </td>
+                                                        <td class="text-end">{{ arry.amount / arry.quantity }}</td>
+                                                        <td class="text-end">{{ arry.amount }}</td>
+                                                    </tr>
 
-                                            {{ item.payment }}
+                                                    <!-- 這邊是總價 -->
+                                                    <tr>
+                                                        <td colspan="4" class="fw-semibold text-end">總價</td>
+                                                        <td class="text-end">{{ item.payment }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4" class="fw-semibold text-end">運費</td>
+                                                        <td class="text-end">0</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4" class="fw-semibold text-end">狀態</td>
+                                                        <td class="text-end">{{ item.status }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td colspan="4"
+                                                            class="fw-bold text-uppercase text-end bg-body-light">
+                                                            訂單價格
+                                                        </td>
+                                                        <td class="fw-bold text-end bg-body-light">{{ item.payment }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                                <hr>
+                                                <hr>
+                                            </table>
 
-                                        </td>
-                                        <td class="d-none d-lg-table-cell font-size-xl text-center fw-semibold">
-                                            {{ item.updateTime }}
-                                        </td>
-                                        <td class="font-size-xl text-center fw-semibold">
-                                            <span
-                                                class="fw-semibold d-inline-block py-1 px-3 rounded-pill bg-success-light text-success fs-sm">
-                                                {{ item.status }}
-                                            </span>
-                                        </td>
-                                    </tr>
-                                    <!-- 到這裡是一格 -->
-                                </tbody>
-                                <!-- 這裡是分頁 -->
-                            </table>
+                                        </div>
+                                        <!-- END Table -->
+
+                                        <!-- Footer -->
+                                        <p class="fs-sm text-muted text-center">
+                                            下次再來買
+                                        </p>
+                                        <!-- END Footer -->
+                                    </div>
+                                </BaseBlock>
+                                <!-- END Invoice -->
+                            </div>
+                            <!-- END Page Content -->
                         </div>
                     </div>
                     <!-- END Photos -->
@@ -334,104 +540,4 @@ getAxios();
         </BaseBlock>
         <!-- END Results -->
     </div>
-    <!-- Page Content -->
-    <div class="content content-boxed">
-        <!-- Invoice -->
-        <BaseBlock title="#INV0625">
-            <template #options>
-                <button type="button" class="btn-block-option" @click="printPage()">
-                    <i class="si si-printer me-1"></i> Print Invoice
-                </button>
-            </template>
-
-            <div class="p-sm-4 p-xl-7">
-                <!-- Invoice Info -->
-                <div class="row mb-4">
-                    <!-- Company Info -->
-                    <div class="col-6 fs-sm">
-                        <p class="h3">Company</p>
-                        <address>
-                            Street Address<br />
-                            State, City<br />
-                            Region, Postal Code<br />
-                            ltd@example.com
-                        </address>
-                    </div>
-                    <!-- END Company Info -->
-
-                    <!-- Client Info -->
-                    <div class="col-6 text-end fs-sm">
-                        <p class="h3">Client</p>
-                        <address>
-                            Street Address<br />
-                            State, City<br />
-                            Region, Postal Code<br />
-                            ctr@example.com
-                        </address>
-                    </div>
-                    <!-- END Client Info -->
-                </div>
-                <!-- END Invoice Info -->
-
-                <!-- Table -->
-                <div class="table-responsive push">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th class="text-center" style="width: 60px"></th>
-                                <th>產品名稱</th>
-                                <th class="text-center" style="width: 90px">數量</th>
-                                <th class="text-end" style="width: 120px">單價</th>
-                                <th class="text-end" style="width: 120px">小計</th>
-                            </tr>
-                        </thead>
-                        <tbody v-for="item in orderList" :key="item.orderId" :value='item.value' :label="item.label">
-                            <!-- 這邊開始是一格商品 -->
-                            <tr v-for="arry in item.orderItemList" :key="arry.orderItemId" :value='item.value'
-                                :label="item.label">
-                                <td class="text-center">{{ arry.orderItemId }}</td>
-                                <td>
-                                    <p class="fw-semibold mb-1">{{ arry.productName }}</p>
-                                </td>
-                                <td class="text-center">
-                                    <span class="badge rounded-pill bg-primary">{{ arry.quantity }}</span>
-                                </td>
-                                <td class="text-end">{{ arry.amount / arry.quantity }}</td>
-                                <td class="text-end">{{ arry.amount }}</td>
-                            </tr>
-
-                            <!-- 這邊是總價 -->
-                            <tr>
-                                <td colspan="4" class="fw-semibold text-end">總價</td>
-                                <td class="text-end">{{ item.payment }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="4" class="fw-semibold text-end">運費</td>
-                                <td class="text-end">0</td>
-                            </tr>
-                            <tr>
-                                <td colspan="4" class="fw-semibold text-end">狀態</td>
-                                <td class="text-end">{{ item.status }}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="4" class="fw-bold text-uppercase text-end bg-body-light">
-                                    訂單價格
-                                </td>
-                                <td class="fw-bold text-end bg-body-light">{{ item.payment }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <!-- END Table -->
-
-                <!-- Footer -->
-                <p class="fs-sm text-muted text-center">
-                    下次再來買
-                </p>
-                <!-- END Footer -->
-            </div>
-        </BaseBlock>
-        <!-- END Invoice -->
-    </div>
-    <!-- END Page Content -->
 </template>
