@@ -112,7 +112,7 @@ public class PosDaoImpl implements PosDao {
             cal.add(Calendar.DAY_OF_WEEK, 14);
         }
         if(posRequest.getValidDate().name() == "開通中"){
-            cal.add(Calendar.DAY_OF_YEAR, 1);
+            cal.add(Calendar.MONTH, 12);
         }
 
         ts = new Timestamp(cal.getTime().getTime());
