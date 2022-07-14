@@ -45,34 +45,41 @@ public class PostController {
 	@PostMapping("/PostNew")
 	public ResponseEntity<Boolean> createPostImage(@RequestParam(value = "title") String title,
 			@RequestParam(value = "postedText") String postedText,
-			@RequestPart(value = "postImage") MultipartFile postImage, Post post, HttpServletRequest request)
+			@RequestParam(value = "postImgurl") String postImgurl,
+			@RequestParam(value = "postCategory") String postCategory,Post post)
 			throws IOException {
 
 		String imageUrl = null;
-		String fileFolderName = "testimages/PostsPhoto";
-		String defaultImgurl = "images/PostsPhoto/defaultPostImage.jpg";
+//		String fileFolderName = "testimages/PostsPhoto";
+//		String defaultImgurl = "images/PostsPhoto/defaultPostImage.jpg";
 
-		if (postImage.getSize() != 0) {
-			// byte[] bytes = picture.getBytes();
-			String filename = postImage.getOriginalFilename();
-			String suffix = filename.substring(filename.lastIndexOf('.'));// 副檔名
-			String newFileName = new Date().getTime() + suffix;// 新的檔名
-
-			String saveDir = request.getSession().getServletContext().getRealPath("/") + fileFolderName;
-			File saveFileDir = new File(saveDir);
-
-			if (!saveFileDir.exists()) {
-				saveFileDir.mkdirs();
-			}
-			System.out.println(saveDir);
-
-			imageUrl = fileFolderName + "/" + newFileName; // 儲存資料庫路徑
-			System.out.println(imageUrl);
-			File headImage = new File(saveDir, newFileName);
-			postImage.transferTo(headImage);
-
-		} else {
-			imageUrl = defaultImgurl;
+//		if (postImage.getSize() != 0) {
+//			// byte[] bytes = picture.getBytes();
+//			String filename = postImage.getOriginalFilename();
+//			String suffix = filename.substring(filename.lastIndexOf('.'));// 副檔名
+//			String newFileName = new Date().getTime() + suffix;// 新的檔名
+//
+//			String saveDir = request.getSession().getServletContext().getRealPath("/") + fileFolderName;
+//			File saveFileDir = new File(saveDir);
+//
+//			if (!saveFileDir.exists()) {
+//				saveFileDir.mkdirs();
+//			}
+//			System.out.println(saveDir);
+//
+//			imageUrl = fileFolderName + "/" + newFileName; // 儲存資料庫路徑
+//			System.out.println(imageUrl);
+//			File headImage = new File(saveDir, newFileName);
+//			postImage.transferTo(headImage);
+//
+//		} else {
+//			imageUrl = defaultImgurl;
+//		}
+		
+		if (!postImgurl.isEmpty()) {
+			imageUrl = postImgurl;
+		}else {
+			imageUrl ="http://localhost:8088/defaultPostImg.jpg";
 		}
 
 		ZoneId zoneId = ZoneId.systemDefault();
@@ -85,6 +92,8 @@ public class PostController {
 		post.setImgurl(imageUrl);
 		post.setPostedDate(date);
 		post.setPostStatus("待審核");
+		post.setPostCategory(postCategory);
+		System.out.println(imageUrl);
 
 		Boolean addresult = postService.addPostImage(post);
 		return ResponseEntity.status(HttpStatus.CREATED).body(addresult);
@@ -285,35 +294,18 @@ public class PostController {
 
 	@PostMapping(path = "/editPost/{id}")
 	public ResponseEntity<Boolean> UpdatePostImage(@RequestParam(value = "title") String title,
+			@RequestParam(value = "postImgurl") String postImgurl,
 			@RequestParam(value = "postedText") String postedText,
-			@RequestPart(value = "postImage") MultipartFile postImage, @PathVariable("id") int id, Post post,
-			HttpServletRequest request) throws IOException {
-		String imageUrl = post.getImgurl();
-		String fileFolderName = "testimages/PostsPhoto";
-		String defaultImgurl = "images/PostsPhoto/defaultPostImage.jpg";
-
-		if (postImage.getSize() != 0) {
-			// byte[] bytes = picture.getBytes();
-			String filename = postImage.getOriginalFilename();
-			String suffix = filename.substring(filename.lastIndexOf('.'));// 副檔名
-			String newFileName = new Date().getTime() + suffix;// 新的檔名
-
-			String saveDir = request.getSession().getServletContext().getRealPath("/") + fileFolderName;
-			File saveFileDir = new File(saveDir);
-
-			if (!saveFileDir.exists()) {
-				saveFileDir.mkdirs();
-			}
-			System.out.println(saveDir);
-
-			imageUrl = fileFolderName + "/" + newFileName; // 儲存資料庫路徑
-			System.out.println(imageUrl);
-			File headImage = new File(saveDir, newFileName);
-			postImage.transferTo(headImage);
-
-		} else {
-			imageUrl = defaultImgurl;
+			@RequestParam(value = "postCategory") String postCategory, @PathVariable("id") Integer id, Post post
+			) throws IOException {
+		
+		String imageUrl = null;
+		if (!postImgurl.isEmpty()) {
+			imageUrl = postImgurl;
+		}else {
+			imageUrl ="http://localhost:8088/defaultPostImg.jpg";
 		}
+		
 		ZoneId zoneId = ZoneId.systemDefault();
 		LocalDateTime localDateTime = LocalDateTime.now();
 		ZonedDateTime zdt = localDateTime.atZone(zoneId);
