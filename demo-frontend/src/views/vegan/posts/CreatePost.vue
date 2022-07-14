@@ -42,6 +42,9 @@ const image = ref({
   imageUrl: null,
 });
 
+const user = JSON.parse(window.localStorage.getItem("access-admin"));
+const userId = user.data.user.userId;
+
 // CKEditor 5 variables
 let ckeditor = CKEditor.component;
 
@@ -125,9 +128,10 @@ function sendPost(title, postedText, postCategory) {
   axios
     .postForm(`http://${url}/PostNew`, {
       title: title,
-      postImgurl: image.value.imageUrl,
+      imgurl: image.value.imageUrl,
       postedText: postedText,
       postCategory: postCategory,
+      userId:userId
     })
     .then((res) => {
       console.log(res);

@@ -29,7 +29,13 @@ const resPostImgurl = ref();
 const resfavData = ref();
 const reslikeData = ref();
 const resLikeCount = ref();
+const resWriterName = ref();
 const resPostStatus = ref("待審核");
+const writerId = null;
+
+
+
+
 
 const route = useRoute();
 const user = JSON.parse(window.localStorage.getItem("access-admin"));
@@ -50,6 +56,19 @@ const getAxios = function () {
       resPostDate.value = res.data.postedDate;
       resPostImgurl.value = res.data.imgurl;
       resLikeCount.value = res.data.likeCount;
+      let writerId = JSON.parse(JSON.stringify(res.data.userId));
+      console.log(res);
+      console.log(writerId);
+      
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+    axios
+    .get(`http://${url}/users/${writerId}`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+     resWriterName.value = res.data.userName;
       console.log(res);
     })
     .catch((error) => {
@@ -256,7 +275,7 @@ u {
                       />
                     </div>
                     <div class="flex-grow-1">
-                      <div class="fw-semibold">Laura Carr</div>
+                      <div class="fw-semibold">{{resWriterName}}</div>
                       <div class="fw-normal text-muted">Copywriter</div>
                     </div>
                   </a>
