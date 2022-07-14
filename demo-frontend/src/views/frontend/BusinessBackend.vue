@@ -1,9 +1,13 @@
 <script setup>
 // 已經宣告但從未使用過的Value (請勿刪除)
 // eslint-disable-next-line no-unused-vars
-import { reactive, ref } from "vue";
+import { reactive, ref, computed } from "vue";
+import useVuelidate from "@vuelidate/core";
+import { required, between } from "@vuelidate/validators";
 import axios from "axios";
 import moment from 'moment';
+import Swal from "sweetalert2";
+import { useRouter } from "vue-router";
 
 // vue-chart-3, for more info and examples you can check out https://vue-chart-3.netlify.app/ and http://www.chartjs.org/docs/ -->
 // import { LineChart, BarChart } from "vue-chart-3";
@@ -25,6 +29,8 @@ import moment from 'moment';
 
 // Helper variables
 const orderSearch = ref(false);
+
+const router = useRouter();
 
 // Chart Earnings data
 // const earningsData = reactive({
@@ -284,7 +290,10 @@ const orderSearch = ref(false);
 
 //預設傳值伺服器與[params]
 const business = JSON.parse(window.localStorage.getItem("access-business"));
+const restaurantApply = JSON.parse(window.localStorage.getItem("restaurantApply"));
 const businessID = business.data.business.businessId;
+const busineesUUID = business.data;
+
 const url = "localhost:8088";
 //接收的資料ref
 //當日統計
@@ -294,7 +303,7 @@ const CountTotal = ref(); //全部人數
 const CountGroup = ref(); //全部組數
 
 const resData = ref();
-
+const powUUID = ref();
 const getReserveList = function () {
   axios.get(`http://${url}/${businessID}/reserves`)
     .then((res) => {
@@ -309,11 +318,156 @@ const getReserveList = function () {
       CountGroup.value = total; // 取得組數
       resData.value = res.data;
     })
-
 }
 
-getReserveList();
+const getPos = function () {
+  axios.get(`http://${url}/pos/business/${businessID}`)
+    .then((res) => {
+      console.log(res.data);
+      powUUID.value = res.data.uuid;
+    })
+}
 
+// Input state variables
+const state = reactive({
+  restaurantName: null,
+  restaurantTel: null,
+  restaurantAddress: null,
+  restaurantBusinessHours: null,
+  restaurantScore: null,
+  imageUrl: null,
+});
+
+const image = ref({
+  imageUrl: null,
+});
+
+
+// Set default properties
+let toast = Swal.mixin({
+  buttonsStyling: false,
+  target: "#page-container",
+  customClass: {
+    confirmButton: "btn btn-success m-1",
+    cancelButton: "btn btn-danger m-1",
+    input: "form-control",
+  },
+});
+
+//檔案上傳方法，寫入後端後會吐回加入UUID之名稱，再回傳data寫入ref()裏
+function fileUpload() {
+  var files = document.getElementById("input").files;
+  var params = new FormData();
+  params.append("file", files[0]);
+  console.log(params.get("file"));
+  axios.post("http://localhost:8088/fileUpload", params).then((res) => {
+    image.value = res.data;
+    //印出路徑
+    console.log(image);
+  });
+}
+
+// Validation rules
+const rules = computed(() => {
+  return {
+    restaurantName: {
+      required
+    },
+    restaurantTel: {
+      required
+    },
+    restaurantAddress: {
+      required
+    },
+    restaurantBusinessHours: {
+      required
+    },
+    restaurantScore: {
+      required,
+      between: between(0, 5),
+    },
+  };
+});
+
+// Use vuelidate
+const v$ = useVuelidate(rules, state);
+
+// On form submission
+async function onSubmit() {
+  const result = await v$.value.$validate();
+
+  if (!result) {
+    // notify user form is invalid
+    return;
+  }
+
+  // perform async actions
+}
+
+function createRestaurant() {
+  toast
+    .fire({
+      title: "資料是否都確認完畢?",
+      icon: "warning",
+      showCancelButton: true,
+      customClass: {
+        confirmButton: "btn btn-danger m-1",
+        cancelButton: "btn btn-secondary m-1",
+      },
+      confirmButtonText: "送出",
+      cancelButtonText: "取消",
+      html: false,
+      preConfirm: () => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 50);
+        });
+      },
+    })
+    .then((result) => {
+      const restaurant = {
+        restaurantName: state.restaurantName,
+        restaurantTel: state.restaurantTel,
+        restaurantAddress: state.restaurantAddress,
+        restaurantCategory: state.restaurantCategory,
+        restaurantType: state.restaurantType,
+        restaurantBusinessHours: state.restaurantBusinessHours,
+        restaurantScore: state.restaurantScore,
+        imageUrl: image.value.imageUrl,
+      };
+      //send request to server
+      if (result.value) {
+        localStorage.setItem("restaurantApply", JSON.stringify(restaurant));
+        toast.fire({
+          title: "已為您送出，請等待審核",
+          timer: 800,
+          icon: "success"
+        });
+      } else if (result.dismiss === "cancel") {
+        toast.fire({
+          title: "已取消",
+          timer: 800,
+          icon: "error"
+        });
+      }
+      window.setTimeout(function () {
+        // router.push({ name: "index" });
+        router.go(0)
+      }, 100);
+    });
+
+
+  // axios.post("http://localhost:8088/restaurants", restaurant).then(() => {
+  //   window.location = "#/backend/restaurants/restaurantInfo";
+  // });
+}
+
+
+
+getReserveList();
+getPos();
+console.log(restaurantApply);
 </script>
 
 <template>
@@ -369,7 +523,7 @@ getReserveList();
   <!-- END Hero -->
 
   <!-- Page Content -->
-  <div class="content">
+  <div v-if="busineesUUID === powUUID" class="content">
     <!-- Overview -->
     <div class="row items-push">
       <div class="col-sm-6 col-xxl-3">
@@ -580,5 +734,142 @@ getReserveList();
     <!-- END Recent Orders -->
   </div>
   <!-- END Page Content -->
+
+  <div v-else-if="restaurantApply == null" class="content">
+    <div class="row justify-content-center push">
+      <span class="col-md-8 col-lg-6 col-xl-4">
+        <BaseBlock title="服務說明" class="h-25 mb-5">
+          <p class="lead">
+            您好，請接續填寫您的詳細餐廳資訊。<br />
+            送交後會為您審核結果。
+          </p>
+        </BaseBlock>
+        <BaseBlock title="瞭解基本規範" class="h-70 mb-2">
+          <p class="lead">
+            為確保 <strong>愛蔬網</strong> 上的商家資訊品質優良，請遵循這套專為當地商家制定的規範。<br />
+            按照這些規範行事有助於避免一些常見問題。<br />
+            <br />
+            為充分提高商家檔案管理成效：<br />
+            <br />
+            商家名稱必須與商家透過招牌、文具和其他品牌行銷方式宣傳的實際名稱相同，維持一致的形象。<br />
+            確認地址和/或服務範圍正確無誤。<br />
+            選擇用來說明整體核心業務的類別時寧少勿多，精確為上。<br />
+            每間商家只能有一個商家檔案，否則商家資訊可能無法在 Google 地圖和 <strong>愛蔬網</strong> 搜尋上正常顯示。<br />
+            品牌、機構、藝術工作者和其他純網路業務不能使用商家檔案。
+          </p>
+        </BaseBlock>
+      </span>
+      <span class="col-md-8 col-lg-6 col-xl-4">
+        <form @submit.prevent="onSubmit" @submit="createRestaurant" id="forms">
+          <BaseBlock title="新增餐廳表單" content-full>
+            <div class="row push">
+              <div class="col-lg-4">
+                <p class="fs-sm text-muted">請填寫完整資訊</p>
+              </div>
+              <div class="col-lg-8 col-xl-5">
+                <!-- 餐廳名稱開始 -->
+                <div class="mb-4">
+                  <label class="form-label" for="val-restaurantName">餐廳名稱<span class="text-danger">*</span></label>
+                  <input type="text" id="val-restaurantName" class="form-control" :class="{
+                    'is-invalid': v$.restaurantName.$errors.length,
+                  }" v-model="state.restaurantName" @blur="v$.restaurantName.$touch" placeholder="請輸入餐廳名稱" />
+                  <div v-if="v$.restaurantName.$errors.length" class="invalid-feedback animated fadeIn">
+                    請輸入餐廳名稱
+                  </div>
+                </div>
+                <!-- 電話開始 -->
+                <div class="mb-4">
+                  <label class="form-label" for="val-restaurantTel">電話<span class="text-danger">*</span></label>
+                  <input type="text" id="val-restaurantTel" class="form-control" :class="{
+                    'is-invalid': v$.restaurantTel.$errors.length,
+                  }" placeholder="02-23448743" v-model="state.restaurantTel" @blur="v$.restaurantTel.$touch" />
+                  <div v-if="v$.restaurantTel.$errors.length" class="invalid-feedback animated fadeIn">
+                    請輸入數字
+                  </div>
+                </div>
+                <!-- 地址開始 -->
+                <div class="mb-4">
+                  <label class="form-label" for="val-restaurantAddress">地址<span class="text-danger">*</span></label>
+                  <input type="text" id="val-restaurantAddress" class="form-control" :class="{
+                    'is-invalid': v$.restaurantAddress.$errors.length,
+                  }" placeholder="桃園市中壢區.." v-model="state.restaurantAddress" @blur="v$.restaurantAddress.$touch" />
+                  <div v-if="v$.restaurantAddress.$errors.length" class="invalid-feedback animated fadeIn">
+                    請輸入完整地址
+                  </div>
+                </div>
+                <!-- 餐廳類型開始 -->
+                <div class="mb-4">
+                  <label class="form-label" for="example-select">選擇餐廳類型</label>
+                  <select class="form-select" id="example-select" name="example-select"
+                    v-model="state.restaurantCategory">
+                    <option selected disabled value="">請選擇</option>
+                    <option value="中式">中式</option>
+                    <option value="義式">義式</option>
+                    <option value="韓式">韓式</option>
+                    <option value="日式">日式</option>
+                    <option value="美式">美式</option>
+                    <option value="印度">印度</option>
+                    <option value="簡餐">簡餐</option>
+                    <option value="麵食">麵食</option>
+                    <option value="自助餐">自助餐</option>
+                  </select>
+                </div>
+                <!-- 素食種類開始 -->
+                <div class="mb-4">
+                  <label class="form-label" for="example-select">選擇素食種類</label>
+                  <select class="form-select" id="example-select" name="example-select" v-model="state.restaurantType">
+                    <option selected disabled value="">請選擇</option>
+                    <option value="全素">全素</option>
+                    <option value="蛋素">蛋素</option>
+                    <option value="奶素">奶素</option>
+                    <option value="蛋奶素">蛋奶素</option>
+                    <option value="五辛素">五辛素</option>
+                  </select>
+                </div>
+                <!-- 營業時間 -->
+                <div class="mb-4">
+                  <label class="form-label" for="example-select">營業時間<span class="text-danger">*</span></label>
+                  <input type="textarea" id="val-restaurantBusinessHours" class="form-control" :class="{
+                    'is-invalid': v$.restaurantBusinessHours.$errors.length,
+                  }" v-model="state.restaurantBusinessHours" @blur="v$.restaurantBusinessHours.$touch" />
+                  <div v-if="v$.restaurantBusinessHours.$errors.length" class="invalid-feedback animated fadeIn">
+                    此項為必填
+                  </div>
+                </div>
+                <!-- 評分開始 -->
+                <div class="mb-4">
+                  <label class="form-label" for="val-restaurantScore">評分<span class="text-danger">*</span></label>
+                  <input type="text" id="val-restaurantScore" class="form-control" :class="{
+                    'is-invalid': v$.restaurantScore.$errors.length,
+                  }" placeholder="0.0-5.0" v-model="state.restaurantScore" @blur="v$.restaurantScore.$touch" />
+                  <div v-if="v$.restaurantScore.between" class="invalid-feedback animated fadeIn">
+                    必須輸入0-5的數字
+                  </div>
+
+                </div>
+                <!-- 圖片上傳開始-->
+                <div>
+                  <label class="form-label" for="val-stock">圖片 </label>
+                  <input class="form-control" id="input" type="file" ref="myFile" @change="fileUpload()" />
+                  <br />
+                  <!-- 根據回傳值印出圖片 -->
+                  <img :src="image.imageUrl" style="max-width:500px;width:100%" />
+                  <br />
+                </div>
+
+                <div class="row items-push">
+                  <div class="col-lg-7 offset-lg-4">
+                    <button type="submit" class="btn btn-alt-primary">送出</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </BaseBlock>
+        </form>
+      </span>
+    </div>
+  </div>
+
+  <div v-else class="content"> 123 </div>
 </template>
 

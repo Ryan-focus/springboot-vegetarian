@@ -80,6 +80,18 @@ public class PosController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @GetMapping("/pos/business/{businessId}")
+    public ResponseEntity<Pos> getPosByBusinessId(@PathVariable Integer businessId){
+        Pos pos = posService.getPosByBusinessId(businessId);
+
+        if(pos != null){
+            return ResponseEntity.status(HttpStatus.OK).body(pos);
+        }else{
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
+
     @PutMapping("/pos/{posId}")
     public ResponseEntity<Pos> updateStatus(@PathVariable Integer posId,
                                                  @RequestBody @Valid PosRequest posRequest){
