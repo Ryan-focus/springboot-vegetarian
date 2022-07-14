@@ -290,9 +290,9 @@ const router = useRouter();
 
 //預設傳值伺服器與[params]
 const business = JSON.parse(window.localStorage.getItem("access-business"));
-const restaurantApply = JSON.parse(window.localStorage.getItem("restaurantApply"));
 const businessID = business.data.business.businessId;
-const busineesUUID = business.data;
+const restaurantApply = JSON.parse(window.localStorage.getItem("restaurantApply" + businessID));
+const busineesUUID = business.data.business.uuid;
 
 const url = "localhost:8088";
 //接收的資料ref
@@ -307,7 +307,6 @@ const powUUID = ref();
 const getReserveList = function () {
   axios.get(`http://${url}/${businessID}/reserves`)
     .then((res) => {
-      console.log(res);
       var total = 0;
       var people = 0;
       for (let i = 0; i <= res.data.length - 1; i++) {
@@ -438,7 +437,7 @@ function createRestaurant() {
       };
       //send request to server
       if (result.value) {
-        localStorage.setItem("restaurantApply", JSON.stringify(restaurant));
+        localStorage.setItem("restaurantApply" + businessID, JSON.stringify(restaurant));
         toast.fire({
           title: "已為您送出，請等待審核",
           timer: 800,
@@ -467,7 +466,6 @@ function createRestaurant() {
 
 getReserveList();
 getPos();
-console.log(restaurantApply);
 </script>
 
 <template>
