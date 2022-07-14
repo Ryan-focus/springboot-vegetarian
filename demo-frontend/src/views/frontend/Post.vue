@@ -203,6 +203,7 @@ function findPost(id) {
                 <img :src="item.imgurl"
                   class="card-img-top"             
                   alt="Card image cap"
+                  width="400" height="300"
                 />
                 <a href="#!">
                   <div class="mask rgba-white-slight"></div>

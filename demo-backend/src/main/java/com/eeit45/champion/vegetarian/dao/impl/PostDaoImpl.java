@@ -27,8 +27,8 @@ public class PostDaoImpl implements PostDao {
 	// 新增文章&圖片
 	public boolean addPostImage(Post post) {
 
-		String sql = "INSERT INTO post ( title, postedDate, postedText, imgUrl, postStatus)"
-				+ "VALUES (:title, :postedDate, :postedText, :imgUrl, :postStatus)";
+		String sql = "INSERT INTO post ( title, postedDate, postedText, imgUrl, postStatus,postCategory,userId)"
+				+ "VALUES (:title, :postedDate, :postedText, :imgUrl, :postStatus,:postCategory, :userId )";
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("title", post.getTitle());
@@ -36,6 +36,9 @@ public class PostDaoImpl implements PostDao {
 		map.put("postedText", post.getPostedText());
 		map.put("imgUrl", post.getImgurl());
 		map.put("postStatus", post.getPostStatus());
+		map.put("postCategory", post.getPostCategory());
+		map.put("userId", post.getUserId());
+		
 
 		namedParameterJdbcTemplate.update(sql, map);
 
@@ -51,7 +54,6 @@ public class PostDaoImpl implements PostDao {
 
 		String SQL = "DELETE from post where postId = :postId ";
 		namedParameterJdbcTemplate.update(SQL, map);
-		System.out.println("Deleted Record with ID = " + id);
 		return true;
 
 	}
@@ -59,7 +61,7 @@ public class PostDaoImpl implements PostDao {
 	// 更新文章
 	public boolean updatePost(Post post) {
 
-		String sql = "UPDATE post SET title = :title, postedText = :postedText , imgUrl = :imgUrl"
+		String sql = "UPDATE post SET title = :title, postedText = :postedText , imgUrl = :imgUrl ,postCategory = :postCategory "
 				+ " WHERE postId = :postId ";
 
 		Map<String, Object> map = new HashMap<>();
@@ -68,7 +70,7 @@ public class PostDaoImpl implements PostDao {
 		// map.put("postedDate", post.getPostedDate());
 		map.put("postedText", post.getPostedText());
 		map.put("imgUrl", post.getImgurl());
-		map.put("postStatus", post.getPostStatus());
+		map.put("postCategory", post.getPostCategory());
 
 		namedParameterJdbcTemplate.update(sql, map);
 
@@ -195,7 +197,6 @@ public class PostDaoImpl implements PostDao {
 
 		
 		namedParameterJdbcTemplate.update(sql, map);
-		System.out.println("Deleted Record with ID = " + pid);
 		return true;
 
 	}
@@ -211,7 +212,6 @@ public class PostDaoImpl implements PostDao {
 
 			
 			namedParameterJdbcTemplate.update(sql, map);
-			System.out.println("Deleted Record with ID = " + pid);
 			return true;
 
 		}

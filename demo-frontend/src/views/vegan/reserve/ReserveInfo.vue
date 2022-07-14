@@ -32,6 +32,7 @@ const resData = ref();
 const resImg = ref();
 const getSingleData = ref();
 const posId = ref();
+const validate = ref();
 
 const getImg = function () {
 
@@ -72,6 +73,7 @@ function getSingle(prams) {
       console.log(res);
       posId.value = res.data.posId;
       getSingleData.value = res.data.posBusinessList[0].businessName;
+      validate.value = res.data.validDate;
     })
     .catch((error) => {
       console.log(error, "失敗");
@@ -137,7 +139,6 @@ function updateStatus(number) {
   toast
     .fire({
       title: "確定是否要送出審核?",
-      // text: "更新後不能返回",
       icon: "warning",
       showCancelButton: true,
       customClass: {
@@ -160,23 +161,35 @@ function updateStatus(number) {
       //send request to server
       if (result.value) {
         const pos = {
-          payment: this.payment,
-          status: this.status,
+          validDate: this.validate,
         };
         //執行put方法
         axios
           .put(`http://${url}/pos/${number}`, pos)
           .then(() => {
-            toast.fire("更新成功!", "", "success");
+            toast.fire({
+              title: "更新成功",
+              timer: 800,
+              icon: "success"
+            });
             // console.log(order);
             getAxios();
 
           })
           .catch((error) => {
+            toast.fire({
+              title: "更新失敗",
+              timer: 800,
+              icon: "error"
+            });
             console.log(error, "失敗");
           });
       } else if (result.dismiss === "cancel") {
-        toast.fire("更新失敗", "", "error");
+        toast.fire({
+          title: "更新失敗",
+          timer: 800,
+          icon: "error"
+        });
       }
     });
 }
@@ -432,11 +445,10 @@ th.sort {
                 <!-- 審核商家的option -->
                 <div class="mb-3">
                   <label class="form-label" for="example-select">審核商家狀態</label>
-                  <select class="form-select" id="example-select" name="example-select">
-                    <option selected></option>
+                  <select class="form-select" id="example-select" name="example-select" v-model="validate">
+                    <option selected>{{ validate }}</option>
                     <option value="審核未過">審核未過</option>
-                    <option value="試用期7日">試用期7日</option>
-                    <option value="試用期14日">試用期14日</option>
+                    <option value="試用期">試用期</option>
                     <option value="開通中">開通中</option>
                   </select>
                 </div>

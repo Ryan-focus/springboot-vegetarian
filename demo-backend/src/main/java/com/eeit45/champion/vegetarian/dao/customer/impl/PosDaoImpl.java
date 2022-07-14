@@ -18,9 +18,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.util.*;
 
 @Component
 public class PosDaoImpl implements PosDao {
@@ -100,18 +99,34 @@ public class PosDaoImpl implements PosDao {
     }
 
     @Override
-    public void updateStatus(Integer posId, PosRequest posRequest) {
-        String sql = "UPDATE pos SET UUID = :UUID, validDate = :validDate WHERE  posId = :posId ";
+    public void updateStatus(Integer posId,Integer businessId,  PosRequest posRequest) {
+        String sql = "UPDATE pos SET businessId = :businessId , validDate = :validDate,expiryDate = :expiryDate,  UUID =:UUID " +
+                " WHERE posId = :posId ";
+
+        //時間邏輯判斷
+        Date now = new Date();
+        Timestamp ts = new Timestamp(now.getTime());
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(ts);
+        if(posRequest.getValidDate().name() == "試用期"){
+            cal.add(Calendar.DAY_OF_WEEK, 14);
+        }
+        if(posRequest.getValidDate().name() == "開通中"){
+            cal.add(Calendar.MONTH, 12);
+        }
+
+        ts = new Timestamp(cal.getTime().getTime());
 
         Map<String, Object> map = new HashMap<>();
 
-        sql = sql + setStatusTransferTime(sql, posRequest);
-
+        map.put("businessId", businessId);
+        map.put("validDate",posRequest.getValidDate().name());
+        map.put("expiryDate", ts);
         map.put("UUID" , posRequest.getUUID());
-        map.put("validDate",posRequest.getValidDate().toString());
         map.put("posId" , posId);
 
         namedParameterJdbcTemplate.update(sql, map );
+
     }
 
     @Override
@@ -138,7 +153,9 @@ public class PosDaoImpl implements PosDao {
         map.put("businessId", businessId);
         map.put("validDate", posRequest.getValidDate().name());
 
-        map.put("expiryDate", posRequest.getExpiryDate());
+        Date now = new Date();
+        Timestamp timestamp = new Timestamp(now.getTime());
+        map.put("expiryDate", timestamp);
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -169,17 +186,5 @@ public class PosDaoImpl implements PosDao {
         map.put("offset", posQueryParams.getOffset());
 
         return namedParameterJdbcTemplate.query(sql,map , new PosRowMapper());
-    }
-
-
-    private String setStatusTransferTime( String sql,PosRequest posRequest){
-
-        if(posRequest.getValidDate().name() == "開通中"){
-            sql = sql + " AND expiryDate = NOW() + INTERVAL 1 YEAR ";
-        }
-        if(posRequest.getValidDate().name() == "試用期"){
-            sql = sql + " AND expiryDate = NOW() + INTERVAL 14 DAY ";
-        }
-        return  sql;
     }
 }

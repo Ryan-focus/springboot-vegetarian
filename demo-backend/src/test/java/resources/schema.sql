@@ -175,7 +175,8 @@ CREATE TABLE post(
                      postStatus NVARCHAR(256),
                      postAuditDate DATETIME,
                      postCategory NVARCHAR(256),
-                     likeCount INT default 0
+                     likeCount INT default 0,
+                     userId INT
 );
 
 -- favorite post

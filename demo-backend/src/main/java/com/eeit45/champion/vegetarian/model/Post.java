@@ -31,10 +31,20 @@ public class Post {
 	private String postCategory;
 	
 	private Integer likeCount;
+	
+	private Integer userId;
 
 //	    private MultipartFile postImage;
 
 	
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 
 	public Post() {
 

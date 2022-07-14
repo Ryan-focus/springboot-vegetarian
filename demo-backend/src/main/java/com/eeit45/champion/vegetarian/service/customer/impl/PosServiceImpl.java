@@ -103,7 +103,7 @@ public class PosServiceImpl implements PosService {
             token = token.replaceAll("-","");
             businessDao.updateStatus(pos.getBusinessId(),posRequest.getValidDate().toString() , token);
             posRequest.setUUID(token);
-            posDao.updateStatus(posId,posRequest);
+            posDao.updateStatus(posId,pos.getBusinessId() , posRequest);
         }
     }
 }
