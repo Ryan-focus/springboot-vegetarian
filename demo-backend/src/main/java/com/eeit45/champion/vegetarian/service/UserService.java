@@ -29,6 +29,8 @@ public interface UserService {
 	User login(LoginRequest loginRequest);
 	
 	User resetPassword(LoginRequest loginRequest);
+	
+	int updateImage(String base64DataString, int id);
 
 //	boolean isBanned(UserRequest userRequest);
 

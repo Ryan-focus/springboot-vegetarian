@@ -19,6 +19,7 @@ import BLayoutBackend from "@/BusinessLayouts/variations/Backend.vue";
 const Index = () => import("@/views/frontend/Index.vue");
 const Login = () => import("@/views/frontend/Login.vue");
 const UserRegister = () => import("@/views/frontend/Register.vue");
+const MemberArea = () => import("@/views/frontend/MemberArea.vue");
 const BusinessRegister = () => import("@/views/frontend/BusinessRegister.vue");
 const ShoppingCart = () => import("@/views/frontend/ShoppingCart.vue");
 const ShoppingOrder = () => import("@/views/frontend/ShoppingOrder.vue");
@@ -302,6 +303,11 @@ const routes = [
         path: "/user/register",
         name: "userRegister",
         component: UserRegister,
+      },
+      {
+        path: "/memberArea",
+        name: "MemberArea",
+        component: MemberArea,
       },
       {
         path: "/support/store",
@@ -1252,7 +1258,8 @@ router.beforeEach((to) => {
     !isLogin &&
     to.name !== "login" &&
     to.name !== "index" &&
-    to.name !== "userRegister"
+    to.name !== "userRegister" &&
+    to.name !== "MemberArea"
   ) {
     return { name: "login" };
   }

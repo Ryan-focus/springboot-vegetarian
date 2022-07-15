@@ -34,5 +34,7 @@ public interface UserDao {
 	void updateLastLoginTime(String account);
 
 	String resetPassword(String account);
+	
+	int updateImage(String base64DataString, int id);
 
 }

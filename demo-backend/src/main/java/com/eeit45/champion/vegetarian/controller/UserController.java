@@ -1,5 +1,7 @@
 package com.eeit45.champion.vegetarian.controller;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.eeit45.champion.vegetarian.dto.LoginRequest;
@@ -183,5 +186,27 @@ public class UserController {
     	}
     	return ResponseEntity.status(HttpStatus.OK).build();
     }
-
+    
+    @PostMapping("/user/uploadImage")
+    public ResponseEntity<User> uploadImage(@RequestParam("img") MultipartFile file, @RequestParam("id") int id){
+    	
+    	try {
+    		if(!file.isEmpty()) {
+    			byte[] bytes = file.getBytes();
+    			System.out.println(bytes);
+    			String base64DataString = Base64.getEncoder().encodeToString(bytes);
+    			System.out.println(base64DataString);
+    			System.out.println(id);
+    			userService.updateImage(base64DataString, id);
+    			return ResponseEntity.status(HttpStatus.OK).build();
+    		} else {
+    			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    		}
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    	}
+    	
+    }
+    
 }

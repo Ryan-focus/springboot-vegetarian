@@ -238,6 +238,18 @@ public class UserDaoImpl implements UserDao {
 		return pw;
 	}
 	
+	@Override
+	public int updateImage(String base64DataString, int id) {
+		String sql = "UPDATE vegandb.user SET userPic= :userPic WHERE userId= :userId";
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("userPic", base64DataString);
+		map.put("userId", id);
+		
+		return namedParameterJdbcTemplate.update(sql, map);
+		
+	}
+	
 	private String filteringSQL(String sql, Map<String, Object> map, UserQueryParams userQueryParams) {
 		
 		if (userQueryParams.getSearch() != null) {

@@ -125,4 +125,9 @@ public class UserServiceImpl implements UserService {
 		
 	}
 
+	@Override
+	public int updateImage(String base64DataString, int id) {
+		return userDao.updateImage(base64DataString, id);
+	}
+
 }
