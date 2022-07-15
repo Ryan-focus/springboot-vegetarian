@@ -4,7 +4,7 @@ import Swal from "sweetalert2";
 
 import axios from "axios";
 import moment from 'moment';
-
+import { useRouter } from "vue-router";
 
 // Set default properties
 let toast = Swal.mixin({
@@ -22,10 +22,11 @@ const url = "localhost:8088";
 //接收的資料ref
 const resData = ref();
 const total = ref();
-
+const resForumId = ref();
+const router = useRouter();
 //用reactive會無法及時反應所以用ref另外宣告
 const image = ref({
-  imageUrl: null,
+  forumImage: null,
 });
 
 
@@ -51,6 +52,23 @@ const getAxios = function () {
 //執行Axios
 
 getAxios();
+
+function showForum(number) {
+
+  router.push({ name: "Forum-page", params: { forumId: number } });
+
+}
+
++function getImage(forumId) {
+  axios
+    .get(`http://${url}/forums/${forumId}`)
+    .then((res) => {
+      image.value = res.data
+      console.log(image)
+    })
+
+
+}
 
 
 
@@ -94,8 +112,9 @@ getAxios();
 
       <div class="content content-full text-center">
         <!-- <div class="my-1"> -->
-        <h1 class="h1 text-white mb-3"><b><a href="# "> <img
-                src="https://www.thenewslens.com/assets/images/tnl/header/tnl_logo.svg" alt=""></a></b></h1>
+        <h1 class="h1 text-white mb-3"><b><a href="#/forumIndex"> <img
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTTC9ySsr0z9yrEKhnlg5Tns5vt6vqiGP8dsA&usqp=CAU"
+                alt=""></a></b></h1>
         <h3>
           <!-- <span class="text-white-75"><b>從超過 50 家精選餐廳中，探索您不知道的熱門素食。</b></span> -->
         </h3>
@@ -104,10 +123,27 @@ getAxios();
           <BaseBlock class="overflow-hidden">
             <template #content>
               <ul class="nav nav-tabs nav-tabs-block" role="tablist">
-                <li class="nav-item">
-                  <button type="button" class="nav-link active" id="search-projects-tab" data-bs-toggle="tab"
-                    data-bs-target="#search-projects" role="tab" aria-controls="search-projects" aria-selected="true">
-                    醉心文章
+                <li class="list-group-item list-group-item-success" style="width: auto;">
+                  <button type="button" class="btn btn-outline-success btn-block" id="search-projects-tab"
+                    data-bs-toggle="tab" data-bs-target="#search-projects" role="tab" aria-controls="search-projects"
+                    aria-selected="true" style="float:left;width: 279px;">
+                    健康
+                  </button>
+                  <button type="button" class="btn btn-outline-success btn-block" id="search-projects-tab"
+                    data-bs-toggle="tab" data-bs-target="#search-projects" role="tab" aria-controls="search-projects"
+                    aria-selected="true" style="float:left;width: 279px;">
+                    養身
+                  </button>
+
+                  <button type="button" class="btn btn-outline-success btn-block" id="search-projects-tab"
+                    data-bs-toggle="tab" data-bs-target="#search-projects" role="tab" aria-controls="search-projects"
+                    aria-selected="true" style="float:left;width: 279px;">
+                    環保
+                  </button>
+                  <button type="button" class="btn btn-outline-success btn-block" id="search-projects-tab"
+                    data-bs-toggle="tab" data-bs-target="#search-projects" role="tab" aria-controls="search-projects"
+                    aria-selected="true" style="float:left;width: 279px;">
+                    公益
                   </button>
                 </li>
                 <!-- <li class="nav-item">
@@ -133,9 +169,9 @@ getAxios();
                 <!-- Projects -->
                 <div class="tab-pane fade fade-up show active" id="search-projects" role="tabpanel"
                   aria-labelledby="search-projects-tab">
-                  <div class="fs-4 fw-semibold p-2 mb-4 border-start border-4 border-primary bg-body-light">
-                    <span class="text-primary fw-bold">{{ total }}</span> 醉心文章 found for
-                    <mark class="text-danger">HTML</mark>
+                  <div class="fs-4 fw-semibold p-2 mb-4  border-primary myforecolor {color:#198754; } ">
+                    <span class="text-primary fw-bold">目前文章數{{ total }}篇</span>
+                    <!-- <mark class="text-danger">HTML</mark> -->
                   </div>
                   <table class="table table-striped table-vcenter">
                     <!-- <thead>
@@ -151,11 +187,10 @@ getAxios();
                       </tr>
                     </thead> -->
                     <tbody>
-                      <tr tr v-for="(row, index)  in resData" :key="index">
+                      <tr tr v-for="(row, index)  in resData" :key="row.forumId">
                         <td class="col-md-6 col-lg-4 col-xl-3">
-                          <a href="#" :title="`${row.forumTitle}`">
-                            <img class="img-fluid" :src="`/assets/media/photos/photo${row.forumId}@2x.jpg`"
-                              :alt="`${row.forumTitle}`" />
+                          <a href="#/forumPage" :title="`${row.forumTitle}`">
+                            <img class="img-fluid" :src="row.forumImage" :alt="`${row.forumTitle}`" />
                           </a>
                         </td>
 
@@ -163,9 +198,15 @@ getAxios();
                           white-space: nowrap;
                           text-overflow: ellipsis;
                           max-width: 110px;">
-                          <span>{{ moment(row.forumUpdateTime).format('YYYY/MM/D') }}</span>
+                          <p style="position: absolute; ">{{ moment(row.forumUpdateTime).format('YYYY/MM/D') }}
+                          </p>
+                          <br />
                           <h4 class="h5 mt-0 mb-3">
-                            <a href="javascript:void(0)">{{ row.forumTitle }} </a>
+                            <button type="button" class="btn btn-sm btn-alt-secondary" data-bs-target=""
+                              @click="showForum(row.forumId)">
+                              {{ row.forumTitle }}
+                            </button>
+                            <!-- <a href="javascript:void(0)" onclick="showForum(row.forumId)">{{ row.forumTitle }} </a> -->
                           </h4>
                           <p class="d-none d-sm-block text-muted" v-html="row.forumContent">
                           </p>

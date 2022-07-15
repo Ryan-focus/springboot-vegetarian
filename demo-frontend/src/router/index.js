@@ -28,6 +28,7 @@ const Post = () => import("@/views/frontend/Post.vue");
 const PostContent = () => import("@/views/frontend/PostContent.vue");
 const SearchRestaurant = () => import("@/views/frontend/SearchRestaurant.vue");
 const ForumIndex = () => import("@/views/frontend/ForumIndex.vue");
+const ForumPage = () => import("@/views/frontend/ForumPage.vue");
 const BusinessBackend = () => import("@/views/frontend/BusinessBackend.vue");
 const BusinessProfileView = () =>
   import("@/views/frontend/businessBackend/BusinessProfileView.vue");
@@ -67,6 +68,7 @@ const VeganForumsForumsInfo = () =>
   import("@/views/vegan/forums/ForumsInfo.vue");
 const VeganForumsInsertForum = () =>
   import("@/views/vegan/forums/InsertForum.vue");
+
 //愛蔬網後台: posts
 const VeganPostsDashboard = () =>
   import("@/views/vegan/posts/DashboardView.vue");
@@ -356,6 +358,11 @@ const routes = [
         path: "/forumIndex",
         name: "Forum-index",
         component: ForumIndex,
+      },
+      {
+        path: "/forumPage",
+        name: "Forum-page",
+        component: ForumPage,
       },
     ],
   },
