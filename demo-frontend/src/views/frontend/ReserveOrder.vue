@@ -96,7 +96,7 @@ function handleHide() {
   <div class="bg-body-extra-light">
     <div class="content content-boxed">
       <div class="text-center fs-sm push">
-        <h1 class="mt-3">Travel the world and feel alive.</h1>
+        <h1 class="mt-3">典華豐FOOD海陸百匯</h1>
         <span class="d-inline-block py-2 px-4 bg-body-light rounded">
           <RouterLink :to="{ name: 'backend-pages-generic-profile' }" class="link-effect fw-semibold">John Doe
           </RouterLink>
