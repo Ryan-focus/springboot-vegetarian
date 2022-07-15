@@ -39,6 +39,8 @@ public interface PostDao {
 	int findCountByPid(int pid);
 	boolean delFavPost(int pid, int uid);
 	boolean delLikePost(int pid, int uid);
+	List<Post> findFavoritePost(int uid);
+	List<Post> findPostByUser(int uid);
 	
 	PostFavorite findByFavorite(int pid , int uid);
 	PostLike findByLike(int pid, int uid);

@@ -43,32 +43,15 @@ const getPass = function () {
 };
 //取得試用期中的商家
 const testUsing = function () {
-  var pass;
   axios
     .get(`http://${url}/pos`, {
       params: {
-        statusCategory: "試用期7日",
+        statusCategory: "試用期",
       },
-    })
-    .then((res) => {
+    }).then((res) => {
       //獲取伺服器的回傳資料
-      pass = res.data.total;
-      if (res) {
-        axios
-          .get(`http://${url}/pos`, {
-            params: {
-              statusCategory: "試用期14日",
-            },
-          })
-          .then((res) => {
-            //獲取伺服器的回傳資料
-            testTotal.value = res.data.total + pass;
-          });
-      }
+      testTotal.value = res.data.total;
     })
-    .catch((error) => {
-      console.log(error, "失敗");
-    });
 };
 //取得未開通的商家
 const getReject = function () {
@@ -98,65 +81,37 @@ testUsing();
 
   <div class="content">
     <div
-      class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center py-2 text-center text-md-start"
-    >
+      class="d-flex flex-column flex-md-row justify-content-md-between align-items-md-center py-2 text-center text-md-start">
       <div class="flex-grow-1 mb-1 mb-md-0">
         <h1 class="h3 fw-bold mb-2">預訂分析</h1>
         <h2 class="h6 fw-medium fw-medium text-muted mb-0">
           歡迎 管理員
-          <RouterLink
-            :to="{ name: 'backend-pages-generic-profile' }"
-            class="fw-semibold"
-            >{{ admin.data.user.userName }}</RouterLink
-          >
+          <RouterLink :to="{ name: 'backend-pages-generic-profile' }" class="fw-semibold">{{ admin.data.user.userName }}
+          </RouterLink>
         </h2>
       </div>
       <div class="mt-3 mt-md-0 ms-md-3 space-x-1">
-        <a
-          href="javascript:void(0)"
-          class="btn btn-sm btn-alt-secondary space-x-1"
-        >
+        <a href="javascript:void(0)" class="btn btn-sm btn-alt-secondary space-x-1">
           <i class="fa fa-cogs opacity-50"></i>
           <span>設定</span>
         </a>
         <div class="dropdown d-inline-block">
-          <button
-            type="button"
-            class="btn btn-sm btn-alt-secondary space-x-1"
-            id="dropdown-analytics-overview"
-            data-bs-toggle="dropdown"
-            aria-haspopup="true"
-            aria-expanded="false"
-          >
+          <button type="button" class="btn btn-sm btn-alt-secondary space-x-1" id="dropdown-analytics-overview"
+            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <i class="fa fa-fw fa-calendar-alt opacity-50"></i>
             <span>全部時間</span>
             <i class="fa fa-fw fa-angle-down"></i>
           </button>
-          <div
-            class="dropdown-menu dropdown-menu-end fs-sm"
-            aria-labelledby="dropdown-analytics-overview"
-          >
-            <a class="dropdown-item fw-medium" href="javascript:void(0)"
-              >最近30天</a
-            >
-            <a class="dropdown-item fw-medium" href="javascript:void(0)"
-              >最近一個月</a
-            >
-            <a class="dropdown-item fw-medium" href="javascript:void(0)"
-              >最近三個月</a
-            >
+          <div class="dropdown-menu dropdown-menu-end fs-sm" aria-labelledby="dropdown-analytics-overview">
+            <a class="dropdown-item fw-medium" href="javascript:void(0)">最近30天</a>
+            <a class="dropdown-item fw-medium" href="javascript:void(0)">最近一個月</a>
+            <a class="dropdown-item fw-medium" href="javascript:void(0)">最近三個月</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item fw-medium" href="javascript:void(0)"
-              >今年</a
-            >
-            <a class="dropdown-item fw-medium" href="javascript:void(0)"
-              >去年</a
-            >
+            <a class="dropdown-item fw-medium" href="javascript:void(0)">今年</a>
+            <a class="dropdown-item fw-medium" href="javascript:void(0)">去年</a>
             <div class="dropdown-divider"></div>
-            <a
-              class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
-              href="javascript:void(0)"
-            >
+            <a class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
+              href="javascript:void(0)">
               <span>全部時間</span>
               <i class="fa fa-check"></i>
             </a>
@@ -175,9 +130,7 @@ testUsing();
         <!-- 待處理訂單 全部合作商家 -->
         <BaseBlock class="d-flex flex-column h-100 mb-0">
           <template #content>
-            <div
-              class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
-            >
+            <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
               <dl class="mb-0">
                 <dt class="fs-3 fw-bold">{{ total }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
@@ -189,14 +142,10 @@ testUsing();
               </div>
             </div>
             <div class="bg-body-light rounded-bottom">
-              <a
-                class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
-              >
+              <a class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
+                href="javascript:void(0)">
                 <span>查看全部合作商家</span>
-                <i
-                  class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
-                ></i>
+                <i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
               </a>
             </div>
           </template>
@@ -207,9 +156,7 @@ testUsing();
         <!-- New Customers -->
         <BaseBlock class="d-flex flex-column h-100 mb-0">
           <template #content>
-            <div
-              class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
-            >
+            <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
               <dl class="mb-0">
                 <dt class="fs-3 fw-bold">{{ passTotal }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
@@ -221,14 +168,10 @@ testUsing();
               </div>
             </div>
             <div class="bg-body-light rounded-bottom">
-              <a
-                class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
-              >
+              <a class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
+                href="javascript:void(0)">
                 <span>查看預訂功能開通中的商家</span>
-                <i
-                  class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
-                ></i>
+                <i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
               </a>
             </div>
           </template>
@@ -239,9 +182,7 @@ testUsing();
         <!-- Messages -->
         <BaseBlock class="d-flex flex-column h-100 mb-0">
           <template #content>
-            <div
-              class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
-            >
+            <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
               <dl class="mb-0">
                 <dt class="fs-3 fw-bold">{{ testTotal }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
@@ -253,14 +194,10 @@ testUsing();
               </div>
             </div>
             <div class="bg-body-light rounded-bottom">
-              <a
-                class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
-              >
+              <a class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
+                href="javascript:void(0)">
                 <span>查看在試用期中的商家</span>
-                <i
-                  class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
-                ></i>
+                <i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
               </a>
             </div>
           </template>
@@ -271,13 +208,11 @@ testUsing();
         <!-- Conversion Rate -->
         <BaseBlock class="d-flex flex-column h-100 mb-0">
           <template #content>
-            <div
-              class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center"
-            >
+            <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
               <dl class="mb-0">
                 <dt class="fs-3 fw-bold">{{ rejectTotal }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                  未開通的商家
+                  待開通的商家
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
@@ -285,14 +220,10 @@ testUsing();
               </div>
             </div>
             <div class="bg-body-light rounded-bottom">
-              <a
-                class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)"
-              >
-                <span>查看未開通的商家</span>
-                <i
-                  class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"
-                ></i>
+              <a class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
+                href="javascript:void(0)">
+                <span>查看待開通的商家</span>
+                <i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
               </a>
             </div>
           </template>
