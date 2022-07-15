@@ -172,7 +172,19 @@ function logOut() {
           <div class="dropdown-menu dropdown-menu-end fs-sm smini-hide border-0"
             aria-labelledby="sidebar-themes-dropdown">
             <RouterLink :to="{ name: '' }" class="dropdown-item d-flex align-items-center justify-content-between">
-              <span class="fs-sm fw-medium">會員後台</span>
+              <span class="fs-sm fw-medium">會員</span>
+            </RouterLink>
+            <RouterLink :to="{ name: '' }" class="dropdown-item d-flex align-items-center justify-content-between">
+              <span class="fs-sm fw-medium">文章</span>
+            </RouterLink>
+            <RouterLink :to="{ name: '' }" class="dropdown-item d-flex align-items-center justify-content-between">
+              <span class="fs-sm fw-medium">網誌</span>
+            </RouterLink>
+            <RouterLink :to="{ name: '' }" class="dropdown-item d-flex align-items-center justify-content-between">
+              <span class="fs-sm fw-medium">訂單</span>
+            </RouterLink>
+            <RouterLink :to="{ name: '' }" class="dropdown-item d-flex align-items-center justify-content-between">
+              <span class="fs-sm fw-medium">訂位</span>
             </RouterLink>
             <RouterLink @click="logOut()" :to="{ name: index }"
               class="dropdown-item d-flex align-items-center justify-content-between">
