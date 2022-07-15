@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from "vue";
+import { ref, inject } from "vue";
 import { useTemplateStore } from "@/stores/template";
 import { useRouter } from "vue-router";
 import BaseLayout from "@/layouts/BaseLayout.vue";
@@ -16,8 +16,10 @@ const mobileVisibleNavHoverCentered = ref(false);
 // Main store
 const store = useTemplateStore();
 const router = useRouter();
+const renovate = inject("reload");
 // 取狀態
 const admin = JSON.parse(window.localStorage.getItem("access-admin"));
+const user = JSON.parse(window.localStorage.getItem("access-user"));
 const business = JSON.parse(window.sessionStorage.getItem("access-business"));
 
 // Set default elements for this layout
@@ -49,7 +51,8 @@ function logOut() {
   });
   window.setTimeout(function () {
     // router.push({ name: "index" });
-    router.go(0)
+    // router.go(0)
+    renovate()
   }, 200);
 }
 </script>
@@ -168,8 +171,7 @@ function logOut() {
           </button>
           <div class="dropdown-menu dropdown-menu-end fs-sm smini-hide border-0"
             aria-labelledby="sidebar-themes-dropdown">
-            <RouterLink @click="logOut()" :to="{ name: '' }"
-              class="dropdown-item d-flex align-items-center justify-content-between">
+            <RouterLink :to="{ name: '' }" class="dropdown-item d-flex align-items-center justify-content-between">
               <span class="fs-sm fw-medium">會員後台</span>
             </RouterLink>
             <RouterLink @click="logOut()" :to="{ name: index }"

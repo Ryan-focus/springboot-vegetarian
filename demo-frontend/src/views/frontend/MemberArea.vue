@@ -171,7 +171,7 @@ export default {
 
             // console.log(this.previewImage)
 
-            const admin = JSON.parse(window.localStorage.getItem('access-admin'))
+            const admin = JSON.parse(window.localStorage.getItem('access-user'))
             const id = admin.data.user.userId;
 
             var formData = new FormData();
