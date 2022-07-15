@@ -19,13 +19,17 @@ import BLayoutBackend from "@/BusinessLayouts/variations/Backend.vue";
 const Index = () => import("@/views/frontend/Index.vue");
 const Login = () => import("@/views/frontend/Login.vue");
 const UserRegister = () => import("@/views/frontend/Register.vue");
-const MemberArea = () => import("@/views/frontend/MemberArea.vue");
 const BusinessRegister = () => import("@/views/frontend/BusinessRegister.vue");
+//購物車
 const ShoppingCart = () => import("@/views/frontend/ShoppingCart.vue");
 const ShoppingOrder = () => import("@/views/frontend/ShoppingOrder.vue");
+const ShoppingCheckOut = () => import("@/views/frontend/CheckOut.vue");
+const ShoppingCheckOutSuccess = () =>
+  import("@/views/frontend/CheckOutSuccess.vue");
 const Post = () => import("@/views/frontend/Post.vue");
 const PostContent = () => import("@/views/frontend/PostContent.vue");
 const SearchRestaurant = () => import("@/views/frontend/SearchRestaurant.vue");
+const ForumIndex = () => import("@/views/frontend/ForumIndex.vue");
 const BusinessBackend = () => import("@/views/frontend/BusinessBackend.vue");
 const BusinessProfileView = () =>
   import("@/views/frontend/businessBackend/BusinessProfileView.vue");
@@ -69,8 +73,10 @@ const VeganForumsInsertForum = () =>
 const VeganPostsDashboard = () =>
   import("@/views/vegan/posts/DashboardView.vue");
 const VeganPostsPostsInfo = () => import("@/views/vegan/posts/PostsInfo.vue");
-const VeganForumsUpdatePost = () =>
-  import("@/views/vegan/posts/UpdatePost.vue");
+const VeganPostsCreatePost = () =>
+  import("@/views/vegan/posts/CreatePost.vue");
+  const VeganPostsEditPost = () =>
+  import("@/views/vegan/posts/EditPost.vue");
 //愛蔬網後台: cart
 const VeganCartDashboard = () => import("@/views/vegan/cart/DashboardView.vue");
 const VeganCartProductInfo = () => import("@/views/vegan/cart/ProductInfo.vue");
@@ -305,15 +311,11 @@ const routes = [
         component: UserRegister,
       },
       {
-        path: "/memberArea",
-        name: "MemberArea",
-        component: MemberArea,
-      },
-      {
         path: "/support/store",
         name: "BusinessRegister",
         component: BusinessRegister,
       },
+      // 購物車
       {
         path: "/shopping",
         name: "shoppingCart",
@@ -325,12 +327,22 @@ const routes = [
         component: ShoppingOrder,
       },
       {
+        path: "/shopping/checkout",
+        name: "shoppingCheckOut",
+        component: ShoppingCheckOut,
+      },
+      {
+        path: "/shopping/checkoutSuccess",
+        name: "shoppingCheckOutSuccess",
+        component: ShoppingCheckOutSuccess,
+      },
+      {
         path: "/post",
         name: "postIndex",
         component: Post,
       },
       {
-        path: "/postContent",
+        path: "/postContent/:postId?",
         name: "postPage",
         component: PostContent,
       },
@@ -348,6 +360,11 @@ const routes = [
         path: "/business/backend/profile",
         name: "business-backend-profile",
         component: BusinessProfileView,
+      },
+      {
+        path: "/forumIndex",
+        name: "Forum-index",
+        component: ForumIndex,
       },
     ],
   },
@@ -494,9 +511,14 @@ const routes = [
             component: VeganPostsPostsInfo,
           },
           {
-            path: "update",
-            name: "backend-posts-update",
-            component: VeganForumsUpdatePost,
+            path: "create",
+            name: "backend-posts-create",
+            component: VeganPostsCreatePost,
+          },
+          {
+            path: "edit/:postId?",
+            name: "backend-posts-edit",
+            component: VeganPostsEditPost,
           },
         ],
       },
@@ -1259,7 +1281,7 @@ router.beforeEach((to) => {
     to.name !== "login" &&
     to.name !== "index" &&
     to.name !== "userRegister" &&
-    to.name !== "MemberArea"
+    to.name !== "Forum-index"
   ) {
     return { name: "login" };
   }

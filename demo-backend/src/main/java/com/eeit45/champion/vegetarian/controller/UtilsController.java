@@ -1,6 +1,9 @@
 package com.eeit45.champion.vegetarian.controller;
 
+import com.eeit45.champion.vegetarian.dto.shopCart.PaypalRequest;
 import com.eeit45.champion.vegetarian.util.shopCart.Image;
+import com.eeit45.champion.vegetarian.util.shopCart.PayPalClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -9,12 +12,22 @@ import org.springframework.util.StreamUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 import java.util.UUID;
 
 @RestController
 public class UtilsController {
+
+
+   private final PayPalClient payPalClient;
+
+    @Autowired
+    UtilsController(PayPalClient payPalClient){
+        this.payPalClient = payPalClient;
+    }
 
     //輸入圖片名稱後會去target/classes/static裏面找圖片
     //選用這個資料夾不需重整即可讀取圖片，若放在resources底下的話需重整
@@ -49,5 +62,16 @@ public class UtilsController {
         }
         //回傳失敗結果
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+
+    //
+    @PostMapping(value = "/paypal/payment")
+    public  Map<String, Object> makePayment(@RequestParam("sum") String sum){
+        return payPalClient.createPayment(sum);
+    }
+
+    @PostMapping(value = "/complete/payment")
+    public Map<String, Object> completePayment(@RequestBody PaypalRequest paypalRequest){
+        return payPalClient.completePayment(paypalRequest);
     }
 }

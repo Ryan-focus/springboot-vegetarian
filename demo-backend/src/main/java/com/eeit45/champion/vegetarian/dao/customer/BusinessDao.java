@@ -12,7 +12,7 @@ public interface BusinessDao {
 
     Business getBusinessByEmail(String account);
 
-    void updateStatus(Integer businessId, String status);
+    void updateStatus(Integer businessId, String status,String UUID);
 
     List<Business> getAllBusiness();
 }

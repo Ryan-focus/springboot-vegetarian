@@ -2,8 +2,9 @@
 import { ref, reactive, computed, onMounted } from "vue";
 // Sweetalert2, for more info and examples, you can check out https://github.com/sweetalert2/sweetalert2
 import Swal from "sweetalert2";
-
+import "bootstrap-icons/font/bootstrap-icons.css";
 import axios from "axios";
+import { useRouter } from "vue-router";
 
 // Vue Dataset, for more info and examples you can check out https://github.com/kouts/vue-dataset/tree/next
 import {
@@ -35,8 +36,10 @@ var resData = ref();
 const resPostId = ref();
 const resPostTitle = ref();
 const resPostText = ref();
+const resPostCategory = ref();
 const resPostStatus = ref("待審核");
 const statusClass = [];
+const router = useRouter();
 
 const getAxios = function () {
   axios
@@ -185,6 +188,7 @@ function auditPost(number) {
       resPostId.value = res.data.postId;
       resPostTitle.value = res.data.title;
       resPostText.value = res.data.postedText;
+      resPostCategory.value = res.data.postCategory;
     })
     .catch((error) => {
       console.log(error, "失敗");
@@ -242,23 +246,12 @@ function sendAuditPost(number, status) {
     });
 }
 
-// //送出審核文章
-// function sendAuditPost(number, status) {
-//   // var data = {postStatus = status};
-//   // axios({
-//   //   method: "put",
-//   //   baseURL: "http://localhost:8088",
-//   //   url: `http://${url}/auditPost/${number}`,
-//   //   headers: {
-//   //     "content-type": "application/x-www-form-urlencoded;charset=utf-8",
-//   //   },
-//   // })
-//   //   .then((result) => {
-//   //     console.log(result.data);
-//   //   })
-//   //   .catch((err) => {
-//   //     console.error(err);
-//   //   });
+//跳到編輯頁面
+function findPost(id) {
+  //send request to server
+  console.log(id);
+  router.push({ name: "backend-posts-edit", params: { postId: id } });
+}
 
 //發布中文章(篩選器)
 function frontPost() {
@@ -383,8 +376,17 @@ th.sort {
           </li>
         </ol>
       </nav>
+      <br />
+      <div>
+        <router-link to="./create">
+          <button type="button" class="btn btn-primary float-end">
+            發表文章
+          </button>
+        </router-link>
+      </div>
     </template>
   </BasePageHeading>
+
   <!-- END Hero -->
 
   <!-- Page Content -->
@@ -410,7 +412,13 @@ th.sort {
               aria-labelledby="dropdown-recent-orders-filters"
             >
               <a
-                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
+                class="
+                  dropdown-item
+                  fw-medium
+                  d-flex
+                  align-items-center
+                  justify-content-between
+                "
                 href="#"
                 @click.prevent="notaudit()"
               >
@@ -418,7 +426,13 @@ th.sort {
                 <span class="badge bg-primary rounded-pill"></span>
               </a>
               <a
-                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
+                class="
+                  dropdown-item
+                  fw-medium
+                  d-flex
+                  align-items-center
+                  justify-content-between
+                "
                 href="#"
                 @click.prevent="frontPost()"
               >
@@ -426,7 +440,13 @@ th.sort {
                 <span class="badge bg-primary rounded-pill"></span>
               </a>
               <a
-                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
+                class="
+                  dropdown-item
+                  fw-medium
+                  d-flex
+                  align-items-center
+                  justify-content-between
+                "
                 href="#"
                 @click.prevent="notPassPost()"
               >
@@ -434,7 +454,13 @@ th.sort {
                 <span class="badge bg-primary rounded-pill"></span>
               </a>
               <a
-                class="dropdown-item fw-medium d-flex align-items-center justify-content-between"
+                class="
+                  dropdown-item
+                  fw-medium
+                  d-flex
+                  align-items-center
+                  justify-content-between
+                "
                 href="#"
                 data-rel="all"
                 @click.prevent="getAxios"
@@ -481,6 +507,7 @@ th.sort {
                       {{ th.name }} <i class="gg-select float-end"></i>
                     </th>
                     <th class="text-center" style="width: 100px">審核</th>
+                    <th class="text-center" style="width: 100px">編輯</th>
                   </tr>
                 </thead>
                 <DatasetItem tag="tbody" class="fs-sm">
@@ -534,7 +561,11 @@ th.sort {
                           max-width: 150px;
                         "
                       >
-                        {{ row.imgurl }}
+                        <img
+                          :src="row.imgurl"
+                          class="img-thumbnail"
+                          alt="..."
+                        />
                       </td>
 
                       <td class="text-center">
@@ -545,6 +576,17 @@ th.sort {
                             data-bs-toggle="modal"
                             data-bs-target="#auditPost"
                             @click="auditPost(row.postId)"
+                          >
+                            <i class="bi bi-clipboard-check"></i>
+                          </button>
+                        </div>
+                      </td>
+                      <td class="text-center">
+                        <div class="btn-group">
+                          <button
+                            type="button"
+                            class="btn btn-sm btn-alt-secondary"
+                            @click="findPost(row.postId)"
                           >
                             <i class="fa fa-fw fa-pencil-alt"></i>
                           </button>
@@ -565,7 +607,12 @@ th.sort {
           </div>
         </div>
         <div
-          class="d-flex flex-md-row flex-column justify-content-between align-items-center"
+          class="
+            d-flex
+            flex-md-row flex-column
+            justify-content-between
+            align-items-center
+          "
         >
           <DatasetInfo class="py-3 fs-sm" />
           <DatasetPager class="flex-wrap py-3 fs-sm" />
@@ -608,6 +655,21 @@ th.sort {
                   </div>
                   <div class="mb-3">
                     <label for="exampleFormControlInput1" class="form-label"
+                      >文章分類</label
+                    ><br />
+                    <textarea
+                      type="textarea"
+                      class="form-control"
+                      id="exampleFormControlInput1"
+                      style="resize: none"
+                      disabled
+                      readonly
+                      rows="1"
+                      v-model="resPostCategory"
+                    ></textarea>
+                  </div>
+                  <div class="mb-3">
+                    <label for="exampleFormControlInput1" class="form-label"
                       >文章標題</label
                     >
                     <textarea
@@ -625,15 +687,16 @@ th.sort {
                     <label for="exampleFormControlTextarea1" class="form-label"
                       >文章內文</label
                     >
-                    <textarea
+                    <div
+                      type="textarea"
                       class="form-control"
                       id="exampleFormControlTextarea1"
                       rows="12"
                       style="resize: none"
                       disabled
                       readonly
-                      v-model="resPostText"
-                    ></textarea>
+                      v-html="resPostText"
+                    ></div>
                   </div>
                   <div class="auditselect">
                     <select

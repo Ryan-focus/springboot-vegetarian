@@ -30,6 +30,11 @@ const url = "localhost:8088";
 //接收的資料ref
 const resData = ref();
 const resImg = ref();
+const getSingleData = ref();
+const posId = ref();
+const validate = ref();
+var isRestuarantInfo = ref();
+var businessId = ref();
 
 const getImg = function () {
 
@@ -61,13 +66,24 @@ const getAxios = function () {
 getAxios();
 getImg();
 
-//取得單一筆訂單，number用來抓id
-function getSingle() {
+
+function getRestuarantInfo(businessID) {
+  isRestuarantInfo.value = JSON.parse(window.localStorage.getItem("restaurantApply" + businessID));
+  console.log(isRestuarantInfo);
+}
+
+//取得單一POS , 顯示抓值
+function getSingle(prams) {
   axios
-    .get(`http://${url}/pos?statusCategory=試用期7日`)
+    .get(`http://${url}/pos/${prams}`)
     .then((res) => {
       //獲取伺服器的回傳資料
-      console.log(res);
+      // console.log(res);
+      posId.value = res.data.posId;
+      getSingleData.value = res.data.posBusinessList[0].businessName;
+      validate.value = res.data.validDate;
+      businessId.value = res.data.businessId;
+      getRestuarantInfo(res.data.businessId);
     })
     .catch((error) => {
       console.log(error, "失敗");
@@ -129,19 +145,18 @@ function onSort(event, i) {
   sortEl.sort = toset;
 }
 //更新訂單功能
-function updateOrder(number) {
+function updateStatus(number) {
   toast
     .fire({
-      title: "確定要更新嗎?",
-      // text: "更新後不能返回",
+      title: "確定是否要送出審核?",
       icon: "warning",
       showCancelButton: true,
       customClass: {
         confirmButton: "btn btn-danger m-1",
         cancelButton: "btn btn-secondary m-1",
       },
-      confirmButtonText: "審核通過",
-      cancelButtonText: "取消更新",
+      confirmButtonText: "送出",
+      cancelButtonText: "取消",
 
       html: false,
       preConfirm: () => {
@@ -155,71 +170,44 @@ function updateOrder(number) {
     .then((result) => {
       //send request to server
       if (result.value) {
-        const order = {
-          payment: this.payment,
-          status: this.status,
+        const pos = {
+          validDate: this.validate,
         };
+        axios.post(`http://${url}/restaurants`, isRestuarantInfo.value).then(() => {
+          var businessID = businessId.value;
+          console.log("Already Remove Storage : " + "restaurantApply" + businessID);
+          localStorage.removeItem("restaurantApply" + businessID);
+        });
         //執行put方法
         axios
-          .put(`http://localhost:8088/order/${number}`, order)
+          .put(`http://${url}/pos/${number}`, pos)
           .then(() => {
-            console.log(order);
+            toast.fire({
+              title: "更新成功",
+              timer: 800,
+              icon: "success"
+            });
+            // console.log(order);
             getAxios();
-            toast.fire("更新成功!", "", "success");
+
           })
           .catch((error) => {
+            toast.fire({
+              title: "更新失敗",
+              timer: 800,
+              icon: "error"
+            });
             console.log(error, "失敗");
           });
       } else if (result.dismiss === "cancel") {
-        toast.fire("更新失敗", "", "error");
+        toast.fire({
+          title: "更新失敗",
+          timer: 800,
+          icon: "error"
+        });
       }
     });
 }
-
-//Delete Order Fuction
-// function deleteRestaurant(number) {
-//   toast
-//     .fire({
-//       title: "確定要刪除嗎?",
-//       text: "刪除後不能返回",
-//       icon: "warning",
-//       showCancelButton: true,
-//       customClass: {
-//         confirmButton: "btn btn-danger m-1",
-//         cancelButton: "btn btn-secondary m-1",
-//       },
-//       confirmButtonText: "刪除資料",
-//       cancelButtonText: "取消刪除",
-
-//       html: false,
-//       preConfirm: () => {
-//         return new Promise((resolve) => {
-//           setTimeout(() => {
-//             resolve();
-//           }, 50);
-//         });
-//       },
-//     })
-//     .then((result) => {
-//       //send request to server
-//       if (result.value) {
-//         axios
-//           .delete(`http://${url}/order/${number}`)
-//           .then((res) => {
-//             //獲取伺服器的回傳資料
-//             console.log(res);
-
-//             getAxios();
-//             toast.fire("刪除成功!", "", "success");
-//           })
-//           .catch((error) => {
-//             console.log(error, "失敗");
-//           });
-//       } else if (result.dismiss === "cancel") {
-//         toast.fire("刪除失敗", "", "error");
-//       }
-//     });
-// }
 
 // Apply a few Bootstrap 5 optimizations
 onMounted(() => {
@@ -381,7 +369,7 @@ th.sort {
                       <td class="text-center">
                         <div class="btn-group">
                           <button type="button" class="btn btn-sm btn-alt-secondary" data-bs-toggle="modal"
-                            data-bs-target="#updateProduct" @click="getSingle(row.orderId)">
+                            data-bs-target="#getPosId" @click="getSingle(row.posId)">
                             <i class="fa fa-fw fa-pencil-alt"></i>
                           </button>
                         </div>
@@ -399,43 +387,61 @@ th.sort {
         </div>
 
         <!-- 這邊以下是隱藏的更新表單，按下更新鈕之後會跳出來 -->
-        <div class="modal fade" id="updateProduct" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal fade" id="getPosId" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
           <!-- 這邊是更新的標題 -->
           <div class="modal-dialog modal-lg">
             <div class="modal-content">
               <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">修改商品</h5>
+                <h5 class="modal-title" id="exampleModalLabel">審核商家</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <!-- 內文開始 -->
               <div class="modal-body">
                 <!-- 商品名稱 -->
+
                 <div class="mb-3">
-                  <input type="hidden" class="form-control" id="exampleFormControlInput1" style="resize: none"
-                    rows="1" />
+                  <label class="form-label" for="example-posId">申請編號</label>
+                  <input type="text" class="form-control" id="example-posId" name="example-posId" v-model="posId"
+                    readonly />
                 </div>
 
-                <!-- 商品種類 -->
-                <div class="mb-3">
-                  <label class="form-label" for="example-select">更新訂單狀態</label>
-                  <select class="form-select" id="example-select" name="example-select">
-                    <option selected></option>
-                    <option value="未付款">未付款</option>
-                    <option value="已付款">已付款</option>
-                    <option value="已出貨">已出貨</option>
-                    <option value="訂單完成">訂單完成</option>
+                <div class=" mb-3">
+                  <label class="form-label" for="example-ltf-businessName">商家名稱</label>
+                  <input type="text" class="form-control" id="example-ltf-businessName" name="example-ltf-businessName"
+                    v-model="getSingleData" readonly />
+                </div>
+
+
+                <div v-if="isRestuarantInfo == null" class="mb-3">
+                  <h2>該商家尚未填寫餐廳資料</h2>
+                </div>
+
+
+                <!-- 審核商家的option -->
+                <div v-else class="mb-3">
+                  <label class="form-label" for="example-select">審核商家狀態</label>
+                  <select class="form-select" id="example-select" name="example-select" v-model="validate">
+                    <option selected>{{ validate }}</option>
+                    <option value="審核未過">審核未過</option>
+                    <option value="試用期">試用期</option>
+                    <option value="開通中">開通中</option>
                   </select>
                 </div>
+
               </div>
+
+
               <!-- 表單內文在這裡結束 -->
               <!-- 送出button -->
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                   取消
                 </button>
-                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" @click="updateOrder(orderId)">
+                <button v-if="isRestuarantInfo != null" type="submit" class="btn btn-primary" data-bs-dismiss="modal"
+                  @click="updateStatus(posId)">
                   送出
                 </button>
+                <!-- // <button type=" submit" class="btn btn-primary" data-bs-dismiss="modal" // -->
               </div>
             </div>
           </div>

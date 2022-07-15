@@ -29,8 +29,22 @@ public class Post {
 	private Date postAuditDate;
 
 	private String postCategory;
+	
+	private Integer likeCount;
+	
+	private Integer userId;
 
 //	    private MultipartFile postImage;
+
+	
+
+	public Integer getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Integer userId) {
+		this.userId = userId;
+	}
 
 	public Post() {
 
@@ -150,6 +164,14 @@ public class Post {
 
 	public void setPostCategory(String postCategory) {
 		this.postCategory = postCategory;
+	}
+	
+	public Integer getLikeCount() {
+		return likeCount;
+	}
+
+	public void setLikeCount(Integer likeCount) {
+		this.likeCount = likeCount;
 	}
 
 //		public PostSataus getPostSataus() {

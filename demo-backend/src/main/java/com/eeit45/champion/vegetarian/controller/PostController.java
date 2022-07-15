@@ -2,13 +2,11 @@ package com.eeit45.champion.vegetarian.controller;
 
 import java.io.*;
 
-import com.eeit45.champion.vegetarian.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.eeit45.champion.vegetarian.model.Post;
 import com.eeit45.champion.vegetarian.model.PostFavorite;
@@ -43,36 +41,14 @@ public class PostController {
 
 	// 發表食記
 	@PostMapping("/PostNew")
-	public ResponseEntity<Boolean> createPostImage(@RequestParam(value = "title") String title,
-			@RequestParam(value = "postedText") String postedText,
-			@RequestPart(value = "postImage") MultipartFile postImage, Post post, HttpServletRequest request)
-			throws IOException {
+	public ResponseEntity<Boolean> createPostImage(Post post) throws IOException {
 
 		String imageUrl = null;
-		String fileFolderName = "testimages/PostsPhoto";
-		String defaultImgurl = "images/PostsPhoto/defaultPostImage.jpg";
 
-		if (postImage.getSize() != 0) {
-			// byte[] bytes = picture.getBytes();
-			String filename = postImage.getOriginalFilename();
-			String suffix = filename.substring(filename.lastIndexOf('.'));// 副檔名
-			String newFileName = new Date().getTime() + suffix;// 新的檔名
-
-			String saveDir = request.getSession().getServletContext().getRealPath("/") + fileFolderName;
-			File saveFileDir = new File(saveDir);
-
-			if (!saveFileDir.exists()) {
-				saveFileDir.mkdirs();
-			}
-			System.out.println(saveDir);
-
-			imageUrl = fileFolderName + "/" + newFileName; // 儲存資料庫路徑
-			System.out.println(imageUrl);
-			File headImage = new File(saveDir, newFileName);
-			postImage.transferTo(headImage);
-
+		if (!post.getImgurl().isEmpty()) {
+			imageUrl = post.getImgurl();
 		} else {
-			imageUrl = defaultImgurl;
+			imageUrl = "http://localhost:8088/defaultPostImg.jpg";
 		}
 
 		ZoneId zoneId = ZoneId.systemDefault();
@@ -80,8 +56,6 @@ public class PostController {
 		ZonedDateTime zdt = localDateTime.atZone(zoneId);
 		Date date = Date.from(zdt.toInstant());
 
-		post.setTitle(title);
-		post.setPostedText(postedText);
 		post.setImgurl(imageUrl);
 		post.setPostedDate(date);
 		post.setPostStatus("待審核");
@@ -194,27 +168,30 @@ public class PostController {
 		}
 
 	}
-	
-	//前台食記分類(植物五辛素)
-		@GetMapping(path = "postCategory5")
-		public ResponseEntity<List<Post>> showPostFront5() {
-			List<Post> findallPost = postService.findPostByCategory5();
 
-			if (findallPost != null) {
-				return ResponseEntity.status(HttpStatus.OK).body(findallPost);
-			} else {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-			}
+	// 前台食記分類(植物五辛素)
+	@GetMapping(path = "postCategory5")
+	public ResponseEntity<List<Post>> showPostFront5() {
+		List<Post> findallPost = postService.findPostByCategory5();
 
+		if (findallPost != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(findallPost);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
+
+	}
 
 	// 後台審核食記
 	@GetMapping("/auditPost/{id}")
-	public ResponseEntity<Post> auditPost(@PathVariable("id") Integer id) {
+	public ResponseEntity<Post> auditPost(@PathVariable("id") Integer id, HttpServletRequest request) {
 
 		Post post = postService.findPost(id);
+		int likeCount = postService.findCountByPid(id);
+		post.setLikeCount(likeCount);
 		if (post != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(post);
+
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
@@ -282,44 +259,28 @@ public class PostController {
 
 	@PostMapping(path = "/editPost/{id}")
 	public ResponseEntity<Boolean> UpdatePostImage(@RequestParam(value = "title") String title,
+			@RequestParam(value = "postImgurl") String postImgurl,
 			@RequestParam(value = "postedText") String postedText,
-			@RequestPart(value = "postImage") MultipartFile postImage, @PathVariable("id") int id, Post post,
-			HttpServletRequest request) throws IOException {
-		String imageUrl = post.getImgurl();
-		String fileFolderName = "testimages/PostsPhoto";
-		String defaultImgurl = "images/PostsPhoto/defaultPostImage.jpg";
+			@RequestParam(value = "postCategory") String postCategory, @PathVariable("id") Integer id, Post post)
+			throws IOException {
 
-		if (postImage.getSize() != 0) {
-			// byte[] bytes = picture.getBytes();
-			String filename = postImage.getOriginalFilename();
-			String suffix = filename.substring(filename.lastIndexOf('.'));// 副檔名
-			String newFileName = new Date().getTime() + suffix;// 新的檔名
+//		String imageUrl = null;
+//
+//		if (!post.getImgurl().isEmpty()) {
+//			imageUrl = post.getImgurl();
+//		} else {
+//			imageUrl = "http://localhost:8088/defaultPostImg.jpg";
+//		}
 
-			String saveDir = request.getSession().getServletContext().getRealPath("/") + fileFolderName;
-			File saveFileDir = new File(saveDir);
-
-			if (!saveFileDir.exists()) {
-				saveFileDir.mkdirs();
-			}
-			System.out.println(saveDir);
-
-			imageUrl = fileFolderName + "/" + newFileName; // 儲存資料庫路徑
-			System.out.println(imageUrl);
-			File headImage = new File(saveDir, newFileName);
-			postImage.transferTo(headImage);
-
-		} else {
-			imageUrl = defaultImgurl;
-		}
 		ZoneId zoneId = ZoneId.systemDefault();
 		LocalDateTime localDateTime = LocalDateTime.now();
 		ZonedDateTime zdt = localDateTime.atZone(zoneId);
 		Date date = Date.from(zdt.toInstant());
 
 		post.setPostId(id);
-		post.setTitle(title);
+	    post.setTitle(title);
 		post.setPostedText(postedText);
-		post.setImgurl(imageUrl);
+		post.setImgurl(postImgurl);
 		post.setPostedDate(date);
 		post.setPostStatus("待審核");
 
@@ -328,45 +289,75 @@ public class PostController {
 	}
 
 	// 搜尋收藏文章
-	@GetMapping(value = "/favtest/{id}")
-	public ResponseEntity<PostFavorite> showfav(@PathVariable("id") Integer id, HttpServletRequest request) {
+	@GetMapping(value = "/favtest/{id}/{userId}")
+	public ResponseEntity<Boolean> showfav(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
 
-		User user = (User) request.getSession().getAttribute("user");
-
-		Integer userId;// 用户id
-		if (user == null) {
-			return null;
-		} else {
-			userId = user.getUserId();
-		}
-		// Integer userId = 1564;
-		PostFavorite post = postService.findByFavorite(id, userId);
-		// boolean flag = postService.isFavorite(id, userId);
-
-		if (post != null) {
+		boolean post = postService.isFavorite(id, userId);
+		boolean out = false;
+		if (post != false) {
 			return ResponseEntity.status(HttpStatus.OK).body(post);
 		} else {
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			return ResponseEntity.status(HttpStatus.OK).body(out);
 		}
 	}
 
-	@PostMapping("/favtest/{id}")
-	public ResponseEntity<Boolean> addfav(@PathVariable("id") int id, Post post, HttpServletRequest request)
-			throws IOException {
+	// 搜尋按讚文章
+	@GetMapping(value = "/liketest/{id}/{userId}")
+	public ResponseEntity<Boolean> showlike(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
 
-		User user = (User) request.getSession().getAttribute("user");
-		Integer userId;// 用户id
-		if (user == null) {
-			return null;
+		boolean post = postService.isLike(id, userId);
+		boolean out = false;
+		if (post != false) {
+			return ResponseEntity.status(HttpStatus.OK).body(post);
 		} else {
-			userId = user.getUserId();
+			return ResponseEntity.status(HttpStatus.OK).body(out);
 		}
-		// Integer userId = user.getUserId();
-		// Integer userId = 1564;
+	}
+
+	// 取消收藏
+	@DeleteMapping(value = "/favtest/{id}/{userId}")
+	public ResponseEntity<Boolean> delfav(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
+
+		boolean post = postService.delFavPost(id, userId);
+		boolean out = false;
+		if (post != false) {
+			return ResponseEntity.status(HttpStatus.OK).body(post);
+		} else {
+			return ResponseEntity.status(HttpStatus.OK).body(out);
+		}
+	}
+
+	// 加入收藏文章
+	@PostMapping("/favtest/{id}/{userId}")
+	public ResponseEntity<Boolean> addfav(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId,
+			Post post) throws IOException {
 
 		postService.addFavPost(id, userId);
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 
+	}
+
+	// 加入按讚文章
+	@PostMapping("/liketest/{id}/{userId}")
+	public ResponseEntity<Boolean> addlike(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId,
+			Post post) throws IOException {
+
+		postService.addLikePost(id, userId);
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
+	}
+
+	// 取消按讚
+	@DeleteMapping(value = "/liketest/{id}/{userId}")
+	public ResponseEntity<Boolean> dellike(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
+
+		boolean post = postService.delLikePost(id, userId);
+		boolean out = false;
+		if (post != false) {
+			return ResponseEntity.status(HttpStatus.OK).body(post);
+		} else {
+			return ResponseEntity.status(HttpStatus.OK).body(out);
+		}
 	}
 
 }

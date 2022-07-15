@@ -18,6 +18,7 @@ public class PostRowMapper implements RowMapper<Post> {
         post.setImgurl(rs.getString("imgUrl"));
         post.setPostStatus(rs.getString("postStatus"));
         post.setPostCategory(rs.getString("postCategory"));
+        post.setUserId(rs.getInt("userId"));
 
         //日期處理輸出
         Timestamp createdTime = rs.getTimestamp("postedDate");

@@ -53,7 +53,8 @@ CREATE TABLE pos (
                   posId INT NOT NULL auto_increment primary key,
                   businessId Int not null UNIQUE,
                   validDate nvarchar(64) not null,
-                  expiryDate DATETIME
+                  expiryDate DATETIME,
+                  UUID nvarchar(256)
 );
 
 -- PosBusiness
@@ -63,8 +64,7 @@ CREATE TABLE posBusiness (
                      posId              INT NOT NULL,
                      businessId         INT NOT NULL,
                      visitors           INT NOT NULL,
-                     turnOver           INT NOT NULL,
-                     businessName       nvarchar(128) NOT NULL
+                     turnOver           INT NOT NULL
 );
 
 -- product
@@ -174,7 +174,26 @@ CREATE TABLE post(
                      imgUrl NVARCHAR(256),
                      postStatus NVARCHAR(256),
                      postAuditDate DATETIME,
-                     postCategory NVARCHAR(256)
+                     postCategory NVARCHAR(256),
+                     likeCount INT default 0,
+                     userId INT
+);
+
+-- favorite post
+drop table if exists fav_post;
+CREATE TABLE fav_post(
+                     postId INT NOT NULL ,
+                     favDate DATETIME NOT NULL,
+                     userId INT NOT NULL
+                    
+);
+-- like post
+drop table if exists like_post;
+CREATE TABLE like_post(
+                     postId INT NOT NULL ,
+                     likeDate DATETIME NOT NULL,
+                     userId INT NOT NULL
+                    
 );
 
 -- forum
