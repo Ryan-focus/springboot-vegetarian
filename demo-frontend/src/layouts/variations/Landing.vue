@@ -1,7 +1,6 @@
 <script setup>
 import { ref, inject } from "vue";
 import { useTemplateStore } from "@/stores/template";
-import { useRouter } from "vue-router";
 import BaseLayout from "@/layouts/BaseLayout.vue";
 
 import BaseNavigation from "@/components/BaseNavigation.vue";
@@ -15,7 +14,6 @@ import menu from "@/data/menu";
 const mobileVisibleNavHoverCentered = ref(false);
 // Main store
 const store = useTemplateStore();
-const router = useRouter();
 const renovate = inject("reload");
 // 取狀態
 const admin = JSON.parse(window.localStorage.getItem("access-admin"));
@@ -37,7 +35,6 @@ store.mainContent({ mode: "boxed" });
 //登出
 function logOut() {
   // this.admin = null;
-  store.getStates({ admin: "", business: "", user: "" });
   localStorage.removeItem("access-admin");
   // localStorage.removeItem("access-business");
   sessionStorage.removeItem("access-business");
@@ -182,9 +179,6 @@ function logOut() {
             </RouterLink>
             <RouterLink :to="{ name: '' }" class="dropdown-item d-flex align-items-center justify-content-between">
               <span class="fs-sm fw-medium">訂單</span>
-            </RouterLink>
-            <RouterLink :to="{ name: '' }" class="dropdown-item d-flex align-items-center justify-content-between">
-              <span class="fs-sm fw-medium">訂位</span>
             </RouterLink>
             <RouterLink @click="logOut()" :to="{ name: index }"
               class="dropdown-item d-flex align-items-center justify-content-between">
