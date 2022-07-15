@@ -34,179 +34,181 @@ import com.eeit45.champion.vegetarian.util.Page;
 @Validated
 @RestController
 public class UserController {
-	
+
 	@Autowired
 	private UserService userService;
 
-    //有分頁的GetMapping List
+	// 有分頁的GetMapping List
 	@GetMapping("/users")
-    public ResponseEntity<Page<User>> getUsers(
-            //Filtering
-            @RequestParam(required = false) String search,
-            
-            //Sorting
-            @RequestParam(defaultValue = "lastLoginTime") String orderBy,
-            @RequestParam(defaultValue = "desc") String sorting,
+	public ResponseEntity<Page<User>> getUsers(
+			// Filtering
+			@RequestParam(required = false) String search,
 
-            //Pagination
-            @RequestParam(defaultValue = "5")@Max(100) @Min(0) Integer limit,
-            @RequestParam(defaultValue = "0")@Min(0) Integer offset
-    ) {
+			// Sorting
+			@RequestParam(defaultValue = "lastLoginTime") String orderBy,
+			@RequestParam(defaultValue = "desc") String sorting,
+
+			// Pagination
+			@RequestParam(defaultValue = "5") @Max(100) @Min(0) Integer limit,
+			@RequestParam(defaultValue = "0") @Min(0) Integer offset) {
 		UserQueryParams userQueryParams = new UserQueryParams();
 		userQueryParams.setSearch(search);
-        userQueryParams.setOrderBy(orderBy);
+		userQueryParams.setOrderBy(orderBy);
 		userQueryParams.setSorting(sorting);
 		userQueryParams.setLimit(limit);
 		userQueryParams.setOffset(offset);
 
-        //GET product list
-        List<User> userList =  userService.getUsers(userQueryParams);
+		// GET product list
+		List<User> userList = userService.getUsers(userQueryParams);
 
-        //GET product total
-        Integer total = userService.totalUser(userQueryParams);
+		// GET product total
+		Integer total = userService.totalUser(userQueryParams);
 
-        //分頁
-        Page<User> page = new Page<>();
-        page.setLimit(limit);
-        page.setOffset(offset);
-        page.setTotal(total);
-        page.setResults(userList);
-        
-        return ResponseEntity.status(HttpStatus.OK).body(page);
+		// 分頁
+		Page<User> page = new Page<>();
+		page.setLimit(limit);
+		page.setOffset(offset);
+		page.setTotal(total);
+		page.setResults(userList);
+
+		return ResponseEntity.status(HttpStatus.OK).body(page);
 	}
 
-    //無分頁的GetMapping List
+	// 無分頁的GetMapping List
 	@GetMapping("/users/all")
-    public ResponseEntity<List<User>> getAllUsers(){
-        List<User> userList =userService.getAllUser();
-        if (userList!=null){
-            return ResponseEntity.status(HttpStatus.OK).body(userList);
-        }else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
-	
+	public ResponseEntity<List<User>> getAllUsers() {
+		List<User> userList = userService.getAllUser();
+		if (userList != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(userList);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
+
 	@GetMapping("/users/{userId}")
-    public ResponseEntity<User> getUser(@PathVariable Integer userId){
+	public ResponseEntity<User> getUser(@PathVariable Integer userId) {
 		User user = userService.getUserById(userId);
 
-        if(user != null){
-            return ResponseEntity.status(HttpStatus.OK).body(user);
-        }else{
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-    }
-	
+		if (user != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(user);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
+
 	@PostMapping("/users")
-    public ResponseEntity<User> createUser(@RequestBody @Valid UserRequest userRequest){
-        Integer userId = userService.createUser(userRequest);
+	public ResponseEntity<User> createUser(@RequestBody @Valid UserRequest userRequest) {
+		Integer userId = userService.createUser(userRequest);
 
-        User user = userService.getUserById(userId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
-    }
-	
+		User user = userService.getUserById(userId);
+		return ResponseEntity.status(HttpStatus.CREATED).body(user);
+	}
+
 	@PutMapping("/users/{userId}")
-    public ResponseEntity<User> updateUser(@PathVariable Integer userId,
-                                                 @RequestBody @Valid UserRequest userRequest){
-		
+	public ResponseEntity<User> updateUser(@PathVariable Integer userId, @RequestBody @Valid UserRequest userRequest) {
+
 		User checkUser = userService.getUserById(userId);
-        if( checkUser == null ) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
-        userService.updateUser(userId,userRequest);
-
-        User updateUser = userService.getUserById(userId);
-
-        return ResponseEntity.status(HttpStatus.OK).body(updateUser);
-    }
-
-    @DeleteMapping("/users/{userId}")
-    public ResponseEntity<User> deleteUser(@PathVariable Integer userId){
-    	userService.deleteUserById(userId);
-
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
-    }
-    
-    @PatchMapping("/users/{userId}")
-    public ResponseEntity<User> updateUserStatus(@PathVariable Integer userId){
-    	
-		User checkUser = userService.getUserById(userId);
-        if( checkUser == null ) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
-
-        userService.updateUserStatus(userId);
-
-        User updateUserStatus = userService.getUserById(userId);
-
-        return ResponseEntity.status(HttpStatus.OK).body(updateUserStatus);
-    }
-
-    @PostMapping("/user/login")
-    public ResponseEntity<User> login(@RequestBody LoginRequest loginRequest){
-
-    	User user =  userService.login(loginRequest);
-
-        System.out.println(1);
-		if(user != null) {
-			return ResponseEntity.status(HttpStatus.OK).body(user); //登入成功
+		if (checkUser == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); //沒註冊
-    }
-    
-    @PostMapping("/user/sendMail")
-    public ResponseEntity<User> resetPassword(@RequestBody LoginRequest loginRequest){
-    	
-    	User user =  userService.resetPassword(loginRequest);
-    	
-    	if(user != null) {
+		userService.updateUser(userId, userRequest);
+
+		User updateUser = userService.getUserById(userId);
+
+		return ResponseEntity.status(HttpStatus.OK).body(updateUser);
+	}
+
+	@DeleteMapping("/users/{userId}")
+	public ResponseEntity<User> deleteUser(@PathVariable Integer userId) {
+		userService.deleteUserById(userId);
+
+		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+	}
+
+	@PatchMapping("/users/{userId}")
+	public ResponseEntity<User> updateUserStatus(@PathVariable Integer userId) {
+
+		User checkUser = userService.getUserById(userId);
+		if (checkUser == null) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+
+		userService.updateUserStatus(userId);
+
+		User updateUserStatus = userService.getUserById(userId);
+
+		return ResponseEntity.status(HttpStatus.OK).body(updateUserStatus);
+	}
+
+	@PostMapping("/user/login")
+	public ResponseEntity<User> login(@RequestBody LoginRequest loginRequest) {
+
+		User user = userService.login(loginRequest);
+
+		System.out.println(1);
+		if (user != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(user); // 登入成功
+		}
+
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); // 沒註冊
+	}
+
+	@PostMapping("/user/sendMail")
+	public ResponseEntity<User> resetPassword(@RequestBody LoginRequest loginRequest) {
+
+		User user = userService.resetPassword(loginRequest);
+
+		if (user != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(user);
 		}
 
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    }
-    
-    @PostMapping("/user/register")
-    public ResponseEntity<User> register(@RequestBody UserRequest userRequest){
-    	
-    	String checkEmail = userRequest.getEmail();
-    	
-    	User user = userService.getUserByEmail(checkEmail);
-    	
-    	if(user != null) {
-    		throw new ResponseStatusException(HttpStatus.CONFLICT);
-    	}
-    	
-    	int insertResult = userService.createUser(userRequest);
-    	//測東東
-    	if(insertResult == 0) {
-    		return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
-    	}
-    	return ResponseEntity.status(HttpStatus.OK).build();
-    }
-    
-    @PostMapping("/user/uploadImage")
-    public ResponseEntity<User> uploadImage(@RequestParam("img") MultipartFile file, @RequestParam("id") int id){
-    	
-    	try {
-    		if(!file.isEmpty()) {
-    			byte[] bytes = file.getBytes();
-    			System.out.println(bytes);
-    			String base64DataString = Base64.getEncoder().encodeToString(bytes);
-    			System.out.println(base64DataString);
-    			System.out.println(id);
-    			userService.updateImage(base64DataString, id);
-    			return ResponseEntity.status(HttpStatus.OK).build();
-    		} else {
-    			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    		}
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
-    	}
-    	
-    }
-    
+	}
+
+	@PostMapping("/user/register")
+	public ResponseEntity<User> register(@RequestBody UserRequest userRequest) {
+
+		String checkEmail = userRequest.getEmail();
+
+		User user = userService.getUserByEmail(checkEmail);
+
+		if (user != null) {
+			throw new ResponseStatusException(HttpStatus.CONFLICT);
+		}
+
+		int insertResult = userService.createUser(userRequest);
+		// 測東東
+		if (insertResult == 0) {
+			return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).build();
+		}
+		return ResponseEntity.status(HttpStatus.OK).build();
+	}
+
+	@PostMapping("/user/uploadImage")
+	public ResponseEntity<User> uploadImage(@RequestParam("img") MultipartFile file, @RequestParam("id") int id) {
+
+		try {
+			if (!file.isEmpty()) {
+
+				byte[] bytes = file.getBytes();
+
+				String base64DataString = Base64.getEncoder().encodeToString(bytes);
+
+				int result = userService.updateImage(base64DataString, id);
+
+				if (result == 1) {
+					return ResponseEntity.status(HttpStatus.OK).build();
+				} else {
+					return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+
+	}
+
 }
