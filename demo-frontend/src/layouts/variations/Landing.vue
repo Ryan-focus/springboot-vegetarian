@@ -18,7 +18,7 @@ const store = useTemplateStore();
 const router = useRouter();
 // 取狀態
 const admin = JSON.parse(window.localStorage.getItem("access-admin"));
-const business = JSON.parse(window.localStorage.getItem("access-business"));
+const business = JSON.parse(window.sessionStorage.getItem("access-business"));
 
 // Set default elements for this layout
 store.setLayout({
@@ -37,7 +37,8 @@ function logOut() {
   // this.admin = null;
   store.getStates({ admin: "", business: "", user: "" });
   localStorage.removeItem("access-admin");
-  localStorage.removeItem("access-business");
+  // localStorage.removeItem("access-business");
+  sessionStorage.removeItem("access-business");
   localStorage.removeItem("access-user");
   location.replace("http://localhost:8080/#/"); //登出後防止返回上頁
   Swal.fire({

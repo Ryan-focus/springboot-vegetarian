@@ -8,7 +8,7 @@ CREATE TABLE `user`(
                        password nvarchar(128) not null,
                        userName nvarchar(64) not null,
                        status nvarchar (32) not null,
-                       userPic nvarchar(64),
+                       userPic LONGTEXT,
                        registerTime DATE not null ,
                        lastLoginTime TIMESTAMP not null
 );
@@ -175,7 +175,8 @@ CREATE TABLE post(
                      postStatus NVARCHAR(256),
                      postAuditDate DATETIME,
                      postCategory NVARCHAR(256),
-                     likeCount INT default 0
+                     likeCount INT default 0,
+                     userId INT
 );
 
 -- favorite post

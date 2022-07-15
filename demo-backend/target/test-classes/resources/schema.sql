@@ -26,8 +26,10 @@ CREATE TABLE business(
                          located nvarchar(64) not null,
                          businessPic nvarchar(64),
                          status nvarchar (32) not null,
+                         UUID nvarchar(256) ,
                          createdTime TIMESTAMP not null ,
-                         lastLoginTime TIMESTAMP not null
+                         lastLoginTime TIMESTAMP not null,
+                         updateTime  TIMESTAMP not null
 );
 
 -- reserve
@@ -41,7 +43,8 @@ CREATE TABLE reserve (
                          reserveTime DATETIME not null ,
                          restaurantId int not null,
                          businessId int not null,
-                         userId int
+                         reserveName nvarchar(64) not null ,
+                         reservePhone nvarchar(64) not null
 );
 
 -- pos
@@ -50,9 +53,18 @@ CREATE TABLE pos (
                   posId INT NOT NULL auto_increment primary key,
                   businessId Int not null UNIQUE,
                   validDate nvarchar(64) not null,
-                  expiryDate DATETIME not null,
-                  visitors int not null ,
-                  turnOver int not null
+                  expiryDate DATETIME
+);
+
+-- PosBusiness
+DROP TABLE IF EXISTS posBusiness;
+CREATE TABLE posBusiness (
+                     posBusinessId      INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+                     posId              INT NOT NULL,
+                     businessId         INT NOT NULL,
+                     visitors           INT NOT NULL,
+                     turnOver           INT NOT NULL,
+                     businessName       nvarchar(128) NOT NULL
 );
 
 -- product
@@ -64,7 +76,7 @@ CREATE TABLE product (
                          category nvarchar(64) NOT NULL,
                          veganCategory nvarchar(64) NOT NULL,
                          productPrice INT NOT NULL,
-                         productImage nvarchar(64),
+                         productImage nvarchar(640),
                          stock       INT NOT NULL ,
                          createdTime DATETIME NOT NULL,
                          updatedTime DATETIME NOT NULL,
@@ -161,17 +173,19 @@ CREATE TABLE post(
                      postedText NVARCHAR(8192) NOT NULL,
                      imgUrl NVARCHAR(256),
                      postStatus NVARCHAR(256),
-                     postAuditDate DATETIME NOT NULL
+                     postAuditDate DATETIME,
+                     postCategory NVARCHAR(256)
 );
 
 -- forum
 DROP TABLE IF EXISTS forum;
 CREATE TABLE forum(
-                      forumId int NOT NULL auto_increment primary key,
-                      forumTitle nvarchar(128) NOT NULL,
-                      forumContent nvarchar(512) NOT NULL,
-                      forumCreateTime TIMESTAMP NOT NULL,
-                      forumUpdateTime TIMESTAMP NOT NULL
-);
+	forumId int NOT NULL auto_increment primary key,
+	forumTitle nvarchar(50) NOT NULL,
+	forumContent nvarchar(1024) NOT NULL,
+	forumCategory VARCHAR(64) NOT NULL,
+	forumImage nvarchar(640),
+	forumCreateTime TIMESTAMP NOT NULL,
+	forumUpdateTime TIMESTAMP NOT NULL);
 
 drop table if exists users;

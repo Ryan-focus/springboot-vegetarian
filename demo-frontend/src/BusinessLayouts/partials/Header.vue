@@ -42,9 +42,7 @@ onUnmounted(() => {
 function logout() {
   // this.admin = null;
   store.getStates({ business: "" });
-  localStorage.removeItem("access-admin");
-  localStorage.removeItem("access-business");
-  localStorage.removeItem("access-user");
+  sessionStorage.removeItem("access-business");
   location.replace("http://localhost:8080/#/"); //登出後防止返回上頁
   Swal.fire({
     title: "您已登出",
@@ -57,8 +55,7 @@ function logout() {
     router.go(0)
   }, 200);
 }
-const business = JSON.parse(window.localStorage.getItem("access-business"));
-console.log(business.data.business);
+const business = JSON.parse(window.sessionStorage.getItem("access-business"));
 </script>
 
 <template>

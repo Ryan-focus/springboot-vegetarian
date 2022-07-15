@@ -106,4 +106,23 @@ public class PosServiceImpl implements PosService {
             posDao.updateStatus(posId,pos.getBusinessId() , posRequest);
         }
     }
+
+    @Override
+    public Pos getPosByBusinessId(Integer businessId) {
+        Business business = businessDao.getBusinessById(businessId);
+
+        if(business == null){
+            log.warn("businessId :{}不存在 ， POS查詢功能失敗 ", businessId);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        Pos pos = posDao.getPosByBusinessId(businessId);
+
+        if (pos == null){
+            log.warn("BusinessID :{} 尚未申請POS系統 ", businessId);
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        return pos;
+    }
 }

@@ -1,5 +1,5 @@
 <script setup>
-import {ref, reactive, computed, onMounted } from "vue";
+import { ref, reactive, computed, onMounted } from "vue";
 
 // Vue Dataset, for more info and examples you can check out https://github.com/kouts/vue-dataset/tree/next
 import Swal from "sweetalert2";
@@ -236,6 +236,7 @@ onMounted(() => {
   width: 22px;
   height: 22px;
 }
+
 .gg-select::after,
 .gg-select::before {
   content: "";
@@ -247,26 +248,31 @@ onMounted(() => {
   left: 7px;
   transform: rotate(-45deg);
 }
+
 .gg-select::before {
   border-left: 2px solid;
   border-bottom: 2px solid;
   bottom: 4px;
   opacity: 0.3;
 }
+
 .gg-select::after {
   border-right: 2px solid;
   border-top: 2px solid;
   top: 4px;
   opacity: 0.3;
 }
+
 th.sort {
   cursor: pointer;
   user-select: none;
+
   &.asc {
     .gg-select::after {
       opacity: 1;
     }
   }
+
   &.desc {
     .gg-select::before {
       opacity: 1;
@@ -283,8 +289,7 @@ th.sort {
         <ol class="breadcrumb breadcrumb-alt">
           <li class="breadcrumb-item">
             <a class="link-fx" href="#/backend/users/dashboard">
-              <i class="fa fa-users"></i> 會員管理</a
-            >
+              <i class="fa fa-users"></i> 會員管理</a>
           </li>
           <li class="breadcrumb-item" aria-current="page">
             <i class="fa fa-user"></i> 使用者管理
@@ -298,20 +303,15 @@ th.sort {
   <!-- Page Content -->
   <div class="content">
     <BaseBlock title="使用者後台資料" content-full>
-      <Dataset
-        v-slot="{ ds }"
-        :ds-data="resData"
-        :ds-sortby="sortBy"
-        :ds-search-in="[
-          'email',
-          'password',
-          'userName',
-          'status',
-          'userPic',
-          'registerTime',
-          'lastLoginTime'
-        ]"
-      >
+      <Dataset v-slot="{ ds }" :ds-data="resData" :ds-sortby="sortBy" :ds-search-in="[
+        'email',
+        'password',
+        'userName',
+        'status',
+        'userPic',
+        'registerTime',
+        'lastLoginTime'
+      ]">
         <div class="row" :data-page-count="ds.dsPagecount">
           <div id="datasetLength" class="col-md-8 py-2">
             <DatasetShow />
@@ -328,12 +328,8 @@ th.sort {
                 <thead>
                   <tr>
                     <th scope="col" class="text-center">編號</th>
-                    <th
-                      v-for="(th, index) in cols"
-                      :key="th.field"
-                      :class="['sort', th.sort] && `d-none d-sm-table-cell`"
-                      @click="onSort($event, index)"
-                    >
+                    <th v-for="(th, index) in cols" :key="th.field"
+                      :class="['sort', th.sort] && `d-none d-sm-table-cell`" @click="onSort($event, index)">
                       {{ th.name }} <i class="gg-select float-end"></i>
                     </th>
                     <th class="text-center" style="width: 100px">動作</th>
@@ -349,50 +345,29 @@ th.sort {
                       <td class="d-none d-md-table-cell fs-sm">
                         {{ row.password }}
                       </td>
-                      <td
-                        class="d-none d-sm-table-cell"
-                        style="min-width: 110px"
-                      >
+                      <td class="d-none d-sm-table-cell" style="min-width: 110px">
                         {{ row.userName }}
                       </td>
-                      <td
-                        class="d-none d-sm-table-cell"
-                        style="min-width: 80px"
-                      >
+                      <td class="d-none d-sm-table-cell" style="min-width: 80px">
                         {{ row.status }}
                       </td>
-                      <td
-                        class="d-none d-sm-table-cell"
-                        style="min-width: 110px"
-                      >
-                        {{ row.userPic }}
+                      <td class="d-none d-sm-table-cell" style="min-width: 110px">
+                        <img :src="`data:image/png;base64,${row.userPic}`" width="80" />
                       </td>
-                      <td
-                        class="d-none d-sm-table-cell"
-                        style="min-width: 110px"
-                      >
+                      <td class="d-none d-sm-table-cell" style="min-width: 110px">
                         {{ row.registerTime }}
                       </td>
-                      <td
-                        class="d-none d-sm-table-cell"
-                        style="min-width: 140px"
-                      >
+                      <td class="d-none d-sm-table-cell" style="min-width: 140px">
                         {{ row.lastLoginTime }}
                       </td>
                       <td class="text-center">
                         <div class="btn-group">
-                          <button
-                            type="button"
-                            class="btn btn-sm btn-alt-secondary"
-                            @click="updateUserStatus(row.userId)"
-                          >
+                          <button type="button" class="btn btn-sm btn-alt-secondary"
+                            @click="updateUserStatus(row.userId)">
                             <i class="fa fa-fw fa-user-pen"></i>
                           </button>
-                          <button
-                            type="button"
-                            class="btn btn-sm btn-alt-secondary"
-                            @click="deleteRestaurant(row.userId)"
-                          >
+                          <button type="button" class="btn btn-sm btn-alt-secondary"
+                            @click="deleteRestaurant(row.userId)">
                             <i class="fa fa-fw fa-times"></i>
                           </button>
                         </div>
@@ -404,9 +379,7 @@ th.sort {
             </div>
           </div>
         </div>
-        <div
-          class="d-flex flex-md-row flex-column justify-content-between align-items-center"
-        >
+        <div class="d-flex flex-md-row flex-column justify-content-between align-items-center">
           <DatasetInfo class="py-3 fs-sm" />
           <DatasetPager class="flex-wrap py-3 fs-sm" />
         </div>
