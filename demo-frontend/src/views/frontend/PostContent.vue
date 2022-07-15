@@ -14,6 +14,7 @@ import {
   DatasetSearch,
   DatasetShow,
 } from "vue-dataset";
+//import func from "../../../vue-temp/vue-editor-bridge";
 
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
@@ -46,7 +47,7 @@ const newfPostId = ref();
 const route = useRoute();
 const user = JSON.parse(window.localStorage.getItem("access-admin"));
 const userId = user.data.user.userId;
-const userName = user.data.user.userName;
+//const userName = user.data.user.userName;
 
 let postId = route.params.postId;
 
@@ -103,20 +104,9 @@ const getAxios = function () {
       console.log(error, "失敗");
     });
 
-
-    axios
-    .get(`http://${url}/users/${writerId}`)
-    .then((res) => {
-      //獲取伺服器的回傳資料
-     resWriterName.value = res.data.userName;
-      console.log(res);
-    })
-    .catch((error) => {
-      console.log(error, "失敗");
-    });
-
-  if (userId == null) {
-    //window.location.href = "http://localhost:8080/#/signin";
+    if (userId == null) {
+    window.location.href = "http://localhost:8080/#/signin";
+    console.log(userId);
   } else {
     axios
       .get(`http://${url}/favtest/${postId}/${userId}`)
@@ -138,10 +128,33 @@ const getAxios = function () {
       .catch((error) => {
         console.log(error, "失敗");
       });
+       axios
+      .post(`http://${url}/favtest/${postId}/${userId}`, {})
+      .then((res) => {
+        getAxios();
+      })
+      .catch((error) => {
+        console.log(error, "失敗");
+      });
   }
+
+
+    // axios
+    // .get(`http://${url}/users/${writerId}`)
+    // .then((res) => {
+    //   //獲取伺服器的回傳資料
+    //  resWriterName.value = res.data.userName;
+    //   console.log(res);
+    // })
+    // .catch((error) => {
+    //   console.log(error, "失敗");
+    // });
+
+ 
 };
 //執行Axios
 getAxios();
+
 
 function addfavpost() {
   if (userId == null) {
@@ -254,10 +267,11 @@ u {
             >
               <i class="bi bi-link-45deg"></i>
             </button>
+            <span v-if="user != null">
             <button
               type="button"
               class="btn rounded-pill btn btn-alt-warning me-1 mb-3 float-end"
-              @click="addfavpost()"
+              @click="addfavpost(userId)"
               v-if="!resfavData"
             >
               <i class="bi bi-bookmark-star"></i>
@@ -272,6 +286,7 @@ u {
               <i class="bi bi-bookmark-star"></i>
               已收藏文章
             </button>
+            </span>
 
             <span>{{ resPostDate }}</span>
             <button
