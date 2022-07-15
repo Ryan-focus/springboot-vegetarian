@@ -31,6 +31,7 @@ const Post = () => import("@/views/frontend/Post.vue");
 const PostContent = () => import("@/views/frontend/PostContent.vue");
 const PostFavorite = () => import("@/views/frontend/PostFavorite.vue");
 const SearchRestaurant = () => import("@/views/frontend/SearchRestaurant.vue");
+const RestaurantDetails = () => import("@/views/frontend/Restaurant.vue");
 const ForumIndex = () => import("@/views/frontend/ForumIndex.vue");
 const ForumPage = () => import("@/views/frontend/ForumPage.vue");
 const BusinessBackend = () => import("@/views/frontend/BusinessBackend.vue");
@@ -380,6 +381,11 @@ const routes = [
         path: "/forumPage",
         name: "Forum-page",
         component: ForumPage,
+      },
+      {
+        path: "/searchRestaurant/details",
+        name: "restaurant-details",
+        component: RestaurantDetails,
       },
     ],
   },
@@ -1292,8 +1298,10 @@ router.beforeEach((to) => {
     to.name !== "index" &&
     to.name !== "userRegister" &&
     to.name !== "Forum-index" &&
-    to.name !== "postIndex"  &&
-    to.name !== "postPage"
+    to.name !== "postIndex" &&
+    to.name !== "postPage" &&
+    to.name !== "restaurantIndex" &&
+    to.name !== "restaurant-details"
   ) {
     return { name: "login" };
   }
