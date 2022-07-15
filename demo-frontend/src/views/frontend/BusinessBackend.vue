@@ -287,9 +287,8 @@ const router = useRouter();
 //     },
 //   },
 // });
-
 //預設傳值伺服器與[params]
-const business = JSON.parse(window.localStorage.getItem("access-business"));
+const business = JSON.parse(window.sessionStorage.getItem("access-business"));
 const businessID = business.data.business.businessId;
 const restaurantApply = JSON.parse(window.localStorage.getItem("restaurantApply" + businessID));
 const busineesUUID = business.data.business.uuid;
@@ -303,7 +302,7 @@ const CountTotal = ref(); //全部人數
 const CountGroup = ref(); //全部組數
 
 const resData = ref();
-const powUUID = ref();
+var powUUID = ref();
 const getReserveList = function () {
   axios.get(`http://${url}/${businessID}/reserves`)
     .then((res) => {
@@ -322,8 +321,9 @@ const getReserveList = function () {
 const getPos = function () {
   axios.get(`http://${url}/pos/business/${businessID}`)
     .then((res) => {
-      console.log(res.data);
-      powUUID.value = res.data.uuid;
+      if (res.data.uuid != null || res.data.uuid != undefined) {
+        powUUID.value = res.data.uuid;
+      }
     })
 }
 
@@ -358,11 +358,8 @@ function fileUpload() {
   var files = document.getElementById("input").files;
   var params = new FormData();
   params.append("file", files[0]);
-  console.log(params.get("file"));
   axios.post("http://localhost:8088/fileUpload", params).then((res) => {
     image.value = res.data;
-    //印出路徑
-    console.log(image);
   });
 }
 
@@ -733,7 +730,7 @@ getPos();
   </div>
   <!-- END Page Content -->
 
-  <div v-else-if="restaurantApply == null" class="content">
+  <div v-else-if="restaurantApply === null" class="content">
     <div class="row justify-content-center push">
       <span class="col-md-8 col-lg-6 col-xl-4">
         <BaseBlock title="服務說明" class="h-25 mb-5">

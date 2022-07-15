@@ -1268,7 +1268,7 @@ export default router;
 
 router.beforeEach((to) => {
   const admin = localStorage.getItem("access-admin"); //取admin 登入資訊
-  const business = localStorage.getItem("access-business"); //business 登入資訊
+  const business = sessionStorage.getItem("access-business"); //business 登入資訊
   const user = localStorage.getItem("access-user"); //user 登入資訊
   const isLogin = admin || business || user; //若有取得到1種就表示有登入
 
