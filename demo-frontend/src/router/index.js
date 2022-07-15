@@ -20,7 +20,7 @@ const Index = () => import("@/views/frontend/Index.vue");
 const Login = () => import("@/views/frontend/Login.vue");
 const UserRegister = () => import("@/views/frontend/Register.vue");
 const MemberArea = () => import("@/views/frontend/MemberArea.vue");
-const BusinessRegister = () => import("@/views/frontend/BusinessRegister.vue");
+
 //購物車
 const ShoppingCart = () => import("@/views/frontend/ShoppingCart.vue");
 const ShoppingOrder = () => import("@/views/frontend/ShoppingOrder.vue");
@@ -34,11 +34,14 @@ const SearchRestaurant = () => import("@/views/frontend/SearchRestaurant.vue");
 const RestaurantDetails = () => import("@/views/frontend/Restaurant.vue");
 const ForumIndex = () => import("@/views/frontend/ForumIndex.vue");
 const ForumPage = () => import("@/views/frontend/ForumPage.vue");
+//Customer 商家 預訂 後台
+const BusinessRegister = () => import("@/views/frontend/BusinessRegister.vue");
 const BusinessBackend = () => import("@/views/frontend/BusinessBackend.vue");
 const BusinessProfileView = () =>
   import("@/views/frontend/businessBackend/BusinessProfileView.vue");
 const BusinessCalendar = () =>
   import("@/views/frontend/businessBackend/BusinessCalendar.vue");
+const ReserveOrder = () => import("@/views/frontend/ReserveOrder.vue");
 
 // Backend Boxed: Dashboard
 const BackendBoxedDashboard = () =>
@@ -58,7 +61,6 @@ const BackendDashboard = () => import("@/views/backend/DashboardView.vue");
 const VeganUsersDashboard = () =>
   import("@/views/vegan/users/DashboardView.vue");
 const VeganUsersInfo = () => import("@/views/vegan/users/UsersInfo.vue");
-//愛蔬網後台: business
 //愛蔬網後台: restaurant
 const VeganRestaurantDashboard = () =>
   import("@/views/vegan/restaurant/DashboardView.vue");
@@ -386,6 +388,11 @@ const routes = [
         path: "/searchRestaurant/details",
         name: "restaurant-details",
         component: RestaurantDetails,
+      },
+      {
+        path: "/searchRestaurant/reserve",
+        name: "restaurant-reserve",
+        component: ReserveOrder,
       },
     ],
   },
@@ -1301,7 +1308,8 @@ router.beforeEach((to) => {
     to.name !== "postIndex" &&
     to.name !== "postPage" &&
     to.name !== "restaurantIndex" &&
-    to.name !== "restaurant-details"
+    to.name !== "restaurant-details" &&
+    to.name !== "restaurant-reserve"
   ) {
     return { name: "login" };
   }

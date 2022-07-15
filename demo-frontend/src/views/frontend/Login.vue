@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, computed } from "vue";
+import { reactive, computed, inject } from "vue";
 import { useRouter } from "vue-router";
 import { useTemplateStore } from "@/stores/template";
 import Swal from "sweetalert2";
@@ -12,6 +12,7 @@ import { required, url } from "@vuelidate/validators";
 // Main store
 const store = useTemplateStore();
 const router = useRouter();
+const renovate = inject("reload");
 
 // Input state variables
 const state = reactive({
@@ -59,10 +60,15 @@ async function onSubmit() {
           timer: 1000,
           icon: "success"
         });
-        if (response.data.data.user != null) {
+        if (response.data.data.user.userId == 1) {
           localStorage.setItem("access-admin", JSON.stringify(response.data));
           // store.getStates({ admin: response.data });
           location.replace("http://localhost:8080/#/backend/dashboard");
+        } else if (response.data.data.user != null) {
+          localStorage.setItem("access-user", JSON.stringify(response.data));
+          // store.getStates({ admin: response.data });
+          location.replace("http://localhost:8080/#/");
+          renovate();
         } else if (response.data.data.business != null) {
           sessionStorage.setItem("access-business", JSON.stringify(response.data));
           // store.getStates({ business: response.data });
