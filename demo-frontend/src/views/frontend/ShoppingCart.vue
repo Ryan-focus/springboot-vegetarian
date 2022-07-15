@@ -2,6 +2,7 @@
 // 已經宣告但從未使用過的Value (請勿刪除)
 import { computed, ref } from "vue";
 import axios from "axios";
+import Swal from "sweetalert2";
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
 const urlParams = ref(
@@ -65,10 +66,16 @@ const cartItem = ref({
 
 function addToCart(productId) {
   cartItem.value.productId = productId
-  console.log(cartItem)
   data.cartItemList.push(cartItem);
   localStorage.setItem('cart', JSON.stringify(data));
-  console.log(data)
+  Swal.fire(
+    {
+      title: "已加入購物車",
+      text: "",
+      timer: 1500,
+      icon: "success"
+    }
+  )
 
 }
 
@@ -392,7 +399,8 @@ function addToCart(productId) {
 btn-outline-danger" data-bs-dismiss="modal">
                     <i class="far fa-heart">收藏</i>
                   </button>
-                  <button type="submit" class="btn btn-outline-primary" data-bs-dismiss="modal">
+                  <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#showProduct"
+                    @click="getSingle(item.productId)">
                     <i class="fa fa-cart-shopping">加入購物車</i>
                   </button>
                 </div>
