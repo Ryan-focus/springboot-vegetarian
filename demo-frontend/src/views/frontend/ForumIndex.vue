@@ -24,6 +24,7 @@ const resData = ref();
 const total = ref();
 const resForumId = ref();
 const router = useRouter();
+const resForumCategory = ref();
 //用reactive會無法及時反應所以用ref另外宣告
 const image = ref({
   forumImage: null,
@@ -59,17 +60,26 @@ function showForum(number) {
 
 }
 
-+function getImage(forumId) {
-  axios
-    .get(`http://${url}/forums/${forumId}`)
-    .then((res) => {
-      image.value = res.data
-      console.log(image)
-    })
 
+// function getCategory(forumCategory) {
+//   axios
+//     .get(`http://${url}/forums/${forumCategory}`)
+//     .then((res) => {
+//       var fourmTotal = 0;
 
-}
+//       for (let i = 0; i <= res.data.results.length - 1; i++)
+//         fourmTotal++;
 
+//       console.log(res);
+
+//       total.value = fourmTotal;
+//       //獲取伺服器的回傳資料
+//       resData.value = res.data.results;
+//     })
+//     .catch((error) => {
+//       console.log(error, "失敗");
+//     });
+// }
 
 
 </script>
@@ -189,17 +199,18 @@ function showForum(number) {
                     <tbody>
                       <tr tr v-for="(row, index)  in resData" :key="row.forumId">
                         <td class="col-md-6 col-lg-4 col-xl-3">
-                          <a href="#/forumPage" :title="`${row.forumTitle}`">
-                            <img class="img-fluid" :src="row.forumImage" :alt="`${row.forumTitle}`" />
-                          </a>
+                          <div class="img1">
+                            <a href="#/forumPage" :title="`${row.forumTitle}`">
+                              <img class="img-fluid" :src="row.forumImage" :alt="`${row.forumTitle}`" />
+                            </a>
+                          </div>
                         </td>
 
                         <td class="d-none d-sm-table-cell" style="overflow:auto;
                           white-space: nowrap;
                           text-overflow: ellipsis;
-                          max-width: 110px;">
-                          <p style="position: absolute; ">{{ moment(row.forumUpdateTime).format('YYYY/MM/D') }}
-                          </p>
+                          max-width: 500px;">
+
                           <br />
                           <h4 class="h5 mt-0 mb-3">
                             <button type="button" class="btn btn-sm btn-alt-secondary" data-bs-target=""
@@ -208,8 +219,11 @@ function showForum(number) {
                             </button>
                             <!-- <a href="javascript:void(0)" onclick="showForum(row.forumId)">{{ row.forumTitle }} </a> -->
                           </h4>
-                          <p class="d-none d-sm-block text-muted" v-html="row.forumContent">
+                          <p class="product-buyer-name" v-html="row.forumContent">
                           </p>
+                          <div style="position: absolute; ">{{ moment(row.forumUpdateTime).format('YYYY/MM/D') }}
+
+                          </div>
                         </td>
 
                         <!-- <td class="d-none d-lg-table-cell text-center text-sm">
@@ -263,3 +277,26 @@ function showForum(number) {
     </div>
   </div>
 </template>
+<style>
+.product-buyer-name {
+
+  max-width: 1000px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+
+}
+
+.img1 {
+  width: 200px;
+  height: 200px;
+}
+
+.img-fluid {
+  width: 100%;
+  height: 100%;
+}
+</style>
