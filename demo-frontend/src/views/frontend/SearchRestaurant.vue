@@ -1,10 +1,66 @@
 <script setup>
 import { useTemplateStore } from "@/stores/template";
+import { ref } from "vue";
+import axios from "axios";
 
 // Main store
 const store = useTemplateStore();
 
+//預設傳值伺服器與[params]
+const url = "localhost:8088";
+const urlParams = ref(
+  {
+    limit: 10,
+    offset: 0,
+    restaurantAddress: null,
+    restaurantCategory: null,
+    restaurantType: null,
+    restaurantBusinessHours: null,
+    restaurantScore: null,
+    search: null
+  }
+);
+//接收的資料ref
+const resData = ref();
+const restaurantTotal = ref();
+const restaurantList = ref();
+const singleRestaurant = ref(
+  {
+    // ref會自己抓值，這邊還要另外宣告圖片是因為:src會去抓路徑，沒有定義會變undefined當掉
+    //其他的值ref抓到後會自己帶入變成json
+    imageUrl: null,
+  }
 
+)
+
+// 取得所有餐廳
+const getAxios = function () {
+  console.log(urlParams)
+  axios
+    .get(`http://${url}/restaurants`, { params: urlParams.value })
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+      restaurantTotal.value = res.data.total;
+      restaurantList.value = res.data.results
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+
+function getSingle(restaurantNumber) {
+  axios
+    .get(`http://${url}/restaurants/${restaurantNumber}`)
+    .then((res) => {
+      singleRestaurant.value = res.data
+      console.log(singleRestaurant)
+    })
+
+
+}
+// 執行Axios;
+getAxios();
 
 </script>
 
@@ -23,15 +79,15 @@ const store = useTemplateStore();
               <div class="mb-3">
                 <div>
 
-                  <input type="search" placeholder="顯示上一步輸入的文字" class="jsx-488536546 autocomplete-input" value="" />
+                  <input type="text" placeholder="顯示上一步輸入的文字" class="jsx-488536546 autocomplete-input" value="" />
                   <a>　</a>
-                  <input type="search" placeholder="搜尋地點" class="jsx-488536546 autocomplete-input" value="" />
+                  <input type="text" placeholder="搜尋地點" class="jsx-488536546 autocomplete-input" value="" />
                   <button class="btn btn-info" tabindex="0" type="button">
                     <i class="si si-magnifier"></i>
                   </button>
                   <a>　</a>
 
-
+                  <!-- 下拉式選單 -->
                   <select aria-label="Default select example">
                     <option selected>推薦</option>
                     <option value="1">熱門餐廳</option>
@@ -41,7 +97,8 @@ const store = useTemplateStore();
 
                   <a>　</a>
 
-                  <input type="checkbox" value="" id="flexCheckDefault">
+                  <!-- checkbox -->
+                  <input type="checkbox" value="營業中" id="flexCheckDefault">
                   <label class="form-check-label" for="flexCheckDefault">
                     營業中
                   </label>
@@ -98,21 +155,67 @@ const store = useTemplateStore();
             <div class="justify-content-center in row">
               顯示搜尋結果
 
-              <div class="contact row g-0 py-3">
-                <div class="col-6 bg-secondary animated slidein">
-                  表格
-                </div>
+              <!-- 卡片在此 -->
+              <div class="container py-5" data-v-5c6a0766="" v-for="item in restaurants" :key="item.restaurantNumber">
+                <div class="row" data-v-5c6a0766="">
 
-                <div class="col-6 animated slidein">
-                  <iframe crossorigin="anonymous"
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1807.109428940167!2d121.57541290794208!3d25.06057022569894!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442ab13a340b6b5%3A0x14c3f84217cb6ab0!2zSUtFQSDlrpzlrrblrrblsYUg5YWn5rmW5bqX!5e0!3m2!1szh-TW!2stw!4v1624536578867!5m2!1szh-TW!2stw&amp;output=embed"
-                    width="100%" height="400" style="border: 0px;">
-                  </iframe>
-                </div>
 
+                  <div class="col-md-9" data-v-5c6a0766="">
+                    <div class="row" data-v-5c6a0766="">
+                      <div class="col-lg-4 col-md-6 mb-3" data-v-5c6a0766="">
+                        <div class="card h-100 position-relative" role="button" data-v-5c6a0766="">
+                          <div class="card__Favorite" data-v-5c6a0766=""><i class="bi bi-heart-fill"
+                              data-v-5c6a0766=""></i></div>
+                          <!-- 餐廳圖片 -->
+                          <div class="card__imgWrap" data-v-5c6a0766="">
+                            <div class="card__img bg-cover" data-v-5c6a0766=""
+                              style="height: 250px; background-image: url();">
+                              {{ item.imageUrl }}
+                            </div>
+                          </div>
+
+                          <!-- 卡片開始 -->
+                          <div class="card-body" data-v-5c6a0766="">
+                            <div class="d-flex justify-content-between" data-v-5c6a0766="">
+                              <h5 class="card-title" data-v-5c6a0766="">
+                                {{ item.restaurantName }}</h5>
+                              <div data-v-5c6a0766="">
+                                <div class="badge rounded-pill bg-secondary h5" data-v-5c6a0766="">
+                                  {{ item.restaurantType }}</div>
+                              </div>
+                            </div>
+                            <div class="d-flex justify-content-between" data-v-5c6a0766="">
+                              <span class="text-primary h5 ms-auto" data-v-5c6a0766="">{{ item.restaurantScore
+                              }}★</span>
+                            </div>
+                            <div class="d-flex justify-content-center" data-v-5c6a0766="">
+                              <button class="btn btn-outline-primary me-3" type="button" data-v-5c6a0766="">
+                                <!----> 收藏
+                              </button>
+                              <button class="btn btn-outline-primary me-3" type="button" data-v-5c6a0766="">
+                                <!----> 詳細
+                              </button>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- 換頁 -->
+                      <nav data-v-5c6a0766="">
+                        <ul class="pagination justify-content-center">
+                          <li class="page-item disabled"><a class="page-link" href="#" tabindex="-1"
+                              aria-disabled="true"><span aria-hidden="true">«</span></a></li>
+                          <li class="active page-item"><a class="page-link" href="#">1</a></li>
+                          <li class="page-item"><a class="page-link" href="#">2</a></li>
+                          <li class="page-item"><a class="page-link" href="#"><span aria-hidden="true">»</span></a></li>
+                        </ul>
+                      </nav>
+                    </div>
+                  </div>
+                </div>
               </div>
 
-              <iframe src="https://drive.google.com/file/d/13QdxO7SE8PoORJlzn5MwWqZ_-QiCH0GK/view?usp=sharing"></iframe>
 
             </div>
           </div>
