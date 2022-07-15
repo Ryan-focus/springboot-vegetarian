@@ -29,8 +29,11 @@ const ShoppingCheckOutSuccess = () =>
   import("@/views/frontend/CheckOutSuccess.vue");
 const Post = () => import("@/views/frontend/Post.vue");
 const PostContent = () => import("@/views/frontend/PostContent.vue");
+const PostFavorite = () => import("@/views/frontend/PostFavorite.vue");
 const SearchRestaurant = () => import("@/views/frontend/SearchRestaurant.vue");
+const RestaurantDetails = () => import("@/views/frontend/Restaurant.vue");
 const ForumIndex = () => import("@/views/frontend/ForumIndex.vue");
+const ForumPage = () => import("@/views/frontend/ForumPage.vue");
 const BusinessBackend = () => import("@/views/frontend/BusinessBackend.vue");
 const BusinessProfileView = () =>
   import("@/views/frontend/businessBackend/BusinessProfileView.vue");
@@ -70,6 +73,7 @@ const VeganForumsForumsInfo = () =>
   import("@/views/vegan/forums/ForumsInfo.vue");
 const VeganForumsInsertForum = () =>
   import("@/views/vegan/forums/InsertForum.vue");
+
 //愛蔬網後台: posts
 const VeganPostsDashboard = () =>
   import("@/views/vegan/posts/DashboardView.vue");
@@ -89,6 +93,7 @@ const VeganImagUpload = () => import("@/views/vegan/cart/imageUpload.vue");
 const VeganReserveDashboard = () =>
   import("@/views/vegan/reserve/DashboardView.vue");
 const VeganReserveInfo = () => import("@/views/vegan/reserve/ReserveInfo.vue");
+
 // Backend: Blocks
 const BackendBlocksStyles = () =>
   import("@/views/backend/blocks/StylesView.vue");
@@ -348,6 +353,11 @@ const routes = [
         component: PostContent,
       },
       {
+        path: "/postFavorite",
+        name: "postFavorite",
+        component: PostFavorite,
+      },
+      {
         path: "/searchRestaurant",
         name: "restaurantIndex",
         component: SearchRestaurant,
@@ -366,6 +376,16 @@ const routes = [
         path: "/forumIndex",
         name: "Forum-index",
         component: ForumIndex,
+      },
+      {
+        path: "/forumPage",
+        name: "Forum-page",
+        component: ForumPage,
+      },
+      {
+        path: "/searchRestaurant/details",
+        name: "restaurant-details",
+        component: RestaurantDetails,
       },
     ],
   },
@@ -1268,7 +1288,7 @@ export default router;
 
 router.beforeEach((to) => {
   const admin = localStorage.getItem("access-admin"); //取admin 登入資訊
-  const business = localStorage.getItem("access-business"); //business 登入資訊
+  const business = sessionStorage.getItem("access-business"); //business 登入資訊
   const user = localStorage.getItem("access-user"); //user 登入資訊
   const isLogin = admin || business || user; //若有取得到1種就表示有登入
 
@@ -1277,7 +1297,11 @@ router.beforeEach((to) => {
     to.name !== "login" &&
     to.name !== "index" &&
     to.name !== "userRegister" &&
-    to.name !== "Forum-index"
+    to.name !== "Forum-index" &&
+    to.name !== "postIndex" &&
+    to.name !== "postPage" &&
+    to.name !== "restaurantIndex" &&
+    to.name !== "restaurant-details"
   ) {
     return { name: "login" };
   }

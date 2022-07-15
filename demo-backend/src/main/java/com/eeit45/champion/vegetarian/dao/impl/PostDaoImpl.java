@@ -61,7 +61,7 @@ public class PostDaoImpl implements PostDao {
 	// 更新文章
 	public boolean updatePost(Post post) {
 
-		String sql = "UPDATE post SET title = :title, postedText = :postedText , imgUrl = :imgUrl ,postCategory = :postCategory "
+		String sql = "UPDATE post SET title = :title, postedText = :postedText , imgUrl = :imgUrl ,postCategory = :postCategory,postStatus = :postStatus "
 				+ " WHERE postId = :postId ";
 
 		Map<String, Object> map = new HashMap<>();
@@ -71,6 +71,7 @@ public class PostDaoImpl implements PostDao {
 		map.put("postedText", post.getPostedText());
 		map.put("imgUrl", post.getImgurl());
 		map.put("postCategory", post.getPostCategory());
+		map.put("postStatus", post.getPostStatus());
 
 		namedParameterJdbcTemplate.update(sql, map);
 
@@ -142,6 +143,17 @@ public class PostDaoImpl implements PostDao {
 
 		String sql = "SELECT *  FROM post where 1=1 AND postStatus = '未通過' order by postId desc";
 		List<Post> postList = namedParameterJdbcTemplate.query(sql, new PostRowMapper());
+		return postList;
+
+	}
+	
+	//查詢使用者發表文章
+	public List<Post> findPostByUser(int uid) {
+
+		String sql = "SELECT *  FROM post where 1=1 AND userId = :userId";
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", uid);
+		List<Post> postList = namedParameterJdbcTemplate.query(sql,map ,new PostRowMapper());
 		return postList;
 
 	}
@@ -234,6 +246,23 @@ public class PostDaoImpl implements PostDao {
 		return pFavorite;
 	
 	}
+	
+	// 搜尋收藏文章(使用者後台)
+		public List<Post> findFavoritePost(int uid)  {
+
+			String sql = "SELECT * FROM post LEFT JOIN fav_post ON post.postId = fav_post.postId where fav_post.userId = :userId ";
+			Map<String, Object> map = new HashMap<>();
+			//map.put("postId", pid);
+			map.put("userId", uid);
+
+			
+			//List<Post> favPost = namedParameterJdbcTemplate.query(sql,map ,new PostRowMapper());
+			
+			List<Post> postList = namedParameterJdbcTemplate.query(sql,map ,new PostRowMapper());
+			
+			return postList;
+		
+		}
 	
 	// 搜尋按讚文章
 		public PostLike findByLike(int pid, int uid)  {

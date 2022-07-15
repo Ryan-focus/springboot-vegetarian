@@ -1,5 +1,5 @@
 <script setup>
-const business = JSON.parse(window.localStorage.getItem("access-business"));
+const business = JSON.parse(window.sessionStorage.getItem("access-business"));
 console.log(business.data.business)
 </script>
 

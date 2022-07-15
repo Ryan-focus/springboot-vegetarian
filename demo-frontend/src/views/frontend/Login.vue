@@ -61,11 +61,11 @@ async function onSubmit() {
         });
         if (response.data.data.user != null) {
           localStorage.setItem("access-admin", JSON.stringify(response.data));
-          store.getStates({ admin: response.data });
+          // store.getStates({ admin: response.data });
           location.replace("http://localhost:8080/#/backend/dashboard");
-        } else {
-          localStorage.setItem("access-business", JSON.stringify(response.data));
-          store.getStates({ business: response.data });
+        } else if (response.data.data.business != null) {
+          sessionStorage.setItem("access-business", JSON.stringify(response.data));
+          // store.getStates({ business: response.data });
           router.replace({ path: '/business/backend' });
         }
       }
@@ -227,7 +227,7 @@ export default {
     }
   },
 };
-//加下面3行防止使用鍵盤(指alt + 鍵盤左鍵等)、滑鼠手勢等方式返回前頁,點連結前往的有些不能擋
+// 加下面3行防止使用鍵盤(指alt + 鍵盤左鍵等)、滑鼠手勢等方式返回前頁,點連結前往的有些不能擋
 history.pushState(null, null, document.URL);
 window.addEventListener('popstate', function () {
   history.pushState(null, null, document.URL);
