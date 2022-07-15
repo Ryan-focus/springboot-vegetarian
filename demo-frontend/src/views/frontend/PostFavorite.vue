@@ -265,8 +265,8 @@ u {
                 aria-labelledby="btabs-vertical-profile-tab"
               >
               <ul class="nav-items fs-sm">
-                <li v-for="(item,index) in resData"
-              :key="index"
+                <li v-for="item in resData"
+              :key="item.postId"
               >
                 <a class="d-flex py-2" :href="'/#/postContent/'+item.postId">
                   <div

@@ -128,14 +128,7 @@ const getAxios = function () {
       .catch((error) => {
         console.log(error, "失敗");
       });
-       axios
-      .post(`http://${url}/favtest/${postId}/${userId}`, {})
-      .then((res) => {
-        getAxios();
-      })
-      .catch((error) => {
-        console.log(error, "失敗");
-      });
+      
   }
 
 
@@ -267,11 +260,11 @@ u {
             >
               <i class="bi bi-link-45deg"></i>
             </button>
-            <span v-if="user != null">
+            
             <button
               type="button"
               class="btn rounded-pill btn btn-alt-warning me-1 mb-3 float-end"
-              @click="addfavpost(userId)"
+              @click="addfavpost()"
               v-if="!resfavData"
             >
               <i class="bi bi-bookmark-star"></i>
@@ -286,7 +279,7 @@ u {
               <i class="bi bi-bookmark-star"></i>
               已收藏文章
             </button>
-            </span>
+           
 
             <span>{{ resPostDate }}</span>
             <button

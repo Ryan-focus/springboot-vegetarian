@@ -44,6 +44,8 @@ boolean addPostImage(Post post);
 	boolean delLikePost(int pid, int uid);	
 	PostFavorite findByFavorite(int pid , int uid);
 	PostLike findByLike(int pid, int uid);
+	List<Post> findFavoritePost(int uid);
+	List<Post> findPostByUser(int uid);
 	
 	boolean isFavorite(int pid, int uid);
 	boolean isLike(int pid, int uid);
