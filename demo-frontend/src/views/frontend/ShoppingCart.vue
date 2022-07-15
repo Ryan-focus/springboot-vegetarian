@@ -1,7 +1,8 @@
 <script setup>
 // 已經宣告但從未使用過的Value (請勿刪除)
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import axios from "axios";
+import Swal from "sweetalert2";
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
 const urlParams = ref(
@@ -27,7 +28,6 @@ const singleProduct = ref(
 )
 
 const getAxios = function () {
-  console.log(urlParams)
   axios
     .get(`http://${url}/products`, { params: urlParams.value })
     .then((res) => {
@@ -46,14 +46,38 @@ function getSingle(productId) {
     .get(`http://${url}/products/${productId}`)
     .then((res) => {
       singleProduct.value = res.data
-      console.log(singleProduct)
     })
 
 
 }
 // 執行Axios;
 getAxios();
-// For Filters
+//購物車
+
+const data = (localStorage.getItem('cartItem')) ? JSON.parse(localStorage.getItem('cartItem')) : {
+  cartItemList: []
+};
+
+const cartItem = ref({
+  quantity: "",
+  productId: ""
+})
+
+
+function addToCart(productId) {
+  cartItem.value.productId = productId
+  data.cartItemList.push(cartItem);
+  localStorage.setItem('cart', JSON.stringify(data));
+  Swal.fire(
+    {
+      title: "已加入購物車",
+      text: "",
+      timer: 1500,
+      icon: "success"
+    }
+  )
+
+}
 
 
 </script>
@@ -375,7 +399,8 @@ getAxios();
 btn-outline-danger" data-bs-dismiss="modal">
                     <i class="far fa-heart">收藏</i>
                   </button>
-                  <button type="submit" class="btn btn-outline-primary" data-bs-dismiss="modal">
+                  <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#showProduct"
+                    @click="getSingle(item.productId)">
                     <i class="fa fa-cart-shopping">加入購物車</i>
                   </button>
                 </div>
@@ -472,12 +497,10 @@ btn-outline-danger" data-bs-dismiss="modal">
         <!-- 表單內文在這裡結束 -->
         <!-- 送出button -->
         <div class="modal-footer">
-          <button type="button" class="btn 
-btn-outline-danger" data-bs-dismiss="modal">
-            <i class="far fa-heart">收藏</i>
-          </button>
+          <input type="number" min="1" v-model="cartItem.quantity">
           &ensp;&ensp;&ensp;
-          <button type="submit" class="btn btn-outline-primary" data-bs-dismiss="modal">
+          <button type="submit" class="btn btn-outline-primary" data-bs-dismiss="modal"
+            @click="addToCart(singleProduct.productId)">
             <i class="fa fa-cart-shopping">加入購物車</i>
           </button>
 

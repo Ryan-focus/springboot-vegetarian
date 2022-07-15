@@ -352,7 +352,7 @@ th.sort {
                         {{ row.status }}
                       </td>
                       <td class="d-none d-sm-table-cell" style="min-width: 110px">
-                        <img :src="`data:image/png;base64,${row.userPic}`" height="80" />
+                        <img :src="`data:image/png;base64,${row.userPic}`" style="height:80px" />
                       </td>
                       <td class="d-none d-sm-table-cell" style="min-width: 110px">
                         {{ row.registerTime }}

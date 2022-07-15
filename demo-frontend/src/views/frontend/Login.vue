@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, computed } from "vue";
+import { reactive, computed, inject } from "vue";
 import { useRouter } from "vue-router";
 import { useTemplateStore } from "@/stores/template";
 import Swal from "sweetalert2";
@@ -7,11 +7,12 @@ import axios from "axios";
 
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
 import useVuelidate from "@vuelidate/core";
-import { required, url } from "@vuelidate/validators";
+import { required } from "@vuelidate/validators";
 
 // Main store
 const store = useTemplateStore();
 const router = useRouter();
+const renovate = inject("reload");
 
 // Input state variables
 const state = reactive({
@@ -50,7 +51,7 @@ async function onSubmit() {
   axios
     .post("http://localhost:8088/login", user)
     .then(function (response) {
-      // console.log(response.data);
+
       if (response.status === 200) {
         // Swal.fire("登入成功 ~", "｡:.ﾟヽ(*´∀`)ﾉﾟ.:｡", "success");
         Swal.fire({
@@ -59,21 +60,26 @@ async function onSubmit() {
           timer: 1000,
           icon: "success"
         });
-        if (response.data.data.user != null) {
+        if (response.data.data.user != null && response.data.data.user.userId == 1) {
           localStorage.setItem("access-admin", JSON.stringify(response.data));
           // store.getStates({ admin: response.data });
           location.replace("http://localhost:8080/#/backend/dashboard");
+        } else if (response.data.data.user != null) {
+          localStorage.setItem("access-user", JSON.stringify(response.data));
+          // store.getStates({ admin: response.data });
+          location.replace("http://localhost:8080/#/");
+          renovate();
         } else if (response.data.data.business != null) {
           sessionStorage.setItem("access-business", JSON.stringify(response.data));
-          // store.getStates({ business: response.data });
+          console.log(response);
           router.replace({ path: '/business/backend' });
         }
       }
     })
     .catch(function (error) {
-      if (error.response.status === 401) {
+      if (error.status === 401) {
         Swal.fire("登入失敗,帳號異常", "∑(￣□￣;)", "error");
-      } else if (error.response.status === 400) {
+      } else if (error.status === 400) {
         Swal.fire("登入失敗,帳號或密碼錯誤", "(〒︿〒)", "error");
       } else {
         console.log(error.code); // 印錯誤狀態代碼
