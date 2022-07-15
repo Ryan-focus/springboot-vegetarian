@@ -32,7 +32,8 @@ function handleHide() {
 <template>
   <VueEasyLightbox :visible="gallery.visible" :index="gallery.index" :imgs="gallery.photos" @hide="handleHide" />
   <div class="row justify-content-center">
-    <div class="col-md-12 p-4 mt-1 mx-auto">
+
+    <div class="col-md-12 p-4 mt-1 mx-auto" style="max-width:1140px;">
       <!-- With Indicators -->
       <BaseBlock class="mb-1" content-full>
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
