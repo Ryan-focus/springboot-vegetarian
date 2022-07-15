@@ -8,7 +8,7 @@ CREATE TABLE `user`(
                        password nvarchar(128) not null,
                        userName nvarchar(64) not null,
                        status nvarchar (32) not null,
-                       userPic nvarchar(64),
+                       userPic text,
                        registerTime DATE not null ,
                        lastLoginTime TIMESTAMP not null
 );
