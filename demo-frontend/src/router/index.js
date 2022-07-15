@@ -19,6 +19,7 @@ import BLayoutBackend from "@/BusinessLayouts/variations/Backend.vue";
 const Index = () => import("@/views/frontend/Index.vue");
 const Login = () => import("@/views/frontend/Login.vue");
 const UserRegister = () => import("@/views/frontend/Register.vue");
+const MemberArea = () => import("@/views/frontend/MemberArea.vue");
 const BusinessRegister = () => import("@/views/frontend/BusinessRegister.vue");
 //購物車
 const ShoppingCart = () => import("@/views/frontend/ShoppingCart.vue");
@@ -73,10 +74,8 @@ const VeganForumsInsertForum = () =>
 const VeganPostsDashboard = () =>
   import("@/views/vegan/posts/DashboardView.vue");
 const VeganPostsPostsInfo = () => import("@/views/vegan/posts/PostsInfo.vue");
-const VeganPostsCreatePost = () =>
-  import("@/views/vegan/posts/CreatePost.vue");
-  const VeganPostsEditPost = () =>
-  import("@/views/vegan/posts/EditPost.vue");
+const VeganPostsCreatePost = () => import("@/views/vegan/posts/CreatePost.vue");
+const VeganPostsEditPost = () => import("@/views/vegan/posts/EditPost.vue");
 //愛蔬網後台: cart
 const VeganCartDashboard = () => import("@/views/vegan/cart/DashboardView.vue");
 const VeganCartProductInfo = () => import("@/views/vegan/cart/ProductInfo.vue");
@@ -90,9 +89,6 @@ const VeganImagUpload = () => import("@/views/vegan/cart/imageUpload.vue");
 const VeganReserveDashboard = () =>
   import("@/views/vegan/reserve/DashboardView.vue");
 const VeganReserveInfo = () => import("@/views/vegan/reserve/ReserveInfo.vue");
-const VeganReserveUpdatePost = () =>
-  import("@/views/vegan/reserve/UpdatePost.vue");
-
 // Backend: Blocks
 const BackendBlocksStyles = () =>
   import("@/views/backend/blocks/StylesView.vue");
@@ -309,6 +305,11 @@ const routes = [
         path: "/user/register",
         name: "userRegister",
         component: UserRegister,
+      },
+      {
+        path: "/memberArea",
+        name: "MemberArea",
+        component: MemberArea,
       },
       {
         path: "/support/store",
@@ -595,11 +596,6 @@ const routes = [
             path: "reserveinfo",
             name: "backend-reserve-info",
             component: VeganReserveInfo,
-          },
-          {
-            path: "update",
-            name: "backend-reserve-update",
-            component: VeganReserveUpdatePost,
           },
         ],
       },

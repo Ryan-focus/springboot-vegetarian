@@ -17,4 +17,6 @@ public interface PosService {
     Integer totalPos(PosQueryParams posQueryParams);
 
     void updateStatus(Integer posId, PosRequest posRequest);
+
+    Pos getPosByBusinessId(Integer businessId);
 }

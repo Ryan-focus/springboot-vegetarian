@@ -33,6 +33,8 @@ const resImg = ref();
 const getSingleData = ref();
 const posId = ref();
 const validate = ref();
+var isRestuarantInfo = ref();
+var businessId = ref();
 
 const getImg = function () {
 
@@ -64,16 +66,24 @@ const getAxios = function () {
 getAxios();
 getImg();
 
+
+function getRestuarantInfo(businessID) {
+  isRestuarantInfo.value = JSON.parse(window.localStorage.getItem("restaurantApply" + businessID));
+  console.log(isRestuarantInfo);
+}
+
 //取得單一POS , 顯示抓值
 function getSingle(prams) {
   axios
     .get(`http://${url}/pos/${prams}`)
     .then((res) => {
       //獲取伺服器的回傳資料
-      console.log(res);
+      // console.log(res);
       posId.value = res.data.posId;
       getSingleData.value = res.data.posBusinessList[0].businessName;
       validate.value = res.data.validDate;
+      businessId.value = res.data.businessId;
+      getRestuarantInfo(res.data.businessId);
     })
     .catch((error) => {
       console.log(error, "失敗");
@@ -163,6 +173,11 @@ function updateStatus(number) {
         const pos = {
           validDate: this.validate,
         };
+        axios.post(`http://${url}/restaurants`, isRestuarantInfo.value).then(() => {
+          var businessID = businessId.value;
+          console.log("Already Remove Storage : " + "restaurantApply" + businessID);
+          localStorage.removeItem("restaurantApply" + businessID);
+        });
         //執行put方法
         axios
           .put(`http://${url}/pos/${number}`, pos)
@@ -193,51 +208,6 @@ function updateStatus(number) {
       }
     });
 }
-
-//Delete Order Fuction
-// function deleteRestaurant(number) {
-//   toast
-//     .fire({
-//       title: "確定要刪除嗎?",
-//       text: "刪除後不能返回",
-//       icon: "warning",
-//       showCancelButton: true,
-//       customClass: {
-//         confirmButton: "btn btn-danger m-1",
-//         cancelButton: "btn btn-secondary m-1",
-//       },
-//       confirmButtonText: "刪除資料",
-//       cancelButtonText: "取消刪除",
-
-//       html: false,
-//       preConfirm: () => {
-//         return new Promise((resolve) => {
-//           setTimeout(() => {
-//             resolve();
-//           }, 50);
-//         });
-//       },
-//     })
-//     .then((result) => {
-//       //send request to server
-//       if (result.value) {
-//         axios
-//           .delete(`http://${url}/order/${number}`)
-//           .then((res) => {
-//             //獲取伺服器的回傳資料
-//             console.log(res);
-
-//             getAxios();
-//             toast.fire("刪除成功!", "", "success");
-//           })
-//           .catch((error) => {
-//             console.log(error, "失敗");
-//           });
-//       } else if (result.dismiss === "cancel") {
-//         toast.fire("刪除失敗", "", "error");
-//       }
-//     });
-// }
 
 // Apply a few Bootstrap 5 optimizations
 onMounted(() => {
@@ -442,8 +412,13 @@ th.sort {
                 </div>
 
 
+                <div v-if="isRestuarantInfo == null" class="mb-3">
+                  <h2>該商家尚未填寫餐廳資料</h2>
+                </div>
+
+
                 <!-- 審核商家的option -->
-                <div class="mb-3">
+                <div v-else class="mb-3">
                   <label class="form-label" for="example-select">審核商家狀態</label>
                   <select class="form-select" id="example-select" name="example-select" v-model="validate">
                     <option selected>{{ validate }}</option>
@@ -452,14 +427,18 @@ th.sort {
                     <option value="開通中">開通中</option>
                   </select>
                 </div>
+
               </div>
+
+
               <!-- 表單內文在這裡結束 -->
               <!-- 送出button -->
               <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
                   取消
                 </button>
-                <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" @click="updateStatus(posId)">
+                <button v-if="isRestuarantInfo != null" type="submit" class="btn btn-primary" data-bs-dismiss="modal"
+                  @click="updateStatus(posId)">
                   送出
                 </button>
                 <!-- // <button type=" submit" class="btn btn-primary" data-bs-dismiss="modal" // -->
