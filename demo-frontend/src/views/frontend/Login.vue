@@ -63,7 +63,7 @@ async function onSubmit() {
           localStorage.setItem("access-admin", JSON.stringify(response.data));
           // store.getStates({ admin: response.data });
           location.replace("http://localhost:8080/#/backend/dashboard");
-        } else {
+        } else if (response.data.data.business != null) {
           sessionStorage.setItem("access-business", JSON.stringify(response.data));
           // store.getStates({ business: response.data });
           router.replace({ path: '/business/backend' });
