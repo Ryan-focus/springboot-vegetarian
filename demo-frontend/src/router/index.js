@@ -92,12 +92,7 @@ const VeganImagUpload = () => import("@/views/vegan/cart/imageUpload.vue");
 const VeganReserveDashboard = () =>
   import("@/views/vegan/reserve/DashboardView.vue");
 const VeganReserveInfo = () => import("@/views/vegan/reserve/ReserveInfo.vue");
-<<<<<<< Updated upstream
-=======
-// const VeganReserveUpdatePost = () =>
-//   import("@/views/vegan/reserve/UpdatePost.vue");
 
->>>>>>> Stashed changes
 // Backend: Blocks
 const BackendBlocksStyles = () =>
   import("@/views/backend/blocks/StylesView.vue");
@@ -616,14 +611,6 @@ const routes = [
             name: "backend-reserve-info",
             component: VeganReserveInfo,
           },
-<<<<<<< Updated upstream
-=======
-          // {
-          //   path: "update",
-          //   name: "backend-reserve-update",
-          //   component: VeganReserveUpdatePost,
-          // },
->>>>>>> Stashed changes
         ],
       },
       /*
