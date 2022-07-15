@@ -29,6 +29,7 @@ const ShoppingCheckOutSuccess = () =>
   import("@/views/frontend/CheckOutSuccess.vue");
 const Post = () => import("@/views/frontend/Post.vue");
 const PostContent = () => import("@/views/frontend/PostContent.vue");
+const PostFavorite = () => import("@/views/frontend/PostFavorite.vue");
 const SearchRestaurant = () => import("@/views/frontend/SearchRestaurant.vue");
 const ForumIndex = () => import("@/views/frontend/ForumIndex.vue");
 const ForumPage = () => import("@/views/frontend/ForumPage.vue");
@@ -91,6 +92,12 @@ const VeganImagUpload = () => import("@/views/vegan/cart/imageUpload.vue");
 const VeganReserveDashboard = () =>
   import("@/views/vegan/reserve/DashboardView.vue");
 const VeganReserveInfo = () => import("@/views/vegan/reserve/ReserveInfo.vue");
+<<<<<<< Updated upstream
+=======
+// const VeganReserveUpdatePost = () =>
+//   import("@/views/vegan/reserve/UpdatePost.vue");
+
+>>>>>>> Stashed changes
 // Backend: Blocks
 const BackendBlocksStyles = () =>
   import("@/views/backend/blocks/StylesView.vue");
@@ -350,6 +357,11 @@ const routes = [
         component: PostContent,
       },
       {
+        path: "/postFavorite",
+        name: "postFavorite",
+        component: PostFavorite,
+      },
+      {
         path: "/searchRestaurant",
         name: "restaurantIndex",
         component: SearchRestaurant,
@@ -604,6 +616,14 @@ const routes = [
             name: "backend-reserve-info",
             component: VeganReserveInfo,
           },
+<<<<<<< Updated upstream
+=======
+          // {
+          //   path: "update",
+          //   name: "backend-reserve-update",
+          //   component: VeganReserveUpdatePost,
+          // },
+>>>>>>> Stashed changes
         ],
       },
       /*
@@ -1284,7 +1304,9 @@ router.beforeEach((to) => {
     to.name !== "login" &&
     to.name !== "index" &&
     to.name !== "userRegister" &&
-    to.name !== "Forum-index"
+    to.name !== "Forum-index" &&
+    to.name !== "postIndex"  &&
+    to.name !== "postPage"
   ) {
     return { name: "login" };
   }
