@@ -31,16 +31,23 @@ const reslikeData = ref();
 const resLikeCount = ref();
 const resWriterName = ref();
 const resPostStatus = ref("待審核");
-const writerId = null;
+const writerId = ref();
 
+const newData = ref();
+const newPostTitle = ref();
+const newPostImgurl = ref();
+const newPostId = ref();
 
-
-
+const newfData = ref();
+const newfPostTitle = ref();
+const newfPostImgurl = ref();
+const newfPostId = ref();
 
 const route = useRoute();
 const user = JSON.parse(window.localStorage.getItem("access-admin"));
 const userId = user.data.user.userId;
 const userName = user.data.user.userName;
+
 let postId = route.params.postId;
 
 const getAxios = function () {
@@ -56,7 +63,8 @@ const getAxios = function () {
       resPostDate.value = res.data.postedDate;
       resPostImgurl.value = res.data.imgurl;
       resLikeCount.value = res.data.likeCount;
-      let writerId = JSON.parse(JSON.stringify(res.data.userId));
+      writerId.value = res.data.userId;
+      // let writerId = JSON.parse(JSON.stringify(res.data.userId));
       console.log(res);
       console.log(writerId);
       
@@ -64,6 +72,38 @@ const getAxios = function () {
     .catch((error) => {
       console.log(error, "失敗");
     });
+
+    axios
+    .get(`http://${url}/postStatusList`)
+    .then((res) => {
+      //獲取伺服器的回傳資料   
+      newData.value = res.data;
+      newPostId.value = res.data.postId;
+      newPostTitle.value = res.data.title;
+      newPostImgurl.value = res.data.imgurl; 
+      console.log(res);
+      
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+
+    axios
+    .get(`http://${url}/postCategory2`)
+    .then((res) => {
+      //獲取伺服器的回傳資料   
+      newfData.value = res.data;
+      newfPostId.value = res.data.postId;
+      newfPostTitle.value = res.data.title;
+      newfPostImgurl.value = res.data.imgurl; 
+      console.log(res);
+      
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+
+
     axios
     .get(`http://${url}/users/${writerId}`)
     .then((res) => {
@@ -174,6 +214,10 @@ function dellikepost() {
 u {
   background-color: white;
   color: #83cfdd;
+}
+
+#newPostSide,#newfPostSide{
+  width: 100px;
 }
 </style>
 
@@ -304,9 +348,12 @@ u {
 
         <div class="col-md-4">
           <BaseBlock title="最新分享" header-class="bg-flat-light" themed>
+          
             <ul class="nav-items fs-sm">
-              <li>
-                <a class="d-flex py-2" href="javascript:void(0)">
+              <li v-for="(item,index) in newData"
+              :key="index"
+              >
+                <a class="d-flex py-2" :href="'/#/postContent/'+item.postId">
                   <div
                     class="
                       flex-shrink-0
@@ -317,46 +364,26 @@ u {
                     "
                   >
                     <img
-                      src="https://cdn.barnimages.com/wp-content/uploads/2021/10/20211001-barnimages-8-740x493@2x.jpg"
+                      :src="item.imgurl"
                       class="img-thumbnail"
                       alt="..."
                     />
                   </div>
-                  <div class="flex-grow-1 col-md-8">
-                    <div class="fw-semibold">炸蝦</div>
-                    <div class="fw-normal text-muted">好吃</div>
+                  <div id="newPostSide" class="flex-grow-1 col-md-8">
+                    <div class="newPostSide"
+                    >{{item.title}}</div>
+                    <div class="fw-normal text-muted"></div>
                   </div>
                 </a>
               </li>
-              <li>
-                <a class="d-flex py-2" href="javascript:void(0)">
-                  <div
-                    class="
-                      flex-shrink-0
-                      me-3
-                      ms-2
-                      overlay-container overlay-bottom
-                      col-md-4
-                    "
-                  >
-                    <img
-                      src="https://cdn.barnimages.com/wp-content/uploads/2021/10/20211001-barnimages-8-740x493@2x.jpg"
-                      class="img-thumbnail"
-                      alt="..."
-                    />
-                  </div>
-                  <div class="flex-grow-1 col-md-8">
-                    <div class="fw-semibold">炸蝦</div>
-                    <div class="fw-normal text-muted">好吃</div>
-                  </div>
-                </a>
-              </li>
+              
             </ul>
           </BaseBlock>
           <BaseBlock title="你可能也會喜歡" header-class="bg-flat-light" themed>
             <ul class="nav-items fs-sm">
-              <li>
-                <a class="d-flex py-2" href="javascript:void(0)">
+              <li v-for="(item,index) in newfData"
+              :key="index">
+                <a class="d-flex py-2" :href="'/#/postContent/'+item.postId">
                   <div
                     class="
                       flex-shrink-0
@@ -366,41 +393,19 @@ u {
                       col-md-4
                     "
                   >
-                    <img
-                      src="https://cdn.barnimages.com/wp-content/uploads/2021/10/20211001-barnimages-8-740x493@2x.jpg"
+                   <img
+                      :src="item.imgurl"
                       class="img-thumbnail"
                       alt="..."
                     />
                   </div>
-                  <div class="flex-grow-1 col-md-8">
-                    <div class="fw-semibold">炸蝦</div>
-                    <div class="fw-normal text-muted">好吃</div>
+                  <div class="flex-grow-1 col-md-8" id="newfPostSide">
+                    <div class="fw-semibold">{{item.title}}</div>
+                    <div class="fw-normal text-muted"></div>
                   </div>
                 </a>
               </li>
-              <li>
-                <a class="d-flex py-2" href="javascript:void(0)">
-                  <div
-                    class="
-                      flex-shrink-0
-                      me-3
-                      ms-2
-                      overlay-container overlay-bottom
-                      col-md-4
-                    "
-                  >
-                    <img
-                      src="https://cdn.barnimages.com/wp-content/uploads/2021/10/20211001-barnimages-8-740x493@2x.jpg"
-                      class="img-thumbnail"
-                      alt="..."
-                    />
-                  </div>
-                  <div class="flex-grow-1 col-md-8">
-                    <div class="fw-semibold">炸蝦</div>
-                    <div class="fw-normal text-muted">好吃</div>
-                  </div>
-                </a>
-              </li>
+              
             </ul>
           </BaseBlock>
         </div>

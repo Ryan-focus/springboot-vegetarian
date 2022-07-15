@@ -221,18 +221,18 @@ public class PostController {
 
 	}
 
-	// 與@GetMapping("/auditPost/{id}") 方法重複
-	// 查詢單筆文章
-//	@GetMapping(value = "/showPost/{id}")
-//	public ResponseEntity<Post> showPost(@PathVariable("id") int id,HttpServletRequest request) {
-//
-//		Post post = postService.findPost(id);
-//		if (post != null) {
-//			return ResponseEntity.status(HttpStatus.OK).body(post);
-//		} else {
-//			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-//		}
-//	}
+	 
+	 //依使用者查詢自己發布的文章
+	@GetMapping(value = "/showPost/{userId}")
+	public ResponseEntity<List<Post>> showUserPost(@PathVariable("userId") Integer userId,HttpServletRequest request) {
+
+		List<Post> post = postService.findPostByUser(userId);
+		if (post != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(post);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
 
 	// 刪除文章
 	@GetMapping(value = "/deletePost/{id}")
@@ -295,6 +295,18 @@ public class PostController {
 		boolean post = postService.isFavorite(id, userId);
 		boolean out = false;
 		if (post != false) {
+			return ResponseEntity.status(HttpStatus.OK).body(post);
+		} else {
+			return ResponseEntity.status(HttpStatus.OK).body(out);
+		}
+	}
+	//顯示使用者收藏文章
+	@GetMapping(value = "/favoritePost/{userId}")
+	public ResponseEntity<List<Post>> showfavPost( @PathVariable("userId") Integer userId) {
+
+		List<Post> post = postService.findFavoritePost(userId);
+		List<Post> out = null;
+		if (post != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(post);
 		} else {
 			return ResponseEntity.status(HttpStatus.OK).body(out);

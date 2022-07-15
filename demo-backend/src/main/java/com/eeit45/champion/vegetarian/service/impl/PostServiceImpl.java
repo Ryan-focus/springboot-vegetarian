@@ -50,6 +50,10 @@ public class PostServiceImpl implements PostService {
 	public List<Post> findPostByStatus() {
 		return postDao.findPostByStatus();
 	}
+	
+	public List<Post> findPostByUser(int uid){
+		return postDao.findPostByUser(uid);
+	}
 
 	@Override
 	public void addFavPost(int pid, int uid) {
@@ -64,6 +68,11 @@ public class PostServiceImpl implements PostService {
 	public PostFavorite findByFavorite(int pid, int uid) {
 		return postDao.findByFavorite(pid, uid);
 
+	}
+	
+	@Override
+	public List<Post> findFavoritePost(int uid) {
+		return postDao.findFavoritePost(uid);
 	}
 	
 	public PostLike findByLike(int pid, int uid) {
@@ -137,6 +146,8 @@ public class PostServiceImpl implements PostService {
 	public List<Post> findPostByCategory5() {
 		return postDao.findPostByCategory5();
 	}
+
+	
 
 	
 
