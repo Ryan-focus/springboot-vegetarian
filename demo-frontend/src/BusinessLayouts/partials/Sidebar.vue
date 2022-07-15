@@ -65,6 +65,10 @@ watch(
 onMounted(() => {
   new SimpleBar(document.getElementById("simplebar-sidebar"));
 });
+
+
+const business = JSON.parse(window.sessionStorage.getItem("access-business"));
+const busineesUUID = business.data.business.uuid;
 </script>
 
 <template>
@@ -214,7 +218,7 @@ onMounted(() => {
       <div id="simplebar-sidebar" class="js-sidebar-scroll">
         <slot name="content">
           <!-- Side Navigation -->
-          <div class="content-side ">
+          <div v-if="busineesUUID" class="content-side ">
             <BaseNavigation :nodes="navigation" />
           </div>
           <!-- END Side Navigation -->
