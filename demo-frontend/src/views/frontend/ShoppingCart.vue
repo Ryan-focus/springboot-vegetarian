@@ -514,10 +514,7 @@ btn-outline-danger" data-bs-dismiss="modal">
         <!-- 表單內文在這裡結束 -->
         <!-- 送出button -->
         <div class="modal-footer">
-          <button type="button" class="btn 
-btn-outline-danger" data-bs-dismiss="modal">
-            <i class="far fa-heart">收藏</i>
-          </button>
+          <input type="text">
           &ensp;&ensp;&ensp;
           <button type="submit" class="btn btn-outline-primary" data-bs-dismiss="modal">
             <i class="fa fa-cart-shopping">加入購物車</i>
