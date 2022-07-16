@@ -34,7 +34,7 @@ function searchCatagory(catagory) {
     .get(`http://${url}/restaurantList`, { params: urlParams.value })
     .then((res) => {
       console.log(res.data.results);
-      router.push({
+      router.replace({
         name: "restaurantIndex",
         params: {
           paramsData: JSON.stringify(res.data.results)
@@ -43,7 +43,6 @@ function searchCatagory(catagory) {
     })
     .catch((err) => console.log(err));
 }
-
 </script>
 
 

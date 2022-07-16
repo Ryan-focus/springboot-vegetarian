@@ -22,6 +22,17 @@ function handleHide() {
   gallery.visible = false;
 }
 </script>
+<script>
+export default {
+  name: "restaurant-reserve",
+  props: {
+    paramsData: {
+      type: String
+    }
+  },
+};
+
+</script>
 
 <template>
   <VueEasyLightbox :visible="gallery.visible" :index="gallery.index" :imgs="gallery.photos" @hide="handleHide" />

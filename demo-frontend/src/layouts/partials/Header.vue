@@ -41,9 +41,7 @@ onUnmounted(() => {
 //登出
 function logout() {
   // this.admin = null;
-  store.getStates({ admin: "", business: "", user: "" });
   localStorage.removeItem("access-admin");
-  localStorage.removeItem("access-business");
   localStorage.removeItem("access-user");
   location.replace("http://localhost:8080/#/"); //登出後防止返回上頁
   Swal.fire({
