@@ -17,25 +17,18 @@ const urlParams = ref(
         restaurantType: null,
         restaurantBusinessHours: null,
         restaurantScore: null,
-        search: null
+        searchName: null,
+        searchAddress: null
     }
 );
 //接收的資料ref
 const resData = ref();
 const restaurantTotal = ref();
 const restaurantList = ref();
-const singleRestaurant = ref(
-    {
-        // ref會自己抓值，這邊還要另外宣告圖片是因為:src會去抓路徑，沒有定義會變undefined當掉
-        //其他的值ref抓到後會自己帶入變成json
-        imageUrl: null,
-    }
 
-)
 
 // 取得所有餐廳
 const getAxios = function () {
-    console.log(urlParams)
     axios
         .get(`http://${url}/restaurants`, { params: urlParams.value })
         .then((res) => {
@@ -43,12 +36,14 @@ const getAxios = function () {
             resData.value = res.data;
             restaurantTotal.value = res.data.total;
             restaurantList.value = res.data.results
+            console.log(res.data);
         })
         .catch((error) => {
             console.log(error, "失敗");
         });
 };
 
+//取得個別
 function getSingle(restaurantNumber) {
     axios
         .get(`http://${url}/restaurants/${restaurantNumber}`)
@@ -59,207 +54,128 @@ function getSingle(restaurantNumber) {
 
 
 }
+
+
+
+
+
 // 執行Axios;
 getAxios();
 
 </script>
 
 
-
+<!-- 內容由此開始 -->
 <template>
-    <div>
-        <!-- Hero -->
-        <div id="one-vue-hero" class="bg-body-extra-light">
-            <BaseBackground>
 
-                <!-- 搜尋bar -->
-                <form @submit.prevent>
-                    <div class="row">
-                        <div class="col-md-5 offset-md-3 content content-full text-center">
-                            <div class="mb-3">
-                                <div>
 
-                                    <input type="text" placeholder="顯示上一步輸入的文字" class="jsx-488536546 autocomplete-input"
-                                        value="" />
-                                    <a>　</a>
-                                    <input type="text" placeholder="搜尋地點" class="jsx-488536546 autocomplete-input"
-                                        value="" />
-                                    <button class="btn btn-info" tabindex="0" type="button">
-                                        <i class="si si-magnifier"></i>
-                                    </button>
-                                    <a>　</a>
+    <!-- 左邊 -->
 
-                                    <!-- 下拉式選單 -->
-                                    <select aria-label="Default select example">
-                                        <option selected>推薦</option>
-                                        <option value="1">熱門餐廳</option>
-                                        <option value="2">評分最高</option>
-                                        <option value="3">離你最近</option>
-                                    </select>
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <div v-for="item in resData" :key="item.restaurantNumber">
+                    <BaseBlock>
+                        <div class="row items-push">
 
-                                    <a>　</a>
+                            <!-- 右邊的字 -->
+                            <div class="col-md-12 col-lg-7 d-md-flex align-items-center">
 
-                                    <!-- checkbox -->
-                                    <input type="checkbox" value="營業中" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        營業中
-                                    </label>
-                                    <a>　</a>
-                                    <input type="checkbox" value="全素" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        全素
-                                    </label>
-                                    <a>　</a>
-                                    <input type="checkbox" value="蛋奶素" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        蛋奶素
-                                    </label>
-                                    <a>　</a>
-                                    <input type="checkbox" value="五辛素" id="flexCheckDefault">
-                                    <label class="form-check-label" for="flexCheckDefault">
-                                        五辛素
-                                    </label>
-                                    <!-- <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
-                  <label class="form-check-label" for="flexCheckChecked">
-                    Checked checkbox
-                  </label> -->
-                                </div>
-
-                                <p class="space-x-1">
-                                    <span>更多分類：</span>
-                                    <a href="/#/searchRestaurant?restaurantCategory=中式">
-                                        <span class="badge rounded-pill bg-black-50">中式</span></a>
-                                    <a href="/#/searchRestaurant?restaurantCategory=義式">
-                                        <span class="badge rounded-pill bg-black-50">義式</span></a>
-                                    <a href="/#/searchRestaurant?restaurantCategory=麵食">
-                                        <span class="badge rounded-pill bg-black-50">麵食</span></a>
-                                    <a href="/#/searchRestaurant?restaurantCategory=印度">
-                                        <span class="badge rounded-pill bg-black-50">印度</span></a>
-                                    <a href="/#/searchRestaurant?restaurantCategory=美式">
-                                        <span class="badge rounded-pill bg-black-50">美式</span></a>
-                                    <a href="/#/searchRestaurant?restaurantCategory=日式">
-                                        <span class="badge rounded-pill bg-black-50">日式</span></a>
-                                    <a href="/#/searchRestaurant?restaurantCategory=簡餐">
-                                        <span class="badge rounded-pill bg-black-50">簡餐</span></a>
-                                    <a href="/#/searchRestaurant?restaurantCategory=自助餐">
-                                        <span class="badge rounded-pill bg-black-50">自助餐</span></a>
-                                </p>
                             </div>
                         </div>
-                    </div>
-                </form>
 
-                <hr />
-
-                <!-- 顯示搜尋結果 -->
-                <div class="container">
-                    <div class="row">
-                        <div class="justify-content-center in row">
-                            顯示搜尋結果
-
-                            <!-- 卡片在此 -->
-                            <div class="container py-5" data-v-5c6a0766="" v-for="item in restaurants"
-                                :key="item.restaurantNumber">
-                                <div class="row" data-v-5c6a0766="">
-
-
-                                    <div class="col-md-9" data-v-5c6a0766="">
-                                        <div class="row" data-v-5c6a0766="">
-                                            <div class="col-lg-4 col-md-6 mb-3" data-v-5c6a0766="">
-                                                <div class="card h-100 position-relative" role="button"
-                                                    data-v-5c6a0766="">
-                                                    <div class="card__Favorite" data-v-5c6a0766=""><i
-                                                            class="bi bi-heart-fill" data-v-5c6a0766=""></i></div>
-                                                    <!-- 餐廳圖片 -->
-                                                    <div class="card__imgWrap" data-v-5c6a0766="">
-                                                        <div class="card__img bg-cover" data-v-5c6a0766=""
-                                                            style="height: 250px; background-image: url();">
-                                                            {{ item.imageUrl }}
-                                                        </div>
-                                                    </div>
-
-                                                    <!-- 卡片開始 -->
-                                                    <div class="card-body" data-v-5c6a0766="">
-                                                        <div class="d-flex justify-content-between" data-v-5c6a0766="">
-                                                            <h5 class="card-title" data-v-5c6a0766="">
-                                                                {{ item.restaurantName }}</h5>
-                                                            <div data-v-5c6a0766="">
-                                                                <div class="badge rounded-pill bg-secondary h5"
-                                                                    data-v-5c6a0766="">
-                                                                    {{ item.restaurantType }}</div>
-                                                            </div>
-                                                        </div>
-                                                        <div class="d-flex justify-content-between" data-v-5c6a0766="">
-                                                            <span class="text-primary h5 ms-auto" data-v-5c6a0766="">{{
-                                                                item.restaurantScore
-                                                                }}★</span>
-                                                        </div>
-                                                        <div class="d-flex justify-content-center" data-v-5c6a0766="">
-                                                            <button class="btn btn-outline-primary me-3" type="button"
-                                                                data-v-5c6a0766="">
-                                                                <!----> 收藏
-                                                            </button>
-                                                            <button class="btn btn-outline-primary me-3" type="button"
-                                                                data-v-5c6a0766="">
-                                                                <!----> 詳細
-                                                            </button>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-
-                                            <!-- 換頁 -->
-                                            <nav data-v-5c6a0766="">
-                                                <ul class="pagination justify-content-center">
-                                                    <li class="page-item disabled"><a class="page-link" href="#"
-                                                            tabindex="-1" aria-disabled="true"><span
-                                                                aria-hidden="true">«</span></a></li>
-                                                    <li class="active page-item"><a class="page-link" href="#">1</a>
-                                                    </li>
-                                                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                                                    <li class="page-item"><a class="page-link" href="#"><span
-                                                                aria-hidden="true">»</span></a></li>
-                                                </ul>
-                                            </nav>
+                        <!-- 上面的餐廳簡介 -->
+                        <div class="container">
+                            <div class="row mb-3 p-3">
+                                <div class="col-md-6 mb-3">
+                                    <div class="slide__main">
+                                        <div class="col-md-4 col-lg-5">
+                                            <RouterLink :to="{}" class="img-link img-link-simple">
+                                                <img :src="`${item.imageUrl}`" alt="" width="400" height="400" />
+                                            </RouterLink>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="col-md-6 mb-3">
 
+                                    <div class="">
+                                        <h1 class="text-dark">{{ item.restaurantName }} </h1>
+                                        <h3 style="color:#3498DB">{{ item.restaurantScore }} ★</h3>
+
+                                        <p>電話：{{ item.restaurantTel }}</p>
+
+                                        <div>
+                                            <p>地址：{{ item.restaurantAddress }}</p>
+                                        </div>
+                                        <div>
+                                            <p>餐廳類型：{{ item.restaurantCategory }}</p>
+                                        </div>
+                                        <div>
+                                            <p>素食種類：{{ item.restaurantType }}</p>
+                                        </div>
+                                        <p>營業時間：{{ item.restaurantBusinessHours }}</p>
+                                        <p style="color: grey;size: 1cm;" />
+
+                                        <button type="button" class="btn btn-outline-primary">收藏</button>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+
+                        <!-- 評論 -->
+                        <div class="container" style="background-color:antiquewhite">
+                            <section>
+                                <h4 class="text-primary"> 評論 </h4>
+                                <p>一份保證十顆
+
+                                    紅酒一杯</p>
+                            </section>
 
                         </div>
-                    </div>
-                </div>
-            </BaseBackground>
-        </div>
-        <!-- END Hero -->
+                        <hr />
 
-        <!-- Hero After -->
-        <div id="one-vue-hero-after" class="bg-body-light">
-            <div class="content content-full"></div>
-        </div>
-        <!-- END Hero After -->
+                        <!-- 食記 -->
+                        <div class="container" style="background-color:antiquewhite">
+                            <section>
+                                <h4 class="text-primary"> 食記 </h4>
+                                <p>一份保證十顆
 
-        <!-- Footer -->
-        <footer id="page-footer" class="bg-body-light">
-            <div class="content py-5">
-                <div class="row fs-sm fw-medium">
-                    <div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end">
-                        <!-- Crafted with -->
-                        <!-- <i class="fa fa-heart text-danger"></i> by -->
-                        <!-- <a class="fw-semibold" href="https://1.envato.market/ydb"
-              ></a -->
-                    </div>
-                    <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start">
-                        <a class="fw-semibold" href="/">{{
-                            store.app.name + " " + store.app.version
-                            }}</a>
-                        &copy; {{ store.app.copyright }}
-                    </div>
+                                    紅酒一杯</p>
+                            </section>
+
+                        </div>
+                        <hr />
+
+                    </BaseBlock>
                 </div>
             </div>
-        </footer>
-        <!-- END Footer -->
+            <!-- 右邊 google map  -->
+
+        </div>
     </div>
+
+
+    <!-- Footer -->
+    <footer id="page-footer" class="bg-body-light">
+        <div class="content py-5">
+            <div class="row fs-sm fw-medium">
+                <div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end">
+                    <!-- Crafted with -->
+                    <!-- <i class="fa fa-heart text-danger"></i> by -->
+                    <!-- <a class="fw-semibold" href="https://1.envato.market/ydb"
+              ></a -->
+                </div>
+                <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start">
+                    <a class="fw-semibold" href="/">{{
+                            store.app.name + " " + store.app.version
+                    }}</a>
+                    &copy; {{ store.app.copyright }}
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- END Footer -->
 </template>
