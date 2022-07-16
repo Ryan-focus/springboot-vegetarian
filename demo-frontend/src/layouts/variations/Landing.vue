@@ -197,7 +197,7 @@ function logOut() {
       </div>
       <!-- Purchase Link -->
       <div class="me-2">
-        <RouterLink :to="{ name: 'shoppingCart' }" class="btn btn-light" v-click-ripple>
+        <RouterLink :to="{ name: 'shoppingCartItem' }" class="btn btn-light" v-click-ripple>
           <i class="fa fa-fw fa-shopping-cart opacity-50"></i>
         </RouterLink>
       </div>

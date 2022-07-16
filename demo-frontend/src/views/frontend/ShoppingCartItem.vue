@@ -1,43 +1,32 @@
 <script setup>
-  import { useTemplateStore } from "@/stores/template";
+import { useTemplateStore } from "@/stores/template";
 
-  // Main store
-  const store = useTemplateStore();
+// Main store
+const store = useTemplateStore();
 
-  // Print Page
-  function printPage() {
-    // Get current sidebar visibility
-    let sidebarVisibility = store.settings.sidebarVisibleDesktop;
+// Print Page
+function printPage() {
+  // Get current sidebar visibility
+  let sidebarVisibility = store.settings.sidebarVisibleDesktop;
 
-    // Close the sidebar
-    store.sidebar({ mode: "close" });
+  // Close the sidebar
+  store.sidebar({ mode: "close" });
 
-    // Print the page
-    window.print();
+  // Print the page
+  window.print();
 
-    // Restore previous sidebar visibility
-    if (sidebarVisibility) {
-      store.sidebar({ mode: "open" });
-    }
+  // Restore previous sidebar visibility
+  if (sidebarVisibility) {
+    store.sidebar({ mode: "open" });
   }
+}
 </script>
 
 <template>
   <!-- Hero -->
-  <BasePageHeading
-    title="Invoice"
-    subtitle="Clean and professional design."
-    class="d-print-none"
-  >
+  <BasePageHeading title="購物車商品" subtitle="數量有限要買要快" class="d-print-none">
     <template #extra>
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb breadcrumb-alt">
-          <li class="breadcrumb-item">
-            <a class="link-fx" href="javascript:void(0)">Generic</a>
-          </li>
-          <li class="breadcrumb-item" aria-current="page">Invoice</li>
-        </ol>
-      </nav>
+
     </template>
   </BasePageHeading>
   <!-- END Hero -->
@@ -45,10 +34,10 @@
   <!-- Page Content -->
   <div class="content content-boxed">
     <!-- Invoice -->
-    <BaseBlock title="#INV0625">
+    <BaseBlock title="商品列表">
       <template #options>
         <button type="button" class="btn-block-option" @click="printPage()">
-          <i class="si si-printer me-1"></i> Print Invoice
+          <i class="si si-printer me-1"></i> 列印清單
         </button>
       </template>
 
@@ -149,10 +138,7 @@
                 <td class="text-end">$5.500,00</td>
               </tr>
               <tr>
-                <td
-                  colspan="4"
-                  class="fw-bold text-uppercase text-end bg-body-light"
-                >
+                <td colspan="4" class="fw-bold text-uppercase text-end bg-body-light">
                   Total Due
                 </td>
                 <td class="fw-bold text-end bg-body-light">$33.000,00</td>
