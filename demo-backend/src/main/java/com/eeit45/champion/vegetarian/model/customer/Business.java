@@ -15,7 +15,7 @@ public class Business {
     private String located;
     private String businessPic;
     private String status;
-
+    private Integer restaurantNumber;
     private String UUID ;
     private Date createdTime;
     private Date lastLoginTime;
@@ -91,6 +91,14 @@ public class Business {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public Integer getRestaurantNumber() {
+        return restaurantNumber;
+    }
+
+    public void setRestaurantNumber(Integer restaurantNumber) {
+        this.restaurantNumber = restaurantNumber;
     }
 
     public String getUUID() {
