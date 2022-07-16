@@ -22,8 +22,15 @@ function printPage() {
 }
 
 const user = JSON.parse(window.localStorage.getItem("access-admin"));
-const cartItemList = JSON.parse(window.localStorage.getItem("cartItem"));
+const cartItemList = JSON.parse(window.localStorage.getItem("cartItem")).cartItemList;
 console.log(cartItemList)
+
+
+function removeCart() {
+  localStorage.removeItem("cartItem")
+  location.replace("http://localhost:8080/#/shopping")
+}
+
 </script>
 
 <template>
@@ -62,6 +69,7 @@ console.log(cartItemList)
               Region, Postal Code<br />
               ctr@example.com
             </address>
+            <button @click="removeCart()">清除購物車</button>
           </div>
           <!-- END Client Info -->
         </div>
@@ -80,48 +88,19 @@ console.log(cartItemList)
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td class="text-center">1</td>
+              <tr v-for="(item, i) in cartItemList" :key="i">
+                <td class="text-center">{{ i + 1 }}</td>
                 <td>
-                  <p class="fw-semibold mb-1">App Design & Development</p>
-                  <div class="text-muted">
-                    Design/Development of iOS and Android application
-                  </div>
+                  <p class="fw-semibold mb-1">{{ item.product.productName }}</p>
+                  <img :src="item.product.productImage" alt="" width="50">
                 </td>
                 <td class="text-center">
-                  <span class="badge rounded-pill bg-primary">1</span>
+                  <span class="badge rounded-pill bg-primary">{{ item.quantity }}</span>
                 </td>
-                <td class="text-end">$25.000,00</td>
-                <td class="text-end">$25.000,00</td>
+                <td class="text-end">NT. {{ item.product.productPrice }}</td>
+                <td class="text-end">{{ item.product.productPrice * item.quantity }}</td>
               </tr>
-              <tr>
-                <td class="text-center">2</td>
-                <td>
-                  <p class="fw-semibold mb-1">Icon Pack Design</p>
-                  <div class="text-muted">
-                    50 uniquely crafted icons for promotion
-                  </div>
-                </td>
-                <td class="text-center">
-                  <span class="badge rounded-pill bg-primary">1</span>
-                </td>
-                <td class="text-end">$900,00</td>
-                <td class="text-end">$900,00</td>
-              </tr>
-              <tr>
-                <td class="text-center">3</td>
-                <td>
-                  <p class="fw-semibold mb-1">Website Design</p>
-                  <div class="text-muted">
-                    Promotional website for the mobile application
-                  </div>
-                </td>
-                <td class="text-center">
-                  <span class="badge rounded-pill bg-primary">1</span>
-                </td>
-                <td class="text-end">$1.600,00</td>
-                <td class="text-end">$1.600,00</td>
-              </tr>
+
               <tr>
                 <td colspan="4" class="fw-semibold text-end">Subtotal</td>
                 <td class="text-end">$27.500,00</td>

@@ -66,7 +66,7 @@ const cartItem = ref({
 function addToCart(productId) {
   cartItem.value.product = this.singleProduct
   cartItem.value.quantity = this.cartItem.quantity
-  data.cartItemList.push(cartItem);
+  data.cartItemList.push(cartItem.value);
   localStorage.setItem('cartItem', JSON.stringify(data));
   console.log(data)
   Swal.fire(
@@ -79,8 +79,6 @@ function addToCart(productId) {
   )
 
 }
-
-
 </script>
 <template>
   <!-- Hero -->
