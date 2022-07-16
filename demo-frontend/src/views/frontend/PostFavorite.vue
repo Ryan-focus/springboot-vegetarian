@@ -30,10 +30,16 @@ const resPostCategory = ref();
 
 const route = useRoute();
 const router = useRouter();
-const user = JSON.parse(window.localStorage.getItem("access-admin"));
-const userId = user.data.user.userId;
-const userName = user.data.user.userName;
+
+var uid = 0;
+const user = JSON.parse(window.localStorage.getItem("access-user"));
+if (user != null) {
+  uid = user.data.user.userId;
+//userName = user.data.user.userName;
+}
+
 let postId = route.params.postId;
+
 
 let toast = Swal.mixin({
   buttonsStyling: false,
@@ -48,7 +54,7 @@ let toast = Swal.mixin({
 const getAxios = function () {
  
     axios
-    .get(`http://${url}/favoritePost/${userId}`)
+    .get(`http://${url}/favoritePost/${uid}`)
     .then((res) => {
       //獲取伺服器的回傳資料   
      resData.value = res.data;
@@ -60,7 +66,7 @@ const getAxios = function () {
     });
 
      axios
-    .get(`http://${url}/showPost/${userId}`)
+    .get(`http://${url}/showPost/${uid}`)
     .then((res) => {
       //獲取伺服器的回傳資料   
      resMyData.value = res.data;
@@ -122,7 +128,7 @@ function deletePost(number) {
 function findPost(id) {
   //send request to server
   console.log(id);
-  router.push({ name: "backend-posts-edit", params: { postId: id } });
+  router.push({ name: "postEditFront", params: { postId: id } });
 }
 
 </script>
@@ -299,44 +305,7 @@ u {
         </BaseBlock>
         <!-- END Vertical Block Tabs Default Style -->
       </div>
-        <div class="col-md-9">
-          <BaseBlock title="收藏文章列表" header-class="bg-flat-light" themed>
-            <ul class="nav-items fs-sm">
-              <li v-for="(item,index) in resData"
-              :key="index"
-              >
-                <a class="d-flex py-2" :href="'/#/postContent/'+item.postId">
-                  <div
-                    class="
-                      flex-shrink-0
-                      me-3
-                      ms-2
-                      overlay-container overlay-bottom
-                      col-md-4
-                    "
-                  >
-                    <img
-                      :src="item.imgurl"
-                      class="img-thumbnail"
-                      alt="..."
-                    />
-                  </div>
-                  <div id="newPostSide" class="flex-grow-1 col-md-8">
-                    <div class="newPostSide"
-                    >{{item.title}}</div>
-                    <div class="fw-normal text-muted"></div>
-                  </div>
-                </a>
-              </li>
-              
-            </ul>
-
-              <h5 class="page-header"><hr SIZE="5px" /></h5>
-
-              <div class="text" v-html="resPostText"></div>
-            
-          </BaseBlock>
-        </div>
+       
 
        
       </div>

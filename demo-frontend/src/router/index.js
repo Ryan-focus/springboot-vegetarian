@@ -32,6 +32,8 @@ const ShoppingCartItem = () => import("@/views/frontend/ShoppingCartItem.vue");
 const Post = () => import("@/views/frontend/Post.vue");
 const PostContent = () => import("@/views/frontend/PostContent.vue");
 const PostFavorite = () => import("@/views/frontend/PostFavorite.vue");
+const PostCreateFront = () => import("@/views/frontend/CreatePost.vue");
+const PostEditFront = () => import("@/views/frontend/EditPost.vue");
 const SearchRestaurant = () => import("@/views/frontend/SearchRestaurant.vue");
 const RestaurantDetails = () => import("@/views/frontend/Restaurant.vue");
 const ForumIndex = () => import("@/views/frontend/ForumIndex.vue");
@@ -365,6 +367,16 @@ const routes = [
         path: "/postFavorite",
         name: "postFavorite",
         component: PostFavorite,
+      },
+      {
+        path: "/postCreate",
+        name: "postCreateFront",
+        component: PostCreateFront,
+      },
+      {
+        path: "/postEdit/:postId?",
+        name: "postEditFront",
+        component: PostEditFront,
       },
       {
         path: "/searchRestaurant",
