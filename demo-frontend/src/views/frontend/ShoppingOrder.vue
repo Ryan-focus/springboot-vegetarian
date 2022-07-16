@@ -6,7 +6,7 @@ import axios from "axios";
 // 宣告的直放這裡
 const url = "localhost:8088";
 //用來取登入後的userId
-const user = JSON.parse(window.localStorage.getItem("access-admin"));
+const user = JSON.parse(window.localStorage.getItem("access-user"));
 const userId = user.data.user.userId
 const orderList = ref()
 const orderItem = ref();
