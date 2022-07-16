@@ -190,13 +190,14 @@ export default {
                   <p style="color: grey;size: 1cm;">
                     {{ item.restaurantBusinessHours }}
                   </p>
+
                   <!-- 收藏 -->
                   <button type="button" class="btn btn-outline-primary me-3">收藏</button>
                   <!-- 詳細 -->
                   <button type="button" class="btn btn-outline-primary me-3"
                     onclick="location.href='/#/searchRestaurant/details'">詳細</button>
                   <!-- 前往訂位-->
-                  <button v-if="item.restaurantNumber == `${businessRestuarantID.toString()}`" type="button"
+                  <button v-if="businessRestuarantID.indexOf(item.restaurantNumber) >= 0" type="button"
                     class="btn btn-outline-danger" @click.prevent="reserveRestaurant(item.restaurantNumber)"> <i
                       class="far fa-calendar-days me-2" />
                     前往訂位</button>
