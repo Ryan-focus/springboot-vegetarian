@@ -27,6 +27,8 @@ const ShoppingOrder = () => import("@/views/frontend/ShoppingOrder.vue");
 const ShoppingCheckOut = () => import("@/views/frontend/CheckOut.vue");
 const ShoppingCheckOutSuccess = () =>
   import("@/views/frontend/CheckOutSuccess.vue");
+const ShoppingCartItem = () => import("@/views/frontend/ShoppingCartItem.vue");
+
 const Post = () => import("@/views/frontend/Post.vue");
 const PostContent = () => import("@/views/frontend/PostContent.vue");
 const PostFavorite = () => import("@/views/frontend/PostFavorite.vue");
@@ -343,6 +345,11 @@ const routes = [
         path: "/shopping/checkoutSuccess",
         name: "shoppingCheckOutSuccess",
         component: ShoppingCheckOutSuccess,
+      },
+      {
+        path: "/shopping/cartItem",
+        name: "shoppingCartItem",
+        component: ShoppingCartItem,
       },
       {
         path: "/post",
