@@ -34,15 +34,14 @@ function removeCart() {
 }
 
 //加總功能
+var total = 0;
 function countTotal() {
-  var total = 0;
   for (var i in this.cartItemList) {
     total += parseInt(this.cartItemList[i].quantity * this.cartItemList[i].product.productPrice)
   }
   return total
 }
-
-// 結帳功能
+// 寫入訂單功能
 //用foreach+push把想要的值推進array中
 var checkOutItemArray = []
 for (var i in cartItemList) {
@@ -62,6 +61,21 @@ function checkOut() {
     .then((res) => {
       console.log(res.data)
     })
+}
+
+// 結帳功能
+function payment() {
+
+  axios.post(
+    "http://localhost:8088/paypal/payment?sum=" + total
+  ).then(
+    (res) => {
+      // 抓出返回值得跳轉頁面網址
+      if (res.data.redirect_url != null) {
+        window.location = res.data.redirect_url
+      }
+    }
+  )
 }
 
 
@@ -159,7 +173,7 @@ function checkOut() {
                 </td>
                 <td class="fw-bold text-end bg-body-light">
                   <button type="button" class="btn btn-outline-danger">
-                    <i class="fal fa-dollar-sign" @click="checkOut()">結帳</i>
+                    <i class="fal fa-dollar-sign" @click="checkOut(), payment()">結帳</i>
                   </button>
                 </td>
               </tr>
