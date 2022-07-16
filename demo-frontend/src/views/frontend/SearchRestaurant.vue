@@ -137,8 +137,7 @@ getAxios();
             <span>更多分類：</span>
             <a href="/#/searchRestaurant/details">
               <span class="badge rounded-pill bg-black-50">中式</span></a>
-            <a href="/#/restaurantList?restaurantCategory=義式">
-              <span class="badge rounded-pill bg-black-50">義式</span></a>
+            <button class="badge rounded-pill bg-black-50" @click="getByCategory('義式')">義式</button>
             <a href="/#/searchRestaurant?restaurantCategory=麵食">
               <span class="badge rounded-pill bg-black-50">麵食</span></a>
             <a href="/#/searchRestaurant?restaurantCategory=印度">
