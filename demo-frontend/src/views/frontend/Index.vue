@@ -1,10 +1,48 @@
 <script setup>
 import { useTemplateStore } from "@/stores/template";
-
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
 // Main store
 const store = useTemplateStore();
+const url = "localhost:8088";
+const urlParams = ref(
+  {
+    limit: 10,
+    offset: 0,
+    restaurantAddress: null,
+    restaurantCategory: null,
+    restaurantType: null,
+    restaurantBusinessHours: null,
+    restaurantScore: null,
+    searchName: null,
+    searchAddress: null
+  }
+);
+const router = useRouter({
+  routes: [
+    {
+      path: '/searchRestaurant',
+      name: "restaurantIndex",
+    }
+  ]
+});
 
-
+function searchCatagory(catagory) {
+  urlParams.value.restaurantCategory = catagory;
+  axios
+    .get(`http://${url}/restaurantList`, { params: urlParams.value })
+    .then((res) => {
+      console.log(res.data.results);
+      router.push({
+        name: "restaurantIndex",
+        params: {
+          paramsData: JSON.stringify(res.data.results)
+        },
+      });
+    })
+    .catch((err) => console.log(err));
+}
 
 </script>
 
@@ -26,29 +64,29 @@ const store = useTemplateStore();
             <div class="col-md-5 offset-md-3 content content-full text-center">
               <div class="mb-2">
                 <div>
-                  <input type="search" placeholder="美食分類、餐廳" class="jsx-488536546 autocomplete-input" value="" />
-                  <input type="search" placeholder="搜尋地點" class="jsx-488536546 autocomplete-input" value="" />
+                  <input type="text" placeholder="搜尋餐廳名稱" v-model="urlParams.searchName" @change="searchCatagory()" />
+                  <input type="text" placeholder="搜尋地點" v-model="urlParams.searchAddress" @change="searchCatagory()" />
                   <button class="btn btn-info" tabindex="0" type="button">
                     <i class="si si-magnifier"></i>
                   </button>
                 </div>
                 <p class="space-x-1">
                   <span>搜尋:</span>
-                  <a href="/#/searchRestaurant">
-                    <span class="badge rounded-pill bg-black-50">中式</span></a>
-                  <a href="#">
+                  <a href="#" @click.prevent="searchCatagory('中式')"><span
+                      class="badge rounded-pill bg-black-50">中式</span></a>
+                  <a href=" #" @click.prevent="searchCatagory('義式')">
                     <span class="badge rounded-pill bg-black-50">義式</span></a>
-                  <a href="#">
+                  <a href="#" @click.prevent="searchCatagory('麵食')">
                     <span class="badge rounded-pill bg-black-50">麵食</span></a>
-                  <a href="#">
+                  <a href="#" @click.prevent="searchCatagory('印度')">
                     <span class="badge rounded-pill bg-black-50">印度</span></a>
-                  <a href="#">
+                  <a href="#" @click.prevent="searchCatagory('美式')">
                     <span class="badge rounded-pill bg-black-50">美式</span></a>
-                  <a href="#">
+                  <a href="#" @click.prevent="searchCatagory('日式')">
                     <span class="badge rounded-pill bg-black-50">日式</span></a>
-                  <a href="#">
+                  <a href="#" @click.prevent="searchCatagory('簡餐')">
                     <span class="badge rounded-pill bg-black-50">簡餐</span></a>
-                  <a href="#">
+                  <a href="#" @click.prevent="searchCatagory('自助餐')">
                     <span class="badge rounded-pill bg-black-50">自助餐</span></a>
                 </p>
               </div>

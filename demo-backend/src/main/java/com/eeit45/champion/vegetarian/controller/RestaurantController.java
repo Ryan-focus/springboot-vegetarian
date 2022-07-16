@@ -48,7 +48,7 @@ public class RestaurantController {
 			@RequestParam(defaultValue = "desc") String sort,
 			
 			//分頁 Pagination--limit限制只顯示幾筆資料,offset跳過幾筆資料
-			@RequestParam(defaultValue = "5") @Max(1000) @Min(0) Integer limit,
+			@RequestParam(defaultValue = "10") @Max(1000) @Min(0) Integer limit,
 			@RequestParam(defaultValue = "0") @Min(0) Integer offset
 		){
 		

@@ -2,6 +2,7 @@ package com.eeit45.champion.vegetarian.dao.customer.impl;
 
 import com.eeit45.champion.vegetarian.dao.customer.BusinessDao;
 import com.eeit45.champion.vegetarian.dto.customer.BusinessRegisterRequest;
+import com.eeit45.champion.vegetarian.dto.customer.BusinessRequest;
 import com.eeit45.champion.vegetarian.model.customer.Business;
 import com.eeit45.champion.vegetarian.model.customer.Pos;
 import com.eeit45.champion.vegetarian.rowmapper.customer.BusinessRowMapper;
@@ -115,5 +116,23 @@ public class BusinessDaoImpl implements BusinessDao {
         if(businessList != null) return businessList;
 
         return null;
+    }
+
+    @Override
+    public void updateRestaurantNumber(Integer businessId, BusinessRequest businessRequest) {
+        String sql = "UPDATE business SET restaurantNumber = :restaurantNumber , updateTime = :updateTime " +
+                " WHERE businessId = :businessId  " ;
+
+
+        Map<String , Object > map = new HashMap<>();
+        map.put("restaurantNumber",businessRequest.getRestaurantNumber());
+
+        Date now = new Date();
+        Timestamp timestamp = new Timestamp(now.getTime());
+        map.put("updateTime", timestamp);
+
+        map.put("businessId" , businessId);
+
+        namedParameterJdbcTemplate.update(sql,map);
     }
 }

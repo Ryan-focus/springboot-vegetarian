@@ -27,9 +27,13 @@ const ShoppingOrder = () => import("@/views/frontend/ShoppingOrder.vue");
 const ShoppingCheckOut = () => import("@/views/frontend/CheckOut.vue");
 const ShoppingCheckOutSuccess = () =>
   import("@/views/frontend/CheckOutSuccess.vue");
+const ShoppingCartItem = () => import("@/views/frontend/ShoppingCartItem.vue");
+
 const Post = () => import("@/views/frontend/Post.vue");
 const PostContent = () => import("@/views/frontend/PostContent.vue");
 const PostFavorite = () => import("@/views/frontend/PostFavorite.vue");
+const PostCreateFront = () => import("@/views/frontend/CreatePost.vue");
+const PostEditFront = () => import("@/views/frontend/EditPost.vue");
 const SearchRestaurant = () => import("@/views/frontend/SearchRestaurant.vue");
 const RestaurantDetails = () => import("@/views/frontend/Restaurant.vue");
 const ForumIndex = () => import("@/views/frontend/ForumIndex.vue");
@@ -345,6 +349,11 @@ const routes = [
         component: ShoppingCheckOutSuccess,
       },
       {
+        path: "/shopping/cartItem",
+        name: "shoppingCartItem",
+        component: ShoppingCartItem,
+      },
+      {
         path: "/post",
         name: "postIndex",
         component: Post,
@@ -360,9 +369,20 @@ const routes = [
         component: PostFavorite,
       },
       {
+        path: "/postCreate",
+        name: "postCreateFront",
+        component: PostCreateFront,
+      },
+      {
+        path: "/postEdit/:postId?",
+        name: "postEditFront",
+        component: PostEditFront,
+      },
+      {
         path: "/searchRestaurant",
         name: "restaurantIndex",
         component: SearchRestaurant,
+        props: (route) => route.params,
       },
       {
         path: "/business/backend/dashboard",

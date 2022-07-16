@@ -2,193 +2,185 @@
 import { useTemplateStore } from "@/stores/template";
 import { ref } from "vue";
 import axios from "axios";
-
+import { useRouter } from 'vue-router';
 // Main store
 const store = useTemplateStore();
-
+const router = useRouter();
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
 const urlParams = ref(
   {
     limit: 10,
     offset: 0,
-    restaurantAddress: null,
     restaurantCategory: null,
     restaurantType: null,
     restaurantBusinessHours: null,
     restaurantScore: null,
-    search: null
+    searchName: null,
+    searchAddress: null
   }
 );
-//接收的資料ref
-const resData = ref();
-// const restaurantTotal = ref();
-// const restaurantList = ref();
+// const singleRestaurant = ref();
 
-// const singleRestaurant = ref(
-//   {
-//     // ref會自己抓值，這邊還要另外宣告圖片是因為:src會去抓路徑，沒有定義會變undefined當掉
-//     //其他的值ref抓到後會自己帶入變成json
-//     imageUrl: null,
-//   }
-
-// )
-
-// 取得所有餐廳
-const getAxios = function () {
+//取得條件(類別)
+function searchCatagory(catagory) {
+  urlParams.value.restaurantCategory = catagory;
   axios
-    .get(`http://${url}/restaurants`, { params: urlParams.value })
+    .get(`http://${url}/restaurantList`, { params: urlParams.value })
     .then((res) => {
-      //獲取伺服器的回傳資料
-      resData.value = res.data;
-      console.log(res.data);
+      console.log(res.data.results);
+      router.push({
+        name: "restaurantIndex",
+        params: {
+          paramsData: JSON.stringify(res.data.results)
+        },
+      });
     })
-    .catch((error) => {
-      console.log(error, "失敗");
-    });
-};
-// function getSingle(restaurantNumber) {
-//   axios
-//     .get(`http://${url}/restaurants/${restaurantNumber}`)
-//     .then((res) => {
-//       singleRestaurant.value = res.data
-//       console.log(singleRestaurant)
-//     })
+    .catch((err) => console.log(err));
+}
 
-
-// }
 // 執行Axios;
-getAxios();
+// getAxios();
+</script>
+<script>
+export default {
+  props: {
+    paramsData: {
+      type: String
+    }
+  },
 
+};
 </script>
 
 
 
 <template>
-
   <!-- 搜尋bar -->
   <form @submit.prevent>
-    <div class="row">
-      <div class="col-md-5 offset-md-3 content content-full text-center">
-        <div class="mb-3">
-          <div>
-            <input type="text" placeholder="顯示上一步輸入的文字" class="jsx-488536546 autocomplete-input" value="" />
-            <!-- <a></a> -->
-            <input type="text" placeholder="搜尋地點" class="jsx-488536546 autocomplete-input" value="" />
-            <button class="btn btn-info" tabindex="0" type="button">
-              <i class="si si-magnifier"></i>
-            </button>
-            <!-- <a></a> -->
+    <!-- <div class="row"> -->
+    <div class=" row col-md-5 offset-md-3 content content-full text-center">
+      <div class="mb-2">
+        <div>
+          <input type="text" placeholder="搜尋餐廳名稱" v-model="urlParams.searchName" @change="searchCatagory()" />
+          <!-- <a></a> -->
+          <input type="text" placeholder="搜尋地點" v-model="urlParams.searchAddress" @change="searchCatagory()" />
+          <button class="btn btn-info" tabindex="0" type="button">
+            <i class="si si-magnifier"></i>
+          </button>
+          <!-- <a></a> -->
 
-            <!-- 下拉式選單 -->
-            <select aria-label="Default select example">
-              <option selected>推薦</option>
-              <option value="1">熱門餐廳</option>
-              <option value="2">評分最高</option>
-              <option value="3">離你最近</option>
-            </select>
+          <!-- 下拉式選單 -->
+          <select aria-label="Default select example">
+            <option selected>推薦</option>
+            <option value="1">熱門餐廳</option>
+            <option value="2">評分最高</option>
+            <option value="3">離你最近</option>
+          </select>
 
-            <!-- <a></a> -->
+          <!-- <a></a> -->
 
-            <!-- checkbox -->
-            <input type="checkbox" value="營業中" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault">
-              營業中
-            </label>
-            <!-- <a></a> -->
-            <input type="checkbox" value="全素" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault">
-              全素
-            </label>
-            <!-- <a></a> -->
-            <input type="checkbox" value="蛋奶素" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault">
-              蛋奶素
-            </label>
-            <!-- <a></a> -->
-            <input type="checkbox" value="五辛素" id="flexCheckDefault">
-            <label class="form-check-label" for="flexCheckDefault">
-              五辛素
-            </label>
-            <!-- <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+          <!-- checkbox -->
+          <input type="radio" value="營業中" id="flexCheckDefault-1" v-model="urlParams.restaurantBusinessHours"
+            @change="searchCatagory()">
+          <label class="form-check-label me-2" for="flexCheckDefault-1">
+            營業中
+          </label>
+          <!-- <a></a> -->
+          <input type="radio" value="全素" id="flexCheckDefault-2" v-model="urlParams.restaurantType"
+            @change="searchCatagory()">
+          <label class="form-check-label me-2" for="flexCheckDefault-2">
+            全素
+          </label>
+          <!-- <a></a> -->
+          <input type="radio" value="全素_奶素_蛋素" id="flexCheckDefault-3" v-model="urlParams.restaurantType"
+            @change="searchCatagory()">
+          <label class="form-check-label me-2" for="flexCheckDefault-3">
+            蛋奶素
+          </label>
+          <!-- <a></a> -->
+          <input type="radio" value="全素_奶素_蛋素_含五辛" id="flexCheckDefault-4" v-model="urlParams.restaurantType"
+            @change="searchCatagory()">
+          <label class="form-check-label me-2" for="flexCheckDefault-4">
+            五辛素
+          </label>
+          <!-- <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
                   <label class="form-check-label" for="flexCheckChecked">
                     Checked checkbox
                   </label> -->
-          </div>
-
-          <p class="space-x-1">
-            <span>更多分類：</span>
-            <a href="/#/searchRestaurant?restaurantCategory=中式">
-              <span class="badge rounded-pill bg-black-50">中式</span></a>
-            <a href="/#/searchRestaurant?restaurantCategory=義式">
-              <span class="badge rounded-pill bg-black-50">義式</span></a>
-            <a href="/#/searchRestaurant?restaurantCategory=麵食">
-              <span class="badge rounded-pill bg-black-50">麵食</span></a>
-            <a href="/#/searchRestaurant?restaurantCategory=印度">
-              <span class="badge rounded-pill bg-black-50">印度</span></a>
-            <a href="/#/searchRestaurant?restaurantCategory=美式">
-              <span class="badge rounded-pill bg-black-50">美式</span></a>
-            <a href="/#/searchRestaurant?restaurantCategory=日式">
-              <span class="badge rounded-pill bg-black-50">日式</span></a>
-            <a href="/#/searchRestaurant?restaurantCategory=簡餐">
-              <span class="badge rounded-pill bg-black-50">簡餐</span></a>
-            <a href="/#/searchRestaurant?restaurantCategory=自助餐">
-              <span class="badge rounded-pill bg-black-50">自助餐</span></a>
-          </p>
         </div>
+        <p class="space-x-3">
+          <span>更多分類：</span>
+          <button class="badge rounded-pill bg-black-50" @click.prevent="searchCatagory('中式')"> 中式</button>
+          <button class="badge rounded-pill bg-black-50" @click.prevent="searchCatagory('義式')"> 義式</button>
+          <button class="badge rounded-pill bg-black-50" @click.prevent="searchCatagory('麵食')"> 麵食</button>
+          <button class="badge rounded-pill bg-black-50" @click.prevent="searchCatagory('印度')"> 印度</button>
+          <button class="badge rounded-pill bg-black-50" @click.prevent="searchCatagory('美式')"> 美式</button>
+          <button class="badge rounded-pill bg-black-50" @click.prevent="searchCatagory('日式')"> 日式</button>
+          <button class="badge rounded-pill bg-black-50" @click.prevent="searchCatagory('簡餐')"> 簡餐</button>
+          <button class="badge rounded-pill bg-black-50" @click.prevent="searchCatagory('自助餐')"> 自助餐</button>
+        </p>
+
       </div>
     </div>
+    <!-- </div> -->
   </form>
-
   <hr />
 
   <!-- Page Content -->
-  <div class="content content-boxed">
-    <div class="row col-md-12" v-for="item in resData" :key="item.restaurantNumber">
-      <!-- Story -->
-      <BaseBlock>
-        <div class="row items-push">
-          <div class="col-md-4 col-lg-5">
-            <RouterLink :to="{}" class="img-link img-link-simple">
-              <img class="img-fluid rounded" :src="`${item.imageUrl}`" alt="" />
-            </RouterLink>
-          </div>
-          <div class="col-md-8 col-lg-7 d-md-flex align-items-center">
-            <div>
-              <h4 class="mb-1">
-                <RouterLink :to="{ name: '' }" class="text-dark">{{ item.restaurantName }}</RouterLink>
-              </h4>
-              <div class="fs-sm fw-medium mb-3">
-                <RouterLink :to="{ name: '' }">Megan Fuller</RouterLink>
-                on July 16, 2021 · <span class="text-muted">10 min</span>
+  <!-- 左邊 -->
+
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <div v-for="item in JSON.parse(paramsData)" :key="item.restaurantNumber">
+          <BaseBlock>
+            <div class="row items-push">
+              <!-- 圖片 -->
+              <div class="col-md-4 col-lg-5">
+                <RouterLink :to="{}" class="img-link img-link-simple">
+                  <img class="img-fluid rounded" :src="`${item.imageUrl}`" alt="" width="200" />
+                </RouterLink>
               </div>
-              <p class="fs-sm text-muted">
-                {{ item.restaurantBusinessHours }}
-              </p>
+              <!-- 右邊的字 -->
+              <div class="col-md-12 col-lg-7 d-md-flex align-items-center">
+                <div>
+                  <!-- 餐廳名稱 -->
+
+                  <h3 class="text-dark">{{ item.restaurantName }} </h3>
+
+                  <!-- 評分 -->
+                  <h4 style="color:#3498DB">{{ item.restaurantScore }} ★</h4>
+
+                  <!-- 營業時間 -->
+                  <p style="color: grey;size: 1cm;">
+                    {{ item.restaurantBusinessHours }}
+                  </p>
+                  <!-- 收藏 -->
+                  <button type="button" class="btn btn-outline-primary">收藏</button>
+                  <!-- 詳細 -->
+                  <button type="button" class="btn btn-outline-primary"
+                    onclick="location.href='/#/searchRestaurant/details'">詳細</button>
+                </div>
+              </div>
             </div>
-          </div>
+          </BaseBlock>
         </div>
-      </BaseBlock>
-      <!-- END Story -->
-    </div>
 
-  </div>
-  <!-- END Page Content -->
 
-  <!-- Get Started -->
-  <div class="bg-body-dark">
-    <div class="content content-full">
-      <div class="my-5 text-center">
-        <h3 class="fw-bold mb-2">Do you like our stories?</h3>
-        <h4 class="h5 fw-medium opacity-75">
-          Sign up today and get access to over <strong>10,000</strong> inspiring
-          stories!
-        </h4>
-        <a class="btn btn-primary px-4 py-2" href="javascript:void(0)">Get Started Today</a>
+      </div>
+      <!-- 右邊 google map  -->
+      <div class="col">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3616.437657692995!2d121.21998631423737!3d24.985240346399994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34682183e7b783c3%3A0xf0ebfba2069b6158!2z6IGW5b635Z-6552j5a246Zmi!5e0!3m2!1szh-TW!2stw!4v1657885211036!5m2!1szh-TW!2stw"
+          width="600" height="600" style="border:0;" allowfullscreen="true" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>
   </div>
-  <!-- END Get Started -->
+
+  <!-- END Page Content -->
+
 
   <!-- Footer -->
   <footer id="page-footer" class="bg-body-light">

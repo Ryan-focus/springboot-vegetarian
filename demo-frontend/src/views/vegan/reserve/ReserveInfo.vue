@@ -173,11 +173,25 @@ function updateStatus(number) {
         const pos = {
           validDate: this.validate,
         };
-        axios.post(`http://${url}/restaurants`, isRestuarantInfo.value).then(() => {
-          var businessID = businessId.value;
-          console.log("Already Remove Storage : " + "restaurantApply" + businessID);
-          localStorage.removeItem("restaurantApply" + businessID);
-        });
+        axios.post(`http://${url}/restaurants`, isRestuarantInfo.value)
+          .then((res) => {
+            //刪除localStorage 暫存資訊 
+            var businessID = businessId.value;
+            console.log("Already Remove Storage : " + "restaurantApply" + businessID);
+            localStorage.removeItem("restaurantApply" + businessID);
+            // 呼叫Business 更新儲存之 restaurantNumber 
+            console.log("restaurantNumber=" + res.data.restaurantNumber);
+            const restaurantNumber = {
+              restaurantNumber: res.data.restaurantNumber
+            };
+            axios.put(`http://${url}/business/${businessID}`, restaurantNumber)
+              .then((res) => {
+                console.log(res);
+              }).catch((err) => {
+                console.log(err.status);
+                console.log(err);
+              });
+          });
         //執行put方法
         axios
           .put(`http://${url}/pos/${number}`, pos)
