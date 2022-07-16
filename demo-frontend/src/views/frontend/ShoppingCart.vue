@@ -60,14 +60,15 @@ const data = (localStorage.getItem('cartItem')) ? JSON.parse(localStorage.getIte
 
 const cartItem = ref({
   quantity: "",
-  productId: ""
 })
 
 
 function addToCart(productId) {
-  cartItem.value.productId = productId
+  cartItem.value.product = this.singleProduct
+  cartItem.value.quantity = this.cartItem.quantity
   data.cartItemList.push(cartItem);
   localStorage.setItem('cart', JSON.stringify(data));
+  console.log(data)
   Swal.fire(
     {
       title: "已加入購物車",
