@@ -2,16 +2,16 @@
 import { useTemplateStore } from "@/stores/template";
 import { ref } from "vue";
 import axios from "axios";
+import { useRouter } from 'vue-router';
 // Main store
 const store = useTemplateStore();
-
+const router = useRouter();
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
 const urlParams = ref(
   {
     limit: 10,
     offset: 0,
-    restaurantAddress: null,
     restaurantCategory: null,
     restaurantType: null,
     restaurantBusinessHours: null,
@@ -20,52 +20,24 @@ const urlParams = ref(
     searchAddress: null
   }
 );
-//接收的資料ref
-// const resData = ref();
-const restaurantTotal = ref();
-const restaurantList = ref();
-const singleRestaurant = ref();
-// const resData2 = ref();
-
-// 取得所有餐廳
-const getAxios = function () {
-  axios
-    .get(`http://${url}/restaurants`, { params: urlParams.value })
-    .then((res) => {
-      //獲取伺服器的回傳資料
-      // resData.value = res.data;
-      restaurantTotal.value = res.data.total;
-      restaurantList.value = res.data.results
-      console.log(res.data);
-    })
-    .catch((error) => {
-      console.log(error, "失敗");
-    });
-};
-
-//取得個別
-function getSingle(restaurantNumber) {
-  axios
-    .get(`http://${url}/restaurants/${restaurantNumber}`)
-    .then((res) => {
-      singleRestaurant.value = res.data
-      console.log(singleRestaurant)
-    })
-
-
-}
+// const singleRestaurant = ref();
 
 //取得條件(類別)
-function getByCategory(restaurantCategory) {
+function searchCatagory(catagory) {
+  urlParams.value.restaurantCategory = catagory;
   axios
-    .get(`http://${url}/restaurantList?restaurantCategory=${restaurantCategory}`)
+    .get(`http://${url}/restaurantList`, { params: urlParams.value })
     .then((res) => {
-      // resData.value = res.data.results
-      // console.log(resData)
+      console.log(res.data.results);
+      router.push({
+        name: "restaurantIndex",
+        params: {
+          paramsData: JSON.stringify(res.data.results)
+        },
+      });
     })
-
+    .catch((err) => console.log(err));
 }
-
 
 // 執行Axios;
 // getAxios();
@@ -73,139 +45,85 @@ function getByCategory(restaurantCategory) {
 <script>
 export default {
   props: {
-    resData: {
+    paramsData: {
       type: String
     }
   },
-  computed: {
-    resDataParse() {
-      return JSON.parse(this.resData);
-    },
-  },
-};
 
+};
 </script>
 
 
 
 <template>
-  {{ resData }}
   <!-- 搜尋bar -->
   <form @submit.prevent>
-    <div class="row">
-      <div class="col-md-5 offset-md-3 content content-full text-center">
-        <div class="mb-3">
-          <div>
-            <input type="text" placeholder="搜尋餐廳名稱" class="jsx-488536546 autocomplete-input" value="" />
-            <!-- <a></a> -->
-            <input type="text" placeholder="搜尋地點" class="jsx-488536546 autocomplete-input" value="" />
-            <button class="btn btn-info" tabindex="0" type="button">
-              <i class="si si-magnifier"></i>
-            </button>
-            <!-- <a></a> -->
+    <!-- <div class="row"> -->
+    <div class=" row col-md-5 offset-md-3 content content-full text-center">
+      <div class="mb-2">
+        <div>
+          <input type="text" placeholder="搜尋餐廳名稱" v-model="urlParams.searchName" @change="searchCatagory()" />
+          <!-- <a></a> -->
+          <input type="text" placeholder="搜尋地點" v-model="urlParams.searchAddress" @change="searchCatagory()" />
+          <button class="btn btn-info" tabindex="0" type="button">
+            <i class="si si-magnifier"></i>
+          </button>
+          <!-- <a></a> -->
 
-            <!-- 下拉式選單 -->
-            <select aria-label="Default select example">
-              <option selected>推薦</option>
-              <option value="1">熱門餐廳</option>
-              <option value="2">評分最高</option>
-              <option value="3">離你最近</option>
-            </select>
+          <!-- 下拉式選單 -->
+          <select aria-label="Default select example">
+            <option selected>推薦</option>
+            <option value="1">熱門餐廳</option>
+            <option value="2">評分最高</option>
+            <option value="3">離你最近</option>
+          </select>
 
-            <!-- <a></a> -->
+          <!-- <a></a> -->
 
-            <!-- checkbox -->
-            <input type="radio" value="營業中" id="flexCheckDefault" v-model="urlParams.restaurantBusinessHours"
-              @change="getAxios()">
-            <label class="form-check-label" for="flexCheckDefault">
-              營業中
-            </label>
-            <!-- <a></a> -->
-            <input type="radio" value="全素" id="flexCheckDefault" v-model="urlParams.restaurantType"
-              @change="getAxios()">
-            <label class="form-check-label" for="flexCheckDefault">
-              全素
-            </label>
-            <!-- <a></a> -->
-            <input type="radio" value="蛋奶素" id="flexCheckDefault" v-model="urlParams.restaurantType"
-              @change="getAxios()">
-            <label class="form-check-label" for="flexCheckDefault">
-              蛋奶素
-            </label>
-            <!-- <a></a> -->
-            <input type="radio" value="五辛素" id="flexCheckDefault" v-model="urlParams.restaurantType"
-              @change="getAxios()">
-            <label class="form-check-label" for="flexCheckDefault">
-              五辛素
-            </label>
-            <!-- <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+          <!-- checkbox -->
+          <input type="radio" value="營業中" id="flexCheckDefault-1" v-model="urlParams.restaurantBusinessHours"
+            @change="searchCatagory()">
+          <label class="form-check-label me-2" for="flexCheckDefault-1">
+            營業中
+          </label>
+          <!-- <a></a> -->
+          <input type="radio" value="全素" id="flexCheckDefault-2" v-model="urlParams.restaurantType"
+            @change="searchCatagory()">
+          <label class="form-check-label me-2" for="flexCheckDefault-2">
+            全素
+          </label>
+          <!-- <a></a> -->
+          <input type="radio" value="全素_奶素_蛋素" id="flexCheckDefault-3" v-model="urlParams.restaurantType"
+            @change="searchCatagory()">
+          <label class="form-check-label me-2" for="flexCheckDefault-3">
+            蛋奶素
+          </label>
+          <!-- <a></a> -->
+          <input type="radio" value="全素_奶素_蛋素_含五辛" id="flexCheckDefault-4" v-model="urlParams.restaurantType"
+            @change="searchCatagory()">
+          <label class="form-check-label me-2" for="flexCheckDefault-4">
+            五辛素
+          </label>
+          <!-- <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
                   <label class="form-check-label" for="flexCheckChecked">
                     Checked checkbox
                   </label> -->
-          </div>
-
-          <p class="space-x-1">
-            <span>更多分類：</span>
-            <a href="/#/searchRestaurant/details">
-              <span class="badge rounded-pill bg-black-50">中式</span></a>
-            <button class="badge rounded-pill bg-black-50" @click="getByCategory('義式')">義式</button>
-            <a href="/#/searchRestaurant?restaurantCategory=麵食">
-              <span class="badge rounded-pill bg-black-50">麵食</span></a>
-            <a href="/#/searchRestaurant?restaurantCategory=印度">
-              <span class="badge rounded-pill bg-black-50">印度</span></a>
-            <a href="/#/searchRestaurant?restaurantCategory=美式">
-              <span class="badge rounded-pill bg-black-50">美式</span></a>
-            <a href="/#/searchRestaurant?restaurantCategory=日式">
-              <span class="badge rounded-pill bg-black-50">日式</span></a>
-            <a href="/#/searchRestaurant?restaurantCategory=簡餐">
-              <span class="badge rounded-pill bg-black-50">簡餐</span></a>
-            <a href="/#/searchRestaurant?restaurantCategory=自助餐">
-              <span class="badge rounded-pill bg-black-50">自助餐</span></a>
-          </p>
-
-
-          <!-- 這邊是下拉式選單 -->
-
-          <div class="col-sm-2 col-xl-1">
-            <div class="dropdown">
-              <button type="button" class="btn btn-alt-info dropdown-toggle" id="dropdown-default-alt-info"
-                data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <!-- 一開始會是null值顯示不出文字，用v-if判斷 -->
-                <a v-if="urlParams.restaurantCategory == null">
-                  餐廳分類
-                </a>
-                {{ urlParams.restaurantCategory }}
-              </button>
-              <div class="dropdown-menu fs-sm" aria-labelledby="dropdown-default-alt-info">
-
-                <!-- 這邊開始是一格會打勾的radio -->
-                <div class="form-check form-block">
-                  <input type="radio" class="form-check-input" id="example-radio-block1" name="example-radio-block"
-                    value="義式" v-model="urlParams.restaurantCategory" @change="getByCategory('義式')" />
-                  <label class="form-check-label" for="example-radio-block1">
-                    <span class="fs-4 fw-semibold">義式</span>
-                  </label>
-                </div>
-                <!-- 這裡結束一格-->
-                <div class="form-check form-block">
-                  <input type="radio" class="form-check-input" id="example-radio-block2" name="example-radio-block"
-                    value="麵食" v-model="urlParams.restaurantCategory" @change="getByCategory('麵食')" />
-                  <label class="form-check-label" for="example-radio-block2">
-                    <span class="fs-4 fw-semibold">麵食</span>
-                  </label>
-                </div>
-
-              </div>
-            </div>
-          </div>
-
-
-
-
-
         </div>
+        <p class="space-x-3">
+          <span>更多分類：</span>
+          <button class="badge rounded-pill bg-black-50" @click.prevent="searchCatagory('中式')"> 中式</button>
+          <button class="badge rounded-pill bg-black-50" @click.prevent="searchCatagory('義式')"> 義式</button>
+          <button class="badge rounded-pill bg-black-50" @click.prevent="searchCatagory('麵食')"> 麵食</button>
+          <button class="badge rounded-pill bg-black-50" @click.prevent="searchCatagory('印度')"> 印度</button>
+          <button class="badge rounded-pill bg-black-50" @click.prevent="searchCatagory('美式')"> 美式</button>
+          <button class="badge rounded-pill bg-black-50" @click.prevent="searchCatagory('日式')"> 日式</button>
+          <button class="badge rounded-pill bg-black-50" @click.prevent="searchCatagory('簡餐')"> 簡餐</button>
+          <button class="badge rounded-pill bg-black-50" @click.prevent="searchCatagory('自助餐')"> 自助餐</button>
+        </p>
+
       </div>
     </div>
+    <!-- </div> -->
   </form>
   <hr />
 
@@ -215,7 +133,7 @@ export default {
   <div class="container">
     <div class="row">
       <div class="col">
-        <div v-for="item in resData" :key="item.restaurantNumber">
+        <div v-for="item in JSON.parse(paramsData)" :key="item.restaurantNumber">
           <BaseBlock>
             <div class="row items-push">
               <!-- 圖片 -->
@@ -246,7 +164,6 @@ export default {
                 </div>
               </div>
             </div>
-
           </BaseBlock>
         </div>
 

@@ -382,6 +382,7 @@ const routes = [
         path: "/searchRestaurant",
         name: "restaurantIndex",
         component: SearchRestaurant,
+        props: (route) => route.params,
       },
       {
         path: "/business/backend/dashboard",

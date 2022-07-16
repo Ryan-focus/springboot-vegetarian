@@ -37,7 +37,7 @@ function searchCatagory(catagory) {
       router.push({
         name: "restaurantIndex",
         params: {
-          resData: JSON.stringify(res.data.results)
+          paramsData: JSON.stringify(res.data.results)
         },
       });
     })
@@ -64,8 +64,8 @@ function searchCatagory(catagory) {
             <div class="col-md-5 offset-md-3 content content-full text-center">
               <div class="mb-2">
                 <div>
-                  <input type="search" placeholder="美食分類、餐廳" class="jsx-488536546 autocomplete-input" value="" />
-                  <input type="search" placeholder="搜尋地點" class="jsx-488536546 autocomplete-input" value="" />
+                  <input type="text" placeholder="搜尋餐廳名稱" v-model="urlParams.searchName" @change="searchCatagory()" />
+                  <input type="text" placeholder="搜尋地點" v-model="urlParams.searchAddress" @change="searchCatagory()" />
                   <button class="btn btn-info" tabindex="0" type="button">
                     <i class="si si-magnifier"></i>
                   </button>
@@ -74,19 +74,19 @@ function searchCatagory(catagory) {
                   <span>搜尋:</span>
                   <a href="#" @click.prevent="searchCatagory('中式')"><span
                       class="badge rounded-pill bg-black-50">中式</span></a>
-                  <a href=" #">
+                  <a href=" #" @click.prevent="searchCatagory('義式')">
                     <span class="badge rounded-pill bg-black-50">義式</span></a>
-                  <a href="#">
+                  <a href="#" @click.prevent="searchCatagory('麵食')">
                     <span class="badge rounded-pill bg-black-50">麵食</span></a>
-                  <a href="#">
+                  <a href="#" @click.prevent="searchCatagory('印度')">
                     <span class="badge rounded-pill bg-black-50">印度</span></a>
-                  <a href="#">
+                  <a href="#" @click.prevent="searchCatagory('美式')">
                     <span class="badge rounded-pill bg-black-50">美式</span></a>
-                  <a href="#">
+                  <a href="#" @click.prevent="searchCatagory('日式')">
                     <span class="badge rounded-pill bg-black-50">日式</span></a>
-                  <a href="#">
+                  <a href="#" @click.prevent="searchCatagory('簡餐')">
                     <span class="badge rounded-pill bg-black-50">簡餐</span></a>
-                  <a href="#">
+                  <a href="#" @click.prevent="searchCatagory('自助餐')">
                     <span class="badge rounded-pill bg-black-50">自助餐</span></a>
                 </p>
               </div>
