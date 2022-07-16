@@ -40,6 +40,11 @@ function searchCatagory(catagory) {
     .catch((err) => console.log(err));
 }
 
+//跳轉到餐廳詳細資訊頁面
+function restaurantDetail(number) {
+  router.push({ name: "restaurant-details", params: { restaurantNumber: number } })
+}
+
 //取得驗證後商家數據，有登入在餐廳內的數據 
 function getBusinessList() {
   axios.get(`http://${url}/business`)
@@ -180,8 +185,12 @@ export default {
               <div class="col-md-12 col-lg-7 d-md-flex align-items-center">
                 <div>
                   <!-- 餐廳名稱 -->
-
-                  <h3 class="text-dark">{{ item.restaurantName }} </h3>
+                  <div class="d-flex justify-content-between">
+                    <h3 class="card-title text-dark">{{ item.restaurantName }}</h3>
+                    <div>
+                      <div class="badge rounded-pill bg-secondary h5">{{ item.restaurantCategory }}</div>
+                    </div>
+                  </div>
 
                   <!-- 評分 -->
                   <h4 style="color:#3498DB">{{ item.restaurantScore }} ★</h4>
@@ -191,10 +200,10 @@ export default {
                     {{ item.restaurantBusinessHours }}
                   </p>
                   <!-- 收藏 -->
-                  <button type="button" class="btn btn-outline-primary me-3">收藏</button>
+                  <!-- <button type="button" class="btn btn-outline-primary me-3">收藏</button> -->
                   <!-- 詳細 -->
                   <button type="button" class="btn btn-outline-primary me-3"
-                    onclick="location.href='/#/searchRestaurant/details'">詳細</button>
+                    @click.prevent="restaurantDetail(item.restaurantNumber)">詳細</button>
                   <!-- 前往訂位-->
                   <button v-if="item.restaurantNumber == `${businessRestuarantID.toString()}`" type="button"
                     class="btn btn-outline-danger" @click.prevent="reserveRestaurant(item.restaurantNumber)"> <i

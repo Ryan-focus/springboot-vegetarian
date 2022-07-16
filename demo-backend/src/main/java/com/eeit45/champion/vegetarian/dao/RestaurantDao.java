@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.eeit45.champion.vegetarian.dto.RestaurantQueryParams;
 import com.eeit45.champion.vegetarian.dto.RestaurantRequest;
+import com.eeit45.champion.vegetarian.model.Post;
+import com.eeit45.champion.vegetarian.model.PostFavorite;
 import com.eeit45.champion.vegetarian.model.Restaurant;
 
 public interface RestaurantDao {
@@ -18,4 +20,7 @@ public interface RestaurantDao {
 	void updateRestaurant(Integer restaurantNumber,RestaurantRequest restaurantRequest);
 	void deleteRestaurantByNumber(Integer restaurantNumber);
 	
+	void addSaveRestaurant(int pid, int uid);
+	boolean delSaveRestaurant(int pid, int uid);
+	List<Restaurant> findSaveRestaurant(int uid);
 }

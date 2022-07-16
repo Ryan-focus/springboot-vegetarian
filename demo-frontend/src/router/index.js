@@ -405,7 +405,7 @@ const routes = [
         component: ForumPage,
       },
       {
-        path: "/searchRestaurant/details",
+        path: "/searchRestaurant/details/:restaurantNumber?",
         name: "restaurant-details",
         component: RestaurantDetails,
       },

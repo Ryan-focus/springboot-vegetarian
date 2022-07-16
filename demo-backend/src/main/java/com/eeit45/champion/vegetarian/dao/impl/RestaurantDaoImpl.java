@@ -15,7 +15,9 @@ import org.springframework.stereotype.Component;
 import com.eeit45.champion.vegetarian.dao.RestaurantDao;
 import com.eeit45.champion.vegetarian.dto.RestaurantQueryParams;
 import com.eeit45.champion.vegetarian.dto.RestaurantRequest;
+import com.eeit45.champion.vegetarian.model.Post;
 import com.eeit45.champion.vegetarian.model.Restaurant;
+import com.eeit45.champion.vegetarian.rowmapper.PostRowMapper;
 import com.eeit45.champion.vegetarian.rowmapper.RestaurantRowMapper;
 
 @Component
@@ -176,6 +178,47 @@ public class RestaurantDaoImpl implements RestaurantDao{
 		map.put("restaurantNumber", restaurantNumber);
 		
 		namedParameterJdbcTemplate.update(sql,map);
+	}
+
+	//新增收藏餐廳
+	@Override
+	public void addSaveRestaurant(int pid, int uid) {
+		String sql = "INSERT INTO saveRestaurant ( userId, restaurantNumber, saveDate )"+
+				"VALUES (:userId, :restaurantNumber, :saveDate)";
+
+				Map<String, Object> map = new HashMap<>();
+				map.put("userId", uid);
+				map.put("restaurantNumber", pid);
+				map.put("saveDate",new Date());
+
+				namedParameterJdbcTemplate.update(sql, map);
+
+	}
+	
+	//取消收藏餐廳
+	@Override
+	public boolean delSaveRestaurant(int pid, int uid) {
+		String sql = "DELETE FROM saveRestaurant where restaurantNumber = :restaurantNumber AND userId = :userId";
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("restaurantNumber", pid);
+		map.put("userId", uid);
+
+		
+		namedParameterJdbcTemplate.update(sql, map);
+		return true;
+
+	}
+
+	// 搜尋收藏餐廳
+	@Override
+	public List<Restaurant> findSaveRestaurant(int uid) {
+		String sql = "SELECT * FROM restaurant LEFT JOIN saveRestaurant ON restaurant.restaurantNumber = saveRestaurant.restaurantNumber where saveRestaurant.userId = :userId ";
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", uid);
+		
+		List<Restaurant> restaurantList = namedParameterJdbcTemplate.query(sql,map ,new RestaurantRowMapper());
+		return restaurantList;
 	}
 	
 }
