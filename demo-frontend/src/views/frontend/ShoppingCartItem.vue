@@ -20,6 +20,10 @@ function printPage() {
     store.sidebar({ mode: "open" });
   }
 }
+
+const user = JSON.parse(window.localStorage.getItem("access-admin"));
+const cartItemList = JSON.parse(window.localStorage.getItem("cartItem"));
+console.log(cartItemList)
 </script>
 
 <template>
@@ -46,19 +50,12 @@ function printPage() {
         <div class="row mb-4">
           <!-- Company Info -->
           <div class="col-6 fs-sm">
-            <p class="h3">Company</p>
-            <address>
-              Street Address<br />
-              State, City<br />
-              Region, Postal Code<br />
-              ltd@example.com
-            </address>
           </div>
           <!-- END Company Info -->
 
           <!-- Client Info -->
           <div class="col-6 text-end fs-sm">
-            <p class="h3">Client</p>
+            <p class="h3">{{ user.data.user.userName }}</p>
             <address>
               Street Address<br />
               State, City<br />
