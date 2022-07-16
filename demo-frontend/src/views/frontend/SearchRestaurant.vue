@@ -2,7 +2,6 @@
 import { useTemplateStore } from "@/stores/template";
 import { ref } from "vue";
 import axios from "axios";
-
 // Main store
 const store = useTemplateStore();
 
@@ -22,13 +21,11 @@ const urlParams = ref(
   }
 );
 //接收的資料ref
-const resData = ref();
+// const resData = ref();
 const restaurantTotal = ref();
 const restaurantList = ref();
 const singleRestaurant = ref();
-const resData2 = ref();
-
-
+// const resData2 = ref();
 
 // 取得所有餐廳
 const getAxios = function () {
@@ -36,7 +33,7 @@ const getAxios = function () {
     .get(`http://${url}/restaurants`, { params: urlParams.value })
     .then((res) => {
       //獲取伺服器的回傳資料
-      resData.value = res.data;
+      // resData.value = res.data;
       restaurantTotal.value = res.data.total;
       restaurantList.value = res.data.results
       console.log(res.data);
@@ -63,22 +60,36 @@ function getByCategory(restaurantCategory) {
   axios
     .get(`http://${url}/restaurantList?restaurantCategory=${restaurantCategory}`)
     .then((res) => {
-      resData.value = res.data.results
-      console.log(resData)
+      // resData.value = res.data.results
+      // console.log(resData)
     })
 
 }
 
 
 // 執行Axios;
-getAxios();
+// getAxios();
+</script>
+<script>
+export default {
+  props: {
+    resData: {
+      type: String
+    }
+  },
+  computed: {
+    resDataParse() {
+      return JSON.parse(this.resData);
+    },
+  },
+};
 
 </script>
 
 
 
 <template>
-
+  {{ resData }}
   <!-- 搜尋bar -->
   <form @submit.prevent>
     <div class="row">
@@ -196,7 +207,6 @@ getAxios();
       </div>
     </div>
   </form>
-
   <hr />
 
   <!-- Page Content -->

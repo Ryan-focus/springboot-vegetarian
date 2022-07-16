@@ -1,10 +1,48 @@
 <script setup>
 import { useTemplateStore } from "@/stores/template";
-
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+import axios from "axios";
 // Main store
 const store = useTemplateStore();
+const url = "localhost:8088";
+const urlParams = ref(
+  {
+    limit: 10,
+    offset: 0,
+    restaurantAddress: null,
+    restaurantCategory: null,
+    restaurantType: null,
+    restaurantBusinessHours: null,
+    restaurantScore: null,
+    searchName: null,
+    searchAddress: null
+  }
+);
+const router = useRouter({
+  routes: [
+    {
+      path: '/searchRestaurant',
+      name: "restaurantIndex",
+    }
+  ]
+});
 
-
+function searchCatagory(catagory) {
+  urlParams.value.restaurantCategory = catagory;
+  axios
+    .get(`http://${url}/restaurantList`, { params: urlParams.value })
+    .then((res) => {
+      console.log(res.data.results);
+      router.push({
+        name: "restaurantIndex",
+        params: {
+          resData: JSON.stringify(res.data.results)
+        },
+      });
+    })
+    .catch((err) => console.log(err));
+}
 
 </script>
 
@@ -34,9 +72,9 @@ const store = useTemplateStore();
                 </div>
                 <p class="space-x-1">
                   <span>搜尋:</span>
-                  <a href="/#/searchRestaurant">
-                    <span class="badge rounded-pill bg-black-50">中式</span></a>
-                  <a href="#">
+                  <a href="#" @click.prevent="searchCatagory('中式')"><span
+                      class="badge rounded-pill bg-black-50">中式</span></a>
+                  <a href=" #">
                     <span class="badge rounded-pill bg-black-50">義式</span></a>
                   <a href="#">
                     <span class="badge rounded-pill bg-black-50">麵食</span></a>
