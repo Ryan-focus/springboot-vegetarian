@@ -137,8 +137,7 @@ getAxios();
             <span>更多分類：</span>
             <a href="/#/searchRestaurant/details">
               <span class="badge rounded-pill bg-black-50">中式</span></a>
-            <a href="/#/restaurantList?restaurantCategory=義式">
-              <span class="badge rounded-pill bg-black-50">義式</span></a>
+            <button class="badge rounded-pill bg-black-50" @click="getByCategory('義式')">義式</button>
             <a href="/#/searchRestaurant?restaurantCategory=麵食">
               <span class="badge rounded-pill bg-black-50">麵食</span></a>
             <a href="/#/searchRestaurant?restaurantCategory=印度">
@@ -247,7 +246,7 @@ getAxios();
       <div class="col">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3616.437657692995!2d121.21998631423737!3d24.985240346399994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34682183e7b783c3%3A0xf0ebfba2069b6158!2z6IGW5b635Z-6552j5a246Zmi!5e0!3m2!1szh-TW!2stw!4v1657885211036!5m2!1szh-TW!2stw"
-          width="600" height="600" style="border:0;" allowfullscreen="" loading="lazy"
+          width="600" height="600" style="border:0;" allowfullscreen="true" loading="lazy"
           referrerpolicy="no-referrer-when-downgrade"></iframe>
       </div>
     </div>

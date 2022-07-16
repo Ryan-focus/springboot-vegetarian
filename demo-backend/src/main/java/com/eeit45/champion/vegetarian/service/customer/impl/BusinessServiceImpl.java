@@ -3,6 +3,7 @@ package com.eeit45.champion.vegetarian.service.customer.impl;
 import com.eeit45.champion.vegetarian.dao.customer.BusinessDao;
 import com.eeit45.champion.vegetarian.dto.LoginRequest;
 import com.eeit45.champion.vegetarian.dto.customer.BusinessRegisterRequest;
+import com.eeit45.champion.vegetarian.dto.customer.BusinessRequest;
 import com.eeit45.champion.vegetarian.model.customer.Business;
 import com.eeit45.champion.vegetarian.service.customer.BusinessService;
 import org.slf4j.Logger;
@@ -75,5 +76,10 @@ public class BusinessServiceImpl implements BusinessService {
     @Override
     public List<Business> getAllBusiness() {
         return businessDao.getAllBusiness();
+    }
+
+    @Override
+    public void updateRestaurantNumber(Integer businessId, BusinessRequest businessRequest) {
+        businessDao.updateRestaurantNumber(businessId,businessRequest);
     }
 }

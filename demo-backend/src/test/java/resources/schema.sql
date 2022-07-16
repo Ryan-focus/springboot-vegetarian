@@ -27,6 +27,7 @@ CREATE TABLE business(
                          businessPic nvarchar(64),
                          status nvarchar (32) not null,
                          UUID nvarchar(256) ,
+                         restaurantNumber int ,
                          createdTime TIMESTAMP not null ,
                          lastLoginTime TIMESTAMP not null,
                          updateTime  TIMESTAMP not null
