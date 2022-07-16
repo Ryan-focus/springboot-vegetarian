@@ -22,9 +22,10 @@ function printPage() {
 }
 //取得localstorage
 const user = JSON.parse(window.localStorage.getItem("access-admin"));
-const cartItemList = JSON.parse(window.localStorage.getItem("cartItem")).cartItemList;
-console.log(cartItemList)
-
+if (window.localStorage.getItem("cartItem") != null) {
+  const cartItemList = JSON.parse(window.localStorage.getItem("cartItem")).cartItemList;
+  console.log(cartItemList)
+}
 // 清空localstorage
 function removeCart() {
   localStorage.removeItem("cartItem")
