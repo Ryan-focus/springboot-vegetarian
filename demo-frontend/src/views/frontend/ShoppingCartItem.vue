@@ -20,15 +20,25 @@ function printPage() {
     store.sidebar({ mode: "open" });
   }
 }
-
+//取得localstorage
 const user = JSON.parse(window.localStorage.getItem("access-admin"));
 const cartItemList = JSON.parse(window.localStorage.getItem("cartItem")).cartItemList;
 console.log(cartItemList)
 
-
+// 清空localstorage
 function removeCart() {
   localStorage.removeItem("cartItem")
   location.replace("http://localhost:8080/#/shopping")
+}
+
+//加總功能
+function countTotal() {
+  var total = 0;
+  for (var i in this.cartItemList) {
+    total += parseInt(this.cartItemList[i].quantity * this.cartItemList[i].product.productPrice)
+  }
+  console.log(total)
+  return total
 }
 
 </script>
@@ -62,6 +72,7 @@ function removeCart() {
 
           <!-- Client Info -->
           <div class="col-6 text-end fs-sm">
+            <!-- 使用者名稱 -->
             <p class="h3">{{ user.data.user.userName }}</p>
             <address>
               Street Address<br />
@@ -82,12 +93,13 @@ function removeCart() {
               <tr>
                 <th class="text-center" style="width: 60px"></th>
                 <th>Product</th>
-                <th class="text-center" style="width: 90px">Qnt</th>
-                <th class="text-end" style="width: 120px">Unit</th>
-                <th class="text-end" style="width: 120px">Amount</th>
+                <th class="text-center" style="width: 90px">數量</th>
+                <th class="text-end" style="width: 120px">單價</th>
+                <th class="text-end" style="width: 120px">小計</th>
               </tr>
             </thead>
             <tbody>
+              <!-- 印出商品從這裡開始 -->
               <tr v-for="(item, i) in cartItemList" :key="i">
                 <td class="text-center">{{ i + 1 }}</td>
                 <td>
@@ -102,22 +114,19 @@ function removeCart() {
               </tr>
 
               <tr>
-                <td colspan="4" class="fw-semibold text-end">Subtotal</td>
-                <td class="text-end">$27.500,00</td>
+                <td colspan="4" class="fw-semibold text-end">總和</td>
+                <td class="text-end">{{ countTotal() }}</td>
               </tr>
               <tr>
-                <td colspan="4" class="fw-semibold text-end">Vat Rate</td>
-                <td class="text-end">20%</td>
+                <td colspan="4" class="fw-semibold text-end">運費</td>
+                <td class="text-end">0</td>
               </tr>
-              <tr>
-                <td colspan="4" class="fw-semibold text-end">Vat Due</td>
-                <td class="text-end">$5.500,00</td>
-              </tr>
+
               <tr>
                 <td colspan="4" class="fw-bold text-uppercase text-end bg-body-light">
                   Total Due
                 </td>
-                <td class="fw-bold text-end bg-body-light">$33.000,00</td>
+                <td class="fw-bold text-end bg-body-light">{{ countTotal() }}</td>
               </tr>
             </tbody>
           </table>
