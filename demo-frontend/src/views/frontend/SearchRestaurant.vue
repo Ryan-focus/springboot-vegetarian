@@ -57,12 +57,10 @@ function reserveRestaurant(prams) {
     .get(`http://${url}/restaurants/${prams}`)
     .then((res) => {
       //獲取伺服器的回傳資料
-      console.log(res);
+      console.log(res.data);
+      sessionStorage.setItem("reserveOrder", JSON.stringify(res.data));
       router.replace({
-        name: "restaurant-reserve",
-        params: {
-          paramsData: JSON.stringify(res.data)
-        },
+        name: "restaurant-reserve"
       });
     })
     .catch((error) => {

@@ -24,14 +24,21 @@ function handleHide() {
 </script>
 <script>
 export default {
-  name: "restaurant-reserve",
-  props: {
-    paramsData: {
-      type: String
+  data() {
+    return {
+      reserveOrder: null,
     }
   },
-};
+  created: {
+    reserveOrder: window.sessionStorage.getItem("reserveOrder"),
+  },
 
+  beforeUnmount() {
+    sessionStorage.removeItem("reserveOrder");
+  },
+
+};
+const restaurant = JSON.parse(window.sessionStorage.getItem("reserveOrder"));
 </script>
 
 <template>
