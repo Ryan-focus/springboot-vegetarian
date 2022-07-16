@@ -20,6 +20,7 @@ const urlParams = ref(
     searchAddress: null
   }
 );
+var businessRestuarantID = [];
 // const singleRestaurant = ref();
 
 //取得條件(類別)
@@ -29,7 +30,7 @@ function searchCatagory(catagory) {
     .get(`http://${url}/restaurantList`, { params: urlParams.value })
     .then((res) => {
       console.log(res.data.results);
-      router.push({
+      router.replace({
         name: "restaurantIndex",
         params: {
           paramsData: JSON.stringify(res.data.results)
@@ -39,20 +40,53 @@ function searchCatagory(catagory) {
     .catch((err) => console.log(err));
 }
 
+//取得驗證後商家數據，有登入在餐廳內的數據 
+function getBusinessList() {
+  axios.get(`http://${url}/business`)
+    .then((res) => {
+      for (let i = 0; i <= res.data.length - 1; i++) {
+        if (res.data[i].restaurantNumber != 0) {
+          businessRestuarantID.push(res.data[i].restaurantNumber);
+        }
+      }
+    })
+}
+
+function reserveRestaurant(prams) {
+  axios
+    .get(`http://${url}/restaurants/${prams}`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      console.log(res);
+      router.replace({
+        name: "restaurant-reserve",
+        params: {
+          paramsData: JSON.stringify(res.data)
+        },
+      });
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+
+
+
 // 執行Axios;
 // getAxios();
+getBusinessList();
 </script>
 <script>
 export default {
+  name: "restaurantIndex",
   props: {
     paramsData: {
       type: String
     }
   },
-
 };
-</script>
 
+</script>
 
 
 <template>
@@ -157,10 +191,15 @@ export default {
                     {{ item.restaurantBusinessHours }}
                   </p>
                   <!-- 收藏 -->
-                  <button type="button" class="btn btn-outline-primary">收藏</button>
+                  <button type="button" class="btn btn-outline-primary me-3">收藏</button>
                   <!-- 詳細 -->
-                  <button type="button" class="btn btn-outline-primary"
+                  <button type="button" class="btn btn-outline-primary me-3"
                     onclick="location.href='/#/searchRestaurant/details'">詳細</button>
+                  <!-- 前往訂位-->
+                  <button v-if="item.restaurantNumber == `${businessRestuarantID.toString()}`" type="button"
+                    class="btn btn-outline-danger" @click.prevent="reserveRestaurant(item.restaurantNumber)"> <i
+                      class="far fa-calendar-days me-2" />
+                    前往訂位</button>
                 </div>
               </div>
             </div>
