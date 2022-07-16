@@ -177,7 +177,8 @@ function logOut() {
             <RouterLink :to="{ name: '' }" class="dropdown-item d-flex align-items-center justify-content-between">
               <span class="fs-sm fw-medium">網誌</span>
             </RouterLink>
-            <RouterLink :to="{ name: '' }" class="dropdown-item d-flex align-items-center justify-content-between">
+            <RouterLink :to="{ name: 'shoppingOrder' }"
+              class="dropdown-item d-flex align-items-center justify-content-between">
               <span class="fs-sm fw-medium">訂單</span>
             </RouterLink>
             <RouterLink @click="logOut()" :to="{ name: index }"

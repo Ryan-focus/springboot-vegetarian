@@ -71,7 +71,7 @@ public class OrderController {
     }
 
     //表示前端送一個已經存在的User所購買的訂單
-    // JsonObject : {"buyItemList:[{"productId":9,"quantity:1},{"productId":10,"quantity:18}]}
+    // JsonObject : {"buyItemList":[{"productId":9,"quantity:1},{"productId":10,"quantity:18}]}
     //表示前端送了一個 購物車的List 內容物是 數量1個的productID=9的東西  + 數量18個的productID=10的東西
     @PostMapping("{userId}/order")
     public ResponseEntity<?> createOrders(@PathVariable Integer userId,

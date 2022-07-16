@@ -22,7 +22,7 @@ function printPage() {
   }
 }
 //取得localstorage
-const user = JSON.parse(window.localStorage.getItem("access-admin"));
+const user = JSON.parse(window.localStorage.getItem("access-user"));
 const cartItemList = JSON.parse(window.localStorage.getItem("cartItem")).cartItemList;
 
 // 清空localstorage
