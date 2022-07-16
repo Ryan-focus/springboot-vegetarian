@@ -1,6 +1,5 @@
 <script setup>
 import { useTemplateStore } from "@/stores/template";
-import axios from "axios";
 
 // Main store
 const store = useTemplateStore();
@@ -23,8 +22,10 @@ function printPage() {
 }
 //取得localstorage
 const user = JSON.parse(window.localStorage.getItem("access-user"));
-const cartItemList = JSON.parse(window.localStorage.getItem("cartItem")).cartItemList;
-
+if (window.localStorage.getItem("cartItem") != null) {
+  const cartItemList = JSON.parse(window.localStorage.getItem("cartItem")).cartItemList;
+  console.log(cartItemList)
+}
 // 清空localstorage
 function removeCart() {
   localStorage.removeItem("cartItem")
@@ -37,6 +38,7 @@ function countTotal() {
   for (var i in this.cartItemList) {
     total += parseInt(this.cartItemList[i].quantity * this.cartItemList[i].product.productPrice)
   }
+  console.log(total)
   return total
 }
 
