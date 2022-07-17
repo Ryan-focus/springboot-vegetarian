@@ -353,6 +353,7 @@ const routes = [
         name: "shoppingCartItem",
         component: ShoppingCartItem,
       },
+      //食記
       {
         path: "/post",
         name: "postIndex",
@@ -378,10 +379,23 @@ const routes = [
         name: "postEditFront",
         component: PostEditFront,
       },
+      //餐廳
       {
         path: "/searchRestaurant",
         name: "restaurantIndex",
         component: SearchRestaurant,
+        props: (route) => route.params,
+      },
+      {
+        path: "/searchRestaurant/details",
+        name: "restaurant-details",
+        component: RestaurantDetails,
+        props: (route) => route.params,
+      },
+      {
+        path: "/searchRestaurant/reserve",
+        name: "restaurant-reserve",
+        component: ReserveOrder,
         props: (route) => route.params,
       },
       {
@@ -403,17 +417,6 @@ const routes = [
         path: "/forumPage",
         name: "Forum-page",
         component: ForumPage,
-      },
-      {
-        path: "/searchRestaurant/details/:restaurantNumber?",
-        name: "restaurant-details",
-        component: RestaurantDetails,
-      },
-      {
-        path: "/searchRestaurant/reserve",
-        name: "restaurant-reserve",
-        component: ReserveOrder,
-        props: (route) => route.params,
       },
     ],
   },

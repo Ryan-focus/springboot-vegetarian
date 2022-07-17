@@ -24,7 +24,6 @@ import com.eeit45.champion.vegetarian.constant.RestaurantCategory;
 import com.eeit45.champion.vegetarian.constant.RestaurantType;
 import com.eeit45.champion.vegetarian.dto.RestaurantQueryParams;
 import com.eeit45.champion.vegetarian.dto.RestaurantRequest;
-import com.eeit45.champion.vegetarian.model.Post;
 import com.eeit45.champion.vegetarian.model.Restaurant;
 import com.eeit45.champion.vegetarian.service.RestaurantService;
 import com.eeit45.champion.vegetarian.util.Page;
@@ -97,6 +96,7 @@ public class RestaurantController {
 		Restaurant restaurant = restaurantService.getRestaurantByNumber(restaurantNumber);
 
 		if (restaurant != null) {
+			System.out.println();
 			return ResponseEntity.status(HttpStatus.OK).body(restaurant);
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

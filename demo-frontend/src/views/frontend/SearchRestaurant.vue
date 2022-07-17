@@ -1,11 +1,10 @@
 <script setup>
 import { useTemplateStore } from "@/stores/template";
 import { ref } from "vue";
-import axios from "axios";
 import { useRouter } from 'vue-router';
+import axios from "axios";
 // Main store
 const store = useTemplateStore();
-const router = useRouter();
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
 const urlParams = ref(
@@ -16,12 +15,42 @@ const urlParams = ref(
     restaurantType: null,
     restaurantBusinessHours: null,
     restaurantScore: null,
-    searchName: null,
-    searchAddress: null
+    restaurantNumber: null
   }
 );
-var businessRestuarantID = [];
-// const singleRestaurant = ref();
+
+//跳轉到詳細餐廳頁面
+const router = useRouter({
+  routes: [
+    {
+      path: "/searchRestaurant/details",
+      name: "restaurant-details",
+    }
+  ]
+});
+
+//帶值跳轉
+function restaurantDetail(prams) {
+  urlParams.value.restaurantNumber = prams;
+  axios
+    .get(`http://${url}/restaurants/` + prams)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      console.log(res.data);
+      let dataArray = [res.data];
+      console.log(dataArray);
+      router.replace({
+        name: "restaurant-details",
+        params: {
+          paramsData: JSON.stringify(dataArray)
+        },
+      });
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+
 
 //取得條件(類別)
 function searchCatagory(catagory) {
@@ -40,10 +69,7 @@ function searchCatagory(catagory) {
     .catch((err) => console.log(err));
 }
 
-//跳轉到餐廳詳細資訊頁面
-function restaurantDetail(number) {
-  router.push({ name: "restaurant-details", params: { restaurantNumber: number } })
-}
+var businessRestuarantID = [];
 
 //取得驗證後商家數據，有登入在餐廳內的數據 
 function getBusinessList() {
@@ -75,8 +101,6 @@ function reserveRestaurant(prams) {
     });
 }
 
-
-
 // 執行Axios;
 // getAxios();
 getBusinessList();
@@ -90,6 +114,7 @@ export default {
     }
   },
 };
+
 
 </script>
 
