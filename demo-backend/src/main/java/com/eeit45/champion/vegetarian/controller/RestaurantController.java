@@ -1,6 +1,5 @@
 package com.eeit45.champion.vegetarian.controller;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -69,7 +68,6 @@ public class RestaurantController {
 
 		// 取得restaurant總數
 		Integer total = restaurantService.countRestaurant(restaurantQueryParams);
-
 		// 將總數分頁
 		Page<Restaurant> page = new Page<>();
 		page.setLimit(limit);
@@ -80,6 +78,7 @@ public class RestaurantController {
 		return ResponseEntity.status(HttpStatus.OK).body(page);
 	}
 
+	// 取得全部餐廳
 	@GetMapping("/restaurants")
 	public ResponseEntity<List<Restaurant>> getAllRestaurant() {
 		List<Restaurant> restaurantList = restaurantService.getAllRestaurants();
@@ -91,18 +90,21 @@ public class RestaurantController {
 		}
 	}
 
+	// 取得餐廳By Number
 	@GetMapping("/restaurants/{restaurantNumber}")
 	public ResponseEntity<Restaurant> getRestaurant(@PathVariable Integer restaurantNumber) {
+		System.out.println(restaurantNumber);
 		Restaurant restaurant = restaurantService.getRestaurantByNumber(restaurantNumber);
 
 		if (restaurant != null) {
-			System.out.println();
+			System.out.println(restaurant);
 			return ResponseEntity.status(HttpStatus.OK).body(restaurant);
 		} else {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
 
+	// 新增餐廳
 	@PostMapping("/restaurants")
 	public ResponseEntity<Restaurant> createRestaurant(@RequestBody @Valid RestaurantRequest restaurantRequest) {
 		Integer restaurantNumber = restaurantService.createRestaurant(restaurantRequest);
@@ -111,6 +113,7 @@ public class RestaurantController {
 		return ResponseEntity.status(HttpStatus.CREATED).body(restaurant);
 	}
 
+	// 更新餐廳
 	@PutMapping("/restaurants/{restaurantNumber}")
 	public ResponseEntity<Restaurant> updateRestaurant(@PathVariable Integer restaurantNumber,
 			@RequestBody @Valid RestaurantRequest restaurantRequest) {
@@ -128,6 +131,7 @@ public class RestaurantController {
 		return ResponseEntity.status(HttpStatus.OK).body(updateRestaurant);
 	}
 
+	// 刪除餐廳
 	@DeleteMapping("/restaurants/{restaurantNumber}")
 	public ResponseEntity<?> deleteRestaurant(@PathVariable Integer restaurantNumber) {
 		restaurantService.deleteRestaurantByNumber(restaurantNumber);
@@ -135,13 +139,20 @@ public class RestaurantController {
 		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
 	}
 
-	// 加入收藏餐廳
-	@PostMapping("/saveRestaurant/{id}/{userId}")
-	public ResponseEntity<Boolean> saveRestaurant(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId,
-			Restaurant restaurant) throws IOException {
+	//判斷使用者是否已收藏該餐廳
+	@GetMapping("/saveRestaurant/{id}/{userId}")
+	public ResponseEntity<Boolean> showfav(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
 
-		restaurantService.addSaveRestaurant(id, userId);
-		return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+		boolean isExist = restaurantService.saveOrNot(id, userId);
+		return ResponseEntity.status(HttpStatus.OK).body(isExist);
+	}
+	
+	// 加入收藏餐廳
+	@PostMapping("/saveRestaurant/{restaurantNumber}/{uid}")
+	public ResponseEntity<Boolean> saveRestaurant(@PathVariable Integer restaurantNumber, @PathVariable Integer uid) {
+
+		restaurantService.addSaveRestaurant(restaurantNumber, uid);
+		return ResponseEntity.status(HttpStatus.OK).body(true);
 
 	}
 
@@ -160,7 +171,7 @@ public class RestaurantController {
 
 	// 顯示使用者收藏餐廳
 	@GetMapping(value = "/saveRestaurant/{userId}")
-	public ResponseEntity<List<Restaurant>> showSavaRestaurant(@PathVariable("userId") Integer userId) {
+	public ResponseEntity<List<Restaurant>> showSaveRestaurant(@PathVariable("userId") Integer userId) {
 
 		List<Restaurant> restaurant = restaurantService.findSaveRestaurant(userId);
 		List<Restaurant> out = null;

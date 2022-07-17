@@ -20,5 +20,6 @@ public interface RestaurantService {
 	
 	void addSaveRestaurant(int pid, int uid);
 	boolean delSaveRestaurant(int pid, int uid);
+	boolean saveOrNot(int pid, int uid);
 	List<Restaurant> findSaveRestaurant(int uid);
 }

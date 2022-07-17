@@ -36,9 +36,8 @@ function restaurantDetail(prams) {
     .get(`http://${url}/restaurants/` + prams)
     .then((res) => {
       //獲取伺服器的回傳資料
-      console.log(res.data);
-      let dataArray = [res.data];
-      console.log(dataArray);
+      let dataArray = [];
+      dataArray.push(res.data);
       router.replace({
         name: "restaurant-details",
         params: {

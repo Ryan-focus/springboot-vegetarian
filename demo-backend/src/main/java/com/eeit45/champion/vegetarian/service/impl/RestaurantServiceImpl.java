@@ -9,6 +9,7 @@ import com.eeit45.champion.vegetarian.dao.RestaurantDao;
 import com.eeit45.champion.vegetarian.dto.RestaurantQueryParams;
 import com.eeit45.champion.vegetarian.dto.RestaurantRequest;
 import com.eeit45.champion.vegetarian.model.Restaurant;
+import com.eeit45.champion.vegetarian.model.SaveRestaurant;
 import com.eeit45.champion.vegetarian.service.RestaurantService;
 
 @Component
@@ -71,6 +72,17 @@ public class RestaurantServiceImpl implements RestaurantService{
 	@Override
 	public List<Restaurant> findSaveRestaurant(int uid) {
 		return restaurantDao.findSaveRestaurant(uid);
+	}
+
+
+	@Override
+	public boolean saveOrNot(int pid, int uid) {
+		SaveRestaurant saveRestaurant = restaurantDao.findBySave(pid,uid);
+		if(saveRestaurant != null) {
+			return true;
+		}else {
+			return false;
+		}
 	}
 
 }
