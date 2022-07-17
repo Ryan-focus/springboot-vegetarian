@@ -35,24 +35,26 @@ const imageUrl = ref();
 const saveData = ref();
 
 const route = useRoute();
-// var uid = 0;
-// const user = JSON.parse(window.localStorage.getItem("access-user"));
-// if (user != null) {
-//     uid = user.data.user.userId;
-// }
+var uid = 0;
+const user = JSON.parse(window.localStorage.getItem("access-user"));
+if (user != null) {
+    uid = user.data.user.userId;
+}
+const itemData = JSON.parse(route.params.paramsData);
+var restaurantNumber = itemData[0].restaurantNumber;
 
-// let restaurantNumber = route.params.restaurantNumber;
 
-//取得該筆餐廳資料
-// axios
-//     .get(`http://${url}/saveRestaurant/${restaurantNumber}/${uid}`)
-//     .then((res) => {
-//         saveData.value = res.data;
-//         console.log(res.data);
-//     })
-//     .catch((error) => {
-//         console.log(error, "失敗");
-//     });
+//確認用戶是否已收藏該筆餐廳資料
+axios
+    .get(`http://${url}/saveRestaurant/${restaurantNumber}/${uid}`)
+    .then((res) => {
+        saveData.value = res.data;
+        console.log(res.data);
+
+    })
+    .catch((error) => {
+        console.log(error, "失敗");
+    });
 
 
 // 取得所有餐廳
@@ -70,31 +72,33 @@ const getAxios = function () {
 // 執行Axios;
 getAxios();
 
-// function addsaveRestaurant() {
-//     if (uid == 0) {
-//         window.location.href = "http://localhost:8080/#/signin";
-//     } else {
-//         axios
-//             .post(`http://${url}/saveRestaurant/${restaurantNumber}/${uid}`, {})
-//             .then((res) => {
-//                 getAxios();
-//             })
-//             .catch((error) => {
-//                 console.log(error, "失敗");
-//             });
-//     }
-// }
+//加入收藏
+function addsaveRestaurant() {
+    if (uid == 0) {
+        window.location.href = "http://localhost:8080/#/signin";
+    } else {
+        axios
+            .post(`http://${url}/saveRestaurant/${restaurantNumber}/${uid}`, {})
+            .then((res) => {
+                getAxios();
+            })
+            .catch((error) => {
+                console.log(error, "失敗");
+            });
+    }
+}
 
-// function delsaveRestaurant() {
-//     axios
-//         .delete(`http://${url}/saveRestaurant/${restaurantNumber}/${uid}`)
-//         .then((res) => {
-//             getAxios();
-//         })
-//         .catch((error) => {
-//             console.log(error, "失敗");
-//         });
-// }
+//取消收藏
+function delsaveRestaurant() {
+    axios
+        .delete(`http://${url}/saveRestaurant/${restaurantNumber}/${uid}`)
+        .then((res) => {
+            getAxios();
+        })
+        .catch((error) => {
+            console.log(error, "失敗");
+        });
+}
 
 </script>
 

@@ -7,6 +7,7 @@ import com.eeit45.champion.vegetarian.dto.RestaurantRequest;
 import com.eeit45.champion.vegetarian.model.Post;
 import com.eeit45.champion.vegetarian.model.PostFavorite;
 import com.eeit45.champion.vegetarian.model.Restaurant;
+import com.eeit45.champion.vegetarian.model.SaveRestaurant;
 
 public interface RestaurantDao {
 	
@@ -22,5 +23,6 @@ public interface RestaurantDao {
 	
 	void addSaveRestaurant(int pid, int uid);
 	boolean delSaveRestaurant(int pid, int uid);
+	SaveRestaurant findBySave(int pid, int uid);
 	List<Restaurant> findSaveRestaurant(int uid);
 }
