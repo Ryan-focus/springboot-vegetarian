@@ -17,4 +17,8 @@ public interface RestaurantService {
 	Integer createRestaurant(RestaurantRequest restaurantRequest);
 	void updateRestaurant(Integer restaurantNumber,RestaurantRequest restaurantRequest);
 	void deleteRestaurantByNumber(Integer restaurantNumber);
+	
+	void addSaveRestaurant(int pid, int uid);
+	boolean delSaveRestaurant(int pid, int uid);
+	List<Restaurant> findSaveRestaurant(int uid);
 }

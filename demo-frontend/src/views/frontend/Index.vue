@@ -15,8 +15,6 @@ const urlParams = ref(
     restaurantType: null,
     restaurantBusinessHours: null,
     restaurantScore: null,
-    searchName: null,
-    searchAddress: null
   }
 );
 const router = useRouter({
@@ -32,7 +30,9 @@ function searchCatagory(catagory) {
   urlParams.value.restaurantCategory = catagory;
   axios
     .get(`http://${url}/restaurantList`, { params: urlParams.value })
+
     .then((res) => {
+      console.log(urlParams.value);
       console.log(res.data.results);
       router.replace({
         name: "restaurantIndex",

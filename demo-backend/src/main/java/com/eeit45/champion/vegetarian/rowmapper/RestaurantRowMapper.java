@@ -20,7 +20,7 @@ public class RestaurantRowMapper implements RowMapper<Restaurant>{
 		restaurant.setRestaurantName(rs.getString("restaurantName"));
 		restaurant.setRestaurantTel(rs.getString("restaurantTel"));
 		restaurant.setRestaurantAddress(rs.getString("restaurantAddress"));
-		
+				
 		String categoryStr = rs.getString("restaurantCategory");
 		RestaurantCategory restaurantCategory = RestaurantCategory.valueOf(categoryStr);
 		restaurant.setRestaurantCategory(restaurantCategory);

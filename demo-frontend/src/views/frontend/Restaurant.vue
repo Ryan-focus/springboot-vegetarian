@@ -2,6 +2,7 @@
 import { useTemplateStore } from "@/stores/template";
 import { ref } from "vue";
 import axios from "axios";
+import { useRoute } from "vue-router";
 
 // Main store
 const store = useTemplateStore();
@@ -23,8 +24,35 @@ const urlParams = ref(
 );
 //接收的資料ref
 const resData = ref();
-const restaurantTotal = ref();
-const restaurantList = ref();
+const restaurantName = ref();
+const restaurantTel = ref();
+const restaurantAddress = ref();
+const restaurantCategory = ref();
+const restaurantType = ref();
+const restaurantBusinessHours = ref();
+const restaurantScore = ref();
+const imageUrl = ref();
+const saveData = ref();
+
+const route = useRoute();
+// var uid = 0;
+// const user = JSON.parse(window.localStorage.getItem("access-user"));
+// if (user != null) {
+//     uid = user.data.user.userId;
+// }
+
+// let restaurantNumber = route.params.restaurantNumber;
+
+//取得該筆餐廳資料
+// axios
+//     .get(`http://${url}/saveRestaurant/${restaurantNumber}/${uid}`)
+//     .then((res) => {
+//         saveData.value = res.data;
+//         console.log(res.data);
+//     })
+//     .catch((error) => {
+//         console.log(error, "失敗");
+//     });
 
 
 // 取得所有餐廳
@@ -32,49 +60,69 @@ const getAxios = function () {
     axios
         .get(`http://${url}/restaurants`, { params: urlParams.value })
         .then((res) => {
-            //獲取伺服器的回傳資料
             resData.value = res.data;
-            restaurantTotal.value = res.data.total;
-            restaurantList.value = res.data.results
-            console.log(res.data);
         })
         .catch((error) => {
             console.log(error, "失敗");
         });
 };
 
-//取得個別
-function getSingle(restaurantNumber) {
-    axios
-        .get(`http://${url}/restaurants/${restaurantNumber}`)
-        .then((res) => {
-            singleRestaurant.value = res.data
-            console.log(singleRestaurant)
-        })
-
-
-}
-
-
-
-
-
 // 執行Axios;
 getAxios();
+
+// function addsaveRestaurant() {
+//     if (uid == 0) {
+//         window.location.href = "http://localhost:8080/#/signin";
+//     } else {
+//         axios
+//             .post(`http://${url}/saveRestaurant/${restaurantNumber}/${uid}`, {})
+//             .then((res) => {
+//                 getAxios();
+//             })
+//             .catch((error) => {
+//                 console.log(error, "失敗");
+//             });
+//     }
+// }
+
+// function delsaveRestaurant() {
+//     axios
+//         .delete(`http://${url}/saveRestaurant/${restaurantNumber}/${uid}`)
+//         .then((res) => {
+//             getAxios();
+//         })
+//         .catch((error) => {
+//             console.log(error, "失敗");
+//         });
+// }
+
+</script>
+
+<script>
+export default {
+    name: "restaurant-details",
+    props: {
+        paramsData: {
+            type: String
+        }
+    },
+};
+
 
 </script>
 
 
+
 <!-- 內容由此開始 -->
 <template>
-
 
     <!-- 左邊 -->
 
     <div class="container">
         <div class="row">
             <div class="col">
-                <div v-for="item in resData" :key="item.restaurantNumber">
+                <div v-for="item in JSON.parse(paramsData)" :key="item.restaurantNumber">
+
                     <BaseBlock>
                         <div class="row items-push">
 
@@ -116,7 +164,11 @@ getAxios();
                                         <p>營業時間：{{ item.restaurantBusinessHours }}</p>
                                         <p style="color: grey;size: 1cm;" />
 
-                                        <button type="button" class="btn btn-outline-primary">收藏</button>
+                                        <button type="button" class="btn btn-outline-primary"
+                                            @click="addsaveRestaurant()" v-if="!saveData">收藏</button>
+
+                                        <button type="button" class="btn btn-outline-primary"
+                                            @click="delsaveRestaurant()" v-if="saveData">已收藏</button>
 
 
                                     </div>

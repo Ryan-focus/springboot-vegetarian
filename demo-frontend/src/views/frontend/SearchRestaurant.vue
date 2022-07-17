@@ -1,11 +1,10 @@
 <script setup>
 import { useTemplateStore } from "@/stores/template";
 import { ref } from "vue";
-import axios from "axios";
 import { useRouter } from 'vue-router';
+import axios from "axios";
 // Main store
 const store = useTemplateStore();
-const router = useRouter();
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
 const urlParams = ref(
@@ -16,12 +15,42 @@ const urlParams = ref(
     restaurantType: null,
     restaurantBusinessHours: null,
     restaurantScore: null,
-    searchName: null,
-    searchAddress: null
+    restaurantNumber: null
   }
 );
-var businessRestuarantID = [];
-// const singleRestaurant = ref();
+
+//跳轉到詳細餐廳頁面
+const router = useRouter({
+  routes: [
+    {
+      path: "/searchRestaurant/details",
+      name: "restaurant-details",
+    }
+  ]
+});
+
+//帶值跳轉
+function restaurantDetail(prams) {
+  urlParams.value.restaurantNumber = prams;
+  axios
+    .get(`http://${url}/restaurants/` + prams)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      console.log(res.data);
+      let dataArray = [res.data];
+      console.log(dataArray);
+      router.replace({
+        name: "restaurant-details",
+        params: {
+          paramsData: JSON.stringify(dataArray)
+        },
+      });
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+
 
 //取得條件(類別)
 function searchCatagory(catagory) {
@@ -39,6 +68,8 @@ function searchCatagory(catagory) {
     })
     .catch((err) => console.log(err));
 }
+
+var businessRestuarantID = [];
 
 //取得驗證後商家數據，有登入在餐廳內的數據 
 function getBusinessList() {
@@ -68,8 +99,6 @@ function reserveRestaurant(prams) {
     });
 }
 
-
-
 // 執行Axios;
 // getAxios();
 getBusinessList();
@@ -83,6 +112,7 @@ export default {
     }
   },
 };
+
 
 </script>
 
@@ -178,8 +208,12 @@ export default {
               <div class="col-md-12 col-lg-7 d-md-flex align-items-center">
                 <div>
                   <!-- 餐廳名稱 -->
-
-                  <h3 class="text-dark">{{ item.restaurantName }} </h3>
+                  <div class="d-flex justify-content-between">
+                    <h3 class="card-title text-dark">{{ item.restaurantName }}</h3>
+                    <div>
+                      <div class="badge rounded-pill bg-secondary h5">{{ item.restaurantCategory }}</div>
+                    </div>
+                  </div>
 
                   <!-- 評分 -->
                   <h4 style="color:#3498DB">{{ item.restaurantScore }} ★</h4>
@@ -190,10 +224,10 @@ export default {
                   </p>
 
                   <!-- 收藏 -->
-                  <button type="button" class="btn btn-outline-primary me-3">收藏</button>
+                  <!-- <button type="button" class="btn btn-outline-primary me-3">收藏</button> -->
                   <!-- 詳細 -->
                   <button type="button" class="btn btn-outline-primary me-3"
-                    onclick="location.href='/#/searchRestaurant/details'">詳細</button>
+                    @click.prevent="restaurantDetail(item.restaurantNumber)">詳細</button>
                   <!-- 前往訂位-->
                   <button v-if="businessRestuarantID.indexOf(item.restaurantNumber) >= 0" type="button"
                     class="btn btn-outline-danger" @click.prevent="reserveRestaurant(item.restaurantNumber)"> <i

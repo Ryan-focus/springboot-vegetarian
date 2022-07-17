@@ -27,6 +27,7 @@ CREATE TABLE business(
                          businessPic nvarchar(64),
                          status nvarchar (32) not null,
                          UUID nvarchar(256) ,
+                         restaurantNumber int ,
                          createdTime TIMESTAMP not null ,
                          lastLoginTime TIMESTAMP not null,
                          updateTime  TIMESTAMP not null
@@ -162,6 +163,15 @@ create table restaurant(
                        imageUrl nvarchar(256),
                        createdTime TIMESTAMP NOT NULL,
                        updatedTime TIMESTAMP NOT NULL
+);
+
+--saveRestaurant
+drop table if exists saveRestaurant;
+CREATE TABLE saveRestaurant(
+                     userId int NOT NULL,
+                     restaurantNumber int NOT NULL,
+                     saveDate DATETIME NOT NULL
+                    
 );
 
 -- post
