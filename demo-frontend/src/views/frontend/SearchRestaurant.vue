@@ -15,10 +15,9 @@ const data = reactive({
   loading: false,
 });
 
-const restaurantName = ref();
+const restaurantName = route.params.restaurantName;
 const restaurantTel = ref();
-const restaurantAddress = ref();
-// const restaurantCategory = ref();
+const restaurantAddress = route.params.restaurantAddress;
 const restaurantCategory = route.params.restaurantCategory;
 const restaurantType = ref();
 const restaurantBusinessHours = ref();
@@ -40,6 +39,122 @@ const urlParams = ref(
 
 console.log(route.params);
 
+
+
+// 取得條件(類別)
+const searchCatagory = function (catagory) {
+  data.loading = true;
+  if (catagory != null) {
+    axios
+      .get(`http://${url}/restaurantList?restaurantCategory=` + catagory)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.results);
+
+        dataArray.value = res.data.results;
+
+      })
+      .catch((err) => console.log(err));
+  } else {
+    axios
+      .get(`http://${url}/restaurantList?restaurantCategory=${restaurantCategory}`)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.results);
+
+        dataArray.value = res.data.results;
+
+      })
+      .catch((err) => console.log(err));
+  }
+}
+searchCatagory();
+
+// 取得條件(素食種類)
+const searchType = function (type) {
+  data.loading = true;
+
+  axios
+    .get(`http://${url}/restaurantList?restaurantType=` + type)
+    .then((res) => {
+      console.log(res);
+      console.log(res.data);
+      console.log(res.data.results);
+
+      dataArray.value = res.data.results;
+
+    })
+    .catch((err) => console.log(err));
+
+
+}
+searchType();
+
+// 取得條件(地址)
+// const searchAddress = function (address) {
+//   data.loading = true;
+//   if (address != null) {
+//     axios
+//       .get(`http://${url}/restaurantList?searchAddress=` + address)
+//       .then((res) => {
+//         console.log(res);
+//         console.log(res.data);
+//         console.log(res.data.results);
+
+//         dataArray.value = res.data.results;
+
+//       })
+//       .catch((err) => console.log(err));
+//   } else {
+//     axios
+//       .get(`http://${url}/restaurantList?searchAddress=${restaurantAddress}`)
+//       .then((res) => {
+//         console.log(res);
+//         console.log(res.data);
+//         console.log(res.data.results);
+
+//         dataArray.value = res.data.results;
+
+//       })
+//       .catch((err) => console.log(err));
+//   }
+// }
+// searchAddress();
+
+// 取得條件(餐廳名稱)
+// const searchName = function (name) {
+//   data.loading = true;
+//   if (name != null) {
+//     axios
+//       .get(`http://${url}/restaurantList?searchName=` + name)
+//       .then((res) => {
+//         console.log(res);
+//         console.log(res.data);
+//         console.log(res.data.results);
+
+//         dataArray.value = res.data.results;
+
+//       })
+//       .catch((err) => console.log(err));
+//   } else {
+//     axios
+//       .get(`http://${url}/restaurantList?searchName=${restaurantName}`)
+//       .then((res) => {
+//         console.log(res);
+//         console.log(res.data);
+//         console.log(res.data.results);
+
+//         dataArray.value = res.data.results;
+
+//       })
+//       .catch((err) => console.log(err));
+//   }
+// }
+// searchName();
+
+
 //帶值restaurantNumber到detail頁
 function restaurantDetail(restaurantNumber) {
   // urlParams.value.restaurantNumber = prams;
@@ -52,24 +167,6 @@ function restaurantDetail(restaurantNumber) {
     }
   });
 }
-
-//取得條件(類別)
-const searchCatagory = function () {
-  data.loading = true;
-
-  axios
-    .get(`http://${url}/restaurantList?restaurantCategory=${restaurantCategory}`)
-    .then((res) => {
-      console.log(res);
-      console.log(res.data);
-      console.log(res.data.results);
-
-      dataArray.value = res.data.results;
-
-    })
-    .catch((err) => console.log(err));
-}
-searchCatagory();
 
 //取得所有餐廳
 const getAxios = function () {
@@ -135,9 +232,9 @@ export default {
     <div class=" row col-md-5 offset-md-3 content content-full text-center">
       <div class="mb-2">
         <div>
-          <input type="text" placeholder="搜尋餐廳名稱" v-model="urlParams.searchName" @change="searchCatagory()" />
+          <input type="text" placeholder="搜尋餐廳名稱" v-model="urlParams.searchName" @change="searchName()" />
           <!-- <a></a> -->
-          <input type="text" placeholder="搜尋地點" v-model="urlParams.searchAddress" @change="searchCatagory()" />
+          <input type="text" placeholder="搜尋地點" v-model="urlParams.searchAddress" @change="searchAddress()" />
           <button class="btn btn-info" tabindex="0" type="button">
             <i class="si si-magnifier"></i>
           </button>
@@ -161,19 +258,19 @@ export default {
           </label>
           <!-- <a></a> -->
           <input type="radio" value="全素" id="flexCheckDefault-2" v-model="urlParams.restaurantType"
-            @change="searchCatagory()">
+            @change="searchType('全素')">
           <label class="form-check-label me-2" for="flexCheckDefault-2">
             全素
           </label>
           <!-- <a></a> -->
           <input type="radio" value="全素_奶素_蛋素" id="flexCheckDefault-3" v-model="urlParams.restaurantType"
-            @change="searchCatagory()">
+            @change="searchType('全素_奶素_蛋素')">
           <label class="form-check-label me-2" for="flexCheckDefault-3">
             蛋奶素
           </label>
           <!-- <a></a> -->
           <input type="radio" value="全素_奶素_蛋素_含五辛" id="flexCheckDefault-4" v-model="urlParams.restaurantType"
-            @change="searchCatagory()">
+            @change="searchType('全素_奶素_蛋素_含五辛')">
           <label class="form-check-label me-2" for="flexCheckDefault-4">
             五辛素
           </label>

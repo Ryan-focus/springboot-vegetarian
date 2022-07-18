@@ -40,7 +40,8 @@ public class RestaurantController {
 			// 查詢條件 Filtering
 			@RequestParam(required = false) RestaurantCategory restaurantCategory,
 			@RequestParam(required = false) RestaurantType restaurantType,
-			@RequestParam(required = false) String searchName, @RequestParam(required = false) String searchAddress,
+			@RequestParam(required = false) String searchName, 
+			@RequestParam(required = false) String searchAddress,
 
 			// 排序 Sorting--orderBy是根據欄位排序,sort是升降冪,desc是大到小 asc是小到大
 			@RequestParam(defaultValue = "createdTime") String orderBy,
