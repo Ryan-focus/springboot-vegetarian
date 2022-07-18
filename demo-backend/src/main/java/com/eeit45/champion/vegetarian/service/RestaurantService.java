@@ -18,8 +18,8 @@ public interface RestaurantService {
 	void updateRestaurant(Integer restaurantNumber,RestaurantRequest restaurantRequest);
 	void deleteRestaurantByNumber(Integer restaurantNumber);
 	
-	void addSaveRestaurant(int pid, int uid);
-	boolean delSaveRestaurant(int pid, int uid);
-	boolean saveOrNot(int pid, int uid);
-	List<Restaurant> findSaveRestaurant(int uid);
+	void addSaveRestaurant(Integer pid, Integer uid);
+	boolean delSaveRestaurant(Integer pid, Integer uid);
+	boolean saveOrNot(Integer pid, Integer uid);
+	List<Restaurant> findSaveRestaurant(Integer uid);
 }

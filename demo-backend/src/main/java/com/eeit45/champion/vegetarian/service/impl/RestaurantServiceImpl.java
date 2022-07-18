@@ -57,26 +57,26 @@ public class RestaurantServiceImpl implements RestaurantService{
 
 
 	@Override
-	public void addSaveRestaurant(int pid, int uid) {
+	public void addSaveRestaurant(Integer pid, Integer uid) {
 		restaurantDao.addSaveRestaurant(pid, uid);
 		
 	}
 
 
 	@Override
-	public boolean delSaveRestaurant(int pid, int uid) {
+	public boolean delSaveRestaurant(Integer pid, Integer uid) {
 		return restaurantDao.delSaveRestaurant(pid, uid);
 	}
 
 
 	@Override
-	public List<Restaurant> findSaveRestaurant(int uid) {
+	public List<Restaurant> findSaveRestaurant(Integer uid) {
 		return restaurantDao.findSaveRestaurant(uid);
 	}
 
 
 	@Override
-	public boolean saveOrNot(int pid, int uid) {
+	public boolean saveOrNot(Integer pid, Integer uid) {
 		SaveRestaurant saveRestaurant = restaurantDao.findBySave(pid,uid);
 		if(saveRestaurant != null) {
 			return true;
