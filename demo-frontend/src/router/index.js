@@ -392,10 +392,9 @@ const routes = [
         props: (route) => route.params,
       },
       {
-        path: "/searchRestaurant/reserve",
+        path: "/searchRestaurant/reserve/:restaurantId?",
         name: "restaurant-reserve",
         component: ReserveOrder,
-        props: (route) => route.params,
       },
       {
         path: "/business/backend/dashboard",

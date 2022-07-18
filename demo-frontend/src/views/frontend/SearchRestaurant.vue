@@ -1,12 +1,13 @@
 <script setup>
 import { useTemplateStore } from "@/stores/template";
 import { ref } from "vue";
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import axios from "axios";
 
 // Main store
 const store = useTemplateStore();
 const route = useRoute();
+const router = useRouter();
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
 const urlParams = ref(
@@ -45,7 +46,6 @@ function restaurantDetail(prams) {
     });
 }
 
-
 //取得條件(類別)
 function searchCatagory(catagory) {
   urlParams.value.restaurantCategory = catagory;
@@ -77,20 +77,14 @@ function getBusinessList() {
     })
 }
 
-function reserveRestaurant(prams) {
-  axios
-    .get(`http://${url}/restaurants/${prams}`)
-    .then((res) => {
-      //獲取伺服器的回傳資料
-      console.log(res.data);
-      sessionStorage.setItem("reserveOrder", JSON.stringify(res.data));
-      router.replace({
-        name: "restaurant-reserve"
-      });
-    })
-    .catch((error) => {
-      console.log(error, "失敗");
-    });
+//跳轉'前往訂位' 
+function reserveRestaurant(restaurantNumber) {
+  router.push({
+    name: "restaurant-reserve",
+    params: {
+      restaurantId: restaurantNumber
+    },
+  });
 }
 
 // 執行Axios;

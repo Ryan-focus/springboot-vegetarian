@@ -2,12 +2,58 @@
 // 已經宣告但從未使用過的Value (請勿刪除)
 import { useTemplateStore } from "@/stores/template";
 // eslint-disable-next-line no-unused-vars
-import { reactive, ref, computed, onMounted } from "vue";
+import { reactive, ref, onMounted } from "vue";
+//using Axios 
+import axios from "axios";
 // Vue Star Rating, for more info and examples you can check out https://github.com/craigh411/vue-StarRating
 import StarRating from "vue-star-rating";
+// useRoute 接值 ，做查詢 
+import { useRoute } from "vue-router";
 // Calendar
 import Datepicker from '@vuepic/vue-datepicker';
+//接值
+const route = useRoute();
+const data = reactive({
+  loading: false,
+});
+const restaurantNumber = route.params.restaurantId;
+console.log("restaurantNumber=" + restaurantNumber);
+const reserveOrder = ref();
+const restaurantName = ref();
+const restaurantTel = ref();
+const restaurantAddress = ref();
+const restaurantCategory = ref();
+const restaurantType = ref();
+const restaurantBusinessHours = ref();
+const restaurantScore = ref();
+const imageUrl = ref();
+
+const reserveRestaurant = function () {
+  data.loading = true;
+  axios
+    .get(`http://localhost:8088/restaurants/${restaurantNumber}`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      reserveOrder.value = res.data;
+      restaurantName.value = res.data.restaurantName;
+      restaurantTel.value = res.data.restaurantTel;
+      restaurantAddress.value = res.data.restaurantAddress;
+      restaurantCategory.value = res.data.restaurantCategory;
+      restaurantType.value = res.data.restaurantType;
+      restaurantBusinessHours.value = res.data.restaurantBusinessHours;
+      restaurantScore.value = res.data.restaurantScore;
+      imageUrl.value = res.data.imageUrl;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    }).finally(() => {
+      data.loading = false;
+    });
+}
+reserveRestaurant();
 const store = useTemplateStore();
+
+//date 
 const date = ref(new Date());
 const startDate = ref(new Date());
 const maxDate = ref(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 30));
@@ -26,17 +72,6 @@ const format = (date) => {
   return `${month}月${day}日 ${daysArray[days]}`;
 }
 
-// const allowedDates = computed(() => {
-//   return [
-//     new Date(),
-//     new Date().getMonth() + 1
-//   ];
-// });
-//預設傳值伺服器與[params]
-const reserveOrder = JSON.parse(window.sessionStorage.getItem("reserveOrder"));
-// const businessID = business.data.business.businessId;
-// const restaurantApply = JSON.parse(window.localStorage.getItem("restaurantApply" + businessID));
-// const busineesUUID = business.data.business.uuid;
 //接收的資料ref
 //當日統計
 //取得全部人數
@@ -57,8 +92,12 @@ const reserveOrder = JSON.parse(window.sessionStorage.getItem("reserveOrder"));
 }
 </style>
 
-
-<template>
+<template >
+  <Loading :active="data.loading">
+    <div class="spinner-grow spinner-grow-sm text-dark" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </Loading>
   <div class="row justify-content-center">
     <div class="col-md-12 p-4 mt-1 mx-auto" style="max-width:1140px;  ">
       <!-- With Indicators -->
@@ -70,8 +109,7 @@ const reserveOrder = JSON.parse(window.sessionStorage.getItem("reserveOrder"));
           </div>
           <div class="carousel-inner">
             <div class="carousel-item active">
-              <img :src="`${reserveOrder.imageUrl}`" class="d-block w-100 img-fluid"
-                :alt="`${reserveOrder.restaurantName}`" />
+              <img :src="`${imageUrl}`" class="d-block w-100 img-fluid" :alt="`${restaurantName}`" />
             </div>
           </div>
           <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
@@ -94,19 +132,19 @@ const reserveOrder = JSON.parse(window.sessionStorage.getItem("reserveOrder"));
   <div class="bg-body-extra-light">
     <div class="content content-boxed">
       <div class="text-left fs-sm push">
-        <h1 class="mt-1 mb-0 p-0 fw-bold">{{ reserveOrder.restaurantName }}</h1>
-        <StarRating class="font-size-sm text-muted mb-2" v-model:rating="reserveOrder.restaurantScore" :star-size="24"
+        <h1 class="mt-1 mb-0 p-0 fw-bold">{{ restaurantName }}</h1>
+        <StarRating class="font-size-sm text-muted mb-2" v-model:rating="restaurantScore" :star-size="24"
           text-class="font-size-sm text-muted" :show-rating="false" active-color="#66CC00">
         </StarRating>
 
         <p class="font-size-sm text-muted mb-2">
-          <span class="badge bg-info me-3">{{ reserveOrder.restaurantCategory }}</span>
-          <span class="badge bg-success me-3 mb-2">{{ reserveOrder.restaurantType }}</span>
+          <span class="badge bg-info me-3">{{ restaurantCategory }}</span>
+          <span class="badge bg-success me-3 mb-2">{{ restaurantType }}</span>
         </p>
-        <h4 class="mt-3 fw-normal">{{ reserveOrder.restaurantAddress }}</h4>
+        <h4 class="mt-3 fw-normal">{{ restaurantAddress }}</h4>
         <span>
           <i class="fa fa-phone me-3 h5 text-secondary board-black" /><a href="tel:02-8502-05555" target="_blank"
-            class="text-warning h5 fw-normal me-4 link-fx">{{ reserveOrder.restaurantTel }}</a>
+            class="text-warning h5 fw-normal me-4 link-fx">{{ restaurantTel }}</a>
         </span>
         <span>
           <i class="fa fa-map me-3 h5 text-secondary"></i> <a class="text-warning h5 fw-normal me-4 link-fx"
@@ -120,7 +158,7 @@ const reserveOrder = JSON.parse(window.sessionStorage.getItem("reserveOrder"));
         <div class="col-sm-8">
           <!-- Story -->
           <article class="story">
-            {{ reserveOrder.restaurantBusinessHours }}
+            {{ restaurantBusinessHours }}
           </article>
           <!-- END Story -->
 
@@ -172,8 +210,8 @@ const reserveOrder = JSON.parse(window.sessionStorage.getItem("reserveOrder"));
 
         <article>
           <p class="me-2 h6">如有訂位以外的需求，請撥打電話與我們聯繫
-            <a href="tel:{{`${reserveOrder.restaurantTel}`}}">{{
-                reserveOrder.restaurantTel
+            <a href="tel:{{`${restaurantTel}`}}">{{
+                restaurantTel
             }}</a>
           </p>
         </article>
@@ -187,7 +225,6 @@ const reserveOrder = JSON.parse(window.sessionStorage.getItem("reserveOrder"));
           background-color: rgb(255, 255, 255);
           box-shadow: rgba(145, 145, 145, 0.5) 0px 2px 12px 0px;
           position: fixed;
-          z-index: 100;
           bottom: 0px;
           left: 0px;
           right: 0px;
@@ -203,7 +240,7 @@ const reserveOrder = JSON.parse(window.sessionStorage.getItem("reserveOrder"));
               -webkit-box-align: center;
               align-items: center;
           ">
-          <span class="col-3 mt-1 mb-0 p-0 fw-bold h5">您已選擇預訂 {{ reserveOrder.restaurantName }} : </span>
+          <span class="col-3 mt-1 mb-0 p-0 fw-bold h5">您已選擇預訂 {{ restaurantName }} : </span>
           <button class="btn btn-secondary col-1" disabled>{{ adult }} 大 , {{ kid }} 小</button>
           <!-- 箭頭符號 -->
           <div class="col-1">
@@ -239,7 +276,7 @@ const reserveOrder = JSON.parse(window.sessionStorage.getItem("reserveOrder"));
         </header>
         <div class="row">
           <div id="info-map" class="col-md-6 col-xl-3 me-2"> <iframe
-              :src="`https://www.google.com/maps/embed/v1/place?key=AIzaSyBwhBQXDks6CAdcxO-1SoTU6wKttYcHLx0&q=${reserveOrder.restaurantName}&language=zh-TW`"
+              :src="`https://www.google.com/maps/embed/v1/place?key=AIzaSyBwhBQXDks6CAdcxO-1SoTU6wKttYcHLx0&q=${restaurantName}&language=zh-TW`"
               width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"></iframe>
           </div>
@@ -252,8 +289,8 @@ const reserveOrder = JSON.parse(window.sessionStorage.getItem("reserveOrder"));
               </span>
 
               <a class="fw-normal link-fx text-black h4 " target="_blank"
-                :href="`https://www.google.com.tw/maps/place/${reserveOrder.restaurantAddress}`">{{
-                    reserveOrder.restaurantAddress
+                :href="`https://www.google.com.tw/maps/place/${restaurantAddress}`">{{
+                    restaurantAddress
                 }}</a>
               <hr>
             </div>
@@ -266,7 +303,7 @@ const reserveOrder = JSON.parse(window.sessionStorage.getItem("reserveOrder"));
               </span>
 
               <a href="tel:02-8502-05555" target="_blank" class="fw-normal link-fx text-black h4 ">{{
-                  reserveOrder.restaurantTel
+                  restaurantTel
               }}</a>
               <hr>
             </div>
@@ -281,9 +318,9 @@ const reserveOrder = JSON.parse(window.sessionStorage.getItem("reserveOrder"));
 
               <span class="fw-normal link-fx text-black h4 " target="_blank">
                 <span class="badge bg-info me-3">{{
-                    reserveOrder.restaurantCategory
+                    restaurantCategory
                 }}</span>
-                <span class="badge bg-success me-3 mb-2">{{ reserveOrder.restaurantType }}</span></span>
+                <span class="badge bg-success me-3 mb-2">{{ restaurantType }}</span></span>
               <hr>
             </div>
             <!-- 素食類型結束 -->
