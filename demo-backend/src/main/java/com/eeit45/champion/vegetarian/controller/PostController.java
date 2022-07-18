@@ -300,6 +300,20 @@ public class PostController {
 			return ResponseEntity.status(HttpStatus.OK).body(out);
 		}
 	}
+	
+	// 依讚數排序搜尋
+		@GetMapping(value = "/findlike")
+		public ResponseEntity<List<Post>> showlikeCount() {
+
+			List<Post> post = postService.findPostbyLike();
+			//boolean out = false;
+			if (post != null) {
+				return ResponseEntity.status(HttpStatus.OK).body(post);
+			} else {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+			}
+		}
+		
 	//顯示使用者收藏文章
 	@GetMapping(value = "/favoritePost/{userId}")
 	public ResponseEntity<List<Post>> showfavPost( @PathVariable("userId") Integer userId) {

@@ -147,6 +147,11 @@ public class PostServiceImpl implements PostService {
 		return postDao.findPostByCategory5();
 	}
 
+	@Override
+	public List<Post> findPostbyLike() {
+		return postDao.findPostbyLike();
+	}
+
 	
 
 	
