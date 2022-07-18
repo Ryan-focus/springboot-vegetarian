@@ -386,10 +386,9 @@ const routes = [
         component: SearchRestaurant,
       },
       {
-        path: "/searchRestaurant/details",
+        path: "/searchRestaurant/details/:restaurantNumber?",
         name: "restaurant-details",
         component: RestaurantDetails,
-        props: (route) => route.params,
       },
       {
         path: "/searchRestaurant/reserve/:restaurantId?",

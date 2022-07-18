@@ -1,8 +1,8 @@
 <script setup>
 import { useTemplateStore } from "@/stores/template";
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import axios from "axios";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 // Main store
 const store = useTemplateStore();
@@ -23,8 +23,11 @@ const urlParams = ref(
     }
 );
 //接收的資料ref
+const router = useRouter();
+const route = useRoute();
 const resData = ref();
 const restaurantName = ref();
+const restaurantNumber = route.params.restaurantNumber;
 const restaurantTel = ref();
 const restaurantAddress = ref();
 const restaurantCategory = ref();
@@ -33,15 +36,38 @@ const restaurantBusinessHours = ref();
 const restaurantScore = ref();
 const imageUrl = ref();
 const saveData = ref();
+const dataArray = ref();
+const data = reactive({
+    loading: false,
+});
 
-const route = useRoute();
 var uid = 0;
 const user = JSON.parse(window.localStorage.getItem("access-user"));
 if (user != null) {
     uid = user.data.user.userId;
 }
-const itemData = JSON.parse(route.params.paramsData);
-var restaurantNumber = itemData[0].restaurantNumber;
+// const itemData = JSON.parse(route.params.paramsData);
+// var restaurantNumber = itemData[0].restaurantNumber;
+
+
+//取得單筆餐廳by restaurantNumber
+const getRestaurant = function () {
+    data.loading = true;
+    axios
+        .get(`http://${url}/restaurants/${restaurantNumber}`)
+        .then((res) => {
+            console.log(res);
+            console.log(res.data);
+            let array = [];
+            array.push(res.data);
+
+            dataArray.value = array;
+
+        })
+        .catch((err) => console.log(err));
+}
+
+getRestaurant();
 
 
 //確認用戶是否已收藏該筆餐廳資料
@@ -58,19 +84,23 @@ axios
 
 
 // 取得所有餐廳
-const getAxios = function () {
-    axios
-        .get(`http://${url}/restaurants`, { params: urlParams.value })
-        .then((res) => {
-            resData.value = res.data;
-        })
-        .catch((error) => {
-            console.log(error, "失敗");
-        });
-};
+// const getAxios = function () {
+//     axios
+//         .get(`http://${url}/restaurants`, { params: urlParams.value })
+//         .then((res) => {
+//             resData.value = res.data;
+//         })
+//         .catch((error) => {
+//             console.log(error, "失敗");
+//         });
+// };
 
-// 執行Axios;
-getAxios();
+
+// // 執行Axios;
+// getAxios();
+
+
+
 
 //加入收藏
 function addsaveRestaurant() {
@@ -125,7 +155,7 @@ export default {
     <div class="container">
         <div class="row">
             <div class="col">
-                <div v-for="item in JSON.parse(paramsData)" :key="item.restaurantNumber">
+                <div v-for="item in dataArray" :key="item.restaurantNumber">
 
                     <BaseBlock>
                         <div class="row items-push">

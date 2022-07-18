@@ -1,15 +1,31 @@
 <script setup>
 import { useTemplateStore } from "@/stores/template";
-import { ref } from "vue";
+import { reactive, ref } from "vue";
 import { useRoute, useRouter } from 'vue-router';
 import axios from "axios";
 
-// Main store
-const store = useTemplateStore();
-const route = useRoute();
-const router = useRouter();
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
+// Main store
+const store = useTemplateStore();
+const router = useRouter();
+//接值
+const route = useRoute();
+const data = reactive({
+  loading: false,
+});
+
+const restaurantName = ref();
+const restaurantTel = ref();
+const restaurantAddress = ref();
+// const restaurantCategory = ref();
+const restaurantCategory = route.params.restaurantCategory;
+const restaurantType = ref();
+const restaurantBusinessHours = ref();
+const restaurantScore = ref();
+const imageUrl = ref();
+const dataArray = ref();
+
 const urlParams = ref(
   {
     limit: 10,
@@ -22,46 +38,55 @@ const urlParams = ref(
   }
 );
 
-console.log("Router Params = " + route.params.restaurantCategory);
-// restaurantNumber = route.params.postId;
+console.log(route.params);
 
-//帶值跳轉
-function restaurantDetail(prams) {
-  urlParams.value.restaurantNumber = prams;
+//帶值restaurantNumber到detail頁
+function restaurantDetail(restaurantNumber) {
+  // urlParams.value.restaurantNumber = prams;
+  urlParams.value.restaurantNumber = restaurantNumber;
+
+  router.push({
+    name: "restaurant-details",
+    params: {
+      restaurantNumber: urlParams.value.restaurantNumber,
+    }
+  });
+}
+
+//取得條件(類別)
+const searchCatagory = function () {
+  data.loading = true;
+
   axios
-    .get(`http://${url}/restaurants/` + prams)
+    .get(`http://${url}/restaurantList?restaurantCategory=${restaurantCategory}`)
     .then((res) => {
-      //獲取伺服器的回傳資料
-      let dataArray = [];
-      dataArray.push(res.data);
-      router.replace({
-        name: "restaurant-details",
-        params: {
-          paramsData: JSON.stringify(dataArray)
-        },
-      });
+      console.log(res);
+      console.log(res.data);
+      console.log(res.data.results);
+
+      dataArray.value = res.data.results;
+
+    })
+    .catch((err) => console.log(err));
+}
+searchCatagory();
+
+//取得所有餐廳
+const getAxios = function () {
+  axios
+    .get(`http://${url}/restaurants`, { params: urlParams.value })
+    .then((res) => {
+      resData.value = res.data;
     })
     .catch((error) => {
       console.log(error, "失敗");
     });
-}
+};
 
-//取得條件(類別)
-function searchCatagory(catagory) {
-  urlParams.value.restaurantCategory = catagory;
-  axios
-    .get(`http://${url}/restaurantList`, { params: urlParams.value })
-    .then((res) => {
-      console.log(res.data.results);
-      router.replace({
-        name: "restaurantIndex",
-        params: {
-          paramsData: JSON.stringify(res.data.results)
-        },
-      });
-    })
-    .catch((err) => console.log(err));
-}
+
+// 執行Axios;
+getAxios();
+
 
 var businessRestuarantID = [];
 
@@ -87,9 +112,7 @@ function reserveRestaurant(restaurantNumber) {
   });
 }
 
-// 執行Axios;
-// getAxios();
-getBusinessList();
+// getBusinessList();
 </script>
 <!-- <script>
 export default {
@@ -183,7 +206,7 @@ export default {
   <div class="container">
     <div class="row">
       <div class="col">
-        <div v-for="item in JSON.parse(paramsData)" :key="item.restaurantNumber">
+        <div v-for="item in dataArray" :key="item.restaurantNumber">
           <BaseBlock>
             <div class="row items-push">
               <!-- 圖片 -->

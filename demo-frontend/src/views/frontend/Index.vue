@@ -7,8 +7,6 @@ import axios from "axios";
 const store = useTemplateStore();
 const router = useRouter();
 
-
-
 const url = "localhost:8088";
 const urlParams = ref(
   {
@@ -21,15 +19,38 @@ const urlParams = ref(
   }
 );
 
+//帶值category到下個頁面
 function searchCatagory(catagory) {
   urlParams.value.restaurantCategory = catagory;
+
   router.push({
     name: "restaurantIndex",
     params: {
       restaurantCategory: urlParams.value.restaurantCategory,
-      restaurantType: urlParams.value.restaurantType,
+    }
+  });
+}
+
+//帶值name到下個頁面
+function searchName(restaurantName) {
+  urlParams.value.restaurantName = restaurantName;
+
+  router.push({
+    name: "restaurantIndex",
+    params: {
+      restaurantName: urlParams.value.restaurantName,
+    }
+  });
+}
+
+//帶值Address到下個頁面
+function searchAddress(restaurantAddress) {
+  urlParams.value.restaurantAddress = restaurantAddress;
+
+  router.push({
+    name: "restaurantIndex",
+    params: {
       restaurantAddress: urlParams.value.restaurantAddress,
-      restaurantName: urlParams.value.restaurantName
     }
   });
 }
@@ -53,8 +74,8 @@ function searchCatagory(catagory) {
             <div class="col-md-5 offset-md-3 content content-full text-center">
               <div class="mb-2">
                 <div>
-                  <input type="text" placeholder="搜尋餐廳名稱" v-model="urlParams.searchName" @change="searchCatagory()" />
-                  <input type="text" placeholder="搜尋地點" v-model="urlParams.searchAddress" @change="searchCatagory()" />
+                  <input type="text" placeholder="搜尋餐廳名稱" v-model="urlParams.searchName" @change="searchName('中平')" />
+                  <input type="text" placeholder="搜尋地點" v-model="urlParams.searchAddress" @change="searchAddress()" />
                   <button class="btn btn-info" tabindex="0" type="button">
                     <i class="si si-magnifier"></i>
                   </button>
