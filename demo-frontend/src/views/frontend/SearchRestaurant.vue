@@ -1,10 +1,12 @@
 <script setup>
 import { useTemplateStore } from "@/stores/template";
 import { ref } from "vue";
-import { useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import axios from "axios";
+
 // Main store
 const store = useTemplateStore();
+const route = useRoute();
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
 const urlParams = ref(
@@ -19,15 +21,8 @@ const urlParams = ref(
   }
 );
 
-//跳轉到詳細餐廳頁面
-const router = useRouter({
-  routes: [
-    {
-      path: "/searchRestaurant/details",
-      name: "restaurant-details",
-    }
-  ]
-});
+console.log("Router Params = " + route.params.restaurantCategory);
+// restaurantNumber = route.params.postId;
 
 //帶值跳轉
 function restaurantDetail(prams) {
@@ -102,7 +97,7 @@ function reserveRestaurant(prams) {
 // getAxios();
 getBusinessList();
 </script>
-<script>
+<!-- <script>
 export default {
   name: "restaurantIndex",
   props: {
@@ -113,7 +108,7 @@ export default {
 };
 
 
-</script>
+</script> -->
 
 
 <template>

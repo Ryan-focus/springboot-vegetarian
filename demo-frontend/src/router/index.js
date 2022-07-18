@@ -381,10 +381,9 @@ const routes = [
       },
       //餐廳
       {
-        path: "/searchRestaurant",
+        path: "/searchRestaurant/:restaurantCategory?/:restaurantType?/:searchName?/:searchAddress?",
         name: "restaurantIndex",
         component: SearchRestaurant,
-        props: (route) => route.params,
       },
       {
         path: "/searchRestaurant/details",

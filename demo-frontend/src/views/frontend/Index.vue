@@ -5,6 +5,10 @@ import { useRouter } from "vue-router";
 import axios from "axios";
 // Main store
 const store = useTemplateStore();
+const router = useRouter();
+
+
+
 const url = "localhost:8088";
 const urlParams = ref(
   {
@@ -13,35 +17,21 @@ const urlParams = ref(
     restaurantAddress: null,
     restaurantCategory: null,
     restaurantType: null,
-    restaurantBusinessHours: null,
-    restaurantScore: null,
+    restaurantName: null
   }
 );
-const router = useRouter({
-  routes: [
-    {
-      path: '/searchRestaurant',
-      name: "restaurantIndex",
-    }
-  ]
-});
 
 function searchCatagory(catagory) {
   urlParams.value.restaurantCategory = catagory;
-  axios
-    .get(`http://${url}/restaurantList`, { params: urlParams.value })
-
-    .then((res) => {
-      console.log(urlParams.value);
-      console.log(res.data.results);
-      router.replace({
-        name: "restaurantIndex",
-        params: {
-          paramsData: JSON.stringify(res.data.results)
-        },
-      });
-    })
-    .catch((err) => console.log(err));
+  router.push({
+    name: "restaurantIndex",
+    params: {
+      restaurantCategory: urlParams.value.restaurantCategory,
+      restaurantType: urlParams.value.restaurantType,
+      restaurantAddress: urlParams.value.restaurantAddress,
+      restaurantName: urlParams.value.restaurantName
+    }
+  });
 }
 </script>
 
