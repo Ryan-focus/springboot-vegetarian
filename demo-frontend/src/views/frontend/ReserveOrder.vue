@@ -12,6 +12,11 @@ const date = ref(new Date());
 const startDate = ref(new Date());
 const maxDate = ref(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 30));
 
+
+//v-bind value 
+const adult = ref(2);
+const kid = ref(0);
+
 const format = (date) => {
   const day = date.getDate();
   const month = date.getMonth() + 1;
@@ -130,7 +135,7 @@ const reserveOrder = JSON.parse(window.sessionStorage.getItem("reserveOrder"));
           <div id="dinner-field" class="row col-6">
             <p class="mt-1 fw-normal h4">用餐人數</p>
             <div class="col-6">
-              <select class="selectpicker form-select">
+              <select class="selectpicker form-select" v-model="adult">
                 <option disabled>請選擇用餐人數</option>
                 <option value="1" data-testid="1位大人">1位大人</option>
                 <option value="2" data-testid="2位大人" selected>2位大人</option>
@@ -144,7 +149,7 @@ const reserveOrder = JSON.parse(window.sessionStorage.getItem("reserveOrder"));
               </select>
             </div>
             <div class="col-6">
-              <select class="selectpicker form-select">
+              <select class="selectpicker form-select" id="kid-picker" v-model="kid">
                 <option value="0" data-testid="0位小孩">0位小孩</option>
                 <option value="1" data-testid="1位小孩">1位小孩</option>
                 <option value="2" data-testid="2位小孩">2位小孩</option>
@@ -158,22 +163,15 @@ const reserveOrder = JSON.parse(window.sessionStorage.getItem("reserveOrder"));
           </div>
           <div id="date-field" class="col-6">
             <p class="mt-1 fw-normal h4">用餐日期</p>
-            <Datepicker v-model="date" :minDate="new Date()" :enableTimePicker="false" :startDate="startDate"
-              :format="format" :maxDate="maxDate" autoApply :closeOnAutoApply="false" hideOffsetDates position="left"
-              :monthChangeOnArrows="false" calendarClassName="dp-custom-calendar" />
-            <!-- <button type="button" class="form-select" id="dropdown-default-outline-primary"
-              data-bs-target="#dateCalendar" aria-haspopup="true" aria-expanded="false"
-              @click.prevent="yourCustomMethod">
-              {{ date }}
-            </button> -->
-            <!-- <div class="dropdown-menu fs-sm" aria-labelledby="dropdown-default-outline-primary"></div> -->
-            <!-- <div id="date-picker" class="form-select" data-cy="date-picker" aria-expanded="false">date</div> -->
+            <Datepicker id="date-picker" v-model="date" :minDate="new Date()" :enableTimePicker="false"
+              :startDate="startDate" :format="format" :maxDate="maxDate" autoApply :closeOnAutoApply="false"
+              hideOffsetDates position="left" :monthChangeOnArrows="false" calendarClassName="dp-custom-calendar" />
           </div>
         </div>
         <hr>
 
         <article>
-          <p>如有訂位以外的需求，請撥打電話與我們聯繫 <br>
+          <p class="me-2 h6">如有訂位以外的需求，請撥打電話與我們聯繫
             <a href="tel:{{`${reserveOrder.restaurantTel}`}}">{{
                 reserveOrder.restaurantTel
             }}</a>
@@ -185,13 +183,51 @@ const reserveOrder = JSON.parse(window.sessionStorage.getItem("reserveOrder"));
 
 
       <!-- 預訂餐廳fixed Bar 位置-->
-      <div id="book-now-action-bar">
-        <div></div>
-        <hr>
-        <div>
-          <button id="book-now-action-button">
+      <div id="book-now-action-bar" class="row" style="
+          background-color: rgb(255, 255, 255);
+          box-shadow: rgba(145, 145, 145, 0.5) 0px 2px 12px 0px;
+          position: fixed;
+          z-index: 100;
+          bottom: 0px;
+          left: 0px;
+          right: 0px;
+        ">
+        <!-- 置底fixed Bar 顯示 Span -->
+        <div aria-hidden="true" class="row justify-content-center mt-2" style="
+              white-space: nowrap;
+              overflow: auto hidden;
+              display: flex;
+              margin: 0px auto;
+              width: 100%;
+              height: 56px;
+              -webkit-box-align: center;
+              align-items: center;
+          ">
+          <span class="col-3 mt-1 mb-0 p-0 fw-bold h5">您已選擇預訂 {{ reserveOrder.restaurantName }} : </span>
+          <button class="btn btn-secondary col-1" disabled>{{ adult }} 大 , {{ kid }} 小</button>
+          <!-- 箭頭符號 -->
+          <div class="col-1">
+            <div aria-hidden="true" class=""> <i class="si si-arrow-right "></i></div>
+          </div>
+          <button class="btn btn-secondary col-1" disabled>{{ format(date) }}</button>
+          <hr>
+        </div>
+        <div class="row justify-content-center" style="max-width:1140px ;  min-height: 50px;">
+          <button id="book-now-action-button" class="col-md-3 offset-md-5 justify-content-center me-5" style="
+                    background-color: rgb(255, 133, 14);
+                    border: none;
+                    border-radius: 6px;
+                    color: rgb(255, 255, 255);
+                    text-align: center;
+                    width: 100%;
+                    padding-top: 0px;
+                    padding-bottom: 0px;
+                    outline: 0px;
+                    cursor: pointer;
+                ">
             <span>下一步，填寫聯絡資訊</span>
           </button>
+
         </div>
       </div>
       <!-- 預訂餐廳fixed置底Bar Layout結束-->
@@ -202,25 +238,55 @@ const reserveOrder = JSON.parse(window.sessionStorage.getItem("reserveOrder"));
           <h4 class="mt-3 fw-bold h3">餐廳資訊</h4>
         </header>
         <div class="row">
-          <div id="info-map" class="col-7 me-3"> <iframe
+          <div id="info-map" class="col-md-6 col-xl-3 me-2"> <iframe
               :src="`https://www.google.com/maps/embed/v1/place?key=AIzaSyBwhBQXDks6CAdcxO-1SoTU6wKttYcHLx0&q=${reserveOrder.restaurantName}&language=zh-TW`"
               width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
               referrerpolicy="no-referrer-when-downgrade"></iframe>
           </div>
-          <div id="info-body" class="col-4">
+          <div id="info-body" class="col-md-5 offset-md-3 mt-3">
             <!-- 位置 開始-->
-            <div>
-              <div>
-                <span>
-                  <i class="fa fa-map me-2 h5 text-black" />
-                  <a class="text-black h5 fw-normal me-4 link-fx">位置</a>
-                </span>
-              </div>
-              <a class="fw-normal link-fx text-black h4" target="_blank"
+            <div class="mb-2 row col-12">
+              <span class="col-6">
+                <i class="fa fa-map me-2 h5 text-black"></i>
+                <span class="text-black h5 fw-normal me-4 link-fx">位置</span>
+              </span>
+
+              <a class="fw-normal link-fx text-black h4 " target="_blank"
                 :href="`https://www.google.com.tw/maps/place/${reserveOrder.restaurantAddress}`">{{
                     reserveOrder.restaurantAddress
                 }}</a>
+              <hr>
             </div>
+            <!-- 位置結束 -->
+            <!-- 連絡電話開始 -->
+            <div class="mb-2 row col-12">
+              <span class="col-6">
+                <i class="fa fa-phone me-3 h5 text-secondary board-black"></i>
+                <span class="text-black h5 fw-normal me-4 link-fx">連絡電話</span>
+              </span>
+
+              <a href="tel:02-8502-05555" target="_blank" class="fw-normal link-fx text-black h4 ">{{
+                  reserveOrder.restaurantTel
+              }}</a>
+              <hr>
+            </div>
+
+            <!-- 連絡電話結束 -->
+            <!-- 素食類型 -->
+            <div class="mb-2 row col-12">
+              <span class="col-6">
+                <i class="fab fa-pagelines me-2 h5 text-black"></i>
+                <span class="text-black h5 fw-normal me-4 link-fx">餐廳類型</span>
+              </span>
+
+              <span class="fw-normal link-fx text-black h4 " target="_blank">
+                <span class="badge bg-info me-3">{{
+                    reserveOrder.restaurantCategory
+                }}</span>
+                <span class="badge bg-success me-3 mb-2">{{ reserveOrder.restaurantType }}</span></span>
+              <hr>
+            </div>
+            <!-- 素食類型結束 -->
           </div>
         </div>
       </div>
