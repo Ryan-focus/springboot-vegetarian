@@ -204,6 +204,16 @@ export default {
 
                         </div>
                         <hr />
+                        <!-- 猜你可能喜歡 -->
+                        <div class="container" style="background-color:antiquewhite">
+                            <section>
+                                <h4 class="text-primary"> 猜你可能喜歡 </h4>
+                                <p>一份保證十顆
+
+                                    紅酒一杯</p>
+                            </section>
+
+                        </div>
 
                     </BaseBlock>
                 </div>
