@@ -1,12 +1,13 @@
 <script setup>
 // 已經宣告但從未使用過的Value (請勿刪除)
+import { useTemplateStore } from "@/stores/template";
 // eslint-disable-next-line no-unused-vars
 import { reactive, ref, computed, onMounted } from "vue";
 // Vue Star Rating, for more info and examples you can check out https://github.com/craigh411/vue-StarRating
 import StarRating from "vue-star-rating";
 // Calendar
 import Datepicker from '@vuepic/vue-datepicker';
-
+const store = useTemplateStore();
 const date = ref(new Date());
 const startDate = ref(new Date());
 const maxDate = ref(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 30));
@@ -54,7 +55,7 @@ const reserveOrder = JSON.parse(window.sessionStorage.getItem("reserveOrder"));
 
 <template>
   <div class="row justify-content-center">
-    <div class="col-md-12 p-4 mt-1 mx-auto" style="max-width:1140px;">
+    <div class="col-md-12 p-4 mt-1 mx-auto" style="max-width:1140px;  ">
       <!-- With Indicators -->
       <BaseBlock class="mb-1" content-full>
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
@@ -196,14 +197,17 @@ const reserveOrder = JSON.parse(window.sessionStorage.getItem("reserveOrder"));
       <!-- 預訂餐廳fixed置底Bar Layout結束-->
 
       <!-- 餐廳資訊 / 地圖 位置 電話-->
-      <div id="branch-info">
-        <header>
-          <h4>餐廳資訊</h4>
+      <div id="branch-info" class="row ">
+        <header display="flex" class="row col-12 mb-2 mt-2">
+          <h4 class="mt-3 fw-bold h3">餐廳資訊</h4>
         </header>
-        <div>
-          <div id="info-map"> <iframe id="booking-google-embed-map" allowfullscreen src="" frameborder="0"></iframe>
+        <div class="row">
+          <div id="info-map" class="col-7 me-3"> <iframe
+              :src="`https://www.google.com/maps/embed/v1/place?key=AIzaSyBwhBQXDks6CAdcxO-1SoTU6wKttYcHLx0&q=${reserveOrder.restaurantName}&language=zh-TW`"
+              width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"></iframe>
           </div>
-          <div id="info-body">
+          <div id="info-body" class="col-4">
             <!-- 位置 開始-->
             <div>
               <div>
@@ -212,9 +216,10 @@ const reserveOrder = JSON.parse(window.sessionStorage.getItem("reserveOrder"));
                   <a class="text-black h5 fw-normal me-4 link-fx">位置</a>
                 </span>
               </div>
-              <a class="fw-normal link-fx text-black h4" target="_blank" href="https://goo.gl/maps/qBo6y5XpfCyPVqk67">{{
-                  reserveOrder.restaurantAddress
-              }}</a>
+              <a class="fw-normal link-fx text-black h4" target="_blank"
+                :href="`https://www.google.com.tw/maps/place/${reserveOrder.restaurantAddress}`">{{
+                    reserveOrder.restaurantAddress
+                }}</a>
             </div>
           </div>
         </div>
@@ -223,16 +228,30 @@ const reserveOrder = JSON.parse(window.sessionStorage.getItem("reserveOrder"));
   </div>
   <!-- END Page Content -->
 
-  <!-- Get Started -->
-  <!-- <div class="content content-full">
-    <div class="my-5 text-center">
-      <h3 class="fw-bold mb-2">Do you like our stories?</h3>
-      <h4 class="h5 fw-medium opacity-75">
-        Sign up today and get access to over <strong>10,000</strong> inspiring
-        stories!
-      </h4>
-      <a class="btn btn-primary px-4 py-2" href="javascript:void(0)">Get Started Today</a>
+  <!-- Hero After -->
+  <div id="one-vue-hero-after" class="bg-body-light">
+    <div class="content content-full"></div>
+  </div>
+  <!-- END Hero After -->
+
+  <!-- Footer -->
+  <footer id="page-footer" class="bg-body-light">
+    <div class="content py-5">
+      <div class="row fs-sm fw-medium">
+        <div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end">
+          <!-- Crafted with -->
+          <!-- <i class="fa fa-heart text-danger"></i> by -->
+          <!-- <a class="fw-semibold" href="https://1.envato.market/ydb"
+              ></a -->
+        </div>
+        <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start">
+          <a class="fw-semibold" href="/">{{
+              store.app.name + " " + store.app.version
+          }}</a>
+          &copy; {{ store.app.copyright }}
+        </div>
+      </div>
     </div>
-  </div> -->
-  <!-- END Get Started -->
+  </footer>
+  <!-- END Footer -->
 </template>
