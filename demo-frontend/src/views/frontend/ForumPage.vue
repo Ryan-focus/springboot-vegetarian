@@ -48,13 +48,13 @@ const getAxios = function () {
         .get(`http://${url}/forums/${forumId}`)
         .then((res) => {
 
-            //獲取伺服器的回傳資料
+            //獲取伺服器的回傳資料res.data.欄位名稱
             resData.value = res.data;
             resForumId.value = res.data.forumId;
             resForumTitle.value = res.data.forumTitle;
             resForumContent.value = res.data.forumContent;
             resForumCategory.value = res.data.forumCategory;
-            resForumImage.value = res.data.imageUrl;
+            resForumImage.value = res.data.forumImage;
             console.log(res);
         })
         .catch((error) => {
@@ -137,10 +137,15 @@ function showForum() {
                 <BaseBlock class="text-center">
                     <tr>
                         <td class="col-md-6 col-lg-4 col-xl-3">
+                            <div class="img1">
+                                <a :title="`${resForumTitle}`">
+                                    <img class="img-fluid" :src="`${resForumImage}`" :alt="`${resForumTitle}`" />
+                                </a>
+                            </div>
                             <p class="d-none d-sm-block text-muted">
+                            <p v-html="resForumContent"></p>
 
-                                <!-- v-html="row.forumContent" -->
-                                {{ resForumContent }}
+                            <!-- {{ resForumContent }} -->
                             </p>
                         </td>
                     </tr>
@@ -150,3 +155,17 @@ function showForum() {
     </div>
     <!-- END Page Content -->
 </template>
+
+<style>
+.img1 {
+    width: 400px;
+    height: 400px;
+    display: block;
+    margin: auto;
+}
+
+.img-fluid {
+    width: 100%;
+    height: 100%;
+}
+</style>
