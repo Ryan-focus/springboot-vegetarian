@@ -34,7 +34,7 @@ public class ForumDaoImpl implements ForumDao {
 
 	@Override
 	public List<Forum> getForums(ForumDao forumDao) {
-		String sql = "SELECT * FROM forum WHERE 1=1";
+		String sql = "SELECT * FROM forum WHERE 1=1 ORDER BY forumUpdateTime DESC ";
 
 		Map<String, Object> map = new HashMap<>();
 		map.put(sql, forumDao);
@@ -46,7 +46,7 @@ public class ForumDaoImpl implements ForumDao {
 
 	@Override
 	public Forum getForumById(Integer forumId) {
-		String sql = "SELECT * FROM forum WHERE forumId = :forumId";
+		String sql = "SELECT * FROM forum WHERE forumId = :forumId ";
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("forumId", forumId);
@@ -112,5 +112,35 @@ public class ForumDaoImpl implements ForumDao {
 		namedParameterJdbcTemplate.update(sql, map);
 
 	}
+
+	@Override
+	public List<Forum> seachForumCategory1() {
+		String sql = "SELECT * FROM forum WHERE forumCategory = '健康' ORDER BY forumUpdateTime DESC";
+		List<Forum> forumList = namedParameterJdbcTemplate.query(sql, new ForumRowMapper());
+		return forumList;
+	}
+
+	@Override
+	public List<Forum> seachForumCategory2() {
+		String sql = "SELECT * FROM forum WHERE forumCategory = '養身' ORDER BY forumUpdateTime DESC";
+		List<Forum> forumList = namedParameterJdbcTemplate.query(sql, new ForumRowMapper());
+		return forumList;
+	}
+
+	@Override
+	public List<Forum> seachForumCategory3() {
+		String sql = "SELECT * FROM forum WHERE forumCategory = '環保' ORDER BY forumUpdateTime DESC";
+		List<Forum> forumList = namedParameterJdbcTemplate.query(sql, new ForumRowMapper());
+		return forumList;
+	}
+
+	@Override
+	public List<Forum> seachForumCategory4() {
+		String sql = "SELECT * FROM forum WHERE forumCategory = '公益' ORDER BY forumUpdateTime DESC";
+		List<Forum> forumList = namedParameterJdbcTemplate.query(sql, new ForumRowMapper());
+		return forumList;
+	}
+	
+	
 
 }

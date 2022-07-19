@@ -25,6 +25,12 @@ const total = ref();
 const resForumId = ref();
 const router = useRouter();
 const resForumCategory = ref();
+const urlParams = ref({
+  limit: 20,
+  offset: 0,
+  forumcategory: null,
+  search: null
+})
 //用reactive會無法及時反應所以用ref另外宣告
 const image = ref({
   forumImage: null,
@@ -33,10 +39,10 @@ const image = ref({
 
 const getAxios = function () {
   axios
-    .get(`http://${url}/forums`)
+    .get(`http://${url}/forums`, { params: urlParams.value })
     .then((res) => {
       var fourmTotal = 0;
-
+      resData.value = res.data;
       for (let i = 0; i <= res.data.results.length - 1; i++)
         fourmTotal++;
 
@@ -61,9 +67,90 @@ function showForum(number) {
 }
 
 
-// function getCategory(forumCategory) {
+const router1 = useRouter({
+  routes: [
+    {
+      path: '/searchForum',
+      name: "restaurantIndex",
+    }
+  ]
+});
+
+
+function getCategory(category) {
+  urlParams.value.resForumCategory = category;
+  axios
+    .get(`http://${url}/forums`, { params: urlParams.value })
+
+    .then((res) => {
+      console.log(urlParams.value);
+      console.log(res.data.results);
+
+      // router1.replace({
+      //   name: "forum",
+      //   params: {
+      //     paramsData: JSON.stringify(res.data.results)
+      //   },
+      // });
+    })
+}
+
+function forumCategory1() {
+  //send request to server
+  axios
+    .get(`http://${url}/ForumCategory1`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+
+function forumCategory2() {
+  //send request to server
+  axios
+    .get(`http://${url}/ForumCategory2`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+
+function forumCategory3() {
+  //send request to server
+  axios
+    .get(`http://${url}/ForumCategory3`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+
+function forumCategory4() {
+  //send request to server
+  axios
+    .get(`http://${url}/ForumCategory4`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      resData.value = res.data;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+}
+
+//---------------------------------
+// const getAxios = function () {
 //   axios
-//     .get(`http://${url}/forums/${forumCategory}`)
+//     .get(`http://${url}/forums`)
 //     .then((res) => {
 //       var fourmTotal = 0;
 
@@ -79,41 +166,16 @@ function showForum(number) {
 //     .catch((error) => {
 //       console.log(error, "失敗");
 //     });
-// }
+// };
+//執行Axios
+//--------------------------------------
+
 
 
 </script>
 
 <template>
-  <!-- Hero -->
-  <!-- <BasePageHeading title="Search" subtitle="Vital page found in most web applications.">
-    <template #extra>
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb breadcrumb-alt">
-          <li class="breadcrumb-item">
-            <a class="link-fx" href="javascript:void(0)">Generic</a>
-          </li>
-          <li class="breadcrumb-item" aria-current="page">最新文章</li>
-        </ol>
-      </nav>
-    </template>
-  </BasePageHeading> -->
-  <!-- END Hero -->
 
-  <!-- Search -->
-  <!-- <div class="content">
-    <form @submit.prevent>
-      <div class="input-group">
-        <input type="text" class="form-control" placeholder="Search.." />
-        <span class="input-group-text">
-          <i class="fa fa-fw fa-search"></i>
-        </span>
-      </div>
-    </form>
-  </div> -->
-  <!-- END Search -->
-
-  <!-- Page Content -->
   <div class="content">
 
 
@@ -136,23 +198,23 @@ function showForum(number) {
                 <li class="list-group-item list-group-item-success" style="width: auto;">
                   <button type="button" class="btn btn-outline-success btn-block" id="search-projects-tab"
                     data-bs-toggle="tab" data-bs-target="#search-projects" role="tab" aria-controls="search-projects"
-                    aria-selected="true" style="float:left;width: 279px;">
+                    aria-selected="true" style="float:left;width: 279px;" @click.prevent="forumCategory1()">
                     健康
                   </button>
                   <button type="button" class="btn btn-outline-success btn-block" id="search-projects-tab"
                     data-bs-toggle="tab" data-bs-target="#search-projects" role="tab" aria-controls="search-projects"
-                    aria-selected="true" style="float:left;width: 279px;">
+                    aria-selected="true" style="float:left;width: 279px;" @click.prevent="forumCategory2()">
                     養身
                   </button>
 
                   <button type="button" class="btn btn-outline-success btn-block" id="search-projects-tab"
                     data-bs-toggle="tab" data-bs-target="#search-projects" role="tab" aria-controls="search-projects"
-                    aria-selected="true" style="float:left;width: 279px;">
+                    aria-selected="true" style="float:left;width: 279px;" @click.prevent="forumCategory3()">
                     環保
                   </button>
                   <button type="button" class="btn btn-outline-success btn-block" id="search-projects-tab"
                     data-bs-toggle="tab" data-bs-target="#search-projects" role="tab" aria-controls="search-projects"
-                    aria-selected="true" style="float:left;width: 279px;">
+                    aria-selected="true" style="float:left;width: 279px;" @click.prevent="forumCategory4()">
                     公益
                   </button>
                 </li>

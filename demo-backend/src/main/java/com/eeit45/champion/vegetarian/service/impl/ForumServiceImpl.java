@@ -48,6 +48,26 @@ public class ForumServiceImpl implements ForumService {
 		forumDao.deleteForumById(forumId);
 	}
 
+	@Override
+	public List<Forum> seachForumCategory1() {
+		return forumDao.seachForumCategory1();
+	}
+
+	@Override
+	public List<Forum> seachForumCategory2() {
+		return forumDao.seachForumCategory2();
+	}
+
+	@Override
+	public List<Forum> seachForumCategory3() {
+		return forumDao.seachForumCategory3();
+	}
+
+	@Override
+	public List<Forum> seachForumCategory4() {
+		return forumDao.seachForumCategory4();
+	}
+
 	
 
 	
