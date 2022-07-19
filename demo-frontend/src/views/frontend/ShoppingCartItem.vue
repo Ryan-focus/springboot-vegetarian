@@ -191,7 +191,7 @@ function payment() {
                 </td>
                 <td class="fw-bold text-end bg-body-light">
                   <button type="button" class="btn btn-outline-danger">
-                    <i class="fal fa-dollar-sign" @click="checkOut(), payment(), removeCart()">結帳</i>
+                    <i class="fal fa-dollar-sign" @click="checkOut(), payment()">結帳</i>
                   </button>
                 </td>
               </tr>

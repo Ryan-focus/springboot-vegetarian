@@ -62,11 +62,13 @@ const data = (localStorage.getItem('cartItem')) ? JSON.parse(localStorage.getIte
 
 const cartItem = ref({
   quantity: "",
+  product: {
+
+  }
 })
 
-
 function addToCart(productId) {
-  cartItem.value.product = this.singleProduct
+  cartItem.value.product = singleProduct
   cartItem.value.quantity = this.cartItem.quantity
   data.cartItemList.push(cartItem.value);
   localStorage.setItem('cartItem', JSON.stringify(data));

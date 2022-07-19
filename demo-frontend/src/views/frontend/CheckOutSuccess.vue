@@ -19,6 +19,11 @@ axios.post(
     }
 )
 
+function removeCart() {
+    localStorage.removeItem("cartItem")
+}
+removeCart()
+
 // Main store
 const store = useTemplateStore();
 </script>
