@@ -23,6 +23,19 @@ function printPage() {
     store.sidebar({ mode: "open" });
   }
 }
+
+// Set default properties
+let toast = Swal.mixin({
+  buttonsStyling: false,
+  target: "#page-container",
+  customClass: {
+    confirmButton: "btn btn-success m-1",
+    cancelButton: "btn btn-danger m-1",
+    input: "form-control",
+  },
+});
+
+
 //取得localstorage
 const user = JSON.parse(window.localStorage.getItem("access-user"));
 //檢查localstorage裡面是否有東西，沒有設定為null不然直接抓會報錯
@@ -54,6 +67,18 @@ function countTotal() {
   }
   return total
 }
+
+//刪除一筆localstorage裡面的值
+//先取出index在用splice做刪除值
+function deleteItem(index) {
+  cartItemList.splice(index, 1);
+  //把cartItem前面的宣告加回去
+  const cartItemList1 = { cartItemList: cartItemList }
+  localStorage.setItem("cartItem", JSON.stringify(cartItemList1))
+  window.location.reload()
+}
+
+
 // 寫入訂單功能
 //用foreach+push把想要的值推進array中
 var checkOutItemArray = []
@@ -65,23 +90,35 @@ for (var i in cartItemList) {
     }
   )
 }
+
+
 //將更新好的array寫進來做結帳動作
 function checkOut() {
-  axios
-    .post(`http://localhost:8088/2/order`, {
-      "buyItemList": checkOutItemArray
-    })
-    .then((res) => {
-      console.log(res.data)
-    }).catch((error) => {
-      console.log(error, "失敗");
-    });
+  Swal.fire(
+    {
+      title: "即將跳轉至結帳頁面",
+      text: "",
+      timer: 3000,
+      icon: "success"
+    }).then(
+      axios
+        .post(`http://localhost:8088/2/order`, {
+          "buyItemList": checkOutItemArray
+        })
+        .then((res) => {
+          console.log(res.data)
+        }).catch((error) => {
+          console.log(error, "失敗");
+        })
+    )
 }
+
 
 // 結帳功能
 function payment() {
 
   axios.post(
+
     "http://localhost:8088/paypal/payment?sum=" + total
   ).then(
     (res) => {
@@ -131,10 +168,10 @@ function payment() {
             <!-- 使用者名稱 -->
             <p class="h3">{{ user.data.user.userName }}</p>
             <address>
-              Street Address<br />
-              State, City<br />
-              Region, Postal Code<br />
-              ctr@example.com
+              桃園市<br />
+              中壢區<br />
+              新生路421號<br />
+              {{ user.data.user.email }}
             </address>
             <button @click="removeCart()">清除購物車</button>
           </div>
@@ -148,7 +185,7 @@ function payment() {
             <thead>
               <tr>
                 <th class="text-center" style="width: 60px"></th>
-                <th>Product</th>
+                <th>商品</th>
                 <th class="text-center" style="width: 90px">數量</th>
                 <th class="text-end" style="width: 120px">單價</th>
                 <th class="text-end" style="width: 120px">小計</th>
@@ -167,7 +204,9 @@ function payment() {
                     {{ item.quantity }}
                   </span>
                 </td>
-                <td class="text-end">NT. {{ item.product.productPrice }}</td>
+                <td class="text-end">NT. {{ item.product.productPrice }}
+                  <button @click="deleteItem(index)">delete</button>
+                </td>
                 <td class="text-end">{{ item.product.productPrice * item.quantity }}</td>
               </tr>
 
@@ -204,8 +243,6 @@ function payment() {
 
         <!-- Footer -->
         <p class="fs-sm text-muted text-center">
-          Thank you very much for doing business with us. We look forward to
-          working with you again!
         </p>
         <!-- END Footer -->
       </div>

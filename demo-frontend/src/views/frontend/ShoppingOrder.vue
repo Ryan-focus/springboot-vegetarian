@@ -134,10 +134,10 @@ getAxios();
                                             <div class="col-6 text-end fs-sm">
                                                 <p class="h3">{{ user.data.user.userName }}</p>
                                                 <address>
-                                                    Street Address<br />
-                                                    State, City<br />
-                                                    Region, Postal Code<br />
-                                                    ctr@example.com
+                                                    桃園市<br />
+                                                    中壢區<br />
+                                                    新生路421號<br />
+                                                    {{ user.data.user.email }}
                                                 </address>
                                             </div>
                                             <!-- END Client Info -->
