@@ -215,11 +215,14 @@ function createRestaurant() {
               <br />
             </div>
 
-            <div class="row items-push">
-              <div class="col-lg-7 offset-lg-4">
-                <button type="submit" class="btn btn-alt-primary">送出</button>
-              </div>
+
+            <div class="d-flex justify-content-center">
+              <button type="submit" class="btn btn-alt-primary me-2">送出</button>
+              <!-- <button type="submit" class="btn btn-alt-primary" id="autoinput">一鍵輸入</button> -->
             </div>
+
+
+
           </div>
         </div>
       </BaseBlock>
