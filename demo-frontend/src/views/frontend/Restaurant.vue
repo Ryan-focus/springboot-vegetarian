@@ -150,52 +150,45 @@ export default {
 <!-- 內容由此開始 -->
 <template>
 
-    <!-- 左邊 -->
-
     <div class="container">
         <div class="row">
             <div class="col">
                 <div v-for="item in dataArray" :key="item.restaurantNumber">
 
                     <BaseBlock>
-                        <div class="row items-push">
 
-                            <!-- 右邊的字 -->
-                            <div class="col-md-12 col-lg-7 d-md-flex align-items-center">
-
-                            </div>
-                        </div>
-
-                        <!-- 上面的餐廳簡介 -->
-                        <div class="container">
+                        <!-- 餐廳簡介開始 -->
+                        <div class="container" style="margin-top: 1cm; padding-left: 0.5cm;">
                             <div class="row mb-3 p-3">
-                                <div class="col-md-6 mb-3">
+                                <!-- 左邊圖片 -->
+                                <div class="col-md-5 mb-1">
                                     <div class="slide__main">
+
                                         <div class="col-md-4 col-lg-5">
                                             <RouterLink :to="{}" class="img-link img-link-simple">
-                                                <img :src="`${item.imageUrl}`" alt="" width="400" height="400" />
+                                                <img :src="`${item.imageUrl}`" alt="" width="400" />
                                             </RouterLink>
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 mb-3">
-
-                                    <div class="">
-                                        <h1 class="text-dark">{{ item.restaurantName }} </h1>
+                                <!-- 右邊文字 -->
+                                <div class="col-md-7 mb-1">
+                                    <div>
+                                        <h1 class="text-decoration-underline">{{ item.restaurantName }} </h1>
                                         <h3 style="color:#3498DB">{{ item.restaurantScore }} ★</h3>
 
-                                        <p>電話：{{ item.restaurantTel }}</p>
+                                        <h4>電話：{{ item.restaurantTel }}</h4>
 
                                         <div>
-                                            <p>地址：{{ item.restaurantAddress }}</p>
+                                            <h4>地址：{{ item.restaurantAddress }}</h4>
                                         </div>
                                         <div>
-                                            <p>餐廳類型：{{ item.restaurantCategory }}</p>
+                                            <h4>餐廳類型：{{ item.restaurantCategory }}</h4>
                                         </div>
                                         <div>
-                                            <p>素食種類：{{ item.restaurantType }}</p>
+                                            <h4>素食種類：{{ item.restaurantType }}</h4>
                                         </div>
-                                        <p>營業時間：{{ item.restaurantBusinessHours }}</p>
+                                        <h4>營業時間：{{ item.restaurantBusinessHours }}</h4>
                                         <p style="color: grey;size: 1cm;" />
 
                                         <button type="button" class="btn btn-outline-primary"
@@ -203,20 +196,19 @@ export default {
 
                                         <button type="button" class="btn btn-outline-primary"
                                             @click="delsaveRestaurant()" v-if="saveData">已收藏</button>
-
-
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <hr />
+                        <!-- 餐廳簡介結束 -->
 
-
-                        <!-- google map  -->
-                        <div class="container">
+                        <!-- 下方google map  -->
+                        <div class="container" style="margin-top: 1cm;">
                             <div class="row">
                                 <div class="col">
                                     <!-- 地圖 -->
+                                    <h3>餐廳位置</h3>
                                     <div id="info-map" class="col-md-4 col-lg-5">
                                         <iframe
                                             :src="`https://www.google.com/maps/embed/v1/place?key=AIzaSyBwhBQXDks6CAdcxO-1SoTU6wKttYcHLx0&q=${item.restaurantName}&language=zh-TW`"
@@ -224,10 +216,51 @@ export default {
                                             referrerpolicy="no-referrer-when-downgrade">
                                         </iframe>
                                     </div>
-                                    <!-- 表單 -->
-                                    <div class="col-md-12 col-lg-7 d-md-flex align-items-center">
-                                        你好
-                                    </div>
+                                </div>
+                                <!-- 表單 -->
+                                <div class="col">
+                                    <h3>聯絡我們</h3>
+                                    <form>
+                                        <div class="row g-3">
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control" id="name" placeholder="姓名">
+                                                    <label for="name">姓名</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-floating">
+                                                    <input type="email" class="form-control" id="email"
+                                                        placeholder="電話">
+                                                    <label for="email">電話</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control" id="subject"
+                                                        placeholder="信箱">
+                                                    <label for="subject">信箱</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-floating">
+                                                    <input type="text" class="form-control" id="subject"
+                                                        placeholder="主旨">
+                                                    <label for="subject">主旨</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <div class="form-floating">
+                                                    <textarea class="form-control" placeholder="請輸入留言" id="message"
+                                                        style="height: 150px"></textarea>
+                                                    <label for="message">留言</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-12">
+                                                <button class="btn btn-primary w-100 py-3" type="submit">送出留言</button>
+                                            </div>
+                                        </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -235,9 +268,9 @@ export default {
                         <hr />
 
                         <!-- 評論 -->
-                        <div class="container" style="background-color:antiquewhite">
+                        <div class="container">
                             <section>
-                                <h4 class="text-primary"> 評論 </h4>
+                                <h3> 評論 </h3>
                                 <p>一份保證十顆
 
                                     紅酒一杯</p>
@@ -247,9 +280,9 @@ export default {
                         <hr />
 
                         <!-- 食記 -->
-                        <div class="container" style="background-color:antiquewhite">
+                        <div class="container">
                             <section>
-                                <h4 class="text-primary"> 食記 </h4>
+                                <h3> 食記 </h3>
                                 <p>一份保證十顆
 
                                     紅酒一杯</p>
@@ -259,59 +292,82 @@ export default {
                         <hr />
                     </BaseBlock>
                 </div>
+
+
+
                 <!-- 猜你可能喜歡 -->
-                <div class="container" style="background-color:antiquewhite">
-                    <h4 class="text-primary">猜你可能喜歡</h4>
-                    <div v-for="item in resData" :key="item.restaurantNumber">
+                <div class="container">
+                    <h3 class="text-primary">猜你可能喜歡</h3>
+                    <div>
                         <BaseBlock>
-                            <div class="row items-push">
-                                <!-- 圖片 -->
-                                <div class="col-md-1 col-lg-5">
-                                    <RouterLink :to="{}" class="img-link img-link-simple">
-                                        <img class="img-fluid rounded" :src="`${item.imageUrl}`" alt="" width="200" />
-                                    </RouterLink>
-                                </div>
-                                <!-- 右邊的字 -->
-                                <div class="col-md-4 col-lg-5 d-md-flex align-items-center">
-                                    <div>
-                                        <!-- 餐廳名稱 -->
-                                        <div class="d-flex justify-content-between">
-                                            <h3 class="card-title text-dark">{{ item.restaurantName }}</h3>
-                                            <div>
-                                                <div class="badge rounded-pill bg-secondary h5">{{
-                                                        item.restaurantCategory
-                                                }}</div>
+
+                            <div class="card-group">
+
+                                <div class="row row-cols-3 row-cols-md-1 g-1" v-for="item in resData"
+                                    :key="item.restaurantNumber">
+
+                                    <div class="card mb-3" style="max-width: 400px;">
+                                        <div class="row g-0">
+                                            <div class="col-md-6">
+                                                <img class="img-fluid rounded" :src="`${item.imageUrl}`" alt=""
+                                                    width="300">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card-body">
+                                                    <!-- <h5 class="card-title">Card title</h5>
+                                            <p class="card-text">This is a wider card with supporting text below as a
+                                                natural lead-in to additional content. This content is a little bit
+                                                longer.</p>
+                                            <p class="card-text"><small class="text-muted">Last updated 3 mins
+                                                    ago</small></p> -->
+                                                    <div class="d-flex justify-content-between">
+                                                        <h5 class="card-title text-dark">{{ item.restaurantName }}</h5>
+
+                                                        <p class="h6" style="color:#3498DB">
+                                                            {{ item.restaurantScore }} ★
+                                                        </p>
+
+                                                    </div>
+                                                    <!-- 營業時間 -->
+                                                    <p style="color: grey;size: 1cm;">
+                                                        {{ item.restaurantBusinessHours }}
+                                                    </p>
+                                                    <!-- 詳細 -->
+                                                    <button type="button" class="btn btn-outline-primary me-3"
+                                                        @click.prevent="restaurantDetail(item.restaurantNumber)">詳細</button>
+                                                </div>
                                             </div>
                                         </div>
-
-                                        <!-- 評分 -->
-                                        <h4 style="color:#3498DB">{{ item.restaurantScore }} ★</h4>
-
-                                        <!-- 營業時間 -->
-                                        <p style="color: grey;size: 1cm;">
-                                            {{ item.restaurantBusinessHours }}
-                                        </p>
-
-                                        <!-- 詳細 -->
-                                        <button type="button" class="btn btn-outline-primary me-3"
-                                            @click.prevent="restaurantDetail(item.restaurantNumber)">詳細</button>
-
                                     </div>
+
+
+
                                 </div>
+
+
+
+
                             </div>
+
+
+
+
+
+
                         </BaseBlock>
 
                     </div>
                 </div>
 
-
-
-
-
             </div>
 
         </div>
     </div>
+
+    <!-- 測試 -->
+    <!-- 測試 -->
+
+
 
 
     <!-- Footer -->
