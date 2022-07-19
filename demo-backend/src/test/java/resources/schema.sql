@@ -165,7 +165,7 @@ create table restaurant(
                        updatedTime TIMESTAMP NOT NULL
 );
 
---saveRestaurant
+-- saveRestaurant
 drop table if exists saveRestaurant;
 CREATE TABLE saveRestaurant(
                      userId int NOT NULL,

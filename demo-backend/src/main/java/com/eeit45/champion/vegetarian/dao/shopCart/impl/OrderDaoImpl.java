@@ -90,7 +90,7 @@ public class OrderDaoImpl implements OrderDao {
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
         map.put("totalAmount", totalAmount);
-        map.put("status","未付款");
+        map.put("status","已付款");
 
         Date now = new Date();
         map.put("createdDate", now);
