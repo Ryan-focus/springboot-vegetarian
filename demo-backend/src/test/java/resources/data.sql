@@ -696,7 +696,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postCategory,
 
 想訂購素食外燴的人，也請記得先打電話確認，以免撲空唷','https://tenjo.tw/wp-content/uploads/20171118212918_55.jpg','發布中','植物五辛素',now(),now(),9);
 
----fav_post收藏文章
+-- fav_post收藏文章
 INSERT INTO fav_post (postId,favDate,userId) VALUES
 (3,now(),2),
 (3,now(),3),
@@ -711,7 +711,7 @@ INSERT INTO fav_post (postId,favDate,userId) VALUES
 (5,now(),2);
 
 
----like_post按讚文章
+-- like_post按讚文章
 INSERT INTO like_post (postId,likeDate,userId) VALUES
 (8,now(),2),
 (8,now(),3),
