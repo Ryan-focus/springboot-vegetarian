@@ -99,7 +99,7 @@ const format = (date) => {
     </div>
   </Loading>
   <div class="row justify-content-center">
-    <div class="col-md-12 p-4 mt-1 mx-auto" style="max-width:1140px;  ">
+    <div class="col-md-12 p-4 mt-1 mx-auto" style="max-width:1140px; ">
       <!-- With Indicators -->
       <BaseBlock class="mb-1" content-full>
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
@@ -109,10 +109,10 @@ const format = (date) => {
           </div>
           <div class="carousel-inner">
             <div class="carousel-item active">
-              <img :src="`${imageUrl}`" class="d-block w-100 img-fluid" :alt="`${restaurantName}`" />
+              <img :src="`${imageUrl}`" class=" d-block w-100 img-fluid" :alt="`${restaurantName}`" />
             </div>
           </div>
-          <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+          <button class=" carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
             data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>
             <span class="sr-only">Previous</span>
