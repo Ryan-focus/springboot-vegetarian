@@ -36,5 +36,10 @@ public interface UserDao {
 	String resetPassword(String account);
 
 	int updateImage(String base64DataString, int id);
+	
+	int updateUserName(String name, int id);
+
+	int updatePassword(String password, String newPassword, int id);
+
 
 }

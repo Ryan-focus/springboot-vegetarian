@@ -25,17 +25,30 @@ function printPage() {
 }
 //取得localstorage
 const user = JSON.parse(window.localStorage.getItem("access-user"));
-const cartItemList = JSON.parse(window.localStorage.getItem("cartItem")).cartItemList;
+//檢查localstorage裡面是否有東西，沒有設定為null不然直接抓會報錯
+var cartItemList = null
+if (window.localStorage.getItem("cartItem") != null) {
+  cartItemList = JSON.parse(window.localStorage.getItem("cartItem")).cartItemList;
+}
 const userId = JSON.stringify(user.data.user.userId)
 // 清空localstorage
 function removeCart() {
   localStorage.removeItem("cartItem")
-  location.replace("http://localhost:8080/#/shopping")
+  window.location.reload(Swal.fire(
+    {
+      title: "已清空購物車",
+      text: "",
+      timer: 1500,
+      icon: "success"
+    }
+  ))
+
 }
 
 //加總功能
 var total = 0;
 function countTotal() {
+
   for (var i in this.cartItemList) {
     total += parseInt(this.cartItemList[i].quantity * this.cartItemList[i].product.productPrice)
   }
@@ -60,7 +73,9 @@ function checkOut() {
     })
     .then((res) => {
       console.log(res.data)
-    })
+    }).catch((error) => {
+      console.log(error, "失敗");
+    });
 }
 
 // 結帳功能
@@ -75,7 +90,9 @@ function payment() {
         window.location = res.data.redirect_url
       }
     }
-  )
+  ).catch((error) => {
+    console.log(error, "失敗");
+  });
 }
 
 
@@ -155,8 +172,9 @@ function payment() {
               </tr>
 
               <tr>
-                <td colspan="4" class="fw-semibold text-end">商品總和</td>
-                <td class="text-end">{{ countTotal() }}</td>
+                <td colspan="4" class="fw-semibold text-end">稅
+                </td>
+                <td class="text-end">０</td>
               </tr>
               <tr>
                 <td colspan="4" class="fw-semibold text-end">運費</td>
@@ -173,7 +191,7 @@ function payment() {
                 </td>
                 <td class="fw-bold text-end bg-body-light">
                   <button type="button" class="btn btn-outline-danger">
-                    <i class="fal fa-dollar-sign" @click="checkOut(), payment()">結帳</i>
+                    <i class="fal fa-dollar-sign" @click="checkOut(), payment(), removeCart()">結帳</i>
                   </button>
                 </td>
               </tr>

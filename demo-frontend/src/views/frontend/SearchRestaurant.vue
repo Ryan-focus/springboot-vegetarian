@@ -1,12 +1,30 @@
 <script setup>
 import { useTemplateStore } from "@/stores/template";
-import { ref } from "vue";
-import { useRouter } from 'vue-router';
+import { reactive, ref } from "vue";
+import { useRoute, useRouter } from 'vue-router';
 import axios from "axios";
-// Main store
-const store = useTemplateStore();
+
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
+// Main store
+const store = useTemplateStore();
+const router = useRouter();
+//接值
+const route = useRoute();
+const data = reactive({
+  loading: false,
+});
+
+const restaurantName = route.params.restaurantName;
+const restaurantTel = ref();
+const restaurantAddress = route.params.restaurantAddress;
+const restaurantCategory = route.params.restaurantCategory;
+const restaurantType = ref();
+const restaurantBusinessHours = ref();
+const restaurantScore = ref();
+const imageUrl = ref();
+const dataArray = ref();
+
 const urlParams = ref(
   {
     limit: 10,
@@ -19,54 +37,153 @@ const urlParams = ref(
   }
 );
 
-//跳轉到詳細餐廳頁面
-const router = useRouter({
-  routes: [
-    {
-      path: "/searchRestaurant/details",
-      name: "restaurant-details",
-    }
-  ]
-});
+console.log(route.params);
 
-//帶值跳轉
-function restaurantDetail(prams) {
-  urlParams.value.restaurantNumber = prams;
+
+
+// 取得條件(類別)
+const searchCatagory = function (catagory) {
+  data.loading = true;
+  if (catagory != null) {
+    axios
+      .get(`http://${url}/restaurantList?restaurantCategory=` + catagory)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.results);
+
+        dataArray.value = res.data.results;
+
+      })
+      .catch((err) => console.log(err));
+  } else {
+    axios
+      .get(`http://${url}/restaurantList?restaurantCategory=${restaurantCategory}`)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.results);
+
+        dataArray.value = res.data.results;
+
+      })
+      .catch((err) => console.log(err));
+  }
+}
+searchCatagory();
+
+// 取得條件(素食種類)
+const searchType = function (type) {
+  data.loading = true;
+
   axios
-    .get(`http://${url}/restaurants/` + prams)
+    .get(`http://${url}/restaurantList?restaurantType=` + type)
     .then((res) => {
-      //獲取伺服器的回傳資料
-      let dataArray = [];
-      dataArray.push(res.data);
-      router.replace({
-        name: "restaurant-details",
-        params: {
-          paramsData: JSON.stringify(dataArray)
-        },
-      });
+      console.log(res);
+      console.log(res.data);
+      console.log(res.data.results);
+
+      dataArray.value = res.data.results;
+
+    })
+    .catch((err) => console.log(err));
+
+
+}
+searchType();
+
+// 取得條件(地址)
+const searchAddress = function (address) {
+  data.loading = true;
+  if (address != null) {
+    axios
+      .get(`http://${url}/restaurantList?searchAddress=` + address)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.results);
+
+        dataArray.value = res.data.results;
+
+      })
+      .catch((err) => console.log(err));
+  } else {
+    axios
+      .get(`http://${url}/restaurantList?searchAddress=${restaurantAddress}`)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.results);
+
+        dataArray.value = res.data.results;
+
+      })
+      .catch((err) => console.log(err));
+  }
+}
+searchAddress();
+
+// 取得條件(餐廳名稱)
+// const searchName = function (name) {
+//   data.loading = true;
+//   if (name != null) {
+//     axios
+//       .get(`http://${url}/restaurantList?searchName=` + name)
+//       .then((res) => {
+//         console.log(res);
+//         console.log(res.data);
+//         console.log(res.data.results);
+
+//         dataArray.value = res.data.results;
+
+//       })
+//       .catch((err) => console.log(err));
+//   } else {
+//     axios
+//       .get(`http://${url}/restaurantList?searchName=${restaurantName}`)
+//       .then((res) => {
+//         console.log(res);
+//         console.log(res.data);
+//         console.log(res.data.results);
+
+//         dataArray.value = res.data.results;
+
+//       })
+//       .catch((err) => console.log(err));
+//   }
+// }
+// searchName();
+
+
+//帶值restaurantNumber到detail頁
+function restaurantDetail(restaurantNumber) {
+  // urlParams.value.restaurantNumber = prams;
+  urlParams.value.restaurantNumber = restaurantNumber;
+
+  router.push({
+    name: "restaurant-details",
+    params: {
+      restaurantNumber: urlParams.value.restaurantNumber,
+    }
+  });
+}
+
+//取得所有餐廳
+const getAxios = function () {
+  axios
+    .get(`http://${url}/restaurants`, { params: urlParams.value })
+    .then((res) => {
+      resData.value = res.data;
     })
     .catch((error) => {
       console.log(error, "失敗");
     });
-}
+};
 
 
-//取得條件(類別)
-function searchCatagory(catagory) {
-  urlParams.value.restaurantCategory = catagory;
-  axios
-    .get(`http://${url}/restaurantList`, { params: urlParams.value })
-    .then((res) => {
-      console.log(res.data.results);
-      router.replace({
-        name: "restaurantIndex",
-        params: {
-          paramsData: JSON.stringify(res.data.results)
-        },
-      });
-    })
-    .catch((err) => console.log(err));
-}
+// 執行Axios;
+getAxios();
+
 
 var businessRestuarantID = [];
 
@@ -82,27 +199,19 @@ function getBusinessList() {
     })
 }
 
-function reserveRestaurant(prams) {
-  axios
-    .get(`http://${url}/restaurants/${prams}`)
-    .then((res) => {
-      //獲取伺服器的回傳資料
-      console.log(res.data);
-      sessionStorage.setItem("reserveOrder", JSON.stringify(res.data));
-      router.replace({
-        name: "restaurant-reserve"
-      });
-    })
-    .catch((error) => {
-      console.log(error, "失敗");
-    });
+//跳轉'前往訂位' 
+function reserveRestaurant(restaurantNumber) {
+  router.push({
+    name: "restaurant-reserve",
+    params: {
+      restaurantId: restaurantNumber
+    },
+  });
 }
 
-// 執行Axios;
-// getAxios();
 getBusinessList();
 </script>
-<script>
+<!-- <script>
 export default {
   name: "restaurantIndex",
   props: {
@@ -113,7 +222,7 @@ export default {
 };
 
 
-</script>
+</script> -->
 
 
 <template>
@@ -123,9 +232,9 @@ export default {
     <div class=" row col-md-5 offset-md-3 content content-full text-center">
       <div class="mb-2">
         <div>
-          <input type="text" placeholder="搜尋餐廳名稱" v-model="urlParams.searchName" @change="searchCatagory()" />
+          <input type="text" placeholder="搜尋餐廳名稱" v-model="urlParams.searchName" @change="searchName()" />
           <!-- <a></a> -->
-          <input type="text" placeholder="搜尋地點" v-model="urlParams.searchAddress" @change="searchCatagory()" />
+          <input type="text" placeholder="搜尋地點" v-model="urlParams.searchAddress" @change="searchAddress()" />
           <button class="btn btn-info" tabindex="0" type="button">
             <i class="si si-magnifier"></i>
           </button>
@@ -142,26 +251,26 @@ export default {
           <!-- <a></a> -->
 
           <!-- checkbox -->
-          <input type="radio" value="營業中" id="flexCheckDefault-1" v-model="urlParams.restaurantBusinessHours"
+          <input type="checkbox" value="營業中" id="flexCheckDefault-1" v-model="urlParams.restaurantBusinessHours"
             @change="searchCatagory()">
           <label class="form-check-label me-2" for="flexCheckDefault-1">
             營業中
           </label>
           <!-- <a></a> -->
           <input type="radio" value="全素" id="flexCheckDefault-2" v-model="urlParams.restaurantType"
-            @change="searchCatagory()">
+            @change="searchType('全素')">
           <label class="form-check-label me-2" for="flexCheckDefault-2">
             全素
           </label>
           <!-- <a></a> -->
           <input type="radio" value="全素_奶素_蛋素" id="flexCheckDefault-3" v-model="urlParams.restaurantType"
-            @change="searchCatagory()">
+            @change="searchType('全素_奶素_蛋素')">
           <label class="form-check-label me-2" for="flexCheckDefault-3">
             蛋奶素
           </label>
           <!-- <a></a> -->
           <input type="radio" value="全素_奶素_蛋素_含五辛" id="flexCheckDefault-4" v-model="urlParams.restaurantType"
-            @change="searchCatagory()">
+            @change="searchType('全素_奶素_蛋素_含五辛')">
           <label class="form-check-label me-2" for="flexCheckDefault-4">
             五辛素
           </label>
@@ -194,7 +303,7 @@ export default {
   <div class="container">
     <div class="row">
       <div class="col">
-        <div v-for="item in JSON.parse(paramsData)" :key="item.restaurantNumber">
+        <div v-for="item in dataArray" :key="item.restaurantNumber">
           <BaseBlock>
             <div class="row items-push">
               <!-- 圖片 -->

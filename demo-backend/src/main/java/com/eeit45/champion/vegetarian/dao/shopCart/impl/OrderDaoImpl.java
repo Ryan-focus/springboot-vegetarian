@@ -85,11 +85,12 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public Integer createOrders(Integer userId, Integer totalAmount) {
-        String sql = "INSERT INTO `order` (userId, payment, createdTime, updatedTime) " +
-                "VALUES (:userId, :totalAmount, :createdDate, :lastModifiedDate)";
+        String sql = "INSERT INTO `order` (userId, payment,status, createdTime, updatedTime) " +
+                "VALUES (:userId, :totalAmount,:status, :createdDate, :lastModifiedDate)";
         Map<String, Object> map = new HashMap<>();
         map.put("userId", userId);
         map.put("totalAmount", totalAmount);
+        map.put("status","已付款");
 
         Date now = new Date();
         map.put("createdDate", now);

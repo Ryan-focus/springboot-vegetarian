@@ -186,7 +186,7 @@ public class RestaurantDaoImpl implements RestaurantDao{
 
 	//新增收藏餐廳
 	@Override
-	public void addSaveRestaurant(int pid, int uid) {
+	public void addSaveRestaurant(Integer pid, Integer uid) {
 		String sql = "INSERT INTO saveRestaurant ( userId, restaurantNumber, saveDate )"+
 				"VALUES (:userId, :restaurantNumber, :saveDate)";
 
@@ -201,7 +201,7 @@ public class RestaurantDaoImpl implements RestaurantDao{
 	
 	//取消收藏餐廳
 	@Override
-	public boolean delSaveRestaurant(int pid, int uid) {
+	public boolean delSaveRestaurant(Integer pid, Integer uid) {
 		String sql = "DELETE FROM saveRestaurant where restaurantNumber = :restaurantNumber AND userId = :userId";
 
 		Map<String, Object> map = new HashMap<>();
@@ -216,7 +216,7 @@ public class RestaurantDaoImpl implements RestaurantDao{
 
 	// 搜尋收藏餐廳
 	@Override
-	public List<Restaurant> findSaveRestaurant(int uid) {
+	public List<Restaurant> findSaveRestaurant(Integer uid) {
 		String sql = "SELECT * FROM restaurant LEFT JOIN saveRestaurant ON restaurant.restaurantNumber = saveRestaurant.restaurantNumber where saveRestaurant.userId = :userId ";
 		Map<String, Object> map = new HashMap<>();
 		map.put("userId", uid);
@@ -227,7 +227,7 @@ public class RestaurantDaoImpl implements RestaurantDao{
 
 	//判斷用戶是否已收藏餐廳
 	@Override
-	public SaveRestaurant findBySave(int pid, int uid) {
+	public SaveRestaurant findBySave(Integer pid, Integer uid) {
 		String sql = "SELECT * FROM saveRestaurant where restaurantNumber = :restaurantNumber and userId = :userId ";
 		Map<String, Object> map = new HashMap<>();
 		map.put("restaurantNumber", pid);

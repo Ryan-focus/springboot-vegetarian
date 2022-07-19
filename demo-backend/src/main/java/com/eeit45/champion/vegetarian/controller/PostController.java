@@ -59,6 +59,7 @@ public class PostController {
 		post.setImgurl(imageUrl);
 		post.setPostedDate(date);
 		post.setPostStatus("待審核");
+		post.setPostUpdateDate(date);
 
 		Boolean addresult = postService.addPostImage(post);
 		return ResponseEntity.status(HttpStatus.CREATED).body(addresult);
@@ -221,12 +222,37 @@ public class PostController {
 
 	}
 
-	 
-	 //依使用者查詢自己發布的文章
+	// 依使用者查詢自己發布的文章
 	@GetMapping(value = "/showPost/{userId}")
-	public ResponseEntity<List<Post>> showUserPost(@PathVariable("userId") Integer userId,HttpServletRequest request) {
+	public ResponseEntity<List<Post>> showUserPost(@PathVariable("userId") Integer userId, HttpServletRequest request) {
 
 		List<Post> post = postService.findPostByUser(userId);
+		if (post != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(post);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
+
+	// 依使用者查詢自己發布的文章(待審核)
+	@GetMapping(value = "/showPostNoAudit/{userId}")
+	public ResponseEntity<List<Post>> showUserPostNoAudit(@PathVariable("userId") Integer userId,
+			HttpServletRequest request) {
+
+		List<Post> post = postService.findPostByUserNoAudit(userId);
+		if (post != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(post);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
+
+	// 依使用者查詢自己發布的文章(未通過)
+	@GetMapping(value = "/showPostNoPass/{userId}")
+	public ResponseEntity<List<Post>> showUserPostNoPass(@PathVariable("userId") Integer userId,
+			HttpServletRequest request) {
+
+		List<Post> post = postService.findPostByUserNoPass(userId);
 		if (post != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(post);
 		} else {
@@ -264,13 +290,13 @@ public class PostController {
 			@RequestParam(value = "postCategory") String postCategory, @PathVariable("id") Integer id, Post post)
 			throws IOException {
 
-//		String imageUrl = null;
-//
-//		if (!post.getImgurl().isEmpty()) {
-//			imageUrl = post.getImgurl();
-//		} else {
-//			imageUrl = "http://localhost:8088/defaultPostImg.jpg";
-//		}
+		String imageUrl = null;
+
+		if (!postImgurl.isBlank()) {
+			imageUrl = postImgurl;
+		} else {
+			imageUrl = "http://localhost:8088/defaultPostImg.jpg";
+		}
 
 		ZoneId zoneId = ZoneId.systemDefault();
 		LocalDateTime localDateTime = LocalDateTime.now();
@@ -278,10 +304,10 @@ public class PostController {
 		Date date = Date.from(zdt.toInstant());
 
 		post.setPostId(id);
-	    post.setTitle(title);
+		post.setTitle(title);
 		post.setPostedText(postedText);
-		post.setImgurl(postImgurl);
-		post.setPostedDate(date);
+		post.setImgurl(imageUrl);
+		post.setPostUpdateDate(date);
 		post.setPostStatus("待審核");
 
 		Boolean addresult = postService.updatePost(post);
@@ -300,9 +326,23 @@ public class PostController {
 			return ResponseEntity.status(HttpStatus.OK).body(out);
 		}
 	}
-	//顯示使用者收藏文章
+
+	// 依讚數排序搜尋
+	@GetMapping(value = "/findlike")
+	public ResponseEntity<List<Post>> showlikeCount() {
+
+		List<Post> post = postService.findPostbyLike();
+		// boolean out = false;
+		if (post != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(post);
+		} else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
+
+	// 顯示使用者收藏文章
 	@GetMapping(value = "/favoritePost/{userId}")
-	public ResponseEntity<List<Post>> showfavPost( @PathVariable("userId") Integer userId) {
+	public ResponseEntity<List<Post>> showfavPost(@PathVariable("userId") Integer userId) {
 
 		List<Post> post = postService.findFavoritePost(userId);
 		List<Post> out = null;

@@ -67,7 +67,8 @@
     "vue-select": "^4.0.0-beta.3",
     "vue-star-rating": "^2.1.0",
     "vue-sweetalert2": "^5.0.5",
-    "vue3-datepicker": "^0.3.4"
+    "vue3-datepicker": "^0.3.4",
+    "vue3-loading-overlay": "^0.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^2.2.4",

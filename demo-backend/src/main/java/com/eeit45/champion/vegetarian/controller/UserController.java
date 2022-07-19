@@ -210,5 +210,33 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 
 	}
+	
+	@PatchMapping("/user/updateUserName")
+	public ResponseEntity<User> updateUserName(@RequestParam("name") String name, @RequestParam("id") int id){
+		
+		int result = userService.updateUserName(name, id);
+		
+		if (result == 1) {
+			
+			return ResponseEntity.status(HttpStatus.OK).build();
+		} else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		
+	}
+	
+	@PostMapping("/user/updatePassword")
+	public ResponseEntity<User> updatePassword(@RequestParam("pw") String password, @RequestParam("newpw") String newPassword, @RequestParam("id") int id){
+		
+		int result = userService.updatePassword(password, newPassword, id);
+
+		if (result == 1) {
+			
+			return ResponseEntity.status(HttpStatus.OK).build();
+		} else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		
+	}
 
 }

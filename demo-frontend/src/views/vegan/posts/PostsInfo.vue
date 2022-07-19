@@ -38,7 +38,6 @@ const resPostTitle = ref();
 const resPostText = ref();
 const resPostCategory = ref();
 const resPostStatus = ref("待審核");
-const statusClass = [];
 const router = useRouter();
 
 const getAxios = function () {
@@ -48,17 +47,17 @@ const getAxios = function () {
       // console.log(res);
 
       // 獲取伺服器的回傳資料;
-      res.data.forEach((value) => {
-        let status = value.postStatus;
-        // console.log(status);
-        if (status === "待審核") {
-          statusClass.push("warning");
-        } else if (status === "發布中") {
-          statusClass.push("success");
-        } else if (status === "未通過") {
-          statusClass.push("danger");
-        }
-      });
+      // res.data.forEach((value) => {
+      //   let status = value.postStatus;
+      //   // console.log(status);
+      //   if (status === "待審核") {
+      //     statusClass.push("warning");
+      //   } else if (status === "發布中") {
+      //     statusClass.push("success");
+      //   } else if (status === "未通過") {
+      //     statusClass.push("danger");
+      //   }
+      // });
       resData.value = res.data;
     })
     .catch((error) => {
@@ -75,6 +74,11 @@ getAxios();
 //在這邊去設定Table :th的欄位名稱
 const cols = reactive([
   {
+    name: "發布者ID",
+    field: "userId",
+    sort: "",
+  },
+  {
     name: "文章名稱",
     field: "title",
     sort: "",
@@ -87,6 +91,11 @@ const cols = reactive([
   {
     name: "發表日期",
     field: "postedDate",
+    sort: "",
+  },
+  {
+    name: "上次更新日期",
+    field: "postUpdateDate",
     sort: "",
   },
   {
@@ -234,9 +243,9 @@ function sendAuditPost(number, status) {
             console.log(res);
             getAxios();
             //重整頁面(先解決審核的顏色一定要刷新頁面才會更改的問題&不能自己關的modal)
-            window.setTimeout(function () {
-              location.reload();
-            }, 1000);
+            // window.setTimeout(function () {
+            //   location.reload();
+            // }, 1000);
           })
 
           .catch((error) => {
@@ -476,7 +485,14 @@ th.sort {
         v-slot="{ ds }"
         :ds-data="resData"
         :ds-sortby="sortBy"
-        :ds-search-in="['postStatus', 'title', 'postedDate', 'postedText']"
+        :ds-search-in="[
+          'userId',
+          'postStatus',
+          'title',
+          'postedDate',
+          'postedText',
+          'postUpdateDate',
+        ]"
       >
         <div class="row" :data-page-count="ds.dsPagecount">
           <div class="col-md-3 py-2">
@@ -511,18 +527,74 @@ th.sort {
                   </tr>
                 </thead>
                 <DatasetItem tag="tbody" class="fs-sm">
-                  <template #default="{ row, rowIndex }">
+                  <template #default="{ row }">
                     <tr style="line-height: 5px">
                       <th scope="row">{{ row.postId }}</th>
                       <td
                         class="d-none d-sm-table-cell"
                         style="min-width: 100px"
                       >
-                        <span
+                        <!-- <span
                           :class="`fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-${statusClass[rowIndex]}-light text-${statusClass[rowIndex]}`"
                           id="combo"
                           >{{ row.postStatus }}</span
+                        > -->
+                        <span
+                          v-if="row.postStatus == '待審核'"
+                          class="
+                            fs-xs
+                            fw-semibold
+                            d-inline-block
+                            py-1
+                            px-3
+                            rounded-pill
+                            bg-warning-light
+                            text-warning
+                          "
                         >
+                          {{ row.postStatus }}
+                        </span>
+                        <span
+                          v-if="row.postStatus == '發布中'"
+                          class="
+                            fs-xs
+                            fw-semibold
+                            d-inline-block
+                            py-1
+                            px-3
+                            rounded-pill
+                            bg-warning-light
+                            text-info
+                          "
+                        >
+                          {{ row.postStatus }}
+                        </span>
+                        <span
+                          v-if="row.postStatus == '未通過'"
+                          class="
+                            fs-xs
+                            fw-semibold
+                            d-inline-block
+                            py-1
+                            px-3
+                            rounded-pill
+                            bg-warning-light
+                            text-danger
+                          "
+                        >
+                          {{ row.postStatus }}
+                        </span>
+                      </td>
+                      <td
+                        class="text-center"
+                        style="
+                          overflow: hidden;
+                          white-space: nowrap;
+                          text-overflow: ellipsis;
+                          max-width: 150px;
+                        "
+                      >
+                        {{ row.userId }}
                       </td>
                       <td
                         class="text-center"
@@ -548,9 +620,15 @@ th.sort {
                       </td>
                       <td
                         class="d-none d-sm-table-cell"
-                        style="min-width: 180px"
+                        style="min-width: 170px"
                       >
                         {{ row.postedDate }}
+                      </td>
+                      <td
+                        class="d-none d-sm-table-cell"
+                        style="min-width: 170px"
+                      >
+                        {{ row.postUpdateDate }}
                       </td>
                       <td
                         class="d-none d-sm-table-cell"
@@ -558,7 +636,7 @@ th.sort {
                           overflow: hidden;
                           white-space: nowrap;
                           text-overflow: ellipsis;
-                          max-width: 150px;
+                          min-width: 150px;
                         "
                       >
                         <img

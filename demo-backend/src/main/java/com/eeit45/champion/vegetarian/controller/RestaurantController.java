@@ -40,7 +40,8 @@ public class RestaurantController {
 			// 查詢條件 Filtering
 			@RequestParam(required = false) RestaurantCategory restaurantCategory,
 			@RequestParam(required = false) RestaurantType restaurantType,
-			@RequestParam(required = false) String searchName, @RequestParam(required = false) String searchAddress,
+			@RequestParam(required = false) String searchName, 
+			@RequestParam(required = false) String searchAddress,
 
 			// 排序 Sorting--orderBy是根據欄位排序,sort是升降冪,desc是大到小 asc是小到大
 			@RequestParam(defaultValue = "createdTime") String orderBy,
@@ -140,18 +141,18 @@ public class RestaurantController {
 	}
 
 	//判斷使用者是否已收藏該餐廳
-	@GetMapping("/saveRestaurant/{id}/{userId}")
-	public ResponseEntity<Boolean> showfav(@PathVariable("id") Integer id, @PathVariable("userId") Integer userId) {
+	@GetMapping("/saveRestaurant/{restaurantNumber}/{userId}")
+	public ResponseEntity<Boolean> showfav(@PathVariable Integer restaurantNumber, @PathVariable Integer userId) {
 
-		boolean isExist = restaurantService.saveOrNot(id, userId);
+		boolean isExist = restaurantService.saveOrNot(restaurantNumber, userId);
 		return ResponseEntity.status(HttpStatus.OK).body(isExist);
 	}
 	
 	// 加入收藏餐廳
-	@PostMapping("/saveRestaurant/{restaurantNumber}/{uid}")
-	public ResponseEntity<Boolean> saveRestaurant(@PathVariable Integer restaurantNumber, @PathVariable Integer uid) {
+	@PostMapping("/saveRestaurant/{restaurantNumber}/{userId}")
+	public ResponseEntity<Boolean> saveRestaurant(@PathVariable Integer restaurantNumber, @PathVariable Integer userId) {
 
-		restaurantService.addSaveRestaurant(restaurantNumber, uid);
+		restaurantService.addSaveRestaurant(restaurantNumber, userId);
 		return ResponseEntity.status(HttpStatus.OK).body(true);
 
 	}

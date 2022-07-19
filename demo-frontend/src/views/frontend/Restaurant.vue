@@ -1,8 +1,8 @@
 <script setup>
 import { useTemplateStore } from "@/stores/template";
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import axios from "axios";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 // Main store
 const store = useTemplateStore();
@@ -23,8 +23,11 @@ const urlParams = ref(
     }
 );
 //接收的資料ref
+const router = useRouter();
+const route = useRoute();
 const resData = ref();
 const restaurantName = ref();
+const restaurantNumber = route.params.restaurantNumber;
 const restaurantTel = ref();
 const restaurantAddress = ref();
 const restaurantCategory = ref();
@@ -33,15 +36,38 @@ const restaurantBusinessHours = ref();
 const restaurantScore = ref();
 const imageUrl = ref();
 const saveData = ref();
+const dataArray = ref();
+const data = reactive({
+    loading: false,
+});
 
-const route = useRoute();
 var uid = 0;
 const user = JSON.parse(window.localStorage.getItem("access-user"));
 if (user != null) {
     uid = user.data.user.userId;
 }
-const itemData = JSON.parse(route.params.paramsData);
-var restaurantNumber = itemData[0].restaurantNumber;
+// const itemData = JSON.parse(route.params.paramsData);
+// var restaurantNumber = itemData[0].restaurantNumber;
+
+
+//取得單筆餐廳by restaurantNumber
+const getRestaurant = function () {
+    data.loading = true;
+    axios
+        .get(`http://${url}/restaurants/${restaurantNumber}`)
+        .then((res) => {
+            console.log(res);
+            console.log(res.data);
+            let array = [];
+            array.push(res.data);
+
+            dataArray.value = array;
+
+        })
+        .catch((err) => console.log(err));
+}
+
+getRestaurant();
 
 
 //確認用戶是否已收藏該筆餐廳資料
@@ -69,8 +95,12 @@ const getAxios = function () {
         });
 };
 
+
 // 執行Axios;
 getAxios();
+
+
+
 
 //加入收藏
 function addsaveRestaurant() {
@@ -125,7 +155,7 @@ export default {
     <div class="container">
         <div class="row">
             <div class="col">
-                <div v-for="item in JSON.parse(paramsData)" :key="item.restaurantNumber">
+                <div v-for="item in dataArray" :key="item.restaurantNumber">
 
                     <BaseBlock>
                         <div class="row items-push">
@@ -181,6 +211,29 @@ export default {
                         </div>
                         <hr />
 
+
+                        <!-- google map  -->
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <!-- 地圖 -->
+                                    <div id="info-map" class="col-md-4 col-lg-5">
+                                        <iframe
+                                            :src="`https://www.google.com/maps/embed/v1/place?key=AIzaSyBwhBQXDks6CAdcxO-1SoTU6wKttYcHLx0&q=${item.restaurantName}&language=zh-TW`"
+                                            width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                                            referrerpolicy="no-referrer-when-downgrade">
+                                        </iframe>
+                                    </div>
+                                    <!-- 表單 -->
+                                    <div class="col-md-12 col-lg-7 d-md-flex align-items-center">
+                                        你好
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr />
+
                         <!-- 評論 -->
                         <div class="container" style="background-color:antiquewhite">
                             <section>
@@ -204,21 +257,58 @@ export default {
 
                         </div>
                         <hr />
-                        <!-- 猜你可能喜歡 -->
-                        <div class="container" style="background-color:antiquewhite">
-                            <section>
-                                <h4 class="text-primary"> 猜你可能喜歡 </h4>
-                                <p>一份保證十顆
-
-                                    紅酒一杯</p>
-                            </section>
-
-                        </div>
-
                     </BaseBlock>
                 </div>
+                <!-- 猜你可能喜歡 -->
+                <div class="container" style="background-color:antiquewhite">
+                    <h4 class="text-primary">猜你可能喜歡</h4>
+                    <div v-for="item in resData" :key="item.restaurantNumber">
+                        <BaseBlock>
+                            <div class="row items-push">
+                                <!-- 圖片 -->
+                                <div class="col-md-1 col-lg-5">
+                                    <RouterLink :to="{}" class="img-link img-link-simple">
+                                        <img class="img-fluid rounded" :src="`${item.imageUrl}`" alt="" width="200" />
+                                    </RouterLink>
+                                </div>
+                                <!-- 右邊的字 -->
+                                <div class="col-md-4 col-lg-5 d-md-flex align-items-center">
+                                    <div>
+                                        <!-- 餐廳名稱 -->
+                                        <div class="d-flex justify-content-between">
+                                            <h3 class="card-title text-dark">{{ item.restaurantName }}</h3>
+                                            <div>
+                                                <div class="badge rounded-pill bg-secondary h5">{{
+                                                        item.restaurantCategory
+                                                }}</div>
+                                            </div>
+                                        </div>
+
+                                        <!-- 評分 -->
+                                        <h4 style="color:#3498DB">{{ item.restaurantScore }} ★</h4>
+
+                                        <!-- 營業時間 -->
+                                        <p style="color: grey;size: 1cm;">
+                                            {{ item.restaurantBusinessHours }}
+                                        </p>
+
+                                        <!-- 詳細 -->
+                                        <button type="button" class="btn btn-outline-primary me-3"
+                                            @click.prevent="restaurantDetail(item.restaurantNumber)">詳細</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </BaseBlock>
+
+                    </div>
+                </div>
+
+
+
+
+
             </div>
-            <!-- 右邊 google map  -->
 
         </div>
     </div>
