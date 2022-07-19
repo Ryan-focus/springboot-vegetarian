@@ -27,8 +27,8 @@ public class PostDaoImpl implements PostDao {
 	// 新增文章&圖片
 	public boolean addPostImage(Post post) {
 
-		String sql = "INSERT INTO post ( title, postedDate, postedText, imgUrl, postStatus,postCategory,userId)"
-				+ "VALUES (:title, :postedDate, :postedText, :imgUrl, :postStatus,:postCategory, :userId )";
+		String sql = "INSERT INTO post ( title, postedDate, postedText, imgUrl, postStatus,postCategory,userId, postUpdateDate )"
+				+ "VALUES (:title, :postedDate, :postedText, :imgUrl, :postStatus,:postCategory, :userId, :postUpdateDate )";
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("title", post.getTitle());
@@ -38,7 +38,7 @@ public class PostDaoImpl implements PostDao {
 		map.put("postStatus", post.getPostStatus());
 		map.put("postCategory", post.getPostCategory());
 		map.put("userId", post.getUserId());
-		
+		map.put("postUpdateDate", post.getPostUpdateDate());
 
 		namedParameterJdbcTemplate.update(sql, map);
 
@@ -61,17 +61,17 @@ public class PostDaoImpl implements PostDao {
 	// 更新文章
 	public boolean updatePost(Post post) {
 
-		String sql = "UPDATE post SET title = :title, postedText = :postedText , imgUrl = :imgUrl ,postCategory = :postCategory,postStatus = :postStatus "
+		String sql = "UPDATE post SET title = :title, postedText = :postedText , imgUrl = :imgUrl ,postCategory = :postCategory,postStatus = :postStatus, postUpdateDate = :postUpdateDate "
 				+ " WHERE postId = :postId ";
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("postId", post.getPostId());
 		map.put("title", post.getTitle());
-		// map.put("postedDate", post.getPostedDate());
 		map.put("postedText", post.getPostedText());
 		map.put("imgUrl", post.getImgurl());
 		map.put("postCategory", post.getPostCategory());
 		map.put("postStatus", post.getPostStatus());
+		map.put("postUpdateDate", post.getPostUpdateDate());
 
 		namedParameterJdbcTemplate.update(sql, map);
 
@@ -146,14 +146,39 @@ public class PostDaoImpl implements PostDao {
 		return postList;
 
 	}
-	
-	//查詢使用者發表文章
+
+	// 查詢使用者發表文章(發布中)
 	public List<Post> findPostByUser(int uid) {
 
-		String sql = "SELECT *  FROM post where 1=1 AND userId = :userId";
+		String sql = "SELECT *  FROM post WHERE userId = :userId AND postStatus = :postStatus ";
 		Map<String, Object> map = new HashMap<>();
 		map.put("userId", uid);
-		List<Post> postList = namedParameterJdbcTemplate.query(sql,map ,new PostRowMapper());
+		map.put("postStatus", "發布中");
+		List<Post> postList = namedParameterJdbcTemplate.query(sql, map, new PostRowMapper());
+		return postList;
+
+	}
+
+	// 查詢使用者發表文章(待審核)
+	public List<Post> findPostByUserNoAudit(int uid) {
+
+		String sql = "SELECT *  FROM post WHERE userId = :userId AND postStatus = :postStatus ";
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", uid);
+		map.put("postStatus", "待審核");
+		List<Post> postList = namedParameterJdbcTemplate.query(sql, map, new PostRowMapper());
+		return postList;
+
+	}
+
+	// 查詢使用者發表文章(未通過)
+	public List<Post> findPostByUserNoPass(int uid) {
+
+		String sql = "SELECT *  FROM post WHERE userId = :userId AND postStatus = :postStatus ";
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", uid);
+		map.put("postStatus", "未通過");
+		List<Post> postList = namedParameterJdbcTemplate.query(sql, map, new PostRowMapper());
 		return postList;
 
 	}
@@ -161,44 +186,54 @@ public class PostDaoImpl implements PostDao {
 	// 新增收藏文章
 	public void addFavPost(int pid, int uid) {
 
-		String sql = "INSERT INTO fav_post ( userId, favDate, postId )"+
-				"VALUES (:userId, :favDate, :postId)";
+		String sql = "INSERT INTO fav_post ( userId, favDate, postId )" + "VALUES (:userId, :favDate, :postId)";
 
-				Map<String, Object> map = new HashMap<>();
-				map.put("userId", uid);
-				map.put("favDate",new Date());
-				map.put("postId", pid);
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", uid);
+		map.put("favDate", new Date());
+		map.put("postId", pid);
 
-				namedParameterJdbcTemplate.update(sql, map);
+		namedParameterJdbcTemplate.update(sql, map);
 
 	}
-	
+
 	// 新增按讚文章
-		public void addLikePost(int pid, int uid) {
+	public void addLikePost(int pid, int uid) {
 
-			String sql = "INSERT INTO like_post ( userId, likeDate, postId )"+
-					"VALUES (:userId, :likeDate, :postId)";
+		String sql = "INSERT INTO like_post ( userId, likeDate, postId )" + "VALUES (:userId, :likeDate, :postId)";
 
-					Map<String, Object> map = new HashMap<>();
-					map.put("userId", uid);
-					map.put("likeDate",new Date());
-					map.put("postId", pid);
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", uid);
+		map.put("likeDate", new Date());
+		map.put("postId", pid);
 
-					namedParameterJdbcTemplate.update(sql, map);
+		namedParameterJdbcTemplate.update(sql, map);
 
-		}
-		
-	//計算按讚數量	
-		public int findCountByPid(int pid) {
-	        String sql = "SELECT COUNT(*) FROM like_post WHERE postId = :postId";
-	        
-	        Map<String, Object> map = new HashMap<>();
-			map.put("postId", pid);
+	}
 
-	        return namedParameterJdbcTemplate.queryForObject(sql,map,Integer.class);
-	    }	
-		
-	//取消收藏文章
+	// 計算按讚數量
+	public int findCountByPid(int pid) {
+		String sql = "SELECT COUNT(*) FROM like_post WHERE postId = :postId";
+
+		Map<String, Object> map = new HashMap<>();
+		map.put("postId", pid);
+
+		return namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+	}
+
+	// 依讚數排序文章
+	public List<Post> findPostbyLike() {
+
+		String sql = "SELECT COUNT(like_post.postId) AS numOfLike,"
+				+ "post.title,post.postId,post.postedText,post.imgUrl,post.postStatus,post.postCategory,post.userId,post.postedDate,post.postAuditDate,post.postUpdateDate "
+				+ " FROM post INNER JOIN like_post ON post.postId = like_post.postId GROUP BY like_post.postId ORDER BY numOfLike DESC";
+		Map<String, Object> map = new HashMap<>();
+		// map.put("userId", uid);
+		List<Post> postList = namedParameterJdbcTemplate.query(sql, new PostRowMapper());
+		return postList;
+	}
+
+	// 取消收藏文章
 	public boolean delFavPost(int pid, int uid) {
 
 		String sql = "DELETE FROM fav_post where postId = :postId AND userId = :userId";
@@ -207,29 +242,27 @@ public class PostDaoImpl implements PostDao {
 		map.put("postId", pid);
 		map.put("userId", uid);
 
-		
 		namedParameterJdbcTemplate.update(sql, map);
 		return true;
 
 	}
-	
-	//取消按讚文章
-		public boolean delLikePost(int pid, int uid) {
 
-			String sql = "DELETE FROM like_post where postId = :postId AND userId = :userId";
+	// 取消按讚文章
+	public boolean delLikePost(int pid, int uid) {
 
-			Map<String, Object> map = new HashMap<>();
-			map.put("postId", pid);
-			map.put("userId", uid);
+		String sql = "DELETE FROM like_post where postId = :postId AND userId = :userId";
 
-			
-			namedParameterJdbcTemplate.update(sql, map);
-			return true;
+		Map<String, Object> map = new HashMap<>();
+		map.put("postId", pid);
+		map.put("userId", uid);
 
-		}
+		namedParameterJdbcTemplate.update(sql, map);
+		return true;
+
+	}
 
 	// 搜尋收藏文章
-	public PostFavorite findByFavorite(int pid, int uid)  {
+	public PostFavorite findByFavorite(int pid, int uid) {
 
 		String sql = "SELECT * FROM fav_post where postId = :postId and userId = :userId ";
 		Map<String, Object> map = new HashMap<>();
@@ -237,81 +270,83 @@ public class PostDaoImpl implements PostDao {
 		map.put("userId", uid);
 
 		PostFavorite pFavorite;
-		//List<Post> favPost = namedParameterJdbcTemplate.query(sql,map ,new PostRowMapper());
+
 		try {
-			pFavorite = namedParameterJdbcTemplate.queryForObject(sql,map ,new BeanPropertyRowMapper<PostFavorite>(PostFavorite.class));
+			pFavorite = namedParameterJdbcTemplate.queryForObject(sql, map,
+					new BeanPropertyRowMapper<PostFavorite>(PostFavorite.class));
 		} catch (EmptyResultDataAccessException e) {
 			return null;
 		}
 		return pFavorite;
-	
+
 	}
-	
+
 	// 搜尋收藏文章(使用者後台)
-		public List<Post> findFavoritePost(int uid)  {
+	public List<Post> findFavoritePost(int uid) {
 
-			String sql = "SELECT * FROM post LEFT JOIN fav_post ON post.postId = fav_post.postId where fav_post.userId = :userId ";
-			Map<String, Object> map = new HashMap<>();
-			//map.put("postId", pid);
-			map.put("userId", uid);
+		String sql = "SELECT * FROM post LEFT JOIN fav_post ON post.postId = fav_post.postId where fav_post.userId = :userId ";
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", uid);
 
-			
-			//List<Post> favPost = namedParameterJdbcTemplate.query(sql,map ,new PostRowMapper());
-			
-			List<Post> postList = namedParameterJdbcTemplate.query(sql,map ,new PostRowMapper());
-			
-			return postList;
-		
-		}
-	
+		List<Post> postList = namedParameterJdbcTemplate.query(sql, map, new PostRowMapper());
+
+		return postList;
+
+	}
+
 	// 搜尋按讚文章
-		public PostLike findByLike(int pid, int uid)  {
+	public PostLike findByLike(int pid, int uid) {
 
-			String sql = "SELECT * FROM like_post where postId = :postId and userId = :userId ";
-			Map<String, Object> map = new HashMap<>();
-			map.put("postId", pid);
-			map.put("userId", uid);
+		String sql = "SELECT * FROM like_post where postId = :postId and userId = :userId ";
+		Map<String, Object> map = new HashMap<>();
+		map.put("postId", pid);
+		map.put("userId", uid);
 
-			PostLike pLike;
-			//List<Post> favPost = namedParameterJdbcTemplate.query(sql,map ,new PostRowMapper());
-			try {
-				pLike = namedParameterJdbcTemplate.queryForObject(sql,map ,new BeanPropertyRowMapper<PostLike>(PostLike.class));
-			} catch (EmptyResultDataAccessException e) {
-				return null;
-			}
-			return pLike;
-		
+		PostLike pLike;
+
+		try {
+			pLike = namedParameterJdbcTemplate.queryForObject(sql, map,
+					new BeanPropertyRowMapper<PostLike>(PostLike.class));
+		} catch (EmptyResultDataAccessException e) {
+			return null;
 		}
+		return pLike;
 
-	//前台文章分類(全素)
+	}
+
+	// 前台文章分類(全素)
 	@Override
 	public List<Post> findPostByCategory1() {
 		String sql = "SELECT *  FROM post where 1=1 AND postStatus = '發布中' AND postCategory = '全素' order by postId desc";
 		List<Post> postList = namedParameterJdbcTemplate.query(sql, new PostRowMapper());
 		return postList;
 	}
-	//前台文章分類(蛋素)
+
+	// 前台文章分類(蛋素)
 	@Override
 	public List<Post> findPostByCategory2() {
 		String sql = "SELECT *  FROM post where 1=1 AND postStatus = '發布中' AND postCategory = '蛋素' order by postId desc";
 		List<Post> postList = namedParameterJdbcTemplate.query(sql, new PostRowMapper());
 		return postList;
 	}
-	//前台文章分類(奶素)
+
+	// 前台文章分類(奶素)
 	@Override
 	public List<Post> findPostByCategory3() {
 		String sql = "SELECT *  FROM post where 1=1  AND postStatus = '發布中' AND postCategory = '奶素' order by postId desc";
 		List<Post> postList = namedParameterJdbcTemplate.query(sql, new PostRowMapper());
 		return postList;
 	}
-	//前台文章分類(蛋奶素)
+
+	// 前台文章分類(蛋奶素)
 	@Override
 	public List<Post> findPostByCategory4() {
 		String sql = "SELECT *  FROM post where 1=1 AND postStatus = '發布中' AND postCategory = '蛋奶素' order by postId desc";
 		List<Post> postList = namedParameterJdbcTemplate.query(sql, new PostRowMapper());
 		return postList;
 	}
-	//前台文章分類(植物五辛素)
+
+	// 前台文章分類(植物五辛素)
 	@Override
 	public List<Post> findPostByCategory5() {
 		String sql = "SELECT *  FROM post where 1=1 AND postStatus = '發布中' AND postCategory = '植物五辛素' order by postId desc";

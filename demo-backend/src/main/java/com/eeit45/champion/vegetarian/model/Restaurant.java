@@ -86,5 +86,13 @@ public class Restaurant {
 	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
 	}
+	@Override
+	public String toString() {
+		return "Restaurant [restaurantNumber=" + restaurantNumber + ", restaurantName=" + restaurantName
+				+ ", restaurantTel=" + restaurantTel + ", restaurantAddress=" + restaurantAddress
+				+ ", restaurantCategory=" + restaurantCategory + ", restaurantType=" + restaurantType
+				+ ", restaurantBusinessHours=" + restaurantBusinessHours + ", restaurantScore=" + restaurantScore
+				+ ", imageUrl=" + imageUrl + ", createdTime=" + createdTime + ", updatedTime=" + updatedTime + "]";
+	}
 
 }

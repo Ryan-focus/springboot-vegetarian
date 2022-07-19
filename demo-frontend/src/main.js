@@ -1,3 +1,4 @@
+/* eslint-disable vue/multi-word-component-names */
 import { createApp } from "vue";
 import { createPinia } from "pinia";
 import App from "./App.vue";
@@ -14,6 +15,16 @@ import BaseBlock from "@/components/BaseBlock.vue";
 import BaseBackground from "@/components/BaseBackground.vue";
 import BasePageHeading from "@/components/BasePageHeading.vue";
 
+//全域註冊 Loader
+// 讀取動畫套件
+// Import component
+import Loading from "vue3-loading-overlay";
+// Import stylesheet
+import "vue3-loading-overlay/dist/vue3-loading-overlay.css";
+
+//import Vue- datePicker
+import Datepicker from "@vuepic/vue-datepicker";
+// import "@vuepic/vue-datepicker/dist/main.css";
 // Template directives
 import clickRipple from "@/directives/clickRipple";
 
@@ -130,6 +141,11 @@ app.component("BasePageHeading", BasePageHeading);
 
 // Register global directives
 app.directive("click-ripple", clickRipple);
+
+app.component("Datepicker", Datepicker);
+
+//using Loading
+app.component("Loading", Loading);
 
 //using Axios
 app.use(VueAxios, axios);

@@ -165,26 +165,8 @@ function sendPost(title, postedText, postCategory) {
 <template>
   <!-- Hero -->
 
-  <BasePageHeading title="編輯食記" subtitle=" ">
-    <template #extra>
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb breadcrumb-alt">
-          <li class="breadcrumb-item">
-            <a class="link-fx" href="#/backend/posts/dashboard">
-              <i class="fa fa-pen-to-square"></i> 食記管理</a
-            >
-          </li>
-          <li class="breadcrumb-item" aria-current="page">
-            <a class="link-fx" href="#/backend/posts/postinfo">
-              <i class="fa fa-file-pen"></i> 文章管理
-            </a>
-          </li>
-          <li class="breadcrumb-item" aria-current="page">
-            <i class="fa fa-file-pen"></i> 編輯文章
-          </li>
-        </ol>
-      </nav>
-    </template>
+  <BasePageHeading title="編輯食記" subtitle="現在開始可以編輯你的食記！">
+   
   </BasePageHeading>
   <!-- END Hero -->
 
@@ -198,7 +180,7 @@ function sendPost(title, postedText, postCategory) {
           method="post"
           enctype="multipart/form-data"
         >
-          <BaseBlock title=" " content-full>
+          <BaseBlock title=" " content-full header-class="bg-flat-light" themed>
             <div class="row push">
               <div class="col-lg-4 col-xl-12">
                 <!-- 商品名稱開始 -->

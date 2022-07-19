@@ -153,7 +153,7 @@ function sendPost(title, postedText, postCategory) {
         icon: "success",
       });
       window.setTimeout(function () {
-        window.location.href = "http://localhost:8080/#/post";
+        window.location.href = "http://localhost:8080/#/backend/posts/postinfo";
       }, 1200);
     })
     .catch((error) => {

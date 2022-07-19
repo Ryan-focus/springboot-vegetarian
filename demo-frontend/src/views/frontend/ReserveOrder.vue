@@ -1,84 +1,115 @@
 <script setup>
-import { reactive } from "vue";
-
-// vue-easy-lightbox, for more info and examples you can check out https://onycat.com/vue-easy-lightbox/
-import VueEasyLightbox from "vue-easy-lightbox";
-
-// Reactive gallery state
-const gallery = reactive({
-  visible: false,
-  index: 0,
-  photos: [
-    "/assets/media/photos/photo19@2x.jpg",
-    "/assets/media/photos/photo12@2x.jpg",
-    "/assets/media/photos/photo18@2x.jpg",
-    "/assets/media/photos/photo16@2x.jpg",
-    "/assets/media/photos/photo14@2x.jpg",
-  ],
+// 已經宣告但從未使用過的Value (請勿刪除)
+import { useTemplateStore } from "@/stores/template";
+// eslint-disable-next-line no-unused-vars
+import { reactive, ref, onMounted } from "vue";
+//using Axios 
+import axios from "axios";
+// Vue Star Rating, for more info and examples you can check out https://github.com/craigh411/vue-StarRating
+import StarRating from "vue-star-rating";
+// useRoute 接值 ，做查詢 
+import { useRoute } from "vue-router";
+// Calendar
+import Datepicker from '@vuepic/vue-datepicker';
+//接值
+const route = useRoute();
+const data = reactive({
+  loading: false,
 });
+const restaurantNumber = route.params.restaurantId;
+console.log("restaurantNumber=" + restaurantNumber);
+const reserveOrder = ref();
+const restaurantName = ref();
+const restaurantTel = ref();
+const restaurantAddress = ref();
+const restaurantCategory = ref();
+const restaurantType = ref();
+const restaurantBusinessHours = ref();
+const restaurantScore = ref();
+const imageUrl = ref();
 
-// Helper function to hide the lightbox
-function handleHide() {
-  gallery.visible = false;
+const reserveRestaurant = function () {
+  data.loading = true;
+  axios
+    .get(`http://localhost:8088/restaurants/${restaurantNumber}`)
+    .then((res) => {
+      //獲取伺服器的回傳資料
+      reserveOrder.value = res.data;
+      restaurantName.value = res.data.restaurantName;
+      restaurantTel.value = res.data.restaurantTel;
+      restaurantAddress.value = res.data.restaurantAddress;
+      restaurantCategory.value = res.data.restaurantCategory;
+      restaurantType.value = res.data.restaurantType;
+      restaurantBusinessHours.value = res.data.restaurantBusinessHours;
+      restaurantScore.value = res.data.restaurantScore;
+      imageUrl.value = res.data.imageUrl;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    }).finally(() => {
+      data.loading = false;
+    });
 }
-</script>
-<script>
-export default {
-  name: "restaurant-reserve",
-  props: {
-    paramsData: {
-      type: String
-    }
-  },
-};
+reserveRestaurant();
+const store = useTemplateStore();
+
+//date 
+const date = ref(new Date());
+const startDate = ref(new Date());
+const maxDate = ref(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 30));
+
+
+//v-bind value 
+const adult = ref(2);
+const kid = ref(0);
+
+const format = (date) => {
+  const day = date.getDate();
+  const month = date.getMonth() + 1;
+  const days = date.getDay();
+  const daysArray = ['週日', '週一', '週二', '週三', '週四', '週五', '週六'];
+
+  return `${month}月${day}日 ${daysArray[days]}`;
+}
+
+//接收的資料ref
+//當日統計
+//取得全部人數
+//取得全部組數
+
+// ref會自己抓值，這邊還要另外宣告圖片是因為:src會去抓路徑，沒有定義會變undefined當掉
+//其他的值ref抓到後會自己帶入變成json
 
 </script>
 
-<template>
-  <VueEasyLightbox :visible="gallery.visible" :index="gallery.index" :imgs="gallery.photos" @hide="handleHide" />
+<style lang="scss">
+@import '@vuepic/vue-datepicker/src/VueDatePicker/style/main.scss';
+
+.dp-custom-calendar {
+  .dp__calendar_item {
+    border: 1px solid var(--dp-border-color-hover);
+  }
+}
+</style>
+
+<template >
+  <Loading :active="data.loading">
+    <div class="spinner-grow spinner-grow-sm text-dark" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </Loading>
   <div class="row justify-content-center">
-
-    <div class="col-md-12 p-4 mt-1 mx-auto" style="max-width:1140px;">
+    <div class="col-md-12 p-4 mt-1 mx-auto" style="max-width:1140px;  ">
       <!-- With Indicators -->
       <BaseBlock class="mb-1" content-full>
         <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
           <div class="carousel-indicators">
             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
               aria-current="true" aria-label="Slide 1"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
-              aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2"
-              aria-label="Slide 3"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3"
-              aria-label="Slide 4"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4"
-              aria-label="Slide 5"></button>
           </div>
           <div class="carousel-inner">
             <div class="carousel-item active">
-              <img
-                src="https://inline.imgix.net/branch/-Lp_rdeeFue9DT5RqSlS:inline-live-1--Lp_rdihy1BAcnA19fes-a658eb13-81e8-4201-820b-f4bda42cd884_20220621SOUTHEAST-1140X456.jpg"
-                class="d-block w-100 img-fluid" alt="Carousel Image 1" />
-            </div>
-            <div class="carousel-item">
-              <img
-                src="https://inline.imgix.net/branch/-Lp_rdeeFue9DT5RqSlS:inline-live-1--Lp_rdihy1BAcnA19fes-7f849d12-bc64-42a5-b65f-6f635e6635f0_20220707-%E9%98%B2%E8%A9%90%E9%A8%99-1140X456_INLINE.jpg"
-                class="d-block w-100 img-fluid" alt="Carousel Image 1" />
-            </div>
-            <div class="carousel-item">
-              <img
-                src="https://inline.imgix.net/branch/-Lp_rdeeFue9DT5RqSlS:inline-live-1--Lp_rdihy1BAcnA19fes-298931b0-bdf8-4a6d-8bdf-7eefa02925f7_%E9%98%B2%E7%96%AB%E8%B3%87%E8%A8%8A_inline_1140X456-1.jpg"
-                class="d-block w-100 img-fluid" alt="Carousel Image 1" />
-            </div>
-            <div class="carousel-item">
-              <img
-                src="https://inline.imgix.net/branch/-Lp_rdeeFue9DT5RqSlS:inline-live-1--Lp_rdihy1BAcnA19fes-9c6a7ed0-8433-41a9-a041-7b7caa2cc416_inline-banner-new.jpg"
-                class="d-block w-100 img-fluid" alt="Carousel Image 1" />
-            </div>
-            <div class="carousel-item">
-              <img
-                src="https://inline.imgix.net/branch/-Lp_rdeeFue9DT5RqSlS:inline-live-1--Lp_rdihy1BAcnA19fes-86d1277f-38d9-467b-8955-f113d24334d3_DSC_4995.jpg"
-                class="d-block w-100 img-fluid" alt="Carousel Image 1" style="width:1140px; height:456px" />
+              <img :src="`${imageUrl}`" class="d-block w-100 img-fluid" :alt="`${restaurantName}`" />
             </div>
           </div>
           <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
@@ -101,11 +132,19 @@ export default {
   <div class="bg-body-extra-light">
     <div class="content content-boxed">
       <div class="text-left fs-sm push">
-        <h1 class="mt-1 mb-0 p-0 fw-bold">典華豐FOOD海陸百匯</h1>
-        <h4 class="mt-3 fw-normal">台北市中山區植福路8號1樓</h4>
+        <h1 class="mt-1 mb-0 p-0 fw-bold">{{ restaurantName }}</h1>
+        <StarRating class="font-size-sm text-muted mb-2" v-model:rating="restaurantScore" :star-size="24"
+          text-class="font-size-sm text-muted" :show-rating="false" active-color="#66CC00">
+        </StarRating>
+
+        <p class="font-size-sm text-muted mb-2">
+          <span class="badge bg-info me-3">{{ restaurantCategory }}</span>
+          <span class="badge bg-success me-3 mb-2">{{ restaurantType }}</span>
+        </p>
+        <h4 class="mt-3 fw-normal">{{ restaurantAddress }}</h4>
         <span>
           <i class="fa fa-phone me-3 h5 text-secondary board-black" /><a href="tel:02-8502-05555" target="_blank"
-            class="text-warning h5 fw-normal me-4 link-fx">02-8502-05555</a>
+            class="text-warning h5 fw-normal me-4 link-fx">{{ restaurantTel }}</a>
         </span>
         <span>
           <i class="fa fa-map me-3 h5 text-secondary"></i> <a class="text-warning h5 fw-normal me-4 link-fx"
@@ -119,57 +158,7 @@ export default {
         <div class="col-sm-8">
           <!-- Story -->
           <article class="story">
-            <p>
-              <a class="text-warning h5 fw-normal me-4 link-fx"
-                href="https://sites.google.com/denwell.com/denfood/">豐FOOD海陸百匯全面落實防疫</a> <br>
-              💖 我們用心防疫，您們安心用餐
-            </p>
-            <p>
-              營業時間: <br>
-              ⏲午餐用餐時間 11:30am 到 2:00pm <br>
-              平日(每位) NT$999+10% <br>
-              假日(每位) NT$1,199+10%
-            </p>
-            <p>⏲下午餐用餐時間 2:30pm 到 4:30pm <br>
-              平日(每位) NT$699+10% <br>
-              假日(每位) NT$799+10%</p>
-
-            <p>⏲晚餐用餐時間 5:30pm 到 9:00pm(供餐到8:30) <br>
-              平日(每位) NT$1,099+10% <br>
-              假日(每位) NT$1,199+10%</p>
-
-            <p>●孩童: <br>
-              100~140CM每位半價+10% <br>
-              80~100CM每位NT$150+10%。 <br>
-              ●訂位人數請包含孩童人數，以符合用餐舒適度。 <br>
-              ●座位的安排，依當日現場調配為主。 <br>
-              ●指定桌號恕無法提供線上訂位，請洽餐廳服務人員訂位。 <br>
-              ●特殊節慶假日無法提供線上訂位，請洽餐廳訂位。 <br>
-              ●同一團體分開不同人名線上訂位，恕無法提供併桌需求。 <br>
-              ●若使用餐券，使用規則以及餐價請依券上說明使用。 <br>
-              ＊連續假期假日收費如下:2/28(一)【二二八連假】、4/4(一)~4/5(二)【清明連假】 <br>
-              、4/30(六)~5/2(一)【勞動節連假】、6/3(五)~6/5(日)【端午連假】、 <br>
-              9/9(五)~9/11(日)【中秋連假】 <br>
-              10/8(六)~10/10(一)【國慶連假】
-            </p>
-            <p>
-              ✧★✧★✧★✧★✧★✧★✧★✧★✧★✧★✧★✧★✧★✧★✧★✧★ <br>
-              豐FOOD七月壽星優惠😁 <br>
-              5、6、7月壽星皆享優惠 <br>
-              ✨兩人同行(含壽星)→價低者享8折 <br>
-              ✨四人同行(含壽星)→１人享免費(以價低者為折扣優惠)
-            </p>
-            <p>※注意事項 <br>
-              1.壽星優惠適用於生日當月平假日，惟官網公告之龍蝦之夜特殊價格之餐期不適用。</p>
-            <ol start="2">
-              <li>當月壽星本人不限小孩或成人及全餐期皆享有優惠，10%服務費以原價計算，請以現金或刷卡結帳，不可使用餐券，亦不可與其他優惠併用。 <br>
-                3.含壽星在內的2人、4人同行，同行友人不限成人或孩童 <br>
-                4.如使用4人同行優惠，以價低者為享折扣優惠者，有2位壽星，同行人數需達到8位，第四人皆可免費，依此類推。 <br>
-                5.2人及4人同行優惠不可與餐券合併使用、超過同行優惠的人數才可使用餐券(例如第3、5、6、7人)。 <br>
-                6.請於用餐前先訂位，並於入場時出示身分證件，依國曆生日為準，如未告知，結帳後恕不受理。 <br>
-                7.豐FOOD保有優惠活動調整、解釋之權利。 <br>
-                ✧★✧★✧★✧★✧★✧★✧★✧★✧★✧★✧★✧★✧★✧★✧★✧★</li>
-            </ol>
+            {{ restaurantBusinessHours }}
           </article>
           <!-- END Story -->
 
@@ -179,78 +168,193 @@ export default {
       <hr>
 
       <!-- 預訂餐廳主要功能區域-->
-      <div id="book-now">
-        <div id="book-now-selectors">
-          <select name="" id=""></select>
-          <select name="" id=""></select>
+      <div id="book-now" class="row">
+        <div id="book-now-selector" class="row">
+          <div id="dinner-field" class="row col-6">
+            <p class="mt-1 fw-normal h4">用餐人數</p>
+            <div class="col-6">
+              <select class="selectpicker form-select" v-model="adult">
+                <option disabled>請選擇用餐人數</option>
+                <option value="1" data-testid="1位大人">1位大人</option>
+                <option value="2" data-testid="2位大人" selected>2位大人</option>
+                <option value="3" data-testid="3位大人">3位大人</option>
+                <option value="4" data-testid="4位大人">4位大人</option>
+                <option value="5" data-testid="5位大人">5位大人</option>
+                <option value="6" data-testid="6位大人">6位大人</option>
+                <option value="7" data-testid="7位大人">7位大人</option>
+                <option value="8" data-testid="8位大人">8位大人</option>
+                <option value="9" data-testid="9位大人">9位大人</option>
+              </select>
+            </div>
+            <div class="col-6">
+              <select class="selectpicker form-select" id="kid-picker" v-model="kid">
+                <option value="0" data-testid="0位小孩">0位小孩</option>
+                <option value="1" data-testid="1位小孩">1位小孩</option>
+                <option value="2" data-testid="2位小孩">2位小孩</option>
+                <option value="3" data-testid="3位小孩">3位小孩</option>
+                <option value="4" data-testid="4位小孩">4位小孩</option>
+                <option value="5" data-testid="5位小孩">5位小孩</option>
+                <option value="6" data-testid="6位小孩">6位小孩</option>
+                <option value="7" data-testid="7位小孩">7位小孩</option>
+              </select>
+            </div>
+          </div>
+          <div id="date-field" class="col-6">
+            <p class="mt-1 fw-normal h4">用餐日期</p>
+            <Datepicker id="date-picker" v-model="date" :minDate="new Date()" :enableTimePicker="false"
+              :startDate="startDate" :format="format" :maxDate="maxDate" autoApply :closeOnAutoApply="false"
+              hideOffsetDates position="left" :monthChangeOnArrows="false" calendarClassName="dp-custom-calendar" />
+          </div>
         </div>
         <hr>
-        <p>用餐時段</p>
-        <p>*灰色表示該時間已客滿，可點選檢視其他可訂位日期</p>
-        <div id="book-now-content"></div>
+
         <article>
-          <p>如有訂位以外的需求，請撥打電話與我們聯繫 <br> <a href="tel:02-8502-0555">02-8502-0555</a></p>
+          <p class="me-2 h6">如有訂位以外的需求，請撥打電話與我們聯繫
+            <a href="tel:{{`${restaurantTel}`}}">{{
+                restaurantTel
+            }}</a>
+          </p>
         </article>
+        <!-- <Datepicker aria-hidden="true" data-bs-target="#dateCalendar" :v-model="date" :ref="datepicker" hidden /> -->
       </div>
       <!-- 預訂餐廳主要功能區域結束-->
 
+
       <!-- 預訂餐廳fixed Bar 位置-->
-      <div id="book-now-action-bar">
-        <div></div>
-        <hr>
-        <div>
-          <button id="book-now-action-button">
-            <div hidden>
-              <div>
-                <dir></dir>
-              </div>
-            </div>
+      <div id="book-now-action-bar" class="row" style="
+          background-color: rgb(255, 255, 255);
+          box-shadow: rgba(145, 145, 145, 0.5) 0px 2px 12px 0px;
+          position: fixed;
+          bottom: 0px;
+          left: 0px;
+          right: 0px;
+        ">
+        <!-- 置底fixed Bar 顯示 Span -->
+        <div aria-hidden="true" class="row justify-content-center mt-2" style="
+              white-space: nowrap;
+              overflow: auto hidden;
+              display: flex;
+              margin: 0px auto;
+              width: 100%;
+              height: 56px;
+              -webkit-box-align: center;
+              align-items: center;
+          ">
+          <span class="col-3 mt-1 mb-0 p-0 fw-bold h5">您已選擇預訂 {{ restaurantName }} : </span>
+          <button class="btn btn-secondary col-1" disabled>{{ adult }} 大 , {{ kid }} 小</button>
+          <!-- 箭頭符號 -->
+          <div class="col-1">
+            <div aria-hidden="true" class=""> <i class="si si-arrow-right "></i></div>
+          </div>
+          <button class="btn btn-secondary col-1" disabled>{{ format(date) }}</button>
+          <hr>
+        </div>
+        <div class="row justify-content-center" style="max-width:1140px ;  min-height: 50px;">
+          <button id="book-now-action-button" class="col-md-3 offset-md-5 justify-content-center me-5" style="
+                    background-color: rgb(255, 133, 14);
+                    border: none;
+                    border-radius: 6px;
+                    color: rgb(255, 255, 255);
+                    text-align: center;
+                    width: 100%;
+                    padding-top: 0px;
+                    padding-bottom: 0px;
+                    outline: 0px;
+                    cursor: pointer;
+                ">
             <span>下一步，填寫聯絡資訊</span>
           </button>
+
         </div>
       </div>
       <!-- 預訂餐廳fixed置底Bar Layout結束-->
 
-
       <!-- 餐廳資訊 / 地圖 位置 電話-->
-      <div id="branch-info">
-        <header>
-          <h4>餐廳資訊</h4>
+      <div id="branch-info" class="row ">
+        <header display="flex" class="row col-12 mb-2 mt-2">
+          <h4 class="mt-3 fw-bold h3">餐廳資訊</h4>
         </header>
-        <div>
-          <div id="info-map"> <iframe id="booking-google-embed-map" allowfullscreen src="" frameborder="0"></iframe>
+        <div class="row">
+          <div id="info-map" class="col-md-6 col-xl-3 me-2"> <iframe
+              :src="`https://www.google.com/maps/embed/v1/place?key=AIzaSyBwhBQXDks6CAdcxO-1SoTU6wKttYcHLx0&q=${restaurantName}&language=zh-TW`"
+              width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"></iframe>
           </div>
-          <div id="info-body">
+          <div id="info-body" class="col-md-5 offset-md-3 mt-3">
             <!-- 位置 開始-->
-            <div>
-              <div>
-                <span>
-                  <i class="fa fa-map me-2 h5 text-black" />
-                  <a class="text-black h5 fw-normal me-4 link-fx">位置</a>
-                </span>
-              </div>
-              <a class="fw-normal link-fx text-black h4" target="_blank"
-                href="https://goo.gl/maps/qBo6y5XpfCyPVqk67">台北市中山區植福路8號1樓</a>
+            <div class="mb-2 row col-12">
+              <span class="col-6">
+                <i class="fa fa-map me-2 h5 text-black"></i>
+                <span class="text-black h5 fw-normal me-4 link-fx">位置</span>
+              </span>
+
+              <a class="fw-normal link-fx text-black h4 " target="_blank"
+                :href="`https://www.google.com.tw/maps/place/${restaurantAddress}`">{{
+                    restaurantAddress
+                }}</a>
+              <hr>
             </div>
+            <!-- 位置結束 -->
+            <!-- 連絡電話開始 -->
+            <div class="mb-2 row col-12">
+              <span class="col-6">
+                <i class="fa fa-phone me-3 h5 text-secondary board-black"></i>
+                <span class="text-black h5 fw-normal me-4 link-fx">連絡電話</span>
+              </span>
+
+              <a href="tel:02-8502-05555" target="_blank" class="fw-normal link-fx text-black h4 ">{{
+                  restaurantTel
+              }}</a>
+              <hr>
+            </div>
+
+            <!-- 連絡電話結束 -->
+            <!-- 素食類型 -->
+            <div class="mb-2 row col-12">
+              <span class="col-6">
+                <i class="fab fa-pagelines me-2 h5 text-black"></i>
+                <span class="text-black h5 fw-normal me-4 link-fx">餐廳類型</span>
+              </span>
+
+              <span class="fw-normal link-fx text-black h4 " target="_blank">
+                <span class="badge bg-info me-3">{{
+                    restaurantCategory
+                }}</span>
+                <span class="badge bg-success me-3 mb-2">{{ restaurantType }}</span></span>
+              <hr>
+            </div>
+            <!-- 素食類型結束 -->
           </div>
         </div>
       </div>
-
-
     </div>
   </div>
   <!-- END Page Content -->
 
-  <!-- Get Started -->
-  <div class="content content-full">
-    <div class="my-5 text-center">
-      <h3 class="fw-bold mb-2">Do you like our stories?</h3>
-      <h4 class="h5 fw-medium opacity-75">
-        Sign up today and get access to over <strong>10,000</strong> inspiring
-        stories!
-      </h4>
-      <a class="btn btn-primary px-4 py-2" href="javascript:void(0)">Get Started Today</a>
-    </div>
+  <!-- Hero After -->
+  <div id="one-vue-hero-after" class="bg-body-light">
+    <div class="content content-full"></div>
   </div>
-  <!-- END Get Started -->
+  <!-- END Hero After -->
+
+  <!-- Footer -->
+  <footer id="page-footer" class="bg-body-light">
+    <div class="content py-5">
+      <div class="row fs-sm fw-medium">
+        <div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end">
+          <!-- Crafted with -->
+          <!-- <i class="fa fa-heart text-danger"></i> by -->
+          <!-- <a class="fw-semibold" href="https://1.envato.market/ydb"
+              ></a -->
+        </div>
+        <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start">
+          <a class="fw-semibold" href="/">{{
+              store.app.name + " " + store.app.version
+          }}</a>
+          &copy; {{ store.app.copyright }}
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- END Footer -->
 </template>

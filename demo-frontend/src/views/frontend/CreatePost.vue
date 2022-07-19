@@ -117,16 +117,6 @@ function fileUpload() {
 }
 
 function sendPost(title, postedText, postCategory) {
-  //   const imagefile = document.querySelector("#example-file-input").files[0]
-  // let forms = new FormData();
-  // forms.append("title", title);
-  // forms.append("postedText", postedText);
-  // forms.append("imgurl", imagefile);
-  // let config = {
-  //   headers: {
-  //     "Content-Type": "multipart/form-data",
-  //   },
-  // };
 
   axios
     .postForm(`http://${url}/PostNew`, {
@@ -158,26 +148,8 @@ function sendPost(title, postedText, postCategory) {
 <template>
   <!-- Hero -->
 
-  <BasePageHeading title="發表食記" subtitle=" ">
-    <template #extra>
-      <nav aria-label="breadcrumb">
-        <ol class="breadcrumb breadcrumb-alt">
-          <li class="breadcrumb-item">
-            <a class="link-fx" href="#/backend/posts/dashboard">
-              <i class="fa fa-pen-to-square"></i> 食記管理</a
-            >
-          </li>
-          <li class="breadcrumb-item" aria-current="page">
-            <a class="link-fx" href="#/backend/posts/postinfo">
-              <i class="fa fa-file-pen"></i> 文章管理
-            </a>
-          </li>
-          <li class="breadcrumb-item" aria-current="page">
-            <i class="fa fa-file-pen"></i> 發表文章
-          </li>
-        </ol>
-      </nav>
-    </template>
+  <BasePageHeading title="發表食記" subtitle="開始發表你的食記吧！">
+   
   </BasePageHeading>
   <!-- END Hero -->
 
@@ -185,13 +157,14 @@ function sendPost(title, postedText, postCategory) {
   <div class="content">
     <div class="row">
       <div class="col-lg-9">
+        
         <!-- Basic -->
         <form
           @submit.prevent="onSubmit"
           method="post"
           enctype="multipart/form-data"
         >
-          <BaseBlock title=" " content-full>
+          <BaseBlock title=" " content-full header-class="bg-flat-light" themed>
             <div class="row push">
               <div class="col-lg-4 col-xl-12">
                 <!-- 商品名稱開始 -->

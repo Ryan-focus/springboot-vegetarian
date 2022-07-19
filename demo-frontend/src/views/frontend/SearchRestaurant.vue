@@ -1,13 +1,30 @@
 <script setup>
 import { useTemplateStore } from "@/stores/template";
-import { ref } from "vue";
+import { reactive, ref } from "vue";
+import { useRoute, useRouter } from 'vue-router';
 import axios from "axios";
-import { useRouter } from 'vue-router';
+
+//預設傳值伺服器與[params]
+const url = "localhost:8088";
 // Main store
 const store = useTemplateStore();
 const router = useRouter();
-//預設傳值伺服器與[params]
-const url = "localhost:8088";
+//接值
+const route = useRoute();
+const data = reactive({
+  loading: false,
+});
+
+const restaurantName = route.params.restaurantName;
+const restaurantTel = ref();
+const restaurantAddress = route.params.restaurantAddress;
+const restaurantCategory = route.params.restaurantCategory;
+const restaurantType = ref();
+const restaurantBusinessHours = ref();
+const restaurantScore = ref();
+const imageUrl = ref();
+const dataArray = ref();
+
 const urlParams = ref(
   {
     limit: 10,
@@ -16,29 +33,159 @@ const urlParams = ref(
     restaurantType: null,
     restaurantBusinessHours: null,
     restaurantScore: null,
-    searchName: null,
-    searchAddress: null
+    restaurantNumber: null
   }
 );
-var businessRestuarantID = [];
-// const singleRestaurant = ref();
 
-//取得條件(類別)
-function searchCatagory(catagory) {
-  urlParams.value.restaurantCategory = catagory;
+console.log(route.params);
+
+
+
+// 取得條件(類別)
+const searchCatagory = function (catagory) {
+  data.loading = true;
+  if (catagory != null) {
+    axios
+      .get(`http://${url}/restaurantList?restaurantCategory=` + catagory)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.results);
+
+        dataArray.value = res.data.results;
+
+      })
+      .catch((err) => console.log(err));
+  } else {
+    axios
+      .get(`http://${url}/restaurantList?restaurantCategory=${restaurantCategory}`)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.results);
+
+        dataArray.value = res.data.results;
+
+      })
+      .catch((err) => console.log(err));
+  }
+}
+searchCatagory();
+
+// 取得條件(素食種類)
+const searchType = function (type) {
+  data.loading = true;
+
   axios
-    .get(`http://${url}/restaurantList`, { params: urlParams.value })
+    .get(`http://${url}/restaurantList?restaurantType=` + type)
     .then((res) => {
+      console.log(res);
+      console.log(res.data);
       console.log(res.data.results);
-      router.replace({
-        name: "restaurantIndex",
-        params: {
-          paramsData: JSON.stringify(res.data.results)
-        },
-      });
+
+      dataArray.value = res.data.results;
+
     })
     .catch((err) => console.log(err));
+
+
 }
+searchType();
+
+// 取得條件(地址)
+// const searchAddress = function (address) {
+//   data.loading = true;
+//   if (address != null) {
+//     axios
+//       .get(`http://${url}/restaurantList?searchAddress=` + address)
+//       .then((res) => {
+//         console.log(res);
+//         console.log(res.data);
+//         console.log(res.data.results);
+
+//         dataArray.value = res.data.results;
+
+//       })
+//       .catch((err) => console.log(err));
+//   } else {
+//     axios
+//       .get(`http://${url}/restaurantList?searchAddress=${restaurantAddress}`)
+//       .then((res) => {
+//         console.log(res);
+//         console.log(res.data);
+//         console.log(res.data.results);
+
+//         dataArray.value = res.data.results;
+
+//       })
+//       .catch((err) => console.log(err));
+//   }
+// }
+// searchAddress();
+
+// 取得條件(餐廳名稱)
+// const searchName = function (name) {
+//   data.loading = true;
+//   if (name != null) {
+//     axios
+//       .get(`http://${url}/restaurantList?searchName=` + name)
+//       .then((res) => {
+//         console.log(res);
+//         console.log(res.data);
+//         console.log(res.data.results);
+
+//         dataArray.value = res.data.results;
+
+//       })
+//       .catch((err) => console.log(err));
+//   } else {
+//     axios
+//       .get(`http://${url}/restaurantList?searchName=${restaurantName}`)
+//       .then((res) => {
+//         console.log(res);
+//         console.log(res.data);
+//         console.log(res.data.results);
+
+//         dataArray.value = res.data.results;
+
+//       })
+//       .catch((err) => console.log(err));
+//   }
+// }
+// searchName();
+
+
+//帶值restaurantNumber到detail頁
+function restaurantDetail(restaurantNumber) {
+  // urlParams.value.restaurantNumber = prams;
+  urlParams.value.restaurantNumber = restaurantNumber;
+
+  router.push({
+    name: "restaurant-details",
+    params: {
+      restaurantNumber: urlParams.value.restaurantNumber,
+    }
+  });
+}
+
+//取得所有餐廳
+const getAxios = function () {
+  axios
+    .get(`http://${url}/restaurants`, { params: urlParams.value })
+    .then((res) => {
+      resData.value = res.data;
+    })
+    .catch((error) => {
+      console.log(error, "失敗");
+    });
+};
+
+
+// 執行Axios;
+getAxios();
+
+
+var businessRestuarantID = [];
 
 //取得驗證後商家數據，有登入在餐廳內的數據 
 function getBusinessList() {
@@ -52,31 +199,19 @@ function getBusinessList() {
     })
 }
 
-function reserveRestaurant(prams) {
-  axios
-    .get(`http://${url}/restaurants/${prams}`)
-    .then((res) => {
-      //獲取伺服器的回傳資料
-      console.log(res);
-      router.replace({
-        name: "restaurant-reserve",
-        params: {
-          paramsData: JSON.stringify(res.data)
-        },
-      });
-    })
-    .catch((error) => {
-      console.log(error, "失敗");
-    });
+//跳轉'前往訂位' 
+function reserveRestaurant(restaurantNumber) {
+  router.push({
+    name: "restaurant-reserve",
+    params: {
+      restaurantId: restaurantNumber
+    },
+  });
 }
 
-
-
-// 執行Axios;
-// getAxios();
 getBusinessList();
 </script>
-<script>
+<!-- <script>
 export default {
   name: "restaurantIndex",
   props: {
@@ -86,7 +221,8 @@ export default {
   },
 };
 
-</script>
+
+</script> -->
 
 
 <template>
@@ -96,9 +232,9 @@ export default {
     <div class=" row col-md-5 offset-md-3 content content-full text-center">
       <div class="mb-2">
         <div>
-          <input type="text" placeholder="搜尋餐廳名稱" v-model="urlParams.searchName" @change="searchCatagory()" />
+          <input type="text" placeholder="搜尋餐廳名稱" v-model="urlParams.searchName" @change="searchName()" />
           <!-- <a></a> -->
-          <input type="text" placeholder="搜尋地點" v-model="urlParams.searchAddress" @change="searchCatagory()" />
+          <input type="text" placeholder="搜尋地點" v-model="urlParams.searchAddress" @change="searchAddress()" />
           <button class="btn btn-info" tabindex="0" type="button">
             <i class="si si-magnifier"></i>
           </button>
@@ -122,19 +258,19 @@ export default {
           </label>
           <!-- <a></a> -->
           <input type="radio" value="全素" id="flexCheckDefault-2" v-model="urlParams.restaurantType"
-            @change="searchCatagory()">
+            @change="searchType('全素')">
           <label class="form-check-label me-2" for="flexCheckDefault-2">
             全素
           </label>
           <!-- <a></a> -->
           <input type="radio" value="全素_奶素_蛋素" id="flexCheckDefault-3" v-model="urlParams.restaurantType"
-            @change="searchCatagory()">
+            @change="searchType('全素_奶素_蛋素')">
           <label class="form-check-label me-2" for="flexCheckDefault-3">
             蛋奶素
           </label>
           <!-- <a></a> -->
           <input type="radio" value="全素_奶素_蛋素_含五辛" id="flexCheckDefault-4" v-model="urlParams.restaurantType"
-            @change="searchCatagory()">
+            @change="searchType('全素_奶素_蛋素_含五辛')">
           <label class="form-check-label me-2" for="flexCheckDefault-4">
             五辛素
           </label>
@@ -167,7 +303,7 @@ export default {
   <div class="container">
     <div class="row">
       <div class="col">
-        <div v-for="item in JSON.parse(paramsData)" :key="item.restaurantNumber">
+        <div v-for="item in dataArray" :key="item.restaurantNumber">
           <BaseBlock>
             <div class="row items-push">
               <!-- 圖片 -->
@@ -180,8 +316,12 @@ export default {
               <div class="col-md-12 col-lg-7 d-md-flex align-items-center">
                 <div>
                   <!-- 餐廳名稱 -->
-
-                  <h3 class="text-dark">{{ item.restaurantName }} </h3>
+                  <div class="d-flex justify-content-between">
+                    <h3 class="card-title text-dark">{{ item.restaurantName }}</h3>
+                    <div>
+                      <div class="badge rounded-pill bg-secondary h5">{{ item.restaurantCategory }}</div>
+                    </div>
+                  </div>
 
                   <!-- 評分 -->
                   <h4 style="color:#3498DB">{{ item.restaurantScore }} ★</h4>
@@ -190,13 +330,14 @@ export default {
                   <p style="color: grey;size: 1cm;">
                     {{ item.restaurantBusinessHours }}
                   </p>
+
                   <!-- 收藏 -->
-                  <button type="button" class="btn btn-outline-primary me-3">收藏</button>
+                  <!-- <button type="button" class="btn btn-outline-primary me-3">收藏</button> -->
                   <!-- 詳細 -->
                   <button type="button" class="btn btn-outline-primary me-3"
-                    onclick="location.href='/#/searchRestaurant/details'">詳細</button>
+                    @click.prevent="restaurantDetail(item.restaurantNumber)">詳細</button>
                   <!-- 前往訂位-->
-                  <button v-if="item.restaurantNumber == `${businessRestuarantID.toString()}`" type="button"
+                  <button v-if="businessRestuarantID.indexOf(item.restaurantNumber) >= 0" type="button"
                     class="btn btn-outline-danger" @click.prevent="reserveRestaurant(item.restaurantNumber)"> <i
                       class="far fa-calendar-days me-2" />
                     前往訂位</button>

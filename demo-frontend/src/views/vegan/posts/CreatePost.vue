@@ -114,17 +114,7 @@ function fileUpload() {
 }
 
 function sendPost(title, postedText, postCategory) {
-  //   const imagefile = document.querySelector("#example-file-input").files[0]
-  // let forms = new FormData();
-  // forms.append("title", title);
-  // forms.append("postedText", postedText);
-  // forms.append("imgurl", imagefile);
-  // let config = {
-  //   headers: {
-  //     "Content-Type": "multipart/form-data",
-  //   },
-  // };
-
+ 
   axios
     .postForm(`http://${url}/PostNew`, {
       title: title,
@@ -143,7 +133,7 @@ function sendPost(title, postedText, postCategory) {
         icon: "success",
       });
       window.setTimeout(function () {
-        window.location.href = "http://localhost:8080/#/post";
+        window.location.href = "http://localhost:8080/#/backend/posts/postinfo";
       }, 1200);
     })
     .catch((error) => {
