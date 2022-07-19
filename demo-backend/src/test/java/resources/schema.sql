@@ -165,7 +165,7 @@ create table restaurant(
                        updatedTime TIMESTAMP NOT NULL
 );
 
---saveRestaurant
+-- saveRestaurant
 drop table if exists saveRestaurant;
 CREATE TABLE saveRestaurant(
                      userId int NOT NULL,
@@ -184,6 +184,7 @@ CREATE TABLE post(
                      imgUrl NVARCHAR(256),
                      postStatus NVARCHAR(256),
                      postAuditDate DATETIME,
+                     postUpdateDate DATETIME,
                      postCategory NVARCHAR(256),
                      likeCount INT default 0,
                      userId INT

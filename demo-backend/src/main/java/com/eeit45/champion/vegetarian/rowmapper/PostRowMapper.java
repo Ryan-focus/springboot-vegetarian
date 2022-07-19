@@ -25,6 +25,8 @@ public class PostRowMapper implements RowMapper<Post> {
         post.setPostedDate(createdTime);
         Timestamp auditTime = rs.getTimestamp("postAuditDate");
         post.setPostAuditDate(auditTime);
+        Timestamp updateTime = rs.getTimestamp("postUpdateDate");
+        post.setPostUpdateDate(updateTime);
 
         return post;
     }

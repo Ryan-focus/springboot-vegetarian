@@ -15,6 +15,8 @@ import BLayoutBackend from "@/BusinessLayouts/variations/Backend.vue";
 // import BLayoutBackendBoxed from "@/BusinessLayouts/variations/BackendBoxed.vue";
 // import BLayoutBackendMegaMenu from "@/BusinessLayouts/variations/BackendMegaMenu.vue";
 
+//引入跳轉空頁面
+const jump = () => import("@/views/blank/jump.vue");
 // Frontend: Index
 const Index = () => import("@/views/frontend/Index.vue");
 const Login = () => import("@/views/frontend/Login.vue");
@@ -46,6 +48,7 @@ const BusinessProfileView = () =>
 const BusinessCalendar = () =>
   import("@/views/frontend/businessBackend/BusinessCalendar.vue");
 const ReserveOrder = () => import("@/views/frontend/ReserveOrder.vue");
+const ReserveDetail = () => import("@/views/frontend/ReserveDetail.vue");
 
 // Backend Boxed: Dashboard
 const BackendBoxedDashboard = () =>
@@ -381,10 +384,15 @@ const routes = [
       },
       //餐廳
       {
-        path: "/searchRestaurant/:restaurantCategory?/:restaurantType?/:searchName?/:searchAddress?",
+        path: "/searchRestaurant/:searchAddress?/:searchName?",
         name: "restaurantIndex",
         component: SearchRestaurant,
       },
+      // {
+      //   path: "/searchRestaurant/:restaurantCategory?/:restaurantType?/:searchName?/:searchAddress?",
+      //   name: "restaurantIndex",
+      //   component: SearchRestaurant,
+      // },
       {
         path: "/searchRestaurant/details/:restaurantNumber?",
         name: "restaurant-details",
@@ -414,6 +422,16 @@ const routes = [
         path: "/forumPage",
         name: "Forum-page",
         component: ForumPage,
+      },
+      {
+        path: "/jump",
+        name: "blank",
+        component: jump,
+      },
+      {
+        path: "/searchRestaurant/reserve/:restaurantId?/check",
+        name: "restaurant-reserve-check",
+        component: ReserveDetail,
       },
     ],
   },
@@ -1314,11 +1332,21 @@ router.afterEach((to, from) => {
 
 export default router;
 
-router.beforeEach((to) => {
+router.beforeEach((to, from) => {
   const admin = localStorage.getItem("access-admin"); //取admin 登入資訊
   const business = sessionStorage.getItem("access-business"); //business 登入資訊
   const user = localStorage.getItem("access-user"); //user 登入資訊
   const isLogin = admin || business || user; //若有取得到1種就表示有登入
+
+  //如果去的元件位置 跟 來的元件位置是一樣的 ， 那就跳轉到一個專屬跳轉的空頁面
+  if (to.name === from.name) {
+    return { name: "blank" };
+  }
+
+  //如果去的頁面是空的， 用router 刷新頁面
+  if (to.name === "blank") {
+    router.go(0);
+  }
 
   if (
     !isLogin &&

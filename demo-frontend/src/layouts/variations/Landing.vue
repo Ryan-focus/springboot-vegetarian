@@ -6,6 +6,7 @@ import BaseLayout from "@/layouts/BaseLayout.vue";
 import BaseNavigation from "@/components/BaseNavigation.vue";
 
 import Swal from "sweetalert2";
+import axios from "axios";
 
 // Grab menu navigation arrays
 import menu from "@/data/menu";
@@ -19,6 +20,32 @@ const renovate = inject("reload");
 const admin = JSON.parse(window.localStorage.getItem("access-admin"));
 const user = JSON.parse(window.localStorage.getItem("access-user"));
 const business = JSON.parse(window.sessionStorage.getItem("access-business"));
+
+//圖
+const picture = ref();
+const userName = ref();
+var uid = 0;
+if (user != null) {
+  uid = user.data.user.userId;
+}
+const getUser = () => axios.get(`http://localhost:8088/users/${uid}`)
+  .then(function (response) {
+    if (response.status === 200) {
+      picture.value = response.data.userPic;
+      userName.value = response.data.userName;
+    }
+  })
+  .catch(function (error) {
+    if (error.status === 404) {
+      console.log(error.data)
+    } else {
+      console.log(error.code);
+      console.log(error.message);
+    }
+  });
+if (user != null) {
+  getUser();
+}
 
 // Set default elements for this layout
 store.setLayout({
@@ -53,7 +80,16 @@ function logOut() {
   }, 200);
 }
 </script>
-
+<style>
+.user-img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  border-radius: 50%;
+  border: 1px solid #2828FF;
+}
+</style>
 
 <template>
   <BaseLayout>
@@ -160,18 +196,23 @@ function logOut() {
               class="badge bg-warning rounded-pill">會員</span></label> -->
           <button type="button" class="btn btn-alt-secondary me-2" id="page-header-user-dropdown"
             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            <span class="badge bg-warning rounded-pill">會員</span>
+            <span class="badge bg-warning rounded-pill">會員</span>&nbsp;&nbsp;
             <!-- <img class="rounded-circle" src="/assets/media/avatars/avatar10.jpg" alt="Header Avatar"
               style="width: 21px" /> -->
-            <span class="d-none d-sm-inline-block ms-2">{{ user.data.user.userName }}</span>
+            <img v-if="picture" :src="`data:image/png;base64,${picture}`" class="user-img" style="height: 40px;" />
+            <img v-else src="https://icon-library.com/images/no-user-image-icon/no-user-image-icon-3.jpg"
+              class="user-img" style="height: 40px;" />
+            <span class="d-none d-sm-inline-block ms-2">{{ userName }}</span>
             <i class="fa fa-fw fa-angle-down d-none d-sm-inline-block opacity-50 ms-1 mt-1"></i>
           </button>
           <div class="dropdown-menu dropdown-menu-end fs-sm smini-hide border-0"
             aria-labelledby="sidebar-themes-dropdown">
-            <RouterLink :to="{ name: '' }" class="dropdown-item d-flex align-items-center justify-content-between">
+            <RouterLink :to="{ name: 'MemberArea' }"
+              class="dropdown-item d-flex align-items-center justify-content-between">
               <span class="fs-sm fw-medium">會員</span>
             </RouterLink>
-            <RouterLink :to="{ name: 'postFavorite' }" class="dropdown-item d-flex align-items-center justify-content-between">
+            <RouterLink :to="{ name: 'postFavorite' }"
+              class="dropdown-item d-flex align-items-center justify-content-between">
               <span class="fs-sm fw-medium">文章</span>
             </RouterLink>
             <RouterLink :to="{ name: '' }" class="dropdown-item d-flex align-items-center justify-content-between">

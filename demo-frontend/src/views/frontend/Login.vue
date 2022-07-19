@@ -77,9 +77,9 @@ async function onSubmit() {
       }
     })
     .catch(function (error) {
-      if (error.status === 401) {
+      if (error.response.status === 401) {
         Swal.fire("登入失敗,帳號異常", "∑(￣□￣;)", "error");
-      } else if (error.status === 400) {
+      } else if (error.response.status === 400) {
         Swal.fire("登入失敗,帳號或密碼錯誤", "(〒︿〒)", "error");
       } else {
         console.log(error.code); // 印錯誤狀態代碼

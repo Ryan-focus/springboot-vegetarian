@@ -18,12 +18,10 @@ import {
 
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
-const urlParams = "warning";
-const renovate = inject("reload");
+
 //接收的資料ref
 const resData = ref();
 
-const resPostId = ref();
 const resPostTitle = ref();
 const resPostText = ref();
 const resPostDate = ref();
@@ -31,36 +29,25 @@ const resPostImgurl = ref();
 const resfavData = ref();
 const reslikeData = ref();
 const resLikeCount = ref();
-const resPostCategory = ref();
 var category = ref();
 var categoryNumber = ref(null);
-// var categoryall = category;
 
 const resWriterName = ref();
-const resPostStatus = ref("待審核");
 const writerId = ref();
 
 const newData = ref();
-const newPostTitle = ref();
-const newPostImgurl = ref();
-const newPostId = ref();
-
 const newfData = ref();
-const newfPostTitle = ref();
-const newfPostImgurl = ref();
-const newfPostId = ref();
 
 const likeData = ref();
 
 const route = useRoute();
+let postId = route.params.postId;
+
 var uid = 0;
 const user = JSON.parse(window.localStorage.getItem("access-user"));
 if (user != null) {
   uid = user.data.user.userId;
 }
-//const userName = user.data.user.userName;
-
-let postId = route.params.postId;
 
 const getAxios = function () {
   axios
@@ -69,7 +56,6 @@ const getAxios = function () {
     .then((res) => {
       //獲取伺服器的回傳資料
       resData.value = res.data;
-      resPostId.value = res.data.postId;
       resPostTitle.value = res.data.title;
       resPostText.value = res.data.postedText;
       resPostDate.value = res.data.postedDate;
@@ -94,9 +80,6 @@ const getAxios = function () {
         .then((res) => {
           //獲取伺服器的回傳資料
           newfData.value = res.data;
-          newfPostId.value = res.data.postId;
-          newfPostTitle.value = res.data.title;
-          newfPostImgurl.value = res.data.imgurl;
           //console.log("get素食種類 " + res);
         });
     })
@@ -116,10 +99,6 @@ const getAxios = function () {
     .then((res) => {
       //獲取伺服器的回傳資料
       newData.value = res.data;
-      newPostId.value = res.data.postId;
-      newPostTitle.value = res.data.title;
-      newPostImgurl.value = res.data.imgurl;
-      // console.log(res);
     })
     .catch((error) => {
       console.log(error, "失敗");
@@ -212,6 +191,10 @@ function dellikepost() {
       console.log(error, "失敗");
     });
 }
+
+function print() {
+  window.print();
+}
 </script>
 <style>
 .card-text {
@@ -231,7 +214,7 @@ function dellikepost() {
 
 u {
   background-color: white;
-  color: #83cfdd;
+  color: black;
 }
 
 #newPostSide,
@@ -260,59 +243,98 @@ u {
   <div class="content">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-8" id="print">
           <BaseBlock title=" " header-class="bg-flat-light" themed>
             <h3>{{ resPostTitle }}</h3>
-            <button type="button" class="btn rounded-pill btn btn-outline-info me-1 mb-3">
+            <button
+              type="button"
+              class="btn rounded-pill btn btn-outline-info me-1 mb-3"
+            >
               <i class="bi bi-twitter"></i>
             </button>
-            <button type="button" class="btn rounded-pill btn btn-outline-info me-1 mb-3">
+            <button
+              type="button"
+              class="btn rounded-pill btn btn-outline-info me-1 mb-3"
+            >
               <i class="bi bi-facebook"></i>
             </button>
-            <button type="button" class="btn rounded-pill btn btn-outline-info me-1 mb-3">
+            <button
+              type="button"
+              class="btn rounded-pill btn btn-outline-info me-1 mb-3"
+              @click="print()"
+            >
               <i class="bi bi-printer"></i>
             </button>
-            <button type="button" class="btn rounded-pill btn btn-outline-info me-1 mb-3">
+            <button
+              type="button"
+              class="btn rounded-pill btn btn-outline-info me-1 mb-3"
+            >
               <i class="bi bi-link-45deg"></i>
             </button>
 
-            <button type="button" class="btn rounded-pill btn btn-alt-warning me-1 mb-3 float-end" @click="addfavpost()"
-              v-if="!resfavData">
+            <button
+              type="button"
+              class="btn rounded-pill btn btn-alt-warning me-1 mb-3 float-end"
+              @click="addfavpost()"
+              v-if="!resfavData"
+            >
               <i class="bi bi-bookmark-star"></i>
               收藏文章
             </button>
-            <button type="button" class="btn rounded-pill btn btn-alt-secondary me-1 mb-3 float-end"
-              @click="delfavpost()" v-if="resfavData">
+            <button
+              type="button"
+              class="btn rounded-pill btn btn-alt-secondary me-1 mb-3 float-end"
+              @click="delfavpost()"
+              v-if="resfavData"
+            >
               <i class="bi bi-bookmark-star"></i>
               已收藏文章
             </button>
 
             <span>{{ resPostDate }}</span>
-            <button type="button" class="btn rounded-pill btn btn-alt-warning me-1 mb-3 float-end"
-              @click="addlikepost()" v-if="!reslikeData">
+            <button
+              type="button"
+              class="btn rounded-pill btn btn-alt-warning me-1 mb-3 float-end"
+              @click="addlikepost()"
+              v-if="!reslikeData"
+            >
               <i class="bi bi-hand-thumbs-up"></i>
               讚
             </button>
-            <button type="button" class="btn rounded-pill btn btn-alt-secondary me-1 mb-3 float-end" v-if="reslikeData"
-              @click="dellikepost()">
+            <button
+              type="button"
+              class="btn rounded-pill btn btn-alt-secondary me-1 mb-3 float-end"
+              v-if="reslikeData"
+              @click="dellikepost()"
+            >
               <i class="bi bi-hand-thumbs-up"></i>
               已按讚
             </button>
 
             <div class="row">
               <div class="col-md-8">
-                <img :src="resPostImgurl" class="img-fluid img-thumbnail" alt="..." />
+                <img
+                  :src="resPostImgurl"
+                  class="img-fluid img-thumbnail"
+                  alt="..."
+                />
               </div>
               <ul class="nav-items fs-sm col-md-4">
                 <li>
                   <a class="d-flex py-2" href="javascript:void(0)">
-                    <div class="
+                    <div
+                      class="
                         flex-shrink-0
                         me-3
                         ms-2
                         overlay-container overlay-bottom
-                      ">
-                      <img class="img-avatar img-avatar48" src="/assets/media/avatars/avatar6.jpg" alt="" />
+                      "
+                    >
+                      <img
+                        class="img-avatar img-avatar48"
+                        src="/assets/media/avatars/avatar6.jpg"
+                        alt=""
+                      />
                     </div>
                     <div class="flex-grow-1">
                       <div class="fw-semibold" style="font-size: 18px">
@@ -323,10 +345,16 @@ u {
                   <br />
                 </li>
                 <div class="float-end" v-if="resLikeCount > 0">
-                  <u>有{{ resLikeCount }}人覺得這很讚<i class="bi bi-hand-thumbs-up"></i></u>
+                  <u
+                    >有{{ resLikeCount }}人覺得這很讚<i
+                      class="bi bi-hand-thumbs-up"
+                    ></i
+                  ></u>
                 </div>
                 <div class="float-end" v-else>
-                  <mark>趕快來當第一個按讚的人<i class="bi bi-hand-thumbs-up"></i></mark>
+                  <mark
+                    >趕快來當第一個按讚的人<i class="bi bi-hand-thumbs-up"></i
+                  ></mark>
                 </div>
               </ul>
 
@@ -340,15 +368,21 @@ u {
           </BaseBlock>
           <BaseBlock title="最多人按讚" header-class="bg-flat-light" themed>
             <div v-if="likeData" class="row">
-              <div v-for="(item, index) in likeData.slice(0, 3)" :key="index" class="col-md-4">
+              <div
+                v-for="(item, index) in likeData.slice(0, 3)"
+                :key="index"
+                class="col-md-4"
+              >
                 <a class="" :href="'/#/postContent/' + item.postId">
-                  <div class="
+                  <div
+                    class="
                       flex-shrink-0
                       me-3
                       ms-2
                       overlay-container overlay-bottom
                       col-md-12
-                    ">
+                    "
+                  >
                     <img :src="item.imgurl" class="img-thumbnail" alt="..." />
                   </div>
                   <br />
@@ -372,13 +406,15 @@ u {
                   <div class="col-md-1">
                     {{ index + 1 }}
                   </div>
-                  <div class="
+                  <div
+                    class="
                       flex-shrink-0
                       me-3
                       ms-2
                       overlay-container overlay-bottom
                       col-md-4
-                    ">
+                    "
+                  >
                     <img :src="item.imgurl" class="img-thumbnail" alt="..." />
                   </div>
 
@@ -394,13 +430,15 @@ u {
             <ul class="nav-items fs-sm" v-if="newData">
               <li v-for="(item, index) in newData.slice(0, 5)" :key="index">
                 <a class="d-flex py-2" :href="'/#/postContent/' + item.postId">
-                  <div class="
+                  <div
+                    class="
                       flex-shrink-0
                       me-3
                       ms-2
                       overlay-container overlay-bottom
                       col-md-4
-                    ">
+                    "
+                  >
                     <img :src="item.imgurl" class="img-thumbnail" alt="..." />
                   </div>
                   <div id="newPostSide" class="flex-grow-1 col-md-8">
@@ -415,13 +453,15 @@ u {
             <ul class="nav-items fs-sm">
               <li v-for="(item, index) in newfData" :key="index">
                 <a class="d-flex py-2" :href="'/#/postContent/' + item.postId">
-                  <div class="
+                  <div
+                    class="
                       flex-shrink-0
                       me-3
                       ms-2
                       overlay-container overlay-bottom
                       col-md-4
-                    ">
+                    "
+                  >
                     <img :src="item.imgurl" class="img-thumbnail" alt="..." />
                   </div>
                   <div class="flex-grow-1 col-md-8" id="newfPostSide">

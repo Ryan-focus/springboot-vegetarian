@@ -46,7 +46,9 @@ function getSingle(productId) {
     .get(`http://${url}/products/${productId}`)
     .then((res) => {
       singleProduct.value = res.data
-    })
+    }).catch((error) => {
+      console.log(error, "失敗");
+    });
 
 
 }

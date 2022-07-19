@@ -130,4 +130,21 @@ public class UserServiceImpl implements UserService {
 		return userDao.updateImage(base64DataString, id);
 	}
 
+	@Override
+	public int updateUserName(String name, int id) {
+		return userDao.updateUserName(name, id);
+	}
+
+	@Override
+	public int updatePassword(String password, String newPassword, int id) {
+		
+		User user = userDao.getUserById(id);
+		
+		if(!new BCryptPasswordEncoder().matches(password ,user.getPassword())) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+		}
+		
+		return userDao.updatePassword(password, newPassword, id);
+	}
+
 }

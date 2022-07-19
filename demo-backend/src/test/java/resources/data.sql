@@ -351,7 +351,7 @@ VALUES
 
 
 -- 食記文章
-INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postCategory,postAuditDate) VALUES
+INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postCategory,postAuditDate,postUpdateDate,userId) VALUES
 ('【松江南京美食】養心茶樓蔬食飲茶 台北素食餐廳推薦！港點菜單顛覆想像平價好吃',now(),'近年吹起吃素環保愛地球的蔬食風潮，料理型態越趨多元，也更加精緻
 
 2013年開業的《養心茶樓》，主打不一樣的蔬食飲茶，我很喜歡《養心茶樓》的港式點心，原來素食也能這麼好吃
@@ -409,7 +409,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postCategory,
 能吃到這麼多道港點，且大多有不錯水準，《養心茶樓》真的值得推薦
 
 即使不是素食者，還是可以來試試好吃有特色的蔬食港點，人多的話也能考慮桌菜、合菜，菜色更多更豐盛
-','https://tenjo.tw/wp-content/uploads/20200304113246_76.jpg','發布中','植物五辛素',now() )
+','https://tenjo.tw/wp-content/uploads/20200304113246_76.jpg','發布中','植物五辛素',now(),now(),2 )
 
 ,('【台北食記】來欣素食手桿麵手工水餃 彩色水餃好吃又好拍！三醬麵更是不能錯過',now(), '一週一素食計劃，這天來到了行天宮附近的「來欣素食」
 
@@ -476,7 +476,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postCategory,
 
 彩色手工水餃是蠻好拍的啦，只是個人覺得味道普普，一顆七元也不便宜
 
-周花花比較喜歡他們家的乾麵，麵條、醬料都很有水準，但請記得不太吃辣的人不要誤點川味醬啊！','https://tenjo.tw/wp-content/uploads/20170311005656_33.jpg','發布中','蛋素',now()),
+周花花比較喜歡他們家的乾麵，麵條、醬料都很有水準，但請記得不太吃辣的人不要誤點川味醬啊！','https://tenjo.tw/wp-content/uploads/20170311005656_33.jpg','發布中','蛋素',now(),now(),3),
 
 ('【桃園食記】漢來蔬食 超好吃推薦！不一樣的素食饗宴 台茂購物中心',now(),'家中有多位長輩茹素
 
@@ -520,7 +520,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postCategory,
 
 印象中每人算起來大概7、800元，屬於中高價位並不便宜
 
-可是真得物有所值，打完食記後好想衝去桃園再吃一次啊' ,'https://tenjo.tw/wp-content/uploads/pixnet/05c56d4cceaaaf43c8211fd82efb2df1.jpg','待審核','奶素',now()),
+可是真得物有所值，打完食記後好想衝去桃園再吃一次啊' ,'https://tenjo.tw/wp-content/uploads/pixnet/05c56d4cceaaaf43c8211fd82efb2df1.jpg','待審核','奶素',now(),now(),4),
 
 ('【屏東市美食推薦】一碗豆腐 文青創新臭豆腐專賣店！菜單甜鹹口味都有素食也能吃',now(),'在發掘屏東美食小吃這件事上，我一直都是跟著在地人推薦吃
 
@@ -542,7 +542,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postCategory,
 
 尤其是酸甜大根泡菜的好表現，把美味度又再往上提升，加點辣椒醬更是好吃極了，風味相當有特色
 
-《一碗豆腐》營業時間從下午開始，一路賣到晚上10點，無論當成下午茶點心，或是宵夜都很不錯呢','https://tenjo.tw/wp-content/uploads/20210511003812_66.jpg','發布中','全素',now()),
+《一碗豆腐》營業時間從下午開始，一路賣到晚上10點，無論當成下午茶點心，或是宵夜都很不錯呢','https://tenjo.tw/wp-content/uploads/20210511003812_66.jpg','發布中','全素',now(),now(),5),
 
 ('【新店大坪林美食】原粹蔬食作 菜單料理講究素食料理，特色飛龍頭咖哩、味噌豆漿拉麵',now(),'《原粹蔬食作》是新北市新店區、捷運大坪林站附近，人氣很高的素食餐廳
 
@@ -588,7 +588,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postCategory,
 但可以理解的是，講求品嚐食材原味的精神，讓素食料理吃來沒有太多負擔
 
 在新店大坪林一帶想找家舒適的蔬食餐廳，我還是會推薦《原粹蔬食作》啦，畢竟套餐價格不貴，食材工法也有講究
-','https://tenjo.tw/wp-content/uploads/20201016123742_90.jpg','發布中','蛋奶素',now()),
+','https://tenjo.tw/wp-content/uploads/20201016123742_90.jpg','發布中','蛋奶素',now(),now(),6),
 
 ('【萬華西門町美食】從心茶館 守舊時尚中式早午餐！好吃素食飯糰、包子饅頭、鍋煮奶茶',now(),'位在萬華區、西門町商圈的《從心茶館》，是我們無意間發現的素食美食
 
@@ -628,7 +628,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postCategory,
 最好吃首推紅茶葉滷蛋，滷得夠味飄散著清新紅茶香，我們愛到相互搶食這顆蛋，不知道可不可以加價「增蛋」啊
 
 烤牛蒡天婦羅味道也很棒，我平常沒有很愛酸菜，但《從心茶館》的酸菜不會臭，完全吃得出老闆選用好的原物料，飯糰真的好好吃
-','https://tenjo.tw/wp-content/uploads/20200509205504_6.jpg','發布中','蛋奶素',now()),
+','https://tenjo.tw/wp-content/uploads/20200509205504_6.jpg','發布中','蛋奶素',now(),now(),7),
 
 ('【台東池上美食】舒食男孩二號店 臺東慢食評鑑二星推薦！在地食材無菜單素食料理',now(),'私以為台東美食最迷人之處，在於大量在地食材的應用
 
@@ -656,7 +656,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postCategory,
 
 新鮮直送的蔬菜水果，搭配宜人氣候、池上悠閒，讓人能好好靜下心來品味舒食料理，感謝大自然的恩惠
 
-若來到《伯朗大道》騎腳踏車，不妨來《舒食男孩二號店》吃個飯，即使是葷食者也會喜歡的舒食美食','https://tenjo.tw/wp-content/uploads/20200325002402_48.jpg','發布中','奶素',now()),
+若來到《伯朗大道》騎腳踏車，不妨來《舒食男孩二號店》吃個飯，即使是葷食者也會喜歡的舒食美食','https://tenjo.tw/wp-content/uploads/20200325002402_48.jpg','發布中','奶素',now(),now(),8),
 
 ('【台北食記】御蓮齋 素食吃到飽buffet推薦！多達200道料理，素食外燴婚宴一應俱全',now(),'
 素食飲食已經變成一股時代趨勢
@@ -694,7 +694,36 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postCategory,
 
 最後提醒大家，文章內看到的素食餐點，都可以再向《御蓮齋》詢問，是否提供外燴服務
 
-想訂購素食外燴的人，也請記得先打電話確認，以免撲空唷','https://tenjo.tw/wp-content/uploads/20171118212918_55.jpg','發布中','植物五辛素',now());
+想訂購素食外燴的人，也請記得先打電話確認，以免撲空唷','https://tenjo.tw/wp-content/uploads/20171118212918_55.jpg','發布中','植物五辛素',now(),now(),9);
+
+-- fav_post收藏文章
+INSERT INTO fav_post (postId,favDate,userId) VALUES
+(3,now(),2),
+(3,now(),3),
+(3,now(),4),
+(3,now(),5),
+(7,now(),2),
+(7,now(),6),
+(7,now(),8),
+(8,now(),2),
+(8,now(),3),
+(4,now(),2),
+(5,now(),2);
+
+
+-- like_post按讚文章
+INSERT INTO like_post (postId,likeDate,userId) VALUES
+(8,now(),2),
+(8,now(),3),
+(8,now(),4),
+(8,now(),5),
+(6,now(),2),
+(6,now(),6),
+(6,now(),8),
+(5,now(),2),
+(5,now(),3),
+(3,now(),2),
+(2,now(),2);
 
 -- forum
 
