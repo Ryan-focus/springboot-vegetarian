@@ -209,7 +209,7 @@ function reserveRestaurant(restaurantNumber) {
   });
 }
 
-// getBusinessList();
+getBusinessList();
 </script>
 <!-- <script>
 export default {
