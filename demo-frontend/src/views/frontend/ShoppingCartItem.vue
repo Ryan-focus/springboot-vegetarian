@@ -25,12 +25,24 @@ function printPage() {
 }
 //取得localstorage
 const user = JSON.parse(window.localStorage.getItem("access-user"));
-const cartItemList = JSON.parse(window.localStorage.getItem("cartItem")).cartItemList;
+//檢查localstorage裡面是否有東西，沒有設定為null不然直接抓會報錯
+var cartItemList = null
+if (window.localStorage.getItem("cartItem") != null) {
+  cartItemList = JSON.parse(window.localStorage.getItem("cartItem")).cartItemList;
+}
 const userId = JSON.stringify(user.data.user.userId)
 // 清空localstorage
 function removeCart() {
   localStorage.removeItem("cartItem")
-  location.replace("http://localhost:8080/#/shopping")
+  window.location.reload(Swal.fire(
+    {
+      title: "已清空購物車",
+      text: "",
+      timer: 1500,
+      icon: "success"
+    }
+  ))
+
 }
 
 //加總功能
@@ -179,7 +191,7 @@ function payment() {
                 </td>
                 <td class="fw-bold text-end bg-body-light">
                   <button type="button" class="btn btn-outline-danger">
-                    <i class="fal fa-dollar-sign" @click="checkOut(), payment()">結帳</i>
+                    <i class="fal fa-dollar-sign" @click="checkOut(), payment(), removeCart()">結帳</i>
                   </button>
                 </td>
               </tr>
