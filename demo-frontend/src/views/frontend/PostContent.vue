@@ -212,6 +212,12 @@ function dellikepost() {
       console.log(error, "失敗");
     });
 }
+
+
+function print(){
+ window.print();     
+}
+
 </script>
 <style>
 .card-text {
@@ -231,7 +237,7 @@ function dellikepost() {
 
 u {
   background-color: white;
-  color: #83cfdd;
+  color: black;
 }
 
 #newPostSide,
@@ -260,7 +266,7 @@ u {
   <div class="content">
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-8">
+        <div class="col-md-8" id="print">
           <BaseBlock title=" " header-class="bg-flat-light" themed>
             <h3>{{ resPostTitle }}</h3>
             <button type="button" class="btn rounded-pill btn btn-outline-info me-1 mb-3">
@@ -269,7 +275,11 @@ u {
             <button type="button" class="btn rounded-pill btn btn-outline-info me-1 mb-3">
               <i class="bi bi-facebook"></i>
             </button>
-            <button type="button" class="btn rounded-pill btn btn-outline-info me-1 mb-3">
+            <button
+              type="button"
+              class="btn rounded-pill btn btn-outline-info me-1 mb-3"
+              @click="print()"
+            >
               <i class="bi bi-printer"></i>
             </button>
             <button type="button" class="btn rounded-pill btn btn-outline-info me-1 mb-3">

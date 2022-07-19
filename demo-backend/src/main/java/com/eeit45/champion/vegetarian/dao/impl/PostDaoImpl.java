@@ -199,7 +199,7 @@ public class PostDaoImpl implements PostDao {
 	public List<Post> findPostbyLike() {
 		
 		String sql = "SELECT COUNT(like_post.postId) AS numOfLike,"
-				+ "post.title,post.postId,post.postedText,post.imgUrl,post.postStatus,post.postCategory,post.userId,post.postedDate,post.postAuditDate"
+				+ "post.title,post.postId,post.postedText,post.imgUrl,post.postStatus,post.postCategory,post.userId,post.postedDate,post.postAuditDate,post.postUpdateDate "
 				+ " FROM post INNER JOIN like_post ON post.postId = like_post.postId GROUP BY like_post.postId ORDER BY numOfLike DESC";
 		Map<String, Object> map = new HashMap<>();
 		//map.put("userId", uid);
@@ -244,8 +244,7 @@ public class PostDaoImpl implements PostDao {
 		map.put("userId", uid);
 
 		PostFavorite pFavorite;
-		// List<Post> favPost = namedParameterJdbcTemplate.query(sql,map ,new
-		// PostRowMapper());
+
 		try {
 			pFavorite = namedParameterJdbcTemplate.queryForObject(sql, map,
 					new BeanPropertyRowMapper<PostFavorite>(PostFavorite.class));
@@ -261,11 +260,7 @@ public class PostDaoImpl implements PostDao {
 
 		String sql = "SELECT * FROM post LEFT JOIN fav_post ON post.postId = fav_post.postId where fav_post.userId = :userId ";
 		Map<String, Object> map = new HashMap<>();
-		// map.put("postId", pid);
 		map.put("userId", uid);
-
-		// List<Post> favPost = namedParameterJdbcTemplate.query(sql,map ,new
-		// PostRowMapper());
 
 		List<Post> postList = namedParameterJdbcTemplate.query(sql, map, new PostRowMapper());
 
@@ -282,8 +277,7 @@ public class PostDaoImpl implements PostDao {
 		map.put("userId", uid);
 
 		PostLike pLike;
-		// List<Post> favPost = namedParameterJdbcTemplate.query(sql,map ,new
-		// PostRowMapper());
+
 		try {
 			pLike = namedParameterJdbcTemplate.queryForObject(sql, map,
 					new BeanPropertyRowMapper<PostLike>(PostLike.class));

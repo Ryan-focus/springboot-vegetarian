@@ -281,7 +281,7 @@ public class PostController {
 	    post.setTitle(title);
 		post.setPostedText(postedText);
 		post.setImgurl(postImgurl);
-		post.setPostedDate(date);
+		post.setPostUpdateDate(date);
 		post.setPostStatus("待審核");
 
 		Boolean addresult = postService.updatePost(post);

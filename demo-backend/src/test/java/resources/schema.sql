@@ -184,6 +184,7 @@ CREATE TABLE post(
                      imgUrl NVARCHAR(256),
                      postStatus NVARCHAR(256),
                      postAuditDate DATETIME,
+                     postUpdateDate DATETIME,
                      postCategory NVARCHAR(256),
                      likeCount INT default 0,
                      userId INT
