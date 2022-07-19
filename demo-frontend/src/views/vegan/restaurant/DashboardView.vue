@@ -26,10 +26,10 @@ const orderSearch = ref(false);
 
 // Chart Earnings data
 const earningsData = reactive({
-  labels: ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"],
+  labels: ["週一", "週二", "週三", "週四", "週五", "週六", "週日"],
   datasets: [
     {
-      label: "This Week",
+      label: "本週",
       fill: true,
       backgroundColor: "rgba(100, 116, 139, .7)",
       borderColor: "transparent",
@@ -37,10 +37,10 @@ const earningsData = reactive({
       pointBorderColor: "#fff",
       pointHoverBackgroundColor: "#fff",
       pointHoverBorderColor: "rgba(100, 116, 139, 1)",
-      data: [716, 628, 1056, 560, 956, 890, 790],
+      data: [2, 2, 2, 1, 3, 2, 1],
     },
     {
-      label: "Last Week",
+      label: "上週",
       fill: true,
       backgroundColor: "rgba(100, 116, 139, .15)",
       borderColor: "transparent",
@@ -48,48 +48,10 @@ const earningsData = reactive({
       pointBorderColor: "#fff",
       pointHoverBackgroundColor: "#fff",
       pointHoverBorderColor: "rgba(100, 116, 139, 1)",
-      data: [1160, 923, 1052, 1300, 880, 926, 963],
+      data: [1, 1, 1, 3, 1, 1, 4],
     },
   ],
 });
-
-// Chart Earnings options
-// const earningsOptions = reactive({
-//   scales: {
-//     x: {
-//       display: false,
-//       grid: {
-//         drawBorder: false,
-//       },
-//     },
-//     y: {
-//       display: false,
-//       grid: {
-//         drawBorder: false,
-//       },
-//     },
-//   },
-//   interaction: {
-//     intersect: false,
-//   },
-//   plugins: {
-//     legend: {
-//       labels: {
-//         boxHeight: 10,
-//         font: {
-//           size: 14,
-//         },
-//       },
-//     },
-//     tooltip: {
-//       callbacks: {
-//         label: function (context) {
-//           return context.dataset.label + ": $" + context.parsed.y;
-//         },
-//       },
-//     },
-//   },
-// });
 
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
@@ -307,69 +269,7 @@ getPass();
     </div>
     <!-- END Statistics -->
 
-    <!-- 最新餐廳 -->
-    <!-- <BaseBlock title="最新餐廳" id="newRestaurant">
-      <template #content>
-        <div class="block-content block-content-full">
-          <div class="table-responsive">
-            <table class="table table-hover table-vcenter">
-              <thead>
-                <tr>
-                  <th>編號</th>
-                  <th class="d-none d-xl-table-cell">名稱</th>
-                  <th>地址</th>
-                  <th class="d-none d-sm-table-cell text-center">類型</th>
-                  <th class="d-none d-sm-table-cell text-end">素食分類</th>
-                  <th class="d-none d-sm-table-cell text-end">評分</th>
-                </tr>
-              </thead>
-              <tbody class="fs-sm">
 
-                <tr v-for="item in res" :key="item.restaurantNumber">
-                  <td>{{ item.restaurantNumber }}</td>
-                  <td>{{ item.restaurantName }}</td>
-                  <td>{{ item.restaurantAddress }}</td>
-                  <td>{{ item.restaurantCategory }}</td>
-                  <td>{{ item.restaurantType }}</td>
-                  <td>{{ item.restaurantScore }}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <div class="block-content block-content-full bg-body-light"> -->
-    <!-- 換頁 -->
-    <!-- <nav aria-label="Photos Search Navigation">
-            <ul class="pagination pagination-sm justify-content-end mb-0">
-              <li class="page-item">
-                <a class="page-link" href="javascript:void(0)" tabindex="-1" aria-label="Previous">
-                  上一頁
-                </a>
-              </li>
-              <li class="page-item active">
-                <a class="page-link" href="javascript:void(0)">1</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="javascript:void(0)">2</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="javascript:void(0)">3</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="javascript:void(0)">4</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="javascript:void(0)" aria-label="Next">
-                  下一頁
-                </a>
-              </li>
-            </ul>
-          </nav> -->
-    <!-- 換頁結束 -->
-    <!-- </div>
-      </template>
-    </BaseBlock> -->
-    <!-- 最新餐廳結束 -->
   </div>
   <!-- END Page Content -->
 </template>

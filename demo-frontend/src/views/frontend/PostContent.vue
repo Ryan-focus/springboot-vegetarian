@@ -1,6 +1,6 @@
 <script setup>
 // 已經宣告但從未使用過的Value (請勿刪除)
-import { ref } from "vue";
+import { ref, inject, reactive } from "vue";
 import axios from "axios";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import { useRoute } from "vue-router";
@@ -19,6 +19,7 @@ import {
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
 const urlParams = "warning";
+const renovate = inject("reload");
 //接收的資料ref
 const resData = ref();
 
@@ -30,6 +31,11 @@ const resPostImgurl = ref();
 const resfavData = ref();
 const reslikeData = ref();
 const resLikeCount = ref();
+const resPostCategory = ref();
+var category = ref();
+var categoryNumber = ref(null);
+// var categoryall = category;
+
 const resWriterName = ref();
 const resPostStatus = ref("待審核");
 const writerId = ref();
@@ -43,6 +49,8 @@ const newfData = ref();
 const newfPostTitle = ref();
 const newfPostImgurl = ref();
 const newfPostId = ref();
+
+const likeData = ref();
 
 const route = useRoute();
 var uid = 0;
@@ -67,50 +75,68 @@ const getAxios = function () {
       resPostDate.value = res.data.postedDate;
       resPostImgurl.value = res.data.imgurl;
       resLikeCount.value = res.data.likeCount;
+      category.value = res.data.postCategory;
       writerId.value = res.data.userId;
-      // let writerId = JSON.parse(JSON.stringify(res.data.userId));
-      console.log(res);
-      console.log(writerId);
-
+    })
+    .then((res) => {
+      var array = ["全素", "蛋素", "奶素", "蛋奶素", "植物五辛素"];
+      //console.log("取全部LIST 之後 抓值 category=" + category.value);
+      var count = 0;
+      array.forEach((element) => {
+        count++;
+        if (category.value == element) {
+          categoryNumber.value = count;
+        }
+      });
+      //console.log("讀取完迴圈之後categoryNumber=" + categoryNumber.value);
+      axios
+        .get(`http://${url}/postCategory${JSON.parse(categoryNumber.value)}`)
+        .then((res) => {
+          //獲取伺服器的回傳資料
+          newfData.value = res.data;
+          newfPostId.value = res.data.postId;
+          newfPostTitle.value = res.data.title;
+          newfPostImgurl.value = res.data.imgurl;
+          //console.log("get素食種類 " + res);
+        });
+    })
+    .then((res) => {
+      axios.get(`http://${url}/users/${writerId.value}`).then((res) => {
+        //獲取伺服器的回傳資料
+        resWriterName.value = res.data.userName;
+        console.log(res);
+      });
     })
     .catch((error) => {
       console.log(error, "失敗");
     });
 
   axios
-    .get(`http://${url}/postStatusList`)
+    .get(`http://${url}/postStatusList/`)
     .then((res) => {
-      //獲取伺服器的回傳資料   
+      //獲取伺服器的回傳資料
       newData.value = res.data;
       newPostId.value = res.data.postId;
       newPostTitle.value = res.data.title;
       newPostImgurl.value = res.data.imgurl;
-      console.log(res);
-
+      // console.log(res);
     })
     .catch((error) => {
       console.log(error, "失敗");
     });
 
   axios
-    .get(`http://${url}/postCategory2`)
+    .get(`http://${url}/findlike/`)
     .then((res) => {
-      //獲取伺服器的回傳資料   
-      newfData.value = res.data;
-      newfPostId.value = res.data.postId;
-      newfPostTitle.value = res.data.title;
-      newfPostImgurl.value = res.data.imgurl;
-      console.log(res);
+      //獲取伺服器的回傳資料
+      likeData.value = res.data;
 
+      // console.log(res);
     })
     .catch((error) => {
       console.log(error, "失敗");
     });
 
-  // if (userId == null) {
-  //   window.location.href = "http://localhost:8080/#/signin";
-  //   console.log(userId);
-  // } else {
   axios
     .get(`http://${url}/favtest/${postId}/${uid}`)
     .then((res) => {
@@ -131,26 +157,9 @@ const getAxios = function () {
     .catch((error) => {
       console.log(error, "失敗");
     });
-
-  // }
-
-
-  // axios
-  // .get(`http://${url}/users/${writerId}`)
-  // .then((res) => {
-  //   //獲取伺服器的回傳資料
-  //  resWriterName.value = res.data.userName;
-  //   console.log(res);
-  // })
-  // .catch((error) => {
-  //   console.log(error, "失敗");
-  // });
-
-
 };
 //執行Axios
 getAxios();
-
 
 function addfavpost() {
   if (uid == 0) {
@@ -229,6 +238,20 @@ u {
 #newfPostSide {
   width: 100px;
 }
+
+.textend {
+  height: 100px;
+}
+
+.like {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  white-space: normal;
+}
 </style>
 
 <template>
@@ -264,7 +287,6 @@ u {
               已收藏文章
             </button>
 
-
             <span>{{ resPostDate }}</span>
             <button type="button" class="btn rounded-pill btn btn-alt-warning me-1 mb-3 float-end"
               @click="addlikepost()" v-if="!reslikeData">
@@ -293,8 +315,9 @@ u {
                       <img class="img-avatar img-avatar48" src="/assets/media/avatars/avatar6.jpg" alt="" />
                     </div>
                     <div class="flex-grow-1">
-                      <div class="fw-semibold">{{ resWriterName }}</div>
-                      <div class="fw-normal text-muted">Copywriter</div>
+                      <div class="fw-semibold" style="font-size: 18px">
+                        {{ resWriterName }}
+                      </div>
                     </div>
                   </a>
                   <br />
@@ -312,15 +335,64 @@ u {
               </h5>
 
               <div class="text" v-html="resPostText"></div>
+              <div class="textend"></div>
+            </div>
+          </BaseBlock>
+          <BaseBlock title="最多人按讚" header-class="bg-flat-light" themed>
+            <div v-if="likeData" class="row">
+              <div v-for="(item, index) in likeData.slice(0, 3)" :key="index" class="col-md-4">
+                <a class="" :href="'/#/postContent/' + item.postId">
+                  <div class="
+                      flex-shrink-0
+                      me-3
+                      ms-2
+                      overlay-container overlay-bottom
+                      col-md-12
+                    ">
+                    <img :src="item.imgurl" class="img-thumbnail" alt="..." />
+                  </div>
+                  <br />
+                  <div id="like" class="flex-grow-1 col-md-12">
+                    <div class="like">{{ item.title }}</div>
+                    <div class="fw-normal text-muted">
+                      <br />
+                    </div>
+                  </div>
+                </a>
+              </div>
             </div>
           </BaseBlock>
         </div>
 
         <div class="col-md-4">
-          <BaseBlock title="最新分享" header-class="bg-flat-light" themed>
+          <BaseBlock title="按讚排行" header-class="bg-flat-light" themed>
+            <ul class="nav-items fs-sm" v-if="likeData">
+              <li v-for="(item, index) in likeData.slice(0, 5)" :key="index">
+                <a class="d-flex py-2" :href="'/#/postContent/' + item.postId">
+                  <div class="col-md-1">
+                    {{ index + 1 }}
+                  </div>
+                  <div class="
+                      flex-shrink-0
+                      me-3
+                      ms-2
+                      overlay-container overlay-bottom
+                      col-md-4
+                    ">
+                    <img :src="item.imgurl" class="img-thumbnail" alt="..." />
+                  </div>
 
-            <ul class="nav-items fs-sm">
-              <li v-for="(item, index) in newData" :key="index">
+                  <div id="newPostSide" class="flex-grow-1 col-md-8">
+                    <div class="newPostSide">{{ item.title }}</div>
+                    <div class="fw-normal text-muted"></div>
+                  </div>
+                </a>
+              </li>
+            </ul>
+          </BaseBlock>
+          <BaseBlock title="最新分享" header-class="bg-flat-light" themed>
+            <ul class="nav-items fs-sm" v-if="newData">
+              <li v-for="(item, index) in newData.slice(0, 5)" :key="index">
                 <a class="d-flex py-2" :href="'/#/postContent/' + item.postId">
                   <div class="
                       flex-shrink-0
@@ -337,7 +409,6 @@ u {
                   </div>
                 </a>
               </li>
-
             </ul>
           </BaseBlock>
           <BaseBlock title="你可能也會喜歡" header-class="bg-flat-light" themed>
@@ -354,12 +425,11 @@ u {
                     <img :src="item.imgurl" class="img-thumbnail" alt="..." />
                   </div>
                   <div class="flex-grow-1 col-md-8" id="newfPostSide">
-                    <div class="fw-semibold">{{ item.title }}</div>
+                    <div class="newPostSide">{{ item.title }}</div>
                     <div class="fw-normal text-muted"></div>
                   </div>
                 </a>
               </li>
-
             </ul>
           </BaseBlock>
         </div>

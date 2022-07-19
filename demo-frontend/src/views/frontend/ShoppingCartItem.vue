@@ -1,5 +1,8 @@
 <script setup>
+import { ref } from "vue";
 import { useTemplateStore } from "@/stores/template";
+import axios from "axios";
+import Swal from "sweetalert2";
 
 // Main store
 const store = useTemplateStore();
@@ -21,11 +24,9 @@ function printPage() {
   }
 }
 //取得localstorage
-const user = JSON.parse(window.localStorage.getItem("access-admin"));
-if (window.localStorage.getItem("cartItem") != null) {
-  const cartItemList = JSON.parse(window.localStorage.getItem("cartItem")).cartItemList;
-  console.log(cartItemList)
-}
+const user = JSON.parse(window.localStorage.getItem("access-user"));
+const cartItemList = JSON.parse(window.localStorage.getItem("cartItem")).cartItemList;
+const userId = JSON.stringify(user.data.user.userId)
 // 清空localstorage
 function removeCart() {
   localStorage.removeItem("cartItem")
@@ -33,14 +34,51 @@ function removeCart() {
 }
 
 //加總功能
+var total = 0;
 function countTotal() {
-  var total = 0;
   for (var i in this.cartItemList) {
     total += parseInt(this.cartItemList[i].quantity * this.cartItemList[i].product.productPrice)
   }
-  console.log(total)
   return total
 }
+// 寫入訂單功能
+//用foreach+push把想要的值推進array中
+var checkOutItemArray = []
+for (var i in cartItemList) {
+  checkOutItemArray.push(
+    {
+      productId: cartItemList[i].product.productId,
+      quantity: cartItemList[i].quantity
+    }
+  )
+}
+//將更新好的array寫進來做結帳動作
+function checkOut() {
+  axios
+    .post(`http://localhost:8088/2/order`, {
+      "buyItemList": checkOutItemArray
+    })
+    .then((res) => {
+      console.log(res.data)
+    })
+}
+
+// 結帳功能
+function payment() {
+
+  axios.post(
+    "http://localhost:8088/paypal/payment?sum=" + total
+  ).then(
+    (res) => {
+      // 抓出返回值得跳轉頁面網址
+      if (res.data.redirect_url != null) {
+        window.location = res.data.redirect_url
+      }
+    }
+  )
+}
+
+
 
 </script>
 
@@ -108,28 +146,40 @@ function countTotal() {
                   <img :src="item.product.productImage" alt="" width="50">
                 </td>
                 <td class="text-center">
-                  <span class="badge rounded-pill bg-primary">{{ item.quantity }}</span>
+                  <span class="badge rounded-pill bg-primary">
+                    {{ item.quantity }}
+                  </span>
                 </td>
                 <td class="text-end">NT. {{ item.product.productPrice }}</td>
                 <td class="text-end">{{ item.product.productPrice * item.quantity }}</td>
               </tr>
 
               <tr>
-                <td colspan="4" class="fw-semibold text-end">總和</td>
+                <td colspan="4" class="fw-semibold text-end">商品總和</td>
                 <td class="text-end">{{ countTotal() }}</td>
               </tr>
               <tr>
                 <td colspan="4" class="fw-semibold text-end">運費</td>
                 <td class="text-end">0</td>
               </tr>
-
               <tr>
                 <td colspan="4" class="fw-bold text-uppercase text-end bg-body-light">
-                  Total Due
+                  總價
                 </td>
                 <td class="fw-bold text-end bg-body-light">{{ countTotal() }}</td>
               </tr>
+              <tr>
+                <td colspan="4" class="fw-bold text-uppercase text-end bg-body-light">
+                </td>
+                <td class="fw-bold text-end bg-body-light">
+                  <button type="button" class="btn btn-outline-danger">
+                    <i class="fal fa-dollar-sign" @click="checkOut(), payment()">結帳</i>
+                  </button>
+                </td>
+              </tr>
+
             </tbody>
+
           </table>
         </div>
         <!-- END Table -->
