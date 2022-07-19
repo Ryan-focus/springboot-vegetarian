@@ -383,10 +383,15 @@ const routes = [
       },
       //餐廳
       {
-        path: "/searchRestaurant/:restaurantCategory?/:restaurantType?/:searchName?/:searchAddress?",
+        path: "/searchRestaurant/:searchAddress?/:searchName?",
         name: "restaurantIndex",
         component: SearchRestaurant,
       },
+      // {
+      //   path: "/searchRestaurant/:restaurantCategory?/:restaurantType?/:searchName?/:searchAddress?",
+      //   name: "restaurantIndex",
+      //   component: SearchRestaurant,
+      // },
       {
         path: "/searchRestaurant/details/:restaurantNumber?",
         name: "restaurant-details",
