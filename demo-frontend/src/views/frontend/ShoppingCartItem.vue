@@ -36,6 +36,7 @@ function removeCart() {
 //加總功能
 var total = 0;
 function countTotal() {
+
   for (var i in this.cartItemList) {
     total += parseInt(this.cartItemList[i].quantity * this.cartItemList[i].product.productPrice)
   }
@@ -60,7 +61,9 @@ function checkOut() {
     })
     .then((res) => {
       console.log(res.data)
-    })
+    }).catch((error) => {
+      console.log(error, "失敗");
+    });
 }
 
 // 結帳功能
@@ -75,7 +78,9 @@ function payment() {
         window.location = res.data.redirect_url
       }
     }
-  )
+  ).catch((error) => {
+    console.log(error, "失敗");
+  });
 }
 
 
@@ -155,8 +160,9 @@ function payment() {
               </tr>
 
               <tr>
-                <td colspan="4" class="fw-semibold text-end">商品總和</td>
-                <td class="text-end">{{ countTotal() }}</td>
+                <td colspan="4" class="fw-semibold text-end">稅
+                </td>
+                <td class="text-end">０</td>
               </tr>
               <tr>
                 <td colspan="4" class="fw-semibold text-end">運費</td>
