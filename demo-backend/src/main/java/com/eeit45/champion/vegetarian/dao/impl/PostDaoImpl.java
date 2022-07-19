@@ -27,8 +27,8 @@ public class PostDaoImpl implements PostDao {
 	// 新增文章&圖片
 	public boolean addPostImage(Post post) {
 
-		String sql = "INSERT INTO post ( title, postedDate, postedText, imgUrl, postStatus,postCategory,userId)"
-				+ "VALUES (:title, :postedDate, :postedText, :imgUrl, :postStatus,:postCategory, :userId )";
+		String sql = "INSERT INTO post ( title, postedDate, postedText, imgUrl, postStatus,postCategory,userId, postUpdateDate )"
+				+ "VALUES (:title, :postedDate, :postedText, :imgUrl, :postStatus,:postCategory, :userId, :postUpdateDate )";
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("title", post.getTitle());
@@ -38,6 +38,7 @@ public class PostDaoImpl implements PostDao {
 		map.put("postStatus", post.getPostStatus());
 		map.put("postCategory", post.getPostCategory());
 		map.put("userId", post.getUserId());
+		map.put("postUpdateDate", post.getPostUpdateDate());
 
 		namedParameterJdbcTemplate.update(sql, map);
 
@@ -60,17 +61,17 @@ public class PostDaoImpl implements PostDao {
 	// 更新文章
 	public boolean updatePost(Post post) {
 
-		String sql = "UPDATE post SET title = :title, postedText = :postedText , imgUrl = :imgUrl ,postCategory = :postCategory,postStatus = :postStatus "
+		String sql = "UPDATE post SET title = :title, postedText = :postedText , imgUrl = :imgUrl ,postCategory = :postCategory,postStatus = :postStatus, postUpdateDate = :postUpdateDate "
 				+ " WHERE postId = :postId ";
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("postId", post.getPostId());
 		map.put("title", post.getTitle());
-		// map.put("postedDate", post.getPostedDate());
 		map.put("postedText", post.getPostedText());
 		map.put("imgUrl", post.getImgurl());
 		map.put("postCategory", post.getPostCategory());
 		map.put("postStatus", post.getPostStatus());
+		map.put("postUpdateDate", post.getPostUpdateDate());
 
 		namedParameterJdbcTemplate.update(sql, map);
 
@@ -146,12 +147,37 @@ public class PostDaoImpl implements PostDao {
 
 	}
 
-	// 查詢使用者發表文章
+	// 查詢使用者發表文章(發布中)
 	public List<Post> findPostByUser(int uid) {
 
-		String sql = "SELECT *  FROM post where 1=1 AND userId = :userId";
+		String sql = "SELECT *  FROM post WHERE userId = :userId AND postStatus = :postStatus ";
 		Map<String, Object> map = new HashMap<>();
 		map.put("userId", uid);
+		map.put("postStatus", "發布中");
+		List<Post> postList = namedParameterJdbcTemplate.query(sql, map, new PostRowMapper());
+		return postList;
+
+	}
+
+	// 查詢使用者發表文章(待審核)
+	public List<Post> findPostByUserNoAudit(int uid) {
+
+		String sql = "SELECT *  FROM post WHERE userId = :userId AND postStatus = :postStatus ";
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", uid);
+		map.put("postStatus", "待審核");
+		List<Post> postList = namedParameterJdbcTemplate.query(sql, map, new PostRowMapper());
+		return postList;
+
+	}
+
+	// 查詢使用者發表文章(未通過)
+	public List<Post> findPostByUserNoPass(int uid) {
+
+		String sql = "SELECT *  FROM post WHERE userId = :userId AND postStatus = :postStatus ";
+		Map<String, Object> map = new HashMap<>();
+		map.put("userId", uid);
+		map.put("postStatus", "未通過");
 		List<Post> postList = namedParameterJdbcTemplate.query(sql, map, new PostRowMapper());
 		return postList;
 
@@ -195,14 +221,14 @@ public class PostDaoImpl implements PostDao {
 		return namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
 	}
 
-	//依讚數排序文章
+	// 依讚數排序文章
 	public List<Post> findPostbyLike() {
-		
+
 		String sql = "SELECT COUNT(like_post.postId) AS numOfLike,"
 				+ "post.title,post.postId,post.postedText,post.imgUrl,post.postStatus,post.postCategory,post.userId,post.postedDate,post.postAuditDate,post.postUpdateDate "
 				+ " FROM post INNER JOIN like_post ON post.postId = like_post.postId GROUP BY like_post.postId ORDER BY numOfLike DESC";
 		Map<String, Object> map = new HashMap<>();
-		//map.put("userId", uid);
+		// map.put("userId", uid);
 		List<Post> postList = namedParameterJdbcTemplate.query(sql, new PostRowMapper());
 		return postList;
 	}

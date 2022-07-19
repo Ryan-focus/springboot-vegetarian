@@ -696,6 +696,35 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postCategory,
 
 想訂購素食外燴的人，也請記得先打電話確認，以免撲空唷','https://tenjo.tw/wp-content/uploads/20171118212918_55.jpg','發布中','植物五辛素',now(),now(),9);
 
+---fav_post收藏文章
+INSERT INTO fav_post (postId,favDate,userId) VALUES
+(3,now(),2),
+(3,now(),3),
+(3,now(),4),
+(3,now(),5),
+(7,now(),2),
+(7,now(),6),
+(7,now(),8),
+(8,now(),2),
+(8,now(),3),
+(4,now(),2),
+(5,now(),2);
+
+
+---like_post按讚文章
+INSERT INTO like_post (postId,likeDate,userId) VALUES
+(8,now(),2),
+(8,now(),3),
+(8,now(),4),
+(8,now(),5),
+(6,now(),2),
+(6,now(),6),
+(6,now(),8),
+(5,now(),2),
+(5,now(),3),
+(3,now(),2),
+(2,now(),2);
+
 -- forum
 
 INSERT INTO forum (forumId, forumTitle, forumContent, forumCategory , forumImage,forumCreateTime, forumUpdateTime) VALUES ('1', '台灣茶吸管 100% 可自然分解', '我們致力於維護人類身體健康、保護環境降低污染的使命，盡心鑽研生物可分解、天然植物纖維的材質，取自大地回歸自然循環；取材農產廢棄回收再利用，融合成為閃耀的新星材料!! 我們傾心鑽研，如何使用最天然的物料，發現植物澱粉與纖維便是我們最好的來源，可食用性的植物經技術轉換型態，成為日常用品！茶吸管 本身就是食物，轉變成用來飲食的工具，當然也再健康不過了。 帶來方便，不需習慣其他任何的飲食習慣、工具，又可以為自己的健康保障，甚至保護你以為遙不可及的環境。 總以為保護環境離自己好遠，但其實只是換個身邊常常在使用的日常用品，就可以做到如此之多。','環保', 'https://www.momosun.com.tw//action_files/momosun.iweb168.com/20210916095214748.jpg','2022-01-14', '2022-02-10');

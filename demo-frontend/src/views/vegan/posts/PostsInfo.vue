@@ -45,7 +45,7 @@ const getAxios = function () {
     .get(`http://${url}/postIndex`)
     .then((res) => {
       // console.log(res);
-    
+
       // 獲取伺服器的回傳資料;
       // res.data.forEach((value) => {
       //   let status = value.postStatus;
@@ -73,6 +73,11 @@ getAxios();
 // Helper variables
 //在這邊去設定Table :th的欄位名稱
 const cols = reactive([
+  {
+    name: "發布者ID",
+    field: "userId",
+    sort: "",
+  },
   {
     name: "文章名稱",
     field: "title",
@@ -238,9 +243,9 @@ function sendAuditPost(number, status) {
             console.log(res);
             getAxios();
             //重整頁面(先解決審核的顏色一定要刷新頁面才會更改的問題&不能自己關的modal)
-            window.setTimeout(function () {
-              location.reload();
-            }, 1000);
+            // window.setTimeout(function () {
+            //   location.reload();
+            // }, 1000);
           })
 
           .catch((error) => {
@@ -264,7 +269,6 @@ function frontPost() {
   axios
     .get(`http://${url}/postStatusList`)
     .then((res) => {
-      
       //獲取伺服器的回傳資料
       resData.value = res.data;
     })
@@ -481,7 +485,14 @@ th.sort {
         v-slot="{ ds }"
         :ds-data="resData"
         :ds-sortby="sortBy"
-        :ds-search-in="['postStatus', 'title', 'postedDate', 'postedText','postUpdateDate']"
+        :ds-search-in="[
+          'userId',
+          'postStatus',
+          'title',
+          'postedDate',
+          'postedText',
+          'postUpdateDate',
+        ]"
       >
         <div class="row" :data-page-count="ds.dsPagecount">
           <div class="col-md-3 py-2">
@@ -516,7 +527,7 @@ th.sort {
                   </tr>
                 </thead>
                 <DatasetItem tag="tbody" class="fs-sm">
-                  <template #default="{ row, }">
+                  <template #default="{ row }">
                     <tr style="line-height: 5px">
                       <th scope="row">{{ row.postId }}</th>
                       <td
@@ -528,15 +539,62 @@ th.sort {
                           id="combo"
                           >{{ row.postStatus }}</span
                         > -->
-                        <span v-if="row.postStatus=='待審核'" class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-warning">
+                        <span
+                          v-if="row.postStatus == '待審核'"
+                          class="
+                            fs-xs
+                            fw-semibold
+                            d-inline-block
+                            py-1
+                            px-3
+                            rounded-pill
+                            bg-warning-light
+                            text-warning
+                          "
+                        >
                           {{ row.postStatus }}
                         </span>
-                        <span v-if="row.postStatus=='發布中'" class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-info">
+                        <span
+                          v-if="row.postStatus == '發布中'"
+                          class="
+                            fs-xs
+                            fw-semibold
+                            d-inline-block
+                            py-1
+                            px-3
+                            rounded-pill
+                            bg-warning-light
+                            text-info
+                          "
+                        >
                           {{ row.postStatus }}
                         </span>
-                        <span v-if="row.postStatus=='未通過'" class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-warning-light text-danger">
+                        <span
+                          v-if="row.postStatus == '未通過'"
+                          class="
+                            fs-xs
+                            fw-semibold
+                            d-inline-block
+                            py-1
+                            px-3
+                            rounded-pill
+                            bg-warning-light
+                            text-danger
+                          "
+                        >
                           {{ row.postStatus }}
                         </span>
+                      </td>
+                      <td
+                        class="text-center"
+                        style="
+                          overflow: hidden;
+                          white-space: nowrap;
+                          text-overflow: ellipsis;
+                          max-width: 150px;
+                        "
+                      >
+                        {{ row.userId }}
                       </td>
                       <td
                         class="text-center"

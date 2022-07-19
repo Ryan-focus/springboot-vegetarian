@@ -54,6 +54,14 @@ public class PostServiceImpl implements PostService {
 	public List<Post> findPostByUser(int uid){
 		return postDao.findPostByUser(uid);
 	}
+	
+	public List<Post> findPostByUserNoAudit(int uid){
+		return postDao.findPostByUserNoAudit(uid);
+	}
+	
+	public List<Post> findPostByUserNoPass(int uid){
+		return postDao.findPostByUserNoPass(uid);
+	}
 
 	@Override
 	public void addFavPost(int pid, int uid) {
