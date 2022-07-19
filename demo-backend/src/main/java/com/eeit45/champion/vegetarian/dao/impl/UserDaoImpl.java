@@ -250,6 +250,28 @@ public class UserDaoImpl implements UserDao {
 		
 	}
 	
+	@Override
+	public int updateUserName(String name, int id) {
+		String sql = "UPDATE vegandb.user SET userName= :userName WHERE userId= :userId";
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("userName", name);
+		map.put("userId", id);
+		
+		return namedParameterJdbcTemplate.update(sql, map);
+	}
+	
+	@Override
+	public int updatePassword(String password, String newPassword, int id) {
+		String sql = "UPDATE `user` SET password = :password where userId= :userId";
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("password", new BCryptPasswordEncoder().encode(newPassword));
+		map.put("userId", id);
+		
+		return namedParameterJdbcTemplate.update(sql, map);
+	}
+	
 	private String filteringSQL(String sql, Map<String, Object> map, UserQueryParams userQueryParams) {
 		
 		if (userQueryParams.getSearch() != null) {
@@ -258,5 +280,6 @@ public class UserDaoImpl implements UserDao {
 		}
 		return sql;
 	}
+
 
 }

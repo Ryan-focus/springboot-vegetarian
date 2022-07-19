@@ -31,7 +31,11 @@ public interface UserService {
 	User resetPassword(LoginRequest loginRequest);
 	
 	int updateImage(String base64DataString, int id);
+	
+	int updateUserName(String name, int id);
 
+	int updatePassword(String password, String newPassword, int id);
+	
 //	boolean isBanned(UserRequest userRequest);
 
 }

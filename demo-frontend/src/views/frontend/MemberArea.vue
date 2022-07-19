@@ -1,34 +1,219 @@
 <script setup>
-import { reactive, computed } from "vue";
+import { ref, inject, reactive, computed } from "vue";
 import { useRouter } from "vue-router";
-import { useTemplateStore } from "@/stores/template";
 import Swal from "sweetalert2";
 import axios from "axios";
 
-// Main store
-// const store = useTemplateStore();
-// const router = useRouter();
+import useVuelidate from "@vuelidate/core";
+import { required, sameAs, helpers } from "@vuelidate/validators";
 
+const router = useRouter();
+
+function logOut() {
+    localStorage.removeItem("access-user");
+    router.push({ name: "index" });
+    renovate();
+}
+
+function showPassword() {
+    var x = document.getElementById("password");
+    var y = document.getElementById("newPassword");
+    var z = document.getElementById("confirmNewPassword");
+    if (x.type === "password" && y.type === "password" && z.type === "password") {
+        x.type = "text";
+        y.type = "text";
+        z.type = "text";
+    } else {
+        x.type = "password";
+        y.type = "password";
+        z.type = "password";
+    }
+}
+
+const state = reactive({
+    password: null,
+    newPassword: null,
+    confirmNewPassword: null,
+});
+
+// Validation rules
+const pwRule = helpers.regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,20}$/)
+const rules = computed(() => {
+    return {
+        password: {
+            required,
+        },
+        newPassword: {
+            required,
+            pwRule,
+        },
+        confirmNewPassword: {
+            required,
+            sameAs: sameAs(state.newPassword),
+        },
+    };
+});
+const rule = computed(() => {
+    return {
+        name: {
+            required,
+        },
+    };
+});
+
+// Use vuelidate
+const v$ = useVuelidate(rules, state);
+const $v = useVuelidate(rule, state);
+
+// On form submission
+async function onSubmit() {
+    const result = await v$.value.$validate();
+    var formData = new FormData();
+
+    formData.append("pw", state.password);
+    formData.append("newpw", state.newPassword);
+    formData.append("id", uid);
+
+    if (!result) {
+        return;
+    }
+
+    axios
+        .post("http://localhost:8088/user/updatePassword", formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data;charset=utf-8'
+                }
+            })
+        .then(function (response) {
+            if (response.status === 200) {
+                hideBackdrop();
+                Swal.fire("修改成功,請重新登入!", "⁽⁽٩(๑˃̶͈̀ ᗨ ˂̶͈́)۶⁾⁾", "success");
+                logOut();
+                renovate();
+            }
+        })
+        .catch(function (error) {
+            if (error.response.status === 404) {
+                Swal.fire("密碼錯誤", "╮(╯_╰)╭", "error");
+            } else if (error.response.status === 400) {
+                Swal.fire("修改失敗", "(;´༎ຶД༎ຶ`)", "error");
+            } else {
+                console.log(error.response.status);
+                console.log(error.response.data.error);
+            }
+        });
+}
+async function Submit() {
+    const result = await $v.value.$validate();
+    var formData = new FormData();
+
+    formData.append("name", state.name);
+    formData.append("id", uid);
+
+    if (!result) {
+        return;
+    }
+
+    axios
+        .patch("http://localhost:8088/user/updateUserName", formData,
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data;charset=utf-8'
+                }
+            })
+        .then(function (response) {
+            if (response.status === 200) {
+                hideBackdrop();
+                Swal.fire("修改成功", "⁽⁽٩(๑˃̶͈̀ ᗨ ˂̶͈́)۶⁾⁾", "success");
+                renovate();
+            }
+        })
+        .catch(function (error) {
+            if (error.response.status === 400) {
+                Swal.fire("修改失敗", "(;´༎ຶД༎ຶ`)", "error");
+            } else {
+                console.log(error.response.status);
+                console.log(error.response.data.error);
+            }
+        });
+}
+
+function hideBackdrop() {
+    document.querySelector('.modal-backdrop').remove();
+}
+
+// $("#modal").bind('hide.bs.modal', function () {
+//     $(".modal-backdrop").remove();
+// })
+
+const renovate = inject("reload");
+
+const user = JSON.parse(localStorage.getItem("access-user"));
+const uid = user.data.user.userId;
+
+const email = ref();
+const name = ref();
+const picture = ref();
+const registerTime = ref();
+const lastLoginTime = ref();
+
+const getUser = () => axios.get(`http://localhost:8088/users/${uid}`)
+    .then(function (response) {
+
+        if (response.status === 200) {
+            email.value = response.data.email;
+            name.value = response.data.userName;
+            picture.value = response.data.userPic;
+            registerTime.value = response.data.registerTime;
+            lastLoginTime.value = response.data.lastLoginTime;
+        }
+    })
+    .catch(function (error) {
+        if (error.status === 404) {
+            console.log(error.data)
+        } else {
+            console.log(error.code);
+            console.log(error.message);
+        }
+    });
+
+getUser();
+
+// function clear() {
+//     if (el) {
+//         el.addEventListener('hidden.bs.modal', function (e) {
+//             document.querySelector(this)
+//                 .querySelector("input,textarea,select")
+//                 .val('')
+//                 .end()
+//                 .querySelector("input[type=checkbox], input[type=radio]")
+//                 .prop("checked", "")
+//                 .end();
+//         })
+//     }
+// }
+// function clear1() {
+//     document.querySelector('.modal1').addEventListener('hidden.bs.modal', function (e) {
+//         document.querySelector(this)
+//             .querySelector("input,textarea,select")
+//             .val('')
+//             .end()
+//             .querySelector("input[type=checkbox], input[type=radio]")
+//             .prop("checked", "")
+//             .end();
+//     })
+// }
+// var el = document.querySelector(".modal");
 </script>
 <style>
-/* .content {
-    height: 704px;
-} */
-/* .page button {
-    width: 100%;
-} */
-
-/* .page button:hover {
-    color: white;
-    background-color: skyblue;
-    transition: 0.8s;
-} */
+/*
 .page button {
-    /* display: inline-block; */
+    display: inline-block;
     border-radius: 4px;
     border: none;
     text-align: center;
-    /* font-size: 28px; */
+    font-size: 28px;
     padding: 10px;
     width: 100%;
     transition: 0.7s;
@@ -50,83 +235,326 @@ import axios from "axios";
     text-align: center;
 }
 
-img {
+.main-content img {
     width: 17rem;
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 0, 0, 1.00);
 }
+*/
+
+.gradient-custom {
+    /* fallback for old browsers */
+    background: #f6d365;
+
+    /* Chrome 10-25, Safari 5.1-6 */
+    background: -webkit-linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1));
+
+    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    background: linear-gradient(to right bottom, rgba(246, 211, 101, 1), rgba(253, 160, 133, 1))
+}
+
+.gradient-custom img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 0, 0, 1.00);
+}
+
+.bg-image img {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.modal-header h3 {
+    font-size: 30px;
+    color: 003E3E;
+    /* 置中 */
+    position: absolute;
+    top: 7%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.modal-content {
+    background-color: white;
+    text-align: center;
+}
+
+.modal-body .card input {
+    margin: 30px;
+    width: 90%;
+}
+
+.modal-body .card img {
+    width: auto;
+    height: 300px;
+    margin: auto;
+    margin-bottom: 10px;
+    border-radius: 50%;
+}
+
+.modal-body .btn {
+    margin: 20px 0px;
+    font-size: 20px;
+    color: white;
+}
+
+body.modal-open {
+    overflow-y: auto !important;
+    padding-right: 0 !important;
+}
+
+.modal-backdrop {
+    opacity: 0 !important;
+    filter: alpha(opacity=0) !important;
+}
+
+/* body {
+    overflow: hidden;
+} */
+
+/* header {
+    height: calc(100vh);
+} */
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+/* 表單 */
+
+a {
+    text-decoration: none;
+    /* font-size: 30px; */
+    color: 8600FF;
+    /* margin: 50px; */
+}
+
+/* .modal-header h3 {
+    font-size: 30px;
+    color: blueviolet;
+    position: absolute;
+    top: 7%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+} */
+
+.modal-body form .account,
+.modal-body form .password {
+    margin: 30px;
+    width: 90%;
+    border-radius: 20px;
+}
+
+.modal-body form .btn {
+    width: 100%;
+    font-size: 25px;
+    color: white;
+}
+
+/* 隔 */
 </style>
 <template>
-    <div class="container-fluid">
-        <div class="row content">
-            <div class="col-sm-3 sidenav">
-                <ul class="nav nav-tabs flex-column page">
-                    <li><button class="nav-link active" data-bs-toggle="tab" data-bs-target="#menu1"
-                            aria-selected="true">個人檔案</button></li>
-                    <li><button class="nav-link" data-bs-toggle="tab" data-bs-target="#menu2"
-                            aria-selected="false">訂位</button></li>
-                    <li><button class="nav-link" data-bs-toggle="tab" data-bs-target="#menu3"
-                            aria-selected="false">商品訂單</button></li>
-                    <li><button class="nav-link" data-bs-toggle="tab" data-bs-target="#menu4"
-                            aria-selected="false">文章</button></li>
-                    <li><button class="nav-link" data-bs-toggle="tab" data-bs-target="#menu5"
-                            aria-selected="false">網誌</button></li>
-                </ul>
-            </div>
-            <div class="col-sm-9 main-content text-left">
-                <div class="tab-content">
-                    <div class="tab-pane fade show active" id="menu1">
-                        <!-- <div class="container mt-10">
-                            <div class="card bg-white">
-                                <img style="" :src="image" alt="">
-                                <input @change="handleImage" class="custom-input" type="file" accept="image/*">
+    <section class="vh-100" style="background-color: #f4f5f7;">
+        <div class="bg-image" style="background-image: url('https://img.freepik.com/free-vector/colorful-vegetables-background_1284-21278.jpg?w=740&t=st=1658201666~exp=1658202266~hmac=d7c616c3b429494a517e63cd1b2c5b602ae4ee648c0241594184988af73fe4e4');
+            height: 100vh">
+            <div class="container py-5 h-100">
+                <div class="row d-flex justify-content-center align-items-center h-100">
+                    <div class="col col-lg-6 mb-4 mb-lg-0">
+                        <div class="card mb-3" style="border-radius: .5rem;">
+                            <div class="row g-0">
+                                <div class="col-md-4 gradient-custom text-center text-white"
+                                    style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
+                                    <img v-if="picture" :src="`data:image/png;base64,${picture}`" class="img-fluid my-5"
+                                        style="height: 100px;" />
+                                    <img v-else
+                                        src="https://icon-library.com/images/no-user-image-icon/no-user-image-icon-3.jpg"
+                                        class="img-fluid my-5" style="height: 100px;" />
+                                    <h5>{{ name }}</h5>
+                                    <p></p>
+                                    <!-- <div class="card bg-white">
+                                        <input type="file" accept="image/*" @change="uploadImage" id="file">
+                                        <img :src="previewImage" />
+                                        <button type="button" @click="submitFile">上傳</button>
+                                    </div> -->
+                                    <i class="far fa-edit mb-5" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#uploadImage"></i>
+                                    <br>
+                                    <!-- 按鈕 -->
+
+                                    <!-- <a href="#" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#loginModal">會員登入</a> -->
+                                    <a href="#" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#updateName">修改名稱</a>
+                                    <br>
+                                    <a href="#" type="button" data-bs-toggle="modal"
+                                        data-bs-target="#updatePassword">修改密碼</a>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="card-body p-4">
+                                        <h6>個人資訊</h6>
+                                        <hr class="mt-0 mb-4">
+                                        <div class="row pt-1">
+                                            <div class="col-6 mb-3">
+                                                <h6>Email</h6>
+                                                <p class="text-muted">{{ email }}</p>
+                                            </div>
+                                            <div class="col-6 mb-3">
+                                                <h6>用戶名稱</h6>
+                                                <p class="text-muted">{{ name }}</p>
+                                            </div>
+                                        </div>
+                                        <h6>紀錄</h6>
+                                        <hr class="mt-0 mb-4">
+                                        <div class="row pt-1">
+                                            <div class="col-6 mb-3">
+                                                <h6>註冊日期</h6>
+                                                <p class="text-muted">{{ registerTime }}</p>
+                                            </div>
+                                            <div class="col-6 mb-3">
+                                                <h6>登入時間</h6>
+                                                <p class="text-muted">{{ lastLoginTime }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                        </div> -->
-                        <p>
-                            <input type="file" accept="image/*" @change="uploadImage" id="file">
-                            <img :src="previewImage" />
-                            <button type="button" @click="submitFile">上傳</button>
-                        </p>
-                        <span>個人檔案</span>
+                        </div>
                     </div>
-                    <div class="tab-pane fade" id="menu2">
-                        <span>訂位</span>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- 跳出視窗內容 -->
+
+    <div class="modal fade" id="uploadImage" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Header -->
+                <div class="modal-header">
+                    <h3>圖片上傳</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <!-- Body -->
+                <div class="modal-body">
+                    <!-- 登入表單 -->
+                    <div class="card bg-white" style="border:none">
+                        <input type="file" accept="image/*" @change="uploadImage" id="file">
+                        <img :src="previewImage" />
                     </div>
-                    <div class="tab-pane fade" id="menu3">
-                        <span>商品訂單</span>
-                    </div>
-                    <div class="tab-pane fade" id="menu4">
-                        <span>文章</span>
-                    </div>
-                    <div class="tab-pane fade" id="menu5">
-                        <span>網誌</span>
-                    </div>
+                    <button type="button" class="btn btn-info" @click="submitFile" data-bs-dismiss="modal"> 上傳 </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="updateName" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Header -->
+                <div class="modal-header">
+                    <h3>名稱修改</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <!-- Body -->
+                <div class="modal-body">
+                    <!-- 登入表單 -->
+                    <form @submit.prevent="Submit">
+                        <div class="py-3">
+                            <div class="mb-4">
+                                <input type="text" class="form-control form-control-lg form-control-alt"
+                                    placeholder="使用者名稱" :class="{
+                                        'is-invalid': $v.name.$errors.length,
+                                    }" v-model="state.name" @blur="$v.name.$touch" />
+                                <div v-if="$v.name.$errors.length" class="invalid-feedback animated fadeIn">
+                                    請輸入使用者名稱
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-6 col-xl-5">
+                                <button type="submit" class="btn w-100 btn-alt-success">
+                                    <i class="fa fa-fw fa-plus me-1 opacity-50"></i>確認修改
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="updatePassword" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Header -->
+                <div class="modal-header">
+                    <h3>密碼修改</h3>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <!-- Body -->
+                <div class="modal-body">
+                    <!-- 登入表單 -->
+                    <form @submit.prevent="onSubmit">
+                        <div class="py-3">
+                            <div class="mb-4">
+                                <input type="password" class="form-control form-control-lg form-control-alt"
+                                    id="password" name="signup-password" placeholder="密碼" :class="{
+                                        'is-invalid': v$.password.$errors.length,
+                                    }" v-model="state.password" @blur="v$.password.$touch" />
+                                <div v-if="v$.password.$errors.length" class="invalid-feedback animated fadeIn">
+                                    請輸入你的密碼
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <input type="password" class="form-control form-control-lg form-control-alt"
+                                    id="newPassword" name="signup-password-confirm" placeholder="新密碼" :class="{
+                                        'is-invalid': v$.newPassword.$errors.length,
+                                    }" v-model="state.newPassword" @blur="v$.newPassword.$touch" />
+                                <div v-if="v$.newPassword.$errors.length" class="invalid-feedback animated fadeIn">
+                                    至少包含1個大小寫字母和數字，且字元個數介於8~20
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <input type="password" class="form-control form-control-lg form-control-alt"
+                                    id="confirmNewPassword" name="signup-username" placeholder="再次輸入新密碼" :class="{
+                                        'is-invalid': v$.confirmNewPassword.$errors.length,
+                                    }" v-model="state.confirmNewPassword" @blur="v$.confirmNewPassword.$touch" />
+                                <div v-if="v$.confirmNewPassword.$errors.length"
+                                    class="invalid-feedback animated fadeIn">
+                                    請確認與新密碼相符
+                                </div>
+                                <!-- <div>
+                                    <input type="checkbox" onclick="showPassword()">顯示密碼
+                                </div> -->
+                                <div class="mb-4">
+                                    <!-- <div class="form-check"> -->
+                                    <input class="form-check-input" type="checkbox"
+                                        @click="showPassword()">&nbsp;&nbsp;顯示密碼
+                                    <!-- </div> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-6 col-xl-5">
+                                <button type="submit" class="btn w-100 btn-alt-success">
+                                    <i class="fa fa-fw fa-plus me-1 opacity-50"></i>確認修改
+                                </button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </template>
 <script>
-// export default {
-//     data() {
-//         return {
-//             image: ''
-//         }
-//     },
-//     methods: {
-//         handleImage(e) {
-//             const selectImage = e.target.files[0];
-//             this.createBase64Image(selectImage);
-//         },
-//         createBase64Image(fileObject) {
-//             const reader = new FileReader();
-
-//             reader.onload = (e) => {
-//                 this.image = e.target.result;
-//                 console.log(e.target.result);
-//             };
-//             reader.readAsBinaryString(fileObject);
-//         },
-//     },
-// }
 export default {
     data() {
         return {
@@ -145,35 +573,6 @@ export default {
         },
         submitFile() {
 
-            // const dataURLtoFile = (dataurl) => {
-            //     const arr = dataurl.split(',')
-            //     const mime = arr[0].match(/:(.*?);/)[1]
-            //     const bstr = atob(arr[1])
-            //     let n = bstr.length
-            //     const u8arr = new Uint8Array(n)
-            //     while (n) {
-            //         u8arr[n - 1] = bstr.charCodeAt(n - 1)
-            //         n -= 1 // to make eslint happy
-            //     }
-            //     return new File([u8arr], { type: mime })
-            // }
-
-            // const file = dataURLtoFile(this.previewImage);
-
-            // console.log(this.previewImage);
-
-            // const data = new FormData();
-            // data.append('img', file);
-
-            // let formData = new FormData();
-
-            // formData.append('img', this.previewImage);
-
-            // console.log(this.previewImage)
-
-            const admin = JSON.parse(window.localStorage.getItem('access-user'))
-            const id = admin.data.user.userId;
-
             var formData = new FormData();
 
             var imageFile = document.querySelector('#file');
@@ -181,7 +580,7 @@ export default {
             console.log(this.previewImage);
 
             formData.append("img", imageFile.files[0]);
-            formData.append("id", id);
+            formData.append("id", this.uid);
 
             axios.post("http://localhost:8088/user/uploadImage", formData,
                 {
@@ -192,6 +591,7 @@ export default {
                 .then(response => {
                     if (response.status === 200) {
                         Swal.fire("上傳成功", "༼ つ ◕_◕ ༽つ", "success");
+                        this.renovate();
                     }
                 })
                 .catch(function (error) {
