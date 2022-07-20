@@ -56,18 +56,6 @@ getAxios();
 
 <template >
 
-    <div class="content">
-        <form @submit.prevent>
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search.." />
-                <span class="input-group-text">
-                    <i class="fa fa-fw fa-search"></i>
-                </span>
-            </div>
-        </form>
-    </div>
-    <!-- END Search -->
-
     <!-- Page Content -->
     <div class="content">
         <!-- Results -->
@@ -94,7 +82,7 @@ getAxios();
                         <button type="button" class="nav-link" id="search-classic-tab" data-bs-toggle="tab"
                             data-bs-target="#search-classic" role="tab" aria-controls="search-classic"
                             aria-selected="false">
-                            未出貨
+                            已出貨
                         </button>
                     </li>
                     <li class="nav-item">
@@ -341,7 +329,7 @@ getAxios();
                                         <!-- Table -->
                                         <div class="table-responsive push" v-for="item in orderList" :key="item.orderId"
                                             :value='item.value' :label="item.label">
-                                            <div v-if="item.status == '未出貨'">
+                                            <div v-if="item.status == '已出貨'">
                                                 <!-- Invoice Info -->
                                                 <div class="row mb-4">
                                                     <!-- Company Info -->

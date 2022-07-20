@@ -45,6 +45,10 @@ if (window.localStorage.getItem("cartItem") != null) {
   cartItemList = JSON.parse(window.localStorage.getItem("cartItem")).cartItemList;
 }
 
+function reflesh() {
+  cartItemList = JSON.parse(window.localStorage.getItem("cartItem")).cartItemList;
+}
+
 // 清空localstorage
 function removeCart() {
   localStorage.removeItem("cartItem")
@@ -56,7 +60,6 @@ function removeCart() {
       icon: "success"
     }
   ))
-
 }
 
 //加總功能
@@ -71,13 +74,31 @@ function countTotal() {
 
 //刪除一筆localstorage裡面的值
 //先取出index在用splice做刪除值
-function deleteItem(index) {
-  cartItemList.splice(index, 1);
+function deleteItem(i) {
+  cartItemList.splice(i, 1);
   //把cartItem前面的宣告加回去
   const cartItemList1 = { cartItemList: cartItemList }
   localStorage.setItem("cartItem", JSON.stringify(cartItemList1))
   window.location.reload()
 }
+
+// 更新數量
+function increaseQuantity(i) {
+  cartItemList[i].quantity++
+  const cartItemList1 = { cartItemList: cartItemList }
+  localStorage.setItem("cartItem", JSON.stringify(cartItemList1))
+  window.location.reload()
+}
+
+function decreaseQuantity(i) {
+
+  cartItemList[i].quantity--
+  const cartItemList1 = { cartItemList: cartItemList }
+  localStorage.setItem("cartItem", JSON.stringify(cartItemList1))
+  window.location.reload()
+}
+
+
 
 
 // 寫入訂單功能
@@ -117,9 +138,7 @@ function checkOut() {
 
 // 結帳功能
 function payment() {
-
   axios.post(
-
     "http://localhost:8088/paypal/payment?sum=" + total
   ).then(
     (res) => {
@@ -174,7 +193,7 @@ function payment() {
               新生路421號<br />
               {{ user.data.user.email }}
             </address>
-            <button @click="removeCart()">清除購物車</button>
+            <button @click="removeCart()"></button>
           </div>
           <!-- END Client Info -->
         </div>
@@ -187,9 +206,10 @@ function payment() {
               <tr>
                 <th class="text-center" style="width: 60px"></th>
                 <th>商品</th>
-                <th class="text-center" style="width: 90px">數量</th>
+                <th class="text-center" style="width:120px">數量</th>
                 <th class="text-end" style="width: 120px">單價</th>
                 <th class="text-end" style="width: 120px">小計</th>
+                <th class="text-end" style="width: 120px">刪除</th>
               </tr>
             </thead>
             <tbody>
@@ -201,33 +221,36 @@ function payment() {
                   <img :src="item.product.productImage" alt="" width="50">
                 </td>
                 <td class="text-center">
+                  <button @click="increaseQuantity(i)">+</button>
                   <span class="badge rounded-pill bg-primary">
                     {{ item.quantity }}
                   </span>
+
+                  <button @click="decreaseQuantity(i)">-</button>
                 </td>
                 <td class="text-end">NT. {{ item.product.productPrice }}
-                  <button @click="deleteItem(i)">delete</button>
+
                 </td>
                 <td class="text-end">{{ item.product.productPrice * item.quantity }}</td>
+                <td class="text-end"><button @click="deleteItem(i)">delete</button></td>
               </tr>
-
               <tr>
-                <td colspan="4" class="fw-semibold text-end">稅
+                <td colspan="5" class="fw-semibold text-end">稅
                 </td>
                 <td class="text-end">０</td>
               </tr>
               <tr>
-                <td colspan="4" class="fw-semibold text-end">運費</td>
+                <td colspan="5" class="fw-semibold text-end">運費</td>
                 <td class="text-end">0</td>
               </tr>
               <tr>
-                <td colspan="4" class="fw-bold text-uppercase text-end bg-body-light">
+                <td colspan="5" class="fw-bold text-uppercase text-end bg-body-light">
                   總價
                 </td>
                 <td class="fw-bold text-end bg-body-light">{{ countTotal() }}</td>
               </tr>
               <tr>
-                <td colspan="4" class="fw-bold text-uppercase text-end bg-body-light">
+                <td colspan="5" class="fw-bold text-uppercase text-end bg-body-light">
                 </td>
                 <td class="fw-bold text-end bg-body-light">
                   <button type="button" class="btn btn-outline-danger">
