@@ -153,7 +153,11 @@ INSERT INTO `order` (userId, payment, status, createdTime,updatedTime) VALUES
  (1, 4520,'未付款' , now(), now())
 ,(3, 1520,'訂單完成', now(), now())
 ,(6, 27390,'已出貨', now(), now())
-,(5, 155100,'未付款' , now(), now());
+,(5, 155100,'未付款' , now(), now())
+,(2, 55100,'已出貨' , now(), now())
+,(2, 15100,'訂單完成' , now(), now())
+,(2, 1500,'已付款' , now(), now())
+,(2, 150,'已付款' , now(), now());
 
 
 
