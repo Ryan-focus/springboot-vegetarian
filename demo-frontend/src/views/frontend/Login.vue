@@ -203,7 +203,7 @@ export default {
 
       Swal.fire({
         title: "忘記密碼?",
-        text: `發送密碼信至${email},原本密碼將被覆蓋,請確認`,
+        html: `將發送密碼信至 ${email} <br> 原本密碼將被覆蓋  `,
         showCancelButton: true,
         confirmButtonText: "確認",
         cancelButtonText: '取消',
@@ -220,9 +220,22 @@ export default {
                 return response.data;
               }
             })
-            .catch(function (error) {
+            .catch(async () => {
+              return axios.post("http://localhost:8088/business/sendMail", user)
+                .then(response => {
+                  if (response.status === 200) {
+                    Swal.fire({
+                      title: "密碼信已寄出",
+                      text: `請前往${email}查看`,
+                      timer: 1000,
+                      icon: "success"
+                    });
+                    return response.data;
+                  }
+                })
+            }).catch((error) => {
               if (error.response.status === 400) {
-                Swal.fire("請確認帳號輸入正確", "◢▆▅▄▃崩╰(〒皿〒)╯潰▃▄▅▇◣", "error");
+                Swal.fire("請確認帳號輸入是否正確", "崩潰🐸", "error");
               } else {
                 console.log(error.response.status)
                 console.log(error.response.data.error)
