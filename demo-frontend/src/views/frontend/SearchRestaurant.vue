@@ -192,8 +192,10 @@ var businessID = [];
 function getBusinessList() {
   axios.get(`http://${url}/business`)
     .then((res) => {
-      for (let i = 0; i <= res.data.length; i++) {
+
+      for (let i = 0; i <= res.data.length - 1; i++) {
         if (res.data[i].restaurantNumber != 0) {
+          console.log(res.data[i]);
           businessRestuarantID.push(res.data[i].restaurantNumber);
           businessID.push(res.data[i].businessId);
         }
