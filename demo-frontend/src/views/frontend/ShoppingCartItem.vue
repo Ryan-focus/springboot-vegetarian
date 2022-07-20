@@ -230,7 +230,6 @@ function payment() {
               新生路421號<br />
               {{ user.data.user.email }}
             </address>
-            <button @click="removeCart()"></button>
           </div>
           <!-- END Client Info -->
         </div>
@@ -243,7 +242,7 @@ function payment() {
               <tr>
                 <th class="text-center" style="width: 60px"></th>
                 <th>商品</th>
-                <th class="text-center" style="width:120px">數量</th>
+                <th class="text-center" style="width:200px">數量</th>
                 <th class="text-end" style="width: 120px">單價</th>
                 <th class="text-end" style="width: 120px">小計</th>
                 <th class="text-end" style="width: 120px">刪除</th>
@@ -258,12 +257,13 @@ function payment() {
                   <img :src="item.product.productImage" alt="" width="50">
                 </td>
                 <td class="text-center">
-                  <button @click="increaseQuantity(i)">+</button>
-                  <span class="badge rounded-pill bg-primary">
-                    {{ item.quantity }}
-                  </span>
-
-                  <button @click="decreaseQuantity(i)">-</button>
+                  <button type="button" class="btn btn-sm btn-Info me-1 mb-3" @click="increaseQuantity(i)">
+                    <i class="fa fa-circle-plus"></i>
+                  </button>
+                  &nbsp;{{ item.quantity }}&nbsp;
+                  <button type="button" class="btn btn-sm btn-Info me-1 mb-3" @click="decreaseQuantity(i)">
+                    <i class="fa fa-circle-minus"></i>
+                  </button>
                 </td>
                 <td class="text-end">NT. {{ item.product.productPrice }}
 
