@@ -1356,6 +1356,7 @@ router.beforeEach((to, from) => {
     to.name !== "Forum-index" &&
     to.name !== "postIndex" &&
     to.name !== "postPage" &&
+    to.name !== "BusinessRegister" &&
     to.name !== "restaurantIndex" &&
     to.name !== "restaurant-details" &&
     to.name !== "restaurant-reserve" &&
