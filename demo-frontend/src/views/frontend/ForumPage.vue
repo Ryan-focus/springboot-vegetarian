@@ -103,27 +103,8 @@ function showForum() {
                                 <button type="button" class="btn btn-outline-success btn-block" id="search-projects-tab"
                                     data-bs-toggle="tab" data-bs-target="#search-projects" role="tab"
                                     aria-controls="search-projects" aria-selected="true"
-                                    style="float:left;width: 294px;">
-                                    健康
-                                </button>
-                                <button type="button" class="btn btn-outline-success btn-block" id="search-projects-tab"
-                                    data-bs-toggle="tab" data-bs-target="#search-projects" role="tab"
-                                    aria-controls="search-projects" aria-selected="true"
-                                    style="float:left;width: 294px;">
-                                    養身
-                                </button>
-
-                                <button type="button" class="btn btn-outline-success btn-block" id="search-projects-tab"
-                                    data-bs-toggle="tab" data-bs-target="#search-projects" role="tab"
-                                    aria-controls="search-projects" aria-selected="true"
-                                    style="float:left;width: 294px;">
-                                    環保
-                                </button>
-                                <button type="button" class="btn btn-outline-success btn-block" id="search-projects-tab"
-                                    data-bs-toggle="tab" data-bs-target="#search-projects" role="tab"
-                                    aria-controls="search-projects" aria-selected="true"
-                                    style="float:left;width: 294px;">
-                                    公益
+                                    style="float:left;width: 1176px;">
+                                    {{ resForumTitle }}
                                 </button>
                             </li>
                         </ul>
