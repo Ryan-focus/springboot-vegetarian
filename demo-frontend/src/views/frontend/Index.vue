@@ -2,12 +2,11 @@
 import { useTemplateStore } from "@/stores/template";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import axios from "axios";
+
 // Main store
 const store = useTemplateStore();
 const router = useRouter();
 
-const url = "localhost:8088";
 const urlParams = ref(
   {
     limit: 10,
