@@ -378,7 +378,7 @@ function addToCart(productId) {
                     }}</span>
                   </div>
                   <div v-else>
-                    <span class="badge bg-danger"><i class="fa fa-times-circle"></i> 已無商品</span>
+                    <span class="badge bg-danger"><i class="fa fa-times-circle"></i> 商品已售完</span>
                   </div>
                   <!-- 購物車按鈕 -->
                 </div>
@@ -390,9 +390,7 @@ function addToCart(productId) {
                     <i class="fa fa-cart-shopping">加入購物車</i>
                   </button>
                 </div>
-                <div v-else>
-                  <i class="fa fa-cart-shopping">已無商品</i>
-                </div>
+
               </div>
             </div>
 
@@ -468,7 +466,7 @@ function addToCart(productId) {
               }}</span>
             </div>
             <div v-else>
-              <span class="badge bg-danger"><i class="fa fa-times-circle"></i> 已無商品</span>
+              <span class="badge bg-danger"><i class="fa fa-times-circle"></i> 商品已售完</span>
             </div>
           </div>
 
@@ -481,9 +479,6 @@ function addToCart(productId) {
                 @click="addToCart(singleProduct.productId)">
                 <i class="fa fa-cart-shopping">加入購物車</i>
               </button>
-            </div>
-            <div v-else>
-              <i class="fa fa-cart-shopping">商品已售完</i>
             </div>
           </div>
         </div>
