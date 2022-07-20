@@ -62,14 +62,23 @@ const maxDate = ref(new Date(new Date().getFullYear(), new Date().getMonth(), ne
 const adult = ref(2);
 const kid = ref(0);
 
-const format = (date) => {
-  const day = date.getDate();
-  const month = date.getMonth() + 1;
-  const days = date.getDay();
+const format = (d) => {
+  const day = d.getDate();
+  const month = d.getMonth() + 1;
+  const days = d.getDay();
   const daysArray = ['週日', '週一', '週二', '週三', '週四', '週五', '週六'];
 
   return `${month}月${day}日 ${daysArray[days]}`;
 }
+
+// const dataFormat = (dataDate) => {
+//   const day = dataDate.getDate();
+//   const month = dataDate.getMonth() + 1;
+//   const year = dataDate.getFullYear();
+
+//   return `${year}-${month}-${day}`;
+// }
+
 //reserve 要儲存的資訊有5 restaurantNumber businessId人數 Adult 、 Child、 Date
 const data = (sessionStorage.getItem('reserve')) ? JSON.parse(sessionStorage.getItem('reserve')) : {
   reserveItemList: []
@@ -80,7 +89,7 @@ function sendData() {
   data.reserveItemList.push(businessId);
   data.reserveItemList.push(adult.value);
   data.reserveItemList.push(kid.value);
-  data.reserveItemList.push(format(date.value));
+  data.reserveItemList.push(date.value);
   console.log("傳送到下一個頁面所儲存的資料有:" + data.reserveItemList);
   sessionStorage.setItem('reserve', JSON.stringify(data));
   router.push({
@@ -200,6 +209,8 @@ function sendData() {
                 <option value="5" data-testid="5位小孩">5位小孩</option>
                 <option value="6" data-testid="6位小孩">6位小孩</option>
                 <option value="7" data-testid="7位小孩">7位小孩</option>
+                <option value="8" data-testid="8位小孩">8位小孩</option>
+                <option value="9" data-testid="9位小孩">9位小孩</option>
               </select>
             </div>
           </div>

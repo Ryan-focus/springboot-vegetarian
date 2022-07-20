@@ -1358,7 +1358,8 @@ router.beforeEach((to, from) => {
     to.name !== "postPage" &&
     to.name !== "restaurantIndex" &&
     to.name !== "restaurant-details" &&
-    to.name !== "restaurant-reserve"
+    to.name !== "restaurant-reserve" &&
+    to.name !== "restaurant-reserve-check"
   ) {
     return { name: "login" };
   }
