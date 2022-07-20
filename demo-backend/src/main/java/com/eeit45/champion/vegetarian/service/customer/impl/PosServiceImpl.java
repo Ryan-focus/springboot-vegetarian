@@ -42,13 +42,7 @@ public class PosServiceImpl implements PosService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
-        Pos pos  = posDao.getPosByBusinessId(businessId);
-
-        if(pos != null ){
-            log.warn("此商家用戶 : {} , 已申請過POS系統" , businessId);
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-        }
-
+        
         //更新business 系統狀態
         businessDao.updateStatus(business.getBusinessId(),"未開通" , null);
 

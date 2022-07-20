@@ -432,8 +432,16 @@ function createRestaurant() {
         restaurantScore: state.restaurantScore,
         imageUrl: image.value.imageUrl,
       };
+
       //send request to server
       if (result.value) {
+        var posData = {
+          validDate: '未審核',
+          expiryDate: new Date(),
+          UUID: null
+        }
+        axios.post(`http://${url}/business/${businessID}/pos`, posData)
+          .then((res) => { console.log(res) })
         localStorage.setItem("restaurantApply" + businessID, JSON.stringify(restaurant));
         toast.fire({
           title: "已為您送出，請等待審核",

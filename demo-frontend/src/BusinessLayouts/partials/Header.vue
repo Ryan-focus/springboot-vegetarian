@@ -132,7 +132,7 @@ const business = JSON.parse(window.sessionStorage.getItem("access-business"));
                   aria-labelledby="page-header-user-dropdown">
                   <div class="p-3 text-center bg-body-light border-bottom rounded-top">
                     <img class="img-avatar img-avatar48 img-avatar-thumb"
-                      :src="`/assets/media/business/${business.data.business.businessPic}.jpg`" alt="Header Avatar" />
+                      :src="`/assets/media/business/${business.data.business.businessPic}.jpg`" />
                     <p class="mt-2 mb-0 fw-medium">
                       {{ business.data.business.businessName }}
                     </p>
