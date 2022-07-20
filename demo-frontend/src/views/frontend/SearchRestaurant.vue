@@ -1,6 +1,6 @@
 <script setup>
 import { useTemplateStore } from "@/stores/template";
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import { useRoute, useRouter } from 'vue-router';
 import axios from "axios";
 
@@ -11,19 +11,6 @@ const store = useTemplateStore();
 const router = useRouter();
 //接值
 const route = useRoute();
-const data = reactive({
-  loading: false,
-});
-
-const restaurantName = route.params.restaurantName;
-const restaurantTel = ref();
-const restaurantAddress = route.params.restaurantAddress;
-const restaurantCategory = route.params.restaurantCategory;
-const restaurantType = ref();
-const restaurantBusinessHours = ref();
-const restaurantScore = ref();
-const imageUrl = ref();
-const dataArray = ref();
 
 const urlParams = ref(
   {
@@ -31,26 +18,36 @@ const urlParams = ref(
     offset: 0,
     restaurantCategory: null,
     restaurantType: null,
-    restaurantBusinessHours: null,
-    restaurantScore: null,
-    restaurantNumber: null
+    restaurantName: null,
+    restaurantAddress: null,
+    restaurantNumber: null,
   }
 );
 
+console.log(urlParams.value);
+
+const restaurantNumber = ref();
+const restaurantName = route.params.restaurantName;
+const restaurantTel = ref();
+const restaurantAddress = route.params;
+const restaurantCategory = route.params.restaurantCategory;
+const restaurantType = ref();
+const restaurantBusinessHours = ref();
+const restaurantScore = ref();
+const imageUrl = ref();
+const dataArray = ref();
+
 console.log(route.params);
-
-
 
 // 取得條件(類別)
 const searchCatagory = function (catagory) {
-  data.loading = true;
   if (catagory != null) {
     axios
       .get(`http://${url}/restaurantList?restaurantCategory=` + catagory)
       .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        console.log(res.data.results);
+        // console.log(res);
+        // console.log(res.data);
+        // console.log(res.data.results);
 
         dataArray.value = res.data.results;
 
@@ -60,9 +57,9 @@ const searchCatagory = function (catagory) {
     axios
       .get(`http://${url}/restaurantList?restaurantCategory=${restaurantCategory}`)
       .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        console.log(res.data.results);
+        // console.log(res);
+        // console.log(res.data);
+        // console.log(res.data.results);
 
         dataArray.value = res.data.results;
 
@@ -74,10 +71,26 @@ searchCatagory();
 
 // 取得條件(素食種類)
 const searchType = function (type) {
-  data.loading = true;
 
   axios
     .get(`http://${url}/restaurantList?restaurantType=` + type)
+    .then((res) => {
+      // console.log(res);
+      // console.log(res.data);
+      // console.log(res.data.results);
+
+      dataArray.value = res.data.results;
+
+    })
+    .catch((err) => console.log(err));
+}
+searchType();
+
+// 取得條件(地址)
+const searchAddress = function () {
+
+  axios
+    .get(`http://${url}/restaurantList`, { params: urlParams.value })
     .then((res) => {
       console.log(res);
       console.log(res.data);
@@ -86,78 +99,32 @@ const searchType = function (type) {
       dataArray.value = res.data.results;
 
     })
-    .catch((err) => console.log(err));
-
-
+    .catch((err) => console.log(err, "失敗"));
 }
-searchType();
 
-// 取得條件(地址)
-const searchAddress = function (address) {
-  data.loading = true;
-  if (address != null) {
-    axios
-      .get(`http://${url}/restaurantList?restaurantAddress=` + address)
-      .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        console.log(res.data.results);
-
-        dataArray.value = res.data.results;
-
-      })
-      .catch((err) => console.log(err));
-  } else {
-    axios
-      .get(`http://${url}/restaurantList?restaurantAddress=${restaurantAddress}`)
-      .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        console.log(res.data.results);
-
-        dataArray.value = res.data.results;
-
-      })
-      .catch((err) => console.log(err));
-  }
-}
 searchAddress();
 
 // 取得條件(餐廳名稱)
-const searchName = function (name) {
-  data.loading = true;
-  if (name != null) {
-    axios
-      .get(`http://${url}/restaurantList?restaurantName=` + name)
-      .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        console.log(res.data.results);
+const searchName = function () {
 
-        dataArray.value = res.data.results;
+  axios
+    .get(`http://${url}/restaurantList?restaurantName=${restaurantName}`)
+    .then((res) => {
+      console.log(res);
+      console.log(res.data);
+      console.log(res.data.results);
 
-      })
-      .catch((err) => console.log(err));
-  } else {
-    axios
-      .get(`http://${url}/restaurantList?restaurantName=${restaurantName}`)
-      .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        console.log(res.data.results);
+      dataArray.value = res.data.results;
 
-        dataArray.value = res.data.results;
-
-      })
-      .catch((err) => console.log(err));
-  }
+    })
+    .catch((err) => console.log(err, "失敗"));
 }
+
 searchName();
 
 
 //帶值restaurantNumber到detail頁
 function restaurantDetail(restaurantNumber) {
-  // urlParams.value.restaurantNumber = prams;
   urlParams.value.restaurantNumber = restaurantNumber;
 
   router.push({
@@ -238,9 +205,9 @@ function getlocation() {
     <div class=" row col-md-5 offset-md-3 content content-full text-center">
       <div class="mb-2">
         <div>
-          <input type="text" placeholder="搜尋餐廳名稱" v-model="urlParams.searchName" @change="searchName()" />
+          <input type="text" placeholder="搜尋餐廳名稱" v-model="urlParams.restaurantName" @keyup="searchName()" />
           <!-- <a></a> -->
-          <input type="text" placeholder="搜尋地點" v-model="urlParams.searchAddress" @change="searchAddress()" />
+          <input type="text" placeholder="搜尋地點" v-model="urlParams.restaurantAddress" @keyup="searchAddress()" />
           <button class="btn btn-info" tabindex="0" type="button">
             <i class="si si-magnifier"></i>
           </button>
