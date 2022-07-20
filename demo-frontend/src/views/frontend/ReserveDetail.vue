@@ -3,6 +3,7 @@
 import { useTemplateStore } from "@/stores/template";
 import { reactive, computed, ref, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
+import Swal from "sweetalert2";
 
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
 import useVuelidate from "@vuelidate/core";
@@ -162,10 +163,13 @@ async function sendData() {
 
   return axios.post(`http://localhost:8088/${businessId.value}/reserves`, reserveData)
     .then(response => {
-      console.log(response.status)
-      console.log(response.data)
-      if (response.status === 200) {
-        return response.data;
+      if (response.status === 201) {
+        Swal.fire({
+          title: "您的預訂已成功",
+          timer: 1000,
+          icon: "success"
+        })
+        router.replace({ name: "index" });
       }
     }).catch(err => {
       console.log(err.response)
