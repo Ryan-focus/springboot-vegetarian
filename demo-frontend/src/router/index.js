@@ -1361,7 +1361,6 @@ router.beforeEach((to, from) => {
     to.name !== "restaurant-details" &&
     to.name !== "restaurant-reserve" &&
     to.name !== "restaurant-reserve-check" &&
-    to.name !== "BusinessRegister" &&
     to.name !== "shoppingCart"
   ) {
     return { name: "login" };
