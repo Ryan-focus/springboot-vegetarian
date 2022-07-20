@@ -37,7 +37,13 @@ let toast = Swal.mixin({
 
 
 //取得localstorage
-const user = JSON.parse(window.localStorage.getItem("access-user"));
+var user = null;
+
+if (window.localStorage.getItem("access-user") != null) {
+  user = JSON.parse(window.localStorage.getItem("access-user"));
+} else if (window.localStorage.getItem("access-admin") != null) {
+  user = JSON.parse(window.localStorage.getItem("access-admin"));
+}
 const userId = JSON.stringify(user.data.user.userId)
 //檢查localstorage裡面是否有東西，沒有設定為null不然直接抓會報錯
 var cartItemList = null
