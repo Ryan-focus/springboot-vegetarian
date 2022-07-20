@@ -38,12 +38,13 @@ let toast = Swal.mixin({
 
 //取得localstorage
 const user = JSON.parse(window.localStorage.getItem("access-user"));
+const userId = JSON.stringify(user.data.user.userId)
 //檢查localstorage裡面是否有東西，沒有設定為null不然直接抓會報錯
 var cartItemList = null
 if (window.localStorage.getItem("cartItem") != null) {
   cartItemList = JSON.parse(window.localStorage.getItem("cartItem")).cartItemList;
 }
-const userId = JSON.stringify(user.data.user.userId)
+
 // 清空localstorage
 function removeCart() {
   localStorage.removeItem("cartItem")
@@ -102,7 +103,7 @@ function checkOut() {
       icon: "success"
     }).then(
       axios
-        .post(`http://localhost:8088/2/order`, {
+        .post(`http://localhost:8088/${userId}/order`, {
           "buyItemList": checkOutItemArray
         })
         .then((res) => {
@@ -205,7 +206,7 @@ function payment() {
                   </span>
                 </td>
                 <td class="text-end">NT. {{ item.product.productPrice }}
-                  <button @click="deleteItem(index)">delete</button>
+                  <button @click="deleteItem(i)">delete</button>
                 </td>
                 <td class="text-end">{{ item.product.productPrice * item.quantity }}</td>
               </tr>
