@@ -22,6 +22,11 @@ public interface ForumDao {
 	
 	Integer totalForum (Forum forum);
 	
+	List<Forum> seachForumCategory1();
+	List<Forum> seachForumCategory2();
+	List<Forum> seachForumCategory3();
+	List<Forum> seachForumCategory4();
+	
 	
 	
 	

@@ -99,6 +99,48 @@ public class ForumController {
 		
 	}
 	
+	@GetMapping(path = "/ForumCategory1")
+	public ResponseEntity<List<Forum>> searchForumCategory1(){
+		List<Forum> searchForum = forumService.seachForumCategory1();
+		
+		if(searchForum != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(searchForum);
+		}else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
 	
+	@GetMapping(path = "/ForumCategory2")
+	public ResponseEntity<List<Forum>> searchForumCategory2(){
+		List<Forum> searchForum = forumService.seachForumCategory2();
+		
+		if(searchForum != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(searchForum);
+		}else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
+	
+	@GetMapping(path = "/ForumCategory3")
+	public ResponseEntity<List<Forum>> searchForumCategory3(){
+		List<Forum> searchForum = forumService.seachForumCategory3();
+		
+		if(searchForum != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(searchForum);
+		}else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
+	
+	@GetMapping(path = "/ForumCategory4")
+	public ResponseEntity<List<Forum>> searchForumCategory4(){
+		List<Forum> searchForum = forumService.seachForumCategory4();
+		
+		if(searchForum != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(searchForum);
+		}else {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+		}
+	}
 	
 }
