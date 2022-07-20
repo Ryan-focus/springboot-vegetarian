@@ -139,8 +139,8 @@ function showForum() {
 
 <style>
 .img1 {
-    width: 400px;
-    height: 400px;
+    width: 200px;
+    height: 200px;
     display: block;
     margin: auto;
 }

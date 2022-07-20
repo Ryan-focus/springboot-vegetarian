@@ -262,7 +262,7 @@ function forumCategory4() {
                       <tr tr v-for="(row, index)  in resData" :key="row.forumId">
                         <td class="col-md-6 col-lg-4 col-xl-3">
                           <div class="img1">
-                            <a href="#/forumPage" :title="`${row.forumTitle}`" @click="showForum(row.forumId)">
+                            <a :title="`${row.forumTitle}`" @click="showForum(row.forumId)">
                               <img class="img-fluid" :src="row.forumImage" :alt="`${row.forumTitle}`" />
                             </a>
                           </div>
@@ -353,8 +353,8 @@ function forumCategory4() {
 }
 
 .img1 {
-  width: 175px;
-  height: 175px;
+  width: 150px;
+  height: 150px;
 }
 
 .img-fluid {
