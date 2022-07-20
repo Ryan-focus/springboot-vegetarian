@@ -154,10 +154,8 @@ INSERT INTO `order` (userId, payment, status, createdTime,updatedTime) VALUES
 ,(3, 1520,'訂單完成', now(), now())
 ,(6, 27390,'已出貨', now(), now())
 ,(5, 155100,'未付款' , now(), now())
-,(2, 55100,'已出貨' , now(), now())
-,(2, 15100,'訂單完成' , now(), now())
-,(2, 1500,'已付款' , now(), now())
-,(2, 150,'已付款' , now(), now());
+,(2, 1470,'已付款' , now(), now())
+,(2, 1300,'已出貨' , now(), now());
 
 
 
@@ -174,8 +172,11 @@ INSERT INTO order_item (order_id, product_id, quantity, amount) VALUES
 ,(   3	,15 ,32	,22080)
 ,(   4	,5	,8	,1600)
 ,(   4	,2	,45	,112500)
-,(   4	,13 ,25	,41000);
-
+,(   4	,13 ,25	,41000)
+,(   5	,1 ,2	,720)
+,(   5	,2 ,3	,750)
+,(   6	,5 ,2	,400)
+,(   6	,6 ,2	,900);
 
 -- restaurant
 insert into restaurant (restaurantName,restaurantTel,restaurantAddress,restaurantCategory,restaurantType,restaurantBusinessHours,restaurantScore,imageUrl,createdTime,updatedTime)
