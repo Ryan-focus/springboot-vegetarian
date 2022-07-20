@@ -468,10 +468,6 @@ function createRestaurant() {
   // });
 }
 
-if (business.data.buness.businessPic == null) {
-  business.data.buness.businessPic = "avatar";
-}
-
 getReserveList();
 getPos();
 </script>
