@@ -3,6 +3,7 @@
 import { useTemplateStore } from "@/stores/template";
 import { reactive, computed, ref, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
+import Swal from "sweetalert2";
 
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
 import useVuelidate from "@vuelidate/core";
@@ -71,6 +72,23 @@ reserveRestaurant();
 const store = useTemplateStore();
 const router = useRouter();
 
+const format = (d) => {
+  const day = d.getDate();
+  const month = d.getMonth() + 1;
+  const days = d.getDay();
+  const daysArray = ['週日', '週一', '週二', '週三', '週四', '週五', '週六'];
+
+  return `${month}月${day}日 ${daysArray[days]}`;
+}
+
+const dataFormat = (dataDate) => {
+  const day = dataDate.getDate();
+  const month = dataDate.getMonth() + 1;
+  const year = dataDate.getFullYear();
+
+  return `${year}-${month}-${day}`;
+}
+
 // Input state variables
 const state = reactive({
   username: null,
@@ -87,8 +105,6 @@ const state = reactive({
   range: null,
   terms: null,
 });
-
-
 // Validation rules
 const rules = computed(() => {
   return {
@@ -102,18 +118,6 @@ const rules = computed(() => {
     },
     email: {
       email,
-    },
-    password: {
-      required,
-      minLength: minLength(5),
-    },
-    confirmPassword: {
-      required,
-      sameAs: sameAs(state.password),
-    },
-    suggestions: {
-      required,
-      minLength: minLength(3),
     },
     terms: {
       sameAs: sameAs(true),
@@ -144,10 +148,32 @@ onBeforeUnmount(() => {
 function back() {
   router.go(-1);
 }
-
 // On form submission
 async function sendData() {
-  console.log("貓咪貓咪貓咪");
+
+  const reserveData = {
+    reserveDate: dataFormat(new Date(reserveDate.value)),
+    adult: adult.value,
+    child: kid.value,
+    restaurantId: restaurantNumber.value,
+    reserveName: state.username,
+    reservePhone: state.userphone,
+    reserveEmail: state.email
+  };
+
+  return axios.post(`http://localhost:8088/${businessId.value}/reserves`, reserveData)
+    .then(response => {
+      if (response.status === 201) {
+        Swal.fire({
+          title: "您的預訂已成功",
+          timer: 1000,
+          icon: "success"
+        })
+        router.replace({ name: "index" });
+      }
+    }).catch(err => {
+      console.log(err.response)
+    })
 }
 
 </script>
@@ -184,7 +210,7 @@ async function sendData() {
                 <li class="nav-item my-1">
                   <span class="nav-link d-flex justify-content-between align-items-center">
                     <i class="fa fa-calendar-days fa-inbox me-1 opacity-50"> </i>
-                    <h5 class="mt-3 fw-normal">{{ reserveDate }}</h5>
+                    <h5 class="mt-3 fw-normal">{{ format(new Date(reserveDate)) }}</h5>
                   </span>
                 </li>
               </ul>

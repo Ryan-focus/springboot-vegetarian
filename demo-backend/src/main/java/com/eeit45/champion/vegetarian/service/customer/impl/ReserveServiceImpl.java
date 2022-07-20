@@ -65,7 +65,7 @@ public class ReserveServiceImpl implements ReserveService {
                     "訂位餐廳 : " + restaurant.getRestaurantName() + "\n\n" +
                     "訂位人 : " + reserveRequest.getReserveName() + "\n\n" +
                     "訂位電話 : " + reserveRequest.getReservePhone() + "\n\n " +
-                    "訂位人數 : 大人 " + reserveRequest.getAdult() + "位 小孩 " + reserveRequest.getChild() + "位 需要嬰兒座位 共" + reserveRequest.getBaby() +" 位 \n\n" +
+                    "訂位人數 : 大人 " + reserveRequest.getAdult() + "位 小孩 " + reserveRequest.getChild() + "位 ,嬰兒座位 共" + reserveRequest.getBaby() +" 位 \n\n" +
                     "預訂前往日期 : " +reserveRequest.getReserveDate()  + "\n\n " +
                     "訂單建立時間 : " + reserve.getReserveTime() + "\n\n " +
                     "期待您的蒞臨                                  愛蔬網 團隊敬啟"
