@@ -493,7 +493,7 @@ getOrder();
                   <dl class="mb-0">
                     <dt class="fs-3 fw-bold">{{ orderTotal }}</dt>
                     <dd class="fs-sm fw-medium text-muted mb-0">
-                      訂單總數
+                      訂單成長
                     </dd>
                   </dl>
                   <div>

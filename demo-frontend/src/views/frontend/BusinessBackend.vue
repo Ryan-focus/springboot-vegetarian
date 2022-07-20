@@ -342,6 +342,7 @@ const image = ref({
 });
 
 
+
 // Set default properties
 let toast = Swal.mixin({
   buttonsStyling: false,
@@ -432,8 +433,16 @@ function createRestaurant() {
         restaurantScore: state.restaurantScore,
         imageUrl: image.value.imageUrl,
       };
+
       //send request to server
       if (result.value) {
+        var posData = {
+          validDate: '未開通',
+          expiryDate: new Date(),
+          UUID: null
+        }
+        axios.post(`http://${url}/business/${businessID}/pos`, posData)
+          .then((res) => { console.log(res) })
         localStorage.setItem("restaurantApply" + businessID, JSON.stringify(restaurant));
         toast.fire({
           title: "已為您送出，請等待審核",
@@ -459,8 +468,6 @@ function createRestaurant() {
   // });
 }
 
-
-
 getReserveList();
 getPos();
 </script>
@@ -477,7 +484,7 @@ getPos();
 
           <RouterLink :to="{ name: 'business-backend-profile' }" class="fw-semibold">
             <img class="rounded-circle" :src="`/assets/media/business/${business.data.business.businessPic}.jpg`"
-              alt="Header Avatar" style="width: 21px" />
+              style="width: 21px" />
 
             {{
                 business.data.business.businessName
@@ -641,9 +648,9 @@ getPos();
               <thead>
                 <tr>
                   <!-- <th>訂單編號</th> -->
-                  <th class="d-none d-sm-table-cell fw-semibold text-muted text-end">消費者</th>
-                  <th class="d-none d-sm-table-cell fw-semibold text-muted text-end">預計前往人數</th>
-                  <th class="d-none d-sm-table-cell fw-semibold text-muted text-end">預訂時間</th>
+                  <th class=" d-sm-table-cell fw-semibold text-muted text-end">消費者</th>
+                  <th class=" d-sm-table-cell fw-semibold text-muted text-end">預計前往人數</th>
+                  <th class=" d-sm-table-cell fw-semibold text-muted text-end">預訂餐廳時間</th>
                   <th class="d-none d-sm-table-cell fw-semibold text-muted text-end">訂單建立時間</th>
                   <th class="d-none d-sm-table-cell text-center">處理狀態</th>
                 </tr>
@@ -656,8 +663,8 @@ getPos();
                     </a>
                     <p class="fs-sm fw-medium text-muted mb-0">一般客</p>
                   </td> -->
-                  <td class="d-none d-xl-table-cell">
-                    <a class="fw-semibold" href="javascript:void(0)">{{ row.reserveName }}
+                  <td class="d-xl-table-cell">
+                    <a class="fw-semibold" :href="`tel:${row.reservePhone}`">{{ row.reserveName }}
                       <p class="fs-sm fw-medium text-muted mb-0"> {{ row.reservePhone }}
                       </p>
                     </a>
@@ -671,21 +678,22 @@ getPos();
                     </div>
                     <p class="fs-xs fw-semibold mb-0">8%</p>
                   </td> -->
-                  <td class="d-none d-sm-table-cell fw-semibold text-muted text-end">
-                    <i class="fa fa-user-group me-3">{{ row.adult }}</i>
-                    <i class="fa fa-children me-3">{{ row.child }}</i>
-                    <i class="fa fa-baby-carriage me-3">{{ row.baby }}</i>
+                  <td class=" d-sm-table-cell fw-semibold text-muted text-end">
+                    <i class="fa fa-user-group me-3"> {{ row.adult }}</i>
+                    <i class="fa fa-children me-3"> {{ row.child }}</i>
+                    <i class="fa fa-baby-carriage me-3"> {{ row.baby }}</i>
                   </td>
-                  <td class="d-none d-sm-table-cell text-end">
-                    <strong>{{ moment(row.reserveTime).format("MM/D(dd)") }}</strong>
+                  <td class=" d-sm-table-cell text-end">
+                    <strong>{{ moment(row.reserveDateTime).format("MM/D(dd)") }}</strong>
                   </td>
                   <td class="d-none d-sm-table-cell fw-semibold text-muted text-end">
-                    <strong>{{ moment(row.reserveDateTime).startOf().fromNow() }}</strong>
+                    <strong>{{ moment(row.reserveTime).startOf().fromNow() }}</strong>
+                  </td>
 
-                  </td>
-                  <td>
+
+                  <td class="">
                     <span
-                      class="fs-xs fw-semibold d-inline-block py-1 px-3 rounded-pill bg-danger-light text-danger">尚未通知</span>
+                      class=" fs-xs fw-semibold d-inline-block py-2 px-5 rounded-pill bg-danger-light text-danger">尚未通知</span>
                   </td>
                 </tr>
 
@@ -694,9 +702,9 @@ getPos();
           </div>
           <!-- END Recent Orders Table -->
         </div>
-        <div class="block-content block-content-full bg-body-light">
-          <!-- Pagination -->
-          <nav aria-label="Photos Search Navigation">
+        <!-- <div class="block-content block-content-full bg-body-light"> -->
+        <!-- Pagination -->
+        <!-- <nav aria-label="Photos Search Navigation">
             <ul class="pagination pagination-sm justify-content-end mb-0">
               <li class="page-item">
                 <a class="page-link" href="javascript:void(0)" tabindex="-1" aria-label="Previous">
@@ -721,9 +729,9 @@ getPos();
                 </a>
               </li>
             </ul>
-          </nav>
-          <!-- END Pagination -->
-        </div>
+          </nav> -->
+        <!-- END Pagination -->
+        <!-- </div> -->
       </template>
     </BaseBlock>
     <!-- END Recent Orders -->

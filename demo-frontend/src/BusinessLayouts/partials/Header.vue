@@ -122,7 +122,7 @@ const business = JSON.parse(window.sessionStorage.getItem("access-business"));
                 <button type="button" class="btn btn-sm btn-alt-secondary d-flex align-items-center"
                   id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <img class="rounded-circle" :src="`/assets/media/business/${business.data.business.businessPic}.jpg`"
-                    alt="Header Avatar" style="width: 21px" />
+                    style="width: 21px" />
                   <span class="d-none d-sm-inline-block ms-2">{{
                       business.data.business.businessName
                   }}</span>
@@ -132,7 +132,7 @@ const business = JSON.parse(window.sessionStorage.getItem("access-business"));
                   aria-labelledby="page-header-user-dropdown">
                   <div class="p-3 text-center bg-body-light border-bottom rounded-top">
                     <img class="img-avatar img-avatar48 img-avatar-thumb"
-                      :src="`/assets/media/business/${business.data.business.businessPic}.jpg`" alt="Header Avatar" />
+                      :src="`/assets/media/business/${business.data.business.businessPic}.jpg`" />
                     <p class="mt-2 mb-0 fw-medium">
                       {{ business.data.business.businessName }}
                     </p>

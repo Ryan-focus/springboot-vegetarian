@@ -156,7 +156,7 @@ function sendData() {
         </p>
         <h4 class="mt-3 fw-normal">{{ restaurantAddress }}</h4>
         <span>
-          <i class="fa fa-phone me-3 h5 text-secondary board-black" /><a href="tel:02-8502-05555" target="_blank"
+          <i class="fa fa-phone me-3 h5 text-secondary board-black" /><a :href="`tel:${restaurantTel}`" target="_blank"
             class="text-warning h5 fw-normal me-4 link-fx">{{ restaurantTel }}</a>
         </span>
         <span>
@@ -225,7 +225,7 @@ function sendData() {
 
         <article>
           <p class="me-2 h6">如有訂位以外的需求，請撥打電話與我們聯繫
-            <a href="tel:{{`${restaurantTel}`}}">{{
+            <a :href="`tel:${restaurantTel}`">{{
                 restaurantTel
             }}</a>
           </p>
@@ -318,7 +318,7 @@ function sendData() {
                 <span class="text-black h5 fw-normal me-4 link-fx">連絡電話</span>
               </span>
 
-              <a href="tel:02-8502-05555" target="_blank" class="fw-normal link-fx text-black h4 ">{{
+              <a :href="`tel:${restaurantTel}`" target="_blank" class="fw-normal link-fx text-black h4 ">{{
                   restaurantTel
               }}</a>
               <hr>

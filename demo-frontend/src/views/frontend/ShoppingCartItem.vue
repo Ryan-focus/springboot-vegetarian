@@ -37,7 +37,13 @@ let toast = Swal.mixin({
 
 
 //取得localstorage
-const user = JSON.parse(window.localStorage.getItem("access-user"));
+var user = null;
+
+if (window.localStorage.getItem("access-user") != null) {
+  user = JSON.parse(window.localStorage.getItem("access-user"));
+} else if (window.localStorage.getItem("access-admin") != null) {
+  user = JSON.parse(window.localStorage.getItem("access-admin"));
+}
 const userId = JSON.stringify(user.data.user.userId)
 //檢查localstorage裡面是否有東西，沒有設定為null不然直接抓會報錯
 var cartItemList = null
@@ -294,8 +300,8 @@ function payment() {
                 <td colspan="5" class="fw-bold text-uppercase text-end bg-body-light">
                 </td>
                 <td class="fw-bold text-end bg-body-light">
-                  <button type="button" class="btn btn-outline-danger">
-                    <i class="fal fa-dollar-sign" @click="checkOut(), payment()">結帳</i>
+                  <button type="button" class="btn btn-outline-primary">
+                    <i class="fa-brands fa-paypal" @click="checkOut(), payment()"> 結帳</i>
                   </button>
                 </td>
               </tr>

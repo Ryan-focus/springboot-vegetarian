@@ -378,22 +378,22 @@ function addToCart(productId) {
                     }}</span>
                   </div>
                   <div v-else>
-                    <span class="badge bg-danger"><i class="fa fa-times-circle"></i> 已無商品</span>
+                    <span class="badge bg-danger"><i class="fa fa-times-circle"></i> 商品已售完</span>
                   </div>
                   <!-- 購物車按鈕 -->
                 </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn 
-btn-outline-danger" data-bs-dismiss="modal">
-                    <i class="far fa-heart">收藏</i>
-                  </button>
+
+
+                <div v-if="item.stock > 0">
                   <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#showProduct"
                     @click="getSingle(item.productId)">
                     <i class="fa fa-cart-shopping">加入購物車</i>
                   </button>
                 </div>
+
               </div>
             </div>
+
           </template>
         </BaseBlock>
 
@@ -466,34 +466,37 @@ btn-outline-danger" data-bs-dismiss="modal">
               }}</span>
             </div>
             <div v-else>
-              <span class="badge bg-danger"><i class="fa fa-times-circle"></i> 已無商品</span>
+              <span class="badge bg-danger"><i class="fa fa-times-circle"></i> 商品已售完</span>
             </div>
           </div>
-          <!-- 下拉顯示選單 -->
-          <BaseBlock :title="`  商品詳細描述 `" btn-option-content>
-            <template #subtitle>
-              <!-- 這裡可以放副標題 -->
-            </template>
-            <div class="row items-push-2x text-center">
-              <!-- 這裡會顯示商品的詳細描述 -->
-              <div v-html="singleProduct.description">
-              </div>
+
+
+          <div>
+            <div v-if="singleProduct.stock > 1">
+              <input type="number" min="1" v-model="cartItem.quantity" />
+              &ensp;&ensp;
+              <button type="submit" class="btn btn-outline-primary" data-bs-dismiss="modal"
+                @click="addToCart(singleProduct.productId)">
+                <i class="fa fa-cart-shopping">加入購物車</i>
+              </button>
             </div>
-          </BaseBlock>
-
+          </div>
         </div>
-        <!-- 表單內文在這裡結束 -->
-        <!-- 送出button -->
-        <div class="modal-footer">
-          <input type="number" min="1" v-model="cartItem.quantity">
-          &ensp;&ensp;&ensp;
-          <button type="submit" class="btn btn-outline-primary" data-bs-dismiss="modal"
-            @click="addToCart(singleProduct.productId)">
-            <i class="fa fa-cart-shopping">加入購物車</i>
-          </button>
+        <!-- 下拉顯示選單 -->
+        <BaseBlock :title="`  商品詳細描述 `" btn-option-content>
+          <template #subtitle>
+            <!-- 這裡可以放副標題 -->
+          </template>
+          <div class="row items-push-2x text-center">
+            <!-- 這裡會顯示商品的詳細描述 -->
+            <div v-html="singleProduct.description">
+            </div>
+          </div>
+        </BaseBlock>
 
-        </div>
       </div>
+      <!-- 表單內文在這裡結束 -->
+
     </div>
   </div>
 </template>
