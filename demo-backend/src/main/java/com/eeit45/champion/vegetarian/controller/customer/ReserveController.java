@@ -21,7 +21,7 @@ public class ReserveController {
     private ReserveService reserveService;
 
     @GetMapping("/{businessId}/reserves/{reserveId}")
-    public ResponseEntity<Reserve> getProductById(@PathVariable Integer businessId,
+    public ResponseEntity<Reserve> getReservesById(@PathVariable Integer businessId,
                                                   @PathVariable Integer reserveId){
         Reserve reserve = reserveService.getReserveById(businessId,reserveId);
 
@@ -33,7 +33,7 @@ public class ReserveController {
     }
 
     @GetMapping("/{businessId}/reserves")
-    public ResponseEntity<List<Reserve>> getProductById(@PathVariable Integer businessId){
+    public ResponseEntity<List<Reserve>> getReserveById(@PathVariable Integer businessId){
         List<Reserve> reserveList = reserveService.getAllReserve(businessId);
 
         if(reserveList != null){
@@ -42,6 +42,8 @@ public class ReserveController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+
 
     //預訂餐廳功能依附在Business(合作商家)底下
     @PostMapping("/{businessId}/reserves")

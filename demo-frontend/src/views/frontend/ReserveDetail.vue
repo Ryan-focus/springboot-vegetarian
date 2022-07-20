@@ -1,7 +1,7 @@
 <script setup>
 // 已經宣告但從未使用過的Value (請勿刪除)
 import { useTemplateStore } from "@/stores/template";
-import { reactive, computed, ref } from "vue";
+import { reactive, computed, ref, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
@@ -9,24 +9,34 @@ import useVuelidate from "@vuelidate/core";
 import {
   required,
   minLength,
-  between,
   email,
-  decimal,
-  integer,
-  url,
   sameAs,
 } from "@vuelidate/validators";
+
 //using Axios 
 import axios from "axios";
-// useRoute 接值 ，做查詢 
-import { useRoute } from "vue-router";
-//接值
-const route = useRoute();
-const data = reactive({
-  loading: false,
-});
-const restaurantNumber = route.params.restaurantId;
-console.log("restaurantNumber=" + restaurantNumber);
+
+var restaurantNumber = ref(null);
+var businessId = ref(null);
+var adult = ref(null);
+var kid = ref(null);
+var reserveDate = ref(null);
+
+//檢查localstorage裡面是否有東西，沒有設定為null不然直接抓會報錯
+var reserveItemList = null;
+if (window.sessionStorage.getItem("reserve") != null) {
+  reserveItemList = JSON.parse(window.sessionStorage.getItem("reserve")).reserveItemList;
+}
+
+console.log("reserveItemList= " + reserveItemList);
+//把session值帶入
+restaurantNumber.value = reserveItemList[0];
+businessId.value = reserveItemList[1];
+adult.value = reserveItemList[2];
+kid.value = reserveItemList[3];
+reserveDate.value = reserveItemList[4];
+
+
 const reserveOrder = ref();
 const restaurantName = ref();
 const restaurantTel = ref();
@@ -38,9 +48,8 @@ const restaurantScore = ref();
 const imageUrl = ref();
 
 const reserveRestaurant = function () {
-  data.loading = true;
   axios
-    .get(`http://localhost:8088/restaurants/${restaurantNumber}`)
+    .get(`http://localhost:8088/restaurants/${restaurantNumber.value}`)
     .then((res) => {
       //獲取伺服器的回傳資料
       reserveOrder.value = res.data;
@@ -56,7 +65,6 @@ const reserveRestaurant = function () {
     .catch((error) => {
       console.log(error, "失敗");
     }).finally(() => {
-      data.loading = false;
     });
 }
 reserveRestaurant();
@@ -116,7 +124,6 @@ const rules = computed(() => {
 // Use vuelidate
 const v$ = useVuelidate(rules, state);
 
-
 // On form submission
 async function onSubmit() {
   const result = await v$.value.$validate();
@@ -129,29 +136,22 @@ async function onSubmit() {
   // perform async actions
 }
 
-//v-bind value 
-const adult = ref(2);
-const kid = ref(0);
+//離開頁面自動清除
+onBeforeUnmount(() => {
+  sessionStorage.removeItem("reserve");
+})
 
-const format = (date) => {
-  const day = date.getDate();
-  const month = date.getMonth() + 1;
-  const days = date.getDay();
-  const daysArray = ['週日', '週一', '週二', '週三', '週四', '週五', '週六'];
-
-  return `${month}月${day}日 ${daysArray[days]}`;
+function back() {
+  router.go(-1);
 }
 
-//接收的資料ref
-//當日統計
-//取得全部人數
-//取得全部組數
-
-// ref會自己抓值，這邊還要另外宣告圖片是因為:src會去抓路徑，沒有定義會變undefined當掉
-//其他的值ref抓到後會自己帶入變成json
-
+// On form submission
+async function sendData() {
+  console.log("貓咪貓咪貓咪");
+}
 
 </script>
+
 <template >
   <!-- Hero -->
   <BasePageHeading class="row">
@@ -166,27 +166,25 @@ const format = (date) => {
         <div class="block-rounded block row g-0">
           <section class="">
             <BaseBlock class="mb-2" content-full>
-              <img
-                src="https://inline.imgix.net/branch/-Lp_rdeeFue9DT5RqSlS:inline-live-1--Lp_rdihy1BAcnA19fes-a658eb13-81e8-4201-820b-f4bda42cd884_20220621SOUTHEAST-1140X456.jpg"
-                class=" d-block w-100 img-fluid" alt="" />
+              <img :src="`${imageUrl}`" class=" d-block w-100 img-fluid" :alt="`${restaurantName}`" />
               <ul class="nav nav-pills flex-column push">
                 <li class="nav-item my-1">
                   <span class="nav-link d-flex justify-content-between align-items-center">
                     <i class="fa fa-location-dot fa-inbox me-1 opacity-50"> </i>
-                    <h4 class="mt-3 fw-normal">典華豐FOOD海陸百匯</h4>
+                    <h4 class="mt-3 fw-normal">{{ restaurantName }}</h4>
                   </span>
                 </li>
 
                 <li class="nav-item my-1">
                   <span class="nav-link d-flex justify-content-between align-items-center">
                     <i class="fa fa-user fa-inbox me-1 opacity-50"> </i>
-                    <h5 class="mt-3 fw-normal">2 大 3 小</h5>
+                    <h5 class="mt-3 fw-normal">{{ adult }} 大 {{ kid }} 小</h5>
                   </span>
                 </li>
                 <li class="nav-item my-1">
                   <span class="nav-link d-flex justify-content-between align-items-center">
                     <i class="fa fa-calendar-days fa-inbox me-1 opacity-50"> </i>
-                    <h5 class="mt-3 fw-normal">2022年7月20日 週三</h5>
+                    <h5 class="mt-3 fw-normal">{{ reserveDate }}</h5>
                   </span>
                 </li>
               </ul>
@@ -194,9 +192,9 @@ const format = (date) => {
           </section>
         </div>
       </div>
-      <div class="col-lg-6">
+      <form @submit.prevent="onSubmit" class="col-lg-6">
         <div class="block-rounded block row flex-md-row-reverse g-0">
-          <form @submit.prevent>
+          <div>
             <BaseBlock>
 
               <div class="row justify-content-center py-sm-3 py-md-5">
@@ -256,25 +254,48 @@ const format = (date) => {
                 </div>
               </div>
             </BaseBlock>
-          </form>
+          </div>
         </div>
         <!-- 隱私條款，合法使用 -->
         <div class="block-rounded block row flex-md-row-reverse g-0">
           <BaseBlock>
             <div class="form-check">
               <input class="form-check-input" type="checkbox" value="" id="block-form5-privacy"
-                name="block-form5-privacy" />
+                name="block-form5-privacy" :class="{
+                  'is-invalid': v$.terms.$errors.length,
+                }" v-model="state.terms" @blur="v$.terms.$touch" />
               <label class="form-check-label" for="block-form5-privacy"> 我已閱讀並同意 <a
                   class="btn-block-option fs-sm text-warning " href="javascript:void(0)" data-bs-toggle="modal"
                   data-bs-target="#one-signup-terms">愛蔬網
                   隱私權條款</a></label>
+              <div v-if="v$.terms.$errors.length"
+                class="col-12 invalid-feedback animated fadeIn bg-secondary text-light">
+                <i class="fa fa-triangle-exclamation text-warning mx-2"></i>
+                請同意隱私權條款
+              </div>
             </div>
+
+            <!-- <div class="mb-4">
+              <label class="form-label">Terms &amp; Conditions</label>
+              <span class="text-danger">*</span>
+              <div class="form-check" :class="{
+                'is-invalid': v$.terms.$errors.length,
+              }">
+                <input class="form-check-input" type="checkbox" id="val-terms" :class="{
+                  'is-invalid': v$.terms.$errors.length,
+                }" v-model="state.terms" @blur="v$.terms.$touch" />
+                <label class="form-check-label" for="val-terms">I agree</label>
+              </div>
+              <div v-if="v$.terms.$errors.length" class="invalid-feedback animated fadeIn">
+                You must agree to the service terms!
+              </div>
+            </div> -->
           </BaseBlock>
         </div>
         <!-- 確認送出區塊 -->
         <div class="block-rounded block  flex-md-row-reverse">
           <div class="row justify-content-center" style="max-width:1140px ;  min-height: 50px;">
-            <button id="book-now-action-button" class="content-center" style="
+            <button id="book-now-action-button" class="content-center" type="submit" @click="sendData" style="
                     background-color: rgb(255, 133, 14);
                     border: none;
                     border-radius: 6px;
@@ -292,10 +313,12 @@ const format = (date) => {
           </div>
 
         </div>
-        <!-- 返回上一步區塊 -->
-        <div class="block-rounded block  flex-md-row-reverse">
-          <div class="row justify-content-center" style="max-width:1140px ;  min-height: 50px;">
-            <button id="book-now-goback-button" class="content-center" style="
+
+      </form>
+      <!-- 返回上一步區塊 -->
+      <div class="block-rounded block  flex-md-row-reverse">
+        <div class="row justify-content-center" style="max-width:1140px ;  min-height: 50px;">
+          <button @click="back()" id="book-now-goback-button" class="content-center" style="
                     background-color: rgb(255, 255, 255);
                     border: none;
                     border-radius: 6px;
@@ -307,10 +330,9 @@ const format = (date) => {
                     outline: 0px;
                     cursor: pointer;
                 ">
-              <!-- <span>確認定位</span> -->
-              <span class="h6">回上一步</span>
-            </button>
-          </div>
+            <!-- <span>確認定位</span> -->
+            <span class="h6">回上一步</span>
+          </button>
         </div>
       </div>
     </div>

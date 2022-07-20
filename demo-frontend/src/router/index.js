@@ -399,7 +399,7 @@ const routes = [
         component: RestaurantDetails,
       },
       {
-        path: "/searchRestaurant/reserve/:restaurantId?",
+        path: "/searchRestaurant/reserve/:restaurantId?/:businessId?",
         name: "restaurant-reserve",
         component: ReserveOrder,
       },
@@ -429,7 +429,7 @@ const routes = [
         component: jump,
       },
       {
-        path: "/searchRestaurant/reserve/:restaurantId?/check",
+        path: "/searchRestaurant/check",
         name: "restaurant-reserve-check",
         component: ReserveDetail,
       },

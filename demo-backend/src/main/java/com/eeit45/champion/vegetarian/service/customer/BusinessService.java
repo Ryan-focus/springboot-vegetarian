@@ -17,4 +17,6 @@ public interface BusinessService {
     List<Business> getAllBusiness();
 
     void updateRestaurantNumber(Integer businessId, BusinessRequest businessRequest);
+
+    Business resetPassword(LoginRequest loginRequest);
 }
