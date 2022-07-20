@@ -76,7 +76,8 @@ function searchAddress(restaurantAddress) {
                 <div>
                   <input type="text" placeholder="搜尋餐廳名稱" v-model="urlParams.searchName" @change="searchName()" />
 
-                  <input type="text" placeholder="搜尋地點" v-model="urlParams.searchAddress" @change="searchAddress()" />
+                  <input type="text" placeholder="搜尋地點" v-model="urlParams.searchAddress"
+                    @change="searchAddress('中壢')" />
                   <button class="btn btn-info" tabindex="0" type="button">
                     <i class="si si-magnifier"></i>
                   </button>

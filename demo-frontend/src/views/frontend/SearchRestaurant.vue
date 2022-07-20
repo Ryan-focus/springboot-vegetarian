@@ -93,35 +93,35 @@ const searchType = function (type) {
 searchType();
 
 // 取得條件(地址)
-// const searchAddress = function (address) {
-//   data.loading = true;
-//   if (address != null) {
-//     axios
-//       .get(`http://${url}/restaurantList?searchAddress=` + address)
-//       .then((res) => {
-//         console.log(res);
-//         console.log(res.data);
-//         console.log(res.data.results);
+const searchAddress = function (address) {
+  data.loading = true;
+  if (address != null) {
+    axios
+      .get(`http://${url}/restaurantList?searchAddress=` + address)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.results);
 
-//         dataArray.value = res.data.results;
+        dataArray.value = res.data.results;
 
-//       })
-//       .catch((err) => console.log(err));
-//   } else {
-//     axios
-//       .get(`http://${url}/restaurantList?searchAddress=${restaurantAddress}`)
-//       .then((res) => {
-//         console.log(res);
-//         console.log(res.data);
-//         console.log(res.data.results);
+      })
+      .catch((err) => console.log(err));
+  } else {
+    axios
+      .get(`http://${url}/restaurantList?searchAddress=${restaurantAddress}`)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.results);
 
-//         dataArray.value = res.data.results;
+        dataArray.value = res.data.results;
 
-//       })
-//       .catch((err) => console.log(err));
-//   }
-// }
-// searchAddress();
+      })
+      .catch((err) => console.log(err));
+  }
+}
+searchAddress();
 
 // 取得條件(餐廳名稱)
 // const searchName = function (name) {
@@ -251,7 +251,7 @@ export default {
           <!-- <a></a> -->
 
           <!-- checkbox -->
-          <input type="radio" value="營業中" id="flexCheckDefault-1" v-model="urlParams.restaurantBusinessHours"
+          <input type="checkbox" value="營業中" id="flexCheckDefault-1" v-model="urlParams.restaurantBusinessHours"
             @change="searchCatagory()">
           <label class="form-check-label me-2" for="flexCheckDefault-1">
             營業中

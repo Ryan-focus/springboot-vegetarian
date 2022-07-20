@@ -191,7 +191,7 @@ window.addEventListener('popstate', function () {
       aria-hidden="true">
       <div class="modal-dialog modal-lg modal-dialog-popout" role="document">
         <div class="modal-content">
-          <BaseBlock title="Terms &amp; Conditions" transparent class="mb-0">
+          <BaseBlock title="愛蔬網 &amp; 隱私權條款" transparent class="mb-0">
             <template #options>
               <button type="button" class="btn-block-option" data-bs-dismiss="modal" aria-label="Close">
                 <i class="fa fa-fw fa-times"></i>

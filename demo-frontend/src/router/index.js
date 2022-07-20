@@ -48,6 +48,7 @@ const BusinessProfileView = () =>
 const BusinessCalendar = () =>
   import("@/views/frontend/businessBackend/BusinessCalendar.vue");
 const ReserveOrder = () => import("@/views/frontend/ReserveOrder.vue");
+const ReserveDetail = () => import("@/views/frontend/ReserveDetail.vue");
 
 // Backend Boxed: Dashboard
 const BackendBoxedDashboard = () =>
@@ -383,10 +384,15 @@ const routes = [
       },
       //餐廳
       {
-        path: "/searchRestaurant/:restaurantCategory?/:restaurantType?/:searchName?/:searchAddress?",
+        path: "/searchRestaurant/:searchAddress?/:searchName?",
         name: "restaurantIndex",
         component: SearchRestaurant,
       },
+      // {
+      //   path: "/searchRestaurant/:restaurantCategory?/:restaurantType?/:searchName?/:searchAddress?",
+      //   name: "restaurantIndex",
+      //   component: SearchRestaurant,
+      // },
       {
         path: "/searchRestaurant/details/:restaurantNumber?",
         name: "restaurant-details",
@@ -421,6 +427,11 @@ const routes = [
         path: "/jump",
         name: "blank",
         component: jump,
+      },
+      {
+        path: "/searchRestaurant/reserve/:restaurantId?/check",
+        name: "restaurant-reserve-check",
+        component: ReserveDetail,
       },
     ],
   },
