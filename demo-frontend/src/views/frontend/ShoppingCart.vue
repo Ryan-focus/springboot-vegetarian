@@ -382,18 +382,20 @@ function addToCart(productId) {
                   </div>
                   <!-- 購物車按鈕 -->
                 </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn 
-btn-outline-danger" data-bs-dismiss="modal">
-                    <i class="far fa-heart">收藏</i>
-                  </button>
+
+
+                <div v-if="item.stock > 0">
                   <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#showProduct"
                     @click="getSingle(item.productId)">
                     <i class="fa fa-cart-shopping">加入購物車</i>
                   </button>
                 </div>
+                <div v-else>
+                  <i class="fa fa-cart-shopping">已無商品</i>
+                </div>
               </div>
             </div>
+
           </template>
         </BaseBlock>
 
@@ -469,12 +471,21 @@ btn-outline-danger" data-bs-dismiss="modal">
               <span class="badge bg-danger"><i class="fa fa-times-circle"></i> 已無商品</span>
             </div>
           </div>
-          <input type="number" min="1" v-model="cartItem.quantity">
-          &ensp;&ensp;&ensp;
-          <button type="submit" class="btn btn-outline-primary" data-bs-dismiss="modal"
-            @click="addToCart(singleProduct.productId)">
-            <i class="fa fa-cart-shopping">加入購物車</i>
-          </button>
+
+
+          <div>
+            <div v-if="singleProduct.stock > 1">
+              <input type="number" min="1" v-model="cartItem.quantity" />
+              &ensp;&ensp;
+              <button type="submit" class="btn btn-outline-primary" data-bs-dismiss="modal"
+                @click="addToCart(singleProduct.productId)">
+                <i class="fa fa-cart-shopping">加入購物車</i>
+              </button>
+            </div>
+            <div v-else>
+              <i class="fa fa-cart-shopping">商品已售完</i>
+            </div>
+          </div>
         </div>
         <!-- 下拉顯示選單 -->
         <BaseBlock :title="`  商品詳細描述 `" btn-option-content>
