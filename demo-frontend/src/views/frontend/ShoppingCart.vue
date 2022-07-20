@@ -129,10 +129,6 @@ function addToCart(productId) {
   <div class="row">
     <BaseBlock>
       <img
-        src="https://cms.cdn.91app.com/images/original/12557/481fb4bf-120e-42de-b3a6-9b2d0bfc55ef-1551854036-no8pq90hxv.png"
-        alt="" class="d-inline" />
-
-      <img
         src="  https://cms.cdn.91app.com/images/original/12557/481fb4bf-120e-42de-b3a6-9b2d0bfc55ef-1585213936-x05bo61xos_m.png"
         alt="" class="d-inline" />
       <img
@@ -286,14 +282,6 @@ function addToCart(productId) {
               v-model="urlParams.category" @change="getAxios()" />
             <label class="form-check-label" for="category4">
               <span class="fs-4 fw-semibold">居家百貨</span>
-            </label>
-          </div>
-
-          <div class="form-check form-block">
-            <input type="radio" class="form-check-input" id="category5" name="category" value="飾品"
-              v-model="urlParams.category" @change="getAxios()" />
-            <label class="form-check-label" for="category5">
-              <span class="fs-4 fw-semibold">飾品</span>
             </label>
           </div>
 
