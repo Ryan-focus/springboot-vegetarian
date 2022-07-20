@@ -1,6 +1,6 @@
 <script setup>
 import { useTemplateStore } from "@/stores/template";
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import { useRoute, useRouter } from 'vue-router';
 import axios from "axios";
 
@@ -11,19 +11,6 @@ const store = useTemplateStore();
 const router = useRouter();
 //接值
 const route = useRoute();
-const data = reactive({
-  loading: false,
-});
-
-const restaurantName = route.params.restaurantName;
-const restaurantTel = ref();
-const restaurantAddress = route.params.restaurantAddress;
-const restaurantCategory = route.params.restaurantCategory;
-const restaurantType = ref();
-const restaurantBusinessHours = ref();
-const restaurantScore = ref();
-const imageUrl = ref();
-const dataArray = ref();
 
 const urlParams = ref(
   {
@@ -31,27 +18,33 @@ const urlParams = ref(
     offset: 0,
     restaurantCategory: null,
     restaurantType: null,
-    restaurantBusinessHours: null,
-    restaurantScore: null,
-    restaurantNumber: null
+    restaurantName: null,
+    restaurantAddress: null,
+    restaurantNumber: null,
   }
 );
 
+console.log(urlParams.value);
+
+const restaurantNumber = ref();
+const restaurantName = route.params.restaurantName;
+const restaurantTel = ref();
+const restaurantAddress = route.params;
+const restaurantCategory = route.params.restaurantCategory;
+const restaurantType = ref();
+const restaurantBusinessHours = ref();
+const restaurantScore = ref();
+const imageUrl = ref();
+const dataArray = ref();
+
 console.log(route.params);
-
-
 
 // 取得條件(類別)
 const searchCatagory = function (catagory) {
-  data.loading = true;
   if (catagory != null) {
     axios
       .get(`http://${url}/restaurantList?restaurantCategory=` + catagory)
       .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        console.log(res.data.results);
-
         dataArray.value = res.data.results;
 
       })
@@ -60,10 +53,6 @@ const searchCatagory = function (catagory) {
     axios
       .get(`http://${url}/restaurantList?restaurantCategory=${restaurantCategory}`)
       .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        console.log(res.data.results);
-
         dataArray.value = res.data.results;
 
       })
@@ -74,10 +63,36 @@ searchCatagory();
 
 // 取得條件(素食種類)
 const searchType = function (type) {
-  data.loading = true;
 
   axios
     .get(`http://${url}/restaurantList?restaurantType=` + type)
+    .then((res) => {
+      dataArray.value = res.data.results;
+
+    })
+    .catch((err) => console.log(err));
+}
+searchType();
+
+// 取得條件(地址)
+const searchAddress = function () {
+
+  axios
+    .get(`http://${url}/restaurantList`, { params: urlParams.value })
+    .then((res) => {
+      dataArray.value = res.data.results;
+
+    })
+    .catch((err) => console.log(err, "失敗"));
+}
+
+searchAddress();
+
+// 取得條件(餐廳名稱)
+const searchName = function () {
+
+  axios
+    .get(`http://${url}/restaurantList`, { params: urlParams.value })
     .then((res) => {
       console.log(res);
       console.log(res.data);
@@ -86,78 +101,14 @@ const searchType = function (type) {
       dataArray.value = res.data.results;
 
     })
-    .catch((err) => console.log(err));
-
-
+    .catch((err) => console.log(err, "失敗"));
 }
-searchType();
 
-// 取得條件(地址)
-const searchAddress = function (address) {
-  data.loading = true;
-  if (address != null) {
-    axios
-      .get(`http://${url}/restaurantList?searchAddress=` + address)
-      .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        console.log(res.data.results);
-
-        dataArray.value = res.data.results;
-
-      })
-      .catch((err) => console.log(err));
-  } else {
-    axios
-      .get(`http://${url}/restaurantList?searchAddress=${restaurantAddress}`)
-      .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        console.log(res.data.results);
-
-        dataArray.value = res.data.results;
-
-      })
-      .catch((err) => console.log(err));
-  }
-}
-searchAddress();
-
-// 取得條件(餐廳名稱)
-// const searchName = function (name) {
-//   data.loading = true;
-//   if (name != null) {
-//     axios
-//       .get(`http://${url}/restaurantList?searchName=` + name)
-//       .then((res) => {
-//         console.log(res);
-//         console.log(res.data);
-//         console.log(res.data.results);
-
-//         dataArray.value = res.data.results;
-
-//       })
-//       .catch((err) => console.log(err));
-//   } else {
-//     axios
-//       .get(`http://${url}/restaurantList?searchName=${restaurantName}`)
-//       .then((res) => {
-//         console.log(res);
-//         console.log(res.data);
-//         console.log(res.data.results);
-
-//         dataArray.value = res.data.results;
-
-//       })
-//       .catch((err) => console.log(err));
-//   }
-// }
-// searchName();
+searchName();
 
 
 //帶值restaurantNumber到detail頁
 function restaurantDetail(restaurantNumber) {
-  // urlParams.value.restaurantNumber = prams;
   urlParams.value.restaurantNumber = restaurantNumber;
 
   router.push({
@@ -205,18 +156,32 @@ function getBusinessList() {
 
 getBusinessList();
 </script>
-<!-- <script>
-export default {
-  name: "restaurantIndex",
-  props: {
-    paramsData: {
-      type: String
+<script>
+// 先確認使用者裝置能不能抓地點
+function getlocation() {
+
+
+  if (navigator.geolocation) {
+
+    // 使用者不提供權限，或是發生其它錯誤
+    function error() {
+      alert('無法取得你的位置');
     }
-  },
-};
 
+    // 使用者允許抓目前位置，回傳經緯度
+    function success(position) {
+      console.log(position.coords.latitude, position.coords.longitude);
+    }
 
-</script> -->
+    // 跟使用者拿所在位置的權限
+    navigator.geolocation.getCurrentPosition(success, error);
+
+  } else {
+    alert('Sorry, 你的裝置不支援地理位置功能。')
+  }
+}
+
+</script>
 
 
 <template>
@@ -226,9 +191,9 @@ export default {
     <div class=" row col-md-5 offset-md-3 content content-full text-center">
       <div class="mb-2">
         <div>
-          <input type="text" placeholder="搜尋餐廳名稱" v-model="urlParams.searchName" @change="searchName()" />
+          <input type="text" placeholder="搜尋餐廳名稱" v-model="urlParams.restaurantName" @keyup="searchName()" />
           <!-- <a></a> -->
-          <input type="text" placeholder="搜尋地點" v-model="urlParams.searchAddress" @change="searchAddress()" />
+          <input type="text" placeholder="搜尋地點" v-model="urlParams.restaurantAddress" @keyup="searchAddress()" />
           <button class="btn btn-info" tabindex="0" type="button">
             <i class="si si-magnifier"></i>
           </button>
@@ -239,7 +204,7 @@ export default {
             <option selected>推薦</option>
             <option value="1">熱門餐廳</option>
             <option value="2">評分最高</option>
-            <option value="3">離你最近</option>
+            <option value="3" @click="getlocation()">離你最近</option>
           </select>
 
           <!-- <a></a> -->
@@ -344,10 +309,16 @@ export default {
       </div>
       <!-- 右邊 google map  -->
       <div class="col">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3616.437657692995!2d121.21998631423737!3d24.985240346399994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34682183e7b783c3%3A0xf0ebfba2069b6158!2z6IGW5b635Z-6552j5a246Zmi!5e0!3m2!1szh-TW!2stw!4v1657885211036!5m2!1szh-TW!2stw"
-          width="600" height="600" style="border:0;" allowfullscreen="true" loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div>
+          <!-- 地圖 -->
+          <div id="info-map" class="col-md-4 col-lg-5">
+            <iframe v-for="item in dataArray" :key="item.restaurantNumber"
+              :src="`https://www.google.com/maps/embed/v1/place?key=AIzaSyBwhBQXDks6CAdcxO-1SoTU6wKttYcHLx0&q=${item.restaurantName}&language=zh-TW`"
+              width="700" height="250" style="border:0;" allowfullscreen="" loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+        </div>
       </div>
     </div>
   </div>
