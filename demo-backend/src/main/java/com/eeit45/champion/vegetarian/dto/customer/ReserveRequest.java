@@ -2,6 +2,7 @@ package com.eeit45.champion.vegetarian.dto.customer;
 
 import org.springframework.beans.factory.annotation.Value;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
@@ -29,6 +30,9 @@ public class ReserveRequest {
 
     @NotBlank
     private String reservePhone;
+
+    @Email
+    private String reserveEmail;
 
     public String getReserveDate() {
         return reserveDate;
@@ -92,5 +96,13 @@ public class ReserveRequest {
 
     public void setReservePhone(String reservePhone) {
         this.reservePhone = reservePhone;
+    }
+
+    public String getReserveEmail() {
+        return reserveEmail;
+    }
+
+    public void setReserveEmail(String reserveEmail) {
+        this.reserveEmail = reserveEmail;
     }
 }
