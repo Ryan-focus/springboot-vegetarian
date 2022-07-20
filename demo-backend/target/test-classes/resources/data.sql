@@ -18,13 +18,13 @@ INSERT INTO `user` ( email, password, userName, status, userPic, registerTime, l
 ,('dkd93@gmail.com', '$2a$10$dAXsizGzNbj2lvUqDyGqTuS1fuKGsAEOwFY/eZ1O1PMWbO2ayk4Wy', '麥可', '正常', 'a010', curdate(), now());
 
 -- business
-INSERT INTO business ( email, password,principalName,principalPhone, businessName,located, status, businessPic, createdTime, lastLoginTime, updateTime) VALUES
-('delisoys@gmail.com', 'Aa123456','嚴心鏞','0912345678', '善果餐飲集團','台北市中山區','未開通', 'b@01', now(), now() ,now())
-,('xiaoxiao@gmail.com', 'Bb123456','劉千瑞','0938978938', '航博瑞樸股份有限公司','台北市大安區' ,'未開通', 'b@02', now(), now(),now())
-,('hanlie@gmail.com', 'Cc123456','賴宗成','(07)213-5788', '漢來美食股份有限公司','高雄市前金區','未開通', 'b@03', now(), now(),now())
-,('miacucina@gmail.com', 'Dd123456','劉人銘','02-8866-2679', '佐上椿有限公司','台北市內湖區', '未開通', 'b@04', now(), now(),now())
-,('vegecreek@gmail.com', 'Ee123456','許淞堡','02-26626766', '蔬河有限公司','台北市文山區', '未開通', 'b@05', now(), now(),now())
-,('urban@gmail.com', 'Ff123456','吳逸如','02 8773 7033','二本餐飲股份有限公司','台北市大安區', '未開通', 'b@06', now(), now(),now())
+INSERT INTO business ( email, password,principalName,principalPhone, businessName,located, status,restaurantNumber, businessPic, createdTime, lastLoginTime, updateTime) VALUES
+('delisoys@gmail.com', 'Aa123456','嚴心鏞','0912345678', '善果餐飲集團','台北市中山區','未開通',null, 'b@01', now(), now() ,now())
+,('xiaoxiao@gmail.com', 'Bb123456','劉千瑞','0938978938', '航博瑞樸股份有限公司','台北市大安區' ,'未開通',null, 'b@02', now(), now(),now())
+,('hanlie@gmail.com', 'Cc123456','賴宗成','(07)213-5788', '漢來美食股份有限公司','高雄市前金區','未開通',null, 'b@03', now(), now(),now())
+,('miacucina@gmail.com', 'Dd123456','劉人銘','02-8866-2679', '佐上椿有限公司','台北市內湖區', '未開通',null, 'b@04', now(), now(),now())
+,('vegecreek@gmail.com', 'Ee123456','許淞堡','02-26626766', '蔬河有限公司','台北市文山區', '未開通',null, 'b@05', now(), now(),now())
+,('urban@gmail.com', 'Ff123456','吳逸如','02 8773 7033','二本餐飲股份有限公司','台北市大安區', '未開通',null, 'b@06', now(), now(),now())
 ;
 update business set password = MD5(password);
 
