@@ -205,30 +205,17 @@ async function onSubmit() {
                     </div>
                   </div>
                   <div class="mb-4">
-                    <label class="form-label" for="val-district">營業餐廳名稱<span class="text-danger">*</span></label>
+                    <label class="form-label" for="val-district">公司名稱<span class="text-danger">*</span></label>
                     <input type="text" class="form-control form-control-lg form-control-alt" id="signup-businessName"
                       name="signup-businessName" :class="{
                         'is-invalid': v$.businessName.$errors.length,
                       }" v-model="state.businessName" @blur="v$.businessName.$touch" />
                     <div v-if="v$.businessName.$errors.length" class="invalid-feedback animated fadeIn">
-                      請輸入完整的餐廳名稱
+                      請輸入公司名稱
                     </div>
                   </div>
-                  <!-- <div class="mb-4">
-                    營業餐廳位置:
-                    <select class="form-select" id="signup-district" name="signup-district" :class="{
-                      'is-invalid': v$.district.$errors.length,
-                    }" v-model="state.district" @blur="v$.district.$touch">
-                      <option v-for="city in district" :key="city.value" :value="city.value">
-                        {{ city.name }}
-                      </option>
-                      <div v-if="v$.district.$errors.length" class="invalid-feedback animated fadeIn">
-                        請選擇您所在的區域
-                      </div>
-                    </select>
-                  </div> -->
                   <div class="mb-4">
-                    <label class="form-label" for="val-district">營業餐廳位置:<span class="text-danger">*</span></label>
+                    <label class="form-label" for="val-district">您計畫開業的區域:<span class="text-danger">*</span></label>
                     <select id="val-district" class="form-select" :class="{
                       'is-invalid': v$.district.$errors.length,
                     }" v-model="state.district">

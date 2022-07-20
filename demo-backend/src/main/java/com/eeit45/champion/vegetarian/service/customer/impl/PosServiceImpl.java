@@ -42,9 +42,9 @@ public class PosServiceImpl implements PosService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
-        
+
         //更新business 系統狀態
-        businessDao.updateStatus(business.getBusinessId(),"未開通" , null);
+//        businessDao.updateStatus(business.getBusinessId(),"未開通" , null);
 
         Integer posId = posDao.buildPos(businessId,posRequest);
 
