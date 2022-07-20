@@ -798,8 +798,8 @@ export default {
       heading: true,
     },
     {
-      name: "購物車",
-      icon: "fa fa-cart-shopping",
+      name: "商品頁",
+      icon: "si si-handbag",
       to: "shoppingCart",
     },
     {
@@ -835,8 +835,8 @@ export default {
       heading: true,
     },
     {
-      name: "購物車",
-      icon: "fa fa-cart-shopping",
+      name: "商品頁",
+      icon: "si si-handbag",
       to: "shoppingCart",
     },
     {
@@ -872,8 +872,8 @@ export default {
       heading: true,
     },
     {
-      name: "購物車",
-      icon: "fa fa-cart-shopping",
+      name: "商品頁",
+      icon: "si si-handbag",
       to: "shoppingCart",
     },
     {
@@ -908,8 +908,8 @@ export default {
       heading: true,
     },
     {
-      name: "購物車",
-      icon: "fa fa-cart-shopping",
+      name: "商品頁",
+      icon: "si si-handbag",
       to: "shoppingCart",
     },
     {
