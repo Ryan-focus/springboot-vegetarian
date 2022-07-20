@@ -42,6 +42,7 @@ const userId = JSON.stringify(user.data.user.userId)
 //檢查localstorage裡面是否有東西，沒有設定為null不然直接抓會報錯
 var cartItemList = null
 if (window.localStorage.getItem("cartItem") != null) {
+  cartItemList = ref()
   cartItemList = JSON.parse(window.localStorage.getItem("cartItem")).cartItemList;
 }
 
@@ -75,11 +76,47 @@ function countTotal() {
 //刪除一筆localstorage裡面的值
 //先取出index在用splice做刪除值
 function deleteItem(i) {
-  cartItemList.splice(i, 1);
-  //把cartItem前面的宣告加回去
-  const cartItemList1 = { cartItemList: cartItemList }
-  localStorage.setItem("cartItem", JSON.stringify(cartItemList1))
-  window.location.reload()
+  toast
+    .fire({
+      title: "確定要刪除嗎?",
+      text: "刪除後不能返回",
+      icon: "warning",
+      showCancelButton: true,
+      customClass: {
+        confirmButton: "btn btn-danger m-1",
+        cancelButton: "btn btn-secondary m-1",
+      },
+      confirmButtonText: "刪除資料",
+      cancelButtonText: "取消刪除",
+
+      html: false,
+      preConfirm: () => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 50);
+        });
+      },
+    })
+    .then((result) => {
+      //send request to server
+      if (result.value) {
+
+
+        cartItemList.splice(i, 1);
+        //把cartItem前面的宣告加回去
+        const cartItemList1 = { cartItemList: cartItemList }
+        localStorage.setItem("cartItem", JSON.stringify(cartItemList1))
+        window.location.reload()
+      } else if (result.dismiss === "cancel") {
+        toast.fire("刪除失敗", "", "error");
+      }
+    });
+
+
+
+
+
 }
 
 // 更新數量
@@ -232,7 +269,11 @@ function payment() {
 
                 </td>
                 <td class="text-end">{{ item.product.productPrice * item.quantity }}</td>
-                <td class="text-end"><button @click="deleteItem(i)">delete</button></td>
+
+                <td class="text-end"> <button type="button" class="btn rounded-pill btn-alt-danger me-1 mb-3"
+                    @click="deleteItem(i)">
+                    <i class="fa fa-fw fa-times me-1"></i> 移除
+                  </button></td>
               </tr>
               <tr>
                 <td colspan="5" class="fw-semibold text-end">稅
