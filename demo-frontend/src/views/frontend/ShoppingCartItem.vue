@@ -300,8 +300,8 @@ function payment() {
                 <td colspan="5" class="fw-bold text-uppercase text-end bg-body-light">
                 </td>
                 <td class="fw-bold text-end bg-body-light">
-                  <button type="button" class="btn btn-outline-danger">
-                    <i class="fal fa-dollar-sign" @click="checkOut(), payment()">結帳</i>
+                  <button type="button" class="btn btn-outline-primary">
+                    <i class="fa-brands fa-paypal" @click="checkOut(), payment()"> 結帳</i>
                   </button>
                 </td>
               </tr>
