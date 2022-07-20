@@ -56,18 +56,6 @@ getAxios();
 
 <template >
 
-    <div class="content">
-        <form @submit.prevent>
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="Search.." />
-                <span class="input-group-text">
-                    <i class="fa fa-fw fa-search"></i>
-                </span>
-            </div>
-        </form>
-    </div>
-    <!-- END Search -->
-
     <!-- Page Content -->
     <div class="content">
         <!-- Results -->
@@ -94,7 +82,7 @@ getAxios();
                         <button type="button" class="nav-link" id="search-classic-tab" data-bs-toggle="tab"
                             data-bs-target="#search-classic" role="tab" aria-controls="search-classic"
                             aria-selected="false">
-                            未出貨
+                            已出貨
                         </button>
                     </li>
                     <li class="nav-item">
@@ -134,10 +122,10 @@ getAxios();
                                             <div class="col-6 text-end fs-sm">
                                                 <p class="h3">{{ user.data.user.userName }}</p>
                                                 <address>
-                                                    Street Address<br />
-                                                    State, City<br />
-                                                    Region, Postal Code<br />
-                                                    ctr@example.com
+                                                    桃園市<br />
+                                                    中壢區<br />
+                                                    新生路421號<br />
+                                                    {{ user.data.user.email }}
                                                 </address>
                                             </div>
                                             <!-- END Client Info -->
@@ -155,9 +143,9 @@ getAxios();
                                             </thead>
                                             <tbody>
                                                 <!-- 這邊開始是一格商品 -->
-                                                <tr v-for="arry in item.orderItemList" :key="arry.orderItemId"
-                                                    :value='item.value' :label="item.label">
-                                                    <td class="text-center">{{ arry.orderItemId }}</td>
+                                                <tr v-for="(arry, i) in item.orderItemList" :key="i" :value='item.value'
+                                                    :label="item.label">
+                                                    <td class="text-center">{{ i + 1 }}</td>
                                                     <td>
                                                         <p class="fw-semibold mb-1">{{ arry.productName }}</p>
                                                     </td>
@@ -241,10 +229,10 @@ getAxios();
                                                     <div class="col-6 text-end fs-sm">
                                                         <p class="h3">{{ user.data.user.userName }}</p>
                                                         <address>
-                                                            Street Address<br />
-                                                            State, City<br />
-                                                            Region, Postal Code<br />
-                                                            ctr@example.com
+                                                            桃園市<br />
+                                                            中壢區<br />
+                                                            新生路421號<br />
+                                                            {{ user.data.user.email }}
                                                         </address>
                                                     </div>
                                                     <!-- END Client Info -->
@@ -262,9 +250,9 @@ getAxios();
                                                     </thead>
                                                     <tbody>
                                                         <!-- 這邊開始是一格商品 -->
-                                                        <tr v-for="arry in item.orderItemList" :key="arry.orderItemId"
+                                                        <tr v-for="(arry, i) in item.orderItemList" :key="i"
                                                             :value='item.value' :label="item.label">
-                                                            <td class="text-center">{{ arry.orderItemId }}</td>
+                                                            <td class="text-center">{{ i + 1 }}</td>
                                                             <td>
                                                                 <p class="fw-semibold mb-1">{{ arry.productName }}</p>
                                                             </td>
@@ -341,7 +329,7 @@ getAxios();
                                         <!-- Table -->
                                         <div class="table-responsive push" v-for="item in orderList" :key="item.orderId"
                                             :value='item.value' :label="item.label">
-                                            <div v-if="item.status == '未出貨'">
+                                            <div v-if="item.status == '已出貨'">
                                                 <!-- Invoice Info -->
                                                 <div class="row mb-4">
                                                     <!-- Company Info -->
@@ -353,10 +341,10 @@ getAxios();
                                                     <div class="col-6 text-end fs-sm">
                                                         <p class="h3">{{ user.data.user.userName }}</p>
                                                         <address>
-                                                            Street Address<br />
-                                                            State, City<br />
-                                                            Region, Postal Code<br />
-                                                            ctr@example.com
+                                                            桃園市<br />
+                                                            中壢區<br />
+                                                            新生路421號<br />
+                                                            {{ user.data.user.email }}
                                                         </address>
                                                     </div>
                                                     <!-- END Client Info -->
@@ -374,9 +362,9 @@ getAxios();
                                                     </thead>
                                                     <tbody>
                                                         <!-- 這邊開始是一格商品 -->
-                                                        <tr v-for="arry in item.orderItemList" :key="arry.orderItemId"
+                                                        <tr v-for="(arry, i) in item.orderItemList" :key="i"
                                                             :value='item.value' :label="item.label">
-                                                            <td class="text-center">{{ arry.orderItemId }}</td>
+                                                            <td class="text-center">{{ i + 1 }}</td>
                                                             <td>
                                                                 <p class="fw-semibold mb-1">{{ arry.productName }}</p>
                                                             </td>
@@ -465,10 +453,10 @@ getAxios();
                                                     <div class="col-6 text-end fs-sm">
                                                         <p class="h3">{{ user.data.user.userName }}</p>
                                                         <address>
-                                                            Street Address<br />
-                                                            State, City<br />
-                                                            Region, Postal Code<br />
-                                                            ctr@example.com
+                                                            桃園市<br />
+                                                            中壢區<br />
+                                                            新生路421號<br />
+                                                            {{ user.data.user.email }}
                                                         </address>
                                                     </div>
                                                     <!-- END Client Info -->
@@ -486,9 +474,9 @@ getAxios();
                                                     </thead>
                                                     <tbody>
                                                         <!-- 這邊開始是一格商品 -->
-                                                        <tr v-for="arry in item.orderItemList" :key="arry.orderItemId"
+                                                        <tr v-for="(arry, i) in item.orderItemList" :key="i"
                                                             :value='item.value' :label="item.label">
-                                                            <td class="text-center">{{ arry.orderItemId }}</td>
+                                                            <td class="text-center">{{ i + 1 }}</td>
                                                             <td>
                                                                 <p class="fw-semibold mb-1">{{ arry.productName }}</p>
                                                             </td>

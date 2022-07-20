@@ -18,4 +18,6 @@ public interface BusinessDao {
     List<Business> getAllBusiness();
 
     void updateRestaurantNumber(Integer businessId, BusinessRequest businessRequest);
+
+    String resetPassword(String email);
 }

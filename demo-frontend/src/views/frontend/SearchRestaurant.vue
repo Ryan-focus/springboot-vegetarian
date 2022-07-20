@@ -186,27 +186,19 @@ getAxios();
 
 
 var businessRestuarantID = [];
+var businessID = [];
 
 //取得驗證後商家數據，有登入在餐廳內的數據 
 function getBusinessList() {
   axios.get(`http://${url}/business`)
     .then((res) => {
-      for (let i = 0; i <= res.data.length - 1; i++) {
+      for (let i = 0; i <= res.data.length; i++) {
         if (res.data[i].restaurantNumber != 0) {
           businessRestuarantID.push(res.data[i].restaurantNumber);
+          businessID.push(res.data[i].businessId);
         }
       }
     })
-}
-
-//跳轉'前往訂位' 
-function reserveRestaurant(restaurantNumber) {
-  router.push({
-    name: "restaurant-reserve",
-    params: {
-      restaurantId: restaurantNumber
-    },
-  });
 }
 
 getBusinessList();
@@ -337,10 +329,9 @@ export default {
                   <button type="button" class="btn btn-outline-primary me-3"
                     @click.prevent="restaurantDetail(item.restaurantNumber)">詳細</button>
                   <!-- 前往訂位-->
-                  <button v-if="businessRestuarantID.indexOf(item.restaurantNumber) >= 0" type="button"
-                    class="btn btn-outline-danger" @click.prevent="reserveRestaurant(item.restaurantNumber)"> <i
-                      class="far fa-calendar-days me-2" />
-                    前往訂位</button>
+                  <a v-if="businessRestuarantID.indexOf(item.restaurantNumber) >= 0"
+                    :href="`/#/searchRestaurant/reserve/${item.restaurantNumber}/${businessID[businessRestuarantID.indexOf(item.restaurantNumber)]}`"
+                    type="button" class="btn btn-outline-danger"><i class="far fa-calendar-days me-2" />前往訂位</a>
                 </div>
               </div>
             </div>

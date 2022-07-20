@@ -205,7 +205,7 @@ getPass();
             <div class="bg-body-light rounded-bottom">
               <a class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
                 href="javascript:void(0)">
-                <a href="/#/backend/restaurants/dashboard#newRestaurant">詳細</a>
+                <a href="/#/backend/reserve/reserveinfo">詳細</a>
                 <i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
               </a>
             </div>

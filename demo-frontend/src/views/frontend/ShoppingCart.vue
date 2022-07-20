@@ -64,9 +64,8 @@ const cartItem = ref({
   quantity: "",
 })
 
-
 function addToCart(productId) {
-  cartItem.value.product = this.singleProduct
+  cartItem.value.product = singleProduct.value
   cartItem.value.quantity = this.cartItem.quantity
   data.cartItemList.push(cartItem.value);
   localStorage.setItem('cartItem', JSON.stringify(data));

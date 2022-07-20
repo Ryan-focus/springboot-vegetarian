@@ -48,13 +48,13 @@ const getAxios = function () {
         .get(`http://${url}/forums/${forumId}`)
         .then((res) => {
 
-            //獲取伺服器的回傳資料
+            //獲取伺服器的回傳資料res.data.欄位名稱
             resData.value = res.data;
             resForumId.value = res.data.forumId;
             resForumTitle.value = res.data.forumTitle;
             resForumContent.value = res.data.forumContent;
             resForumCategory.value = res.data.forumCategory;
-            resForumImage.value = res.data.imageUrl;
+            resForumImage.value = res.data.forumImage;
             console.log(res);
         })
         .catch((error) => {
@@ -103,27 +103,8 @@ function showForum() {
                                 <button type="button" class="btn btn-outline-success btn-block" id="search-projects-tab"
                                     data-bs-toggle="tab" data-bs-target="#search-projects" role="tab"
                                     aria-controls="search-projects" aria-selected="true"
-                                    style="float:left;width: 294px;">
-                                    健康
-                                </button>
-                                <button type="button" class="btn btn-outline-success btn-block" id="search-projects-tab"
-                                    data-bs-toggle="tab" data-bs-target="#search-projects" role="tab"
-                                    aria-controls="search-projects" aria-selected="true"
-                                    style="float:left;width: 294px;">
-                                    養身
-                                </button>
-
-                                <button type="button" class="btn btn-outline-success btn-block" id="search-projects-tab"
-                                    data-bs-toggle="tab" data-bs-target="#search-projects" role="tab"
-                                    aria-controls="search-projects" aria-selected="true"
-                                    style="float:left;width: 294px;">
-                                    環保
-                                </button>
-                                <button type="button" class="btn btn-outline-success btn-block" id="search-projects-tab"
-                                    data-bs-toggle="tab" data-bs-target="#search-projects" role="tab"
-                                    aria-controls="search-projects" aria-selected="true"
-                                    style="float:left;width: 294px;">
-                                    公益
+                                    style="float:left;width: 1176px;">
+                                    {{ resForumTitle }}
                                 </button>
                             </li>
                         </ul>
@@ -137,10 +118,15 @@ function showForum() {
                 <BaseBlock class="text-center">
                     <tr>
                         <td class="col-md-6 col-lg-4 col-xl-3">
+                            <div class="img1">
+                                <a :title="`${resForumTitle}`">
+                                    <img class="img-fluid" :src="`${resForumImage}`" :alt="`${resForumTitle}`" />
+                                </a>
+                            </div>
                             <p class="d-none d-sm-block text-muted">
+                            <p v-html="resForumContent"></p>
 
-                                <!-- v-html="row.forumContent" -->
-                                {{ resForumContent }}
+                            <!-- {{ resForumContent }} -->
                             </p>
                         </td>
                     </tr>
@@ -150,3 +136,17 @@ function showForum() {
     </div>
     <!-- END Page Content -->
 </template>
+
+<style>
+.img1 {
+    width: 200px;
+    height: 200px;
+    display: block;
+    margin: auto;
+}
+
+.img-fluid {
+    width: 100%;
+    height: 100%;
+}
+</style>

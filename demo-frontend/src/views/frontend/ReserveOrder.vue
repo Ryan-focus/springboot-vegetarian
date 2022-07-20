@@ -11,13 +11,12 @@ import StarRating from "vue-star-rating";
 import { useRoute } from "vue-router";
 // Calendar
 import Datepicker from '@vuepic/vue-datepicker';
+import router from "../../router";
 //接值
 const route = useRoute();
-const data = reactive({
-  loading: false,
-});
 const restaurantNumber = route.params.restaurantId;
-console.log("restaurantNumber=" + restaurantNumber);
+const businessId = route.params.businessId;
+console.log("businessId=" + businessId);
 const reserveOrder = ref();
 const restaurantName = ref();
 const restaurantTel = ref();
@@ -29,7 +28,7 @@ const restaurantScore = ref();
 const imageUrl = ref();
 
 const reserveRestaurant = function () {
-  data.loading = true;
+
   axios
     .get(`http://localhost:8088/restaurants/${restaurantNumber}`)
     .then((res) => {
@@ -47,7 +46,7 @@ const reserveRestaurant = function () {
     .catch((error) => {
       console.log(error, "失敗");
     }).finally(() => {
-      data.loading = false;
+
     });
 }
 reserveRestaurant();
@@ -71,14 +70,24 @@ const format = (date) => {
 
   return `${month}月${day}日 ${daysArray[days]}`;
 }
+//reserve 要儲存的資訊有5 restaurantNumber businessId人數 Adult 、 Child、 Date
+const data = (sessionStorage.getItem('reserve')) ? JSON.parse(sessionStorage.getItem('reserve')) : {
+  reserveItemList: []
+};
 
-//接收的資料ref
-//當日統計
-//取得全部人數
-//取得全部組數
+function sendData() {
+  data.reserveItemList.push(restaurantNumber);
+  data.reserveItemList.push(businessId);
+  data.reserveItemList.push(adult.value);
+  data.reserveItemList.push(kid.value);
+  data.reserveItemList.push(format(date.value));
+  console.log("傳送到下一個頁面所儲存的資料有:" + data.reserveItemList);
+  sessionStorage.setItem('reserve', JSON.stringify(data));
+  router.push({
+    name: "restaurant-reserve-check"
+  });
+}
 
-// ref會自己抓值，這邊還要另外宣告圖片是因為:src會去抓路徑，沒有定義會變undefined當掉
-//其他的值ref抓到後會自己帶入變成json
 
 </script>
 
@@ -93,11 +102,6 @@ const format = (date) => {
 </style>
 
 <template >
-  <Loading :active="data.loading">
-    <div class="spinner-grow spinner-grow-sm text-dark" role="status">
-      <span class="visually-hidden">Loading...</span>
-    </div>
-  </Loading>
   <div class="row justify-content-center">
     <div class="col-md-12 p-4 mt-1 mx-auto" style="max-width:1140px; ">
       <!-- With Indicators -->
@@ -168,8 +172,8 @@ const format = (date) => {
       <hr>
 
       <!-- 預訂餐廳主要功能區域-->
-      <div id="book-now" class="row">
-        <div id="book-now-selector" class="row">
+      <div id="book-now" class="row ">
+        <div id="book-now-selector" class="row mb-5">
           <div id="dinner-field" class="row col-6">
             <p class="mt-1 fw-normal h4">用餐人數</p>
             <div class="col-6">
@@ -250,7 +254,8 @@ const format = (date) => {
           <hr>
         </div>
         <div class="row justify-content-center" style="max-width:1140px ;  min-height: 50px;">
-          <button id="book-now-action-button" class="col-md-3 offset-md-5 justify-content-center me-5" style="
+          <button @click.prevent="sendData()" id="book-now-action-button"
+            class="col-md-3 offset-md-5 justify-content-center me-5" style="
                     background-color: rgb(255, 133, 14);
                     border: none;
                     border-radius: 6px;

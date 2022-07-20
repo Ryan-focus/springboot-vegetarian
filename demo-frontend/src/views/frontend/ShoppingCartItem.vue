@@ -23,14 +23,33 @@ function printPage() {
     store.sidebar({ mode: "open" });
   }
 }
+
+// Set default properties
+let toast = Swal.mixin({
+  buttonsStyling: false,
+  target: "#page-container",
+  customClass: {
+    confirmButton: "btn btn-success m-1",
+    cancelButton: "btn btn-danger m-1",
+    input: "form-control",
+  },
+});
+
+
 //取得localstorage
 const user = JSON.parse(window.localStorage.getItem("access-user"));
+const userId = JSON.stringify(user.data.user.userId)
 //檢查localstorage裡面是否有東西，沒有設定為null不然直接抓會報錯
 var cartItemList = null
 if (window.localStorage.getItem("cartItem") != null) {
+  cartItemList = ref()
   cartItemList = JSON.parse(window.localStorage.getItem("cartItem")).cartItemList;
 }
-const userId = JSON.stringify(user.data.user.userId)
+
+function reflesh() {
+  cartItemList = JSON.parse(window.localStorage.getItem("cartItem")).cartItemList;
+}
+
 // 清空localstorage
 function removeCart() {
   localStorage.removeItem("cartItem")
@@ -42,7 +61,6 @@ function removeCart() {
       icon: "success"
     }
   ))
-
 }
 
 //加總功能
@@ -54,6 +72,72 @@ function countTotal() {
   }
   return total
 }
+
+//刪除一筆localstorage裡面的值
+//先取出index在用splice做刪除值
+function deleteItem(i) {
+  toast
+    .fire({
+      title: "確定要刪除嗎?",
+      text: "刪除後不能返回",
+      icon: "warning",
+      showCancelButton: true,
+      customClass: {
+        confirmButton: "btn btn-danger m-1",
+        cancelButton: "btn btn-secondary m-1",
+      },
+      confirmButtonText: "刪除資料",
+      cancelButtonText: "取消刪除",
+
+      html: false,
+      preConfirm: () => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 50);
+        });
+      },
+    })
+    .then((result) => {
+      //send request to server
+      if (result.value) {
+
+
+        cartItemList.splice(i, 1);
+        //把cartItem前面的宣告加回去
+        const cartItemList1 = { cartItemList: cartItemList }
+        localStorage.setItem("cartItem", JSON.stringify(cartItemList1))
+        window.location.reload()
+      } else if (result.dismiss === "cancel") {
+        toast.fire("刪除失敗", "", "error");
+      }
+    });
+
+
+
+
+
+}
+
+// 更新數量
+function increaseQuantity(i) {
+  cartItemList[i].quantity++
+  const cartItemList1 = { cartItemList: cartItemList }
+  localStorage.setItem("cartItem", JSON.stringify(cartItemList1))
+  window.location.reload()
+}
+
+function decreaseQuantity(i) {
+
+  cartItemList[i].quantity--
+  const cartItemList1 = { cartItemList: cartItemList }
+  localStorage.setItem("cartItem", JSON.stringify(cartItemList1))
+  window.location.reload()
+}
+
+
+
+
 // 寫入訂單功能
 //用foreach+push把想要的值推進array中
 var checkOutItemArray = []
@@ -65,22 +149,32 @@ for (var i in cartItemList) {
     }
   )
 }
+
+
 //將更新好的array寫進來做結帳動作
 function checkOut() {
-  axios
-    .post(`http://localhost:8088/2/order`, {
-      "buyItemList": checkOutItemArray
-    })
-    .then((res) => {
-      console.log(res.data)
-    }).catch((error) => {
-      console.log(error, "失敗");
-    });
+  Swal.fire(
+    {
+      title: "即將跳轉至結帳頁面",
+      text: "",
+      timer: 3000,
+      icon: "success"
+    }).then(
+      axios
+        .post(`http://localhost:8088/${userId}/order`, {
+          "buyItemList": checkOutItemArray
+        })
+        .then((res) => {
+          console.log(res.data)
+        }).catch((error) => {
+          console.log(error, "失敗");
+        })
+    )
 }
+
 
 // 結帳功能
 function payment() {
-
   axios.post(
     "http://localhost:8088/paypal/payment?sum=" + total
   ).then(
@@ -131,12 +225,11 @@ function payment() {
             <!-- 使用者名稱 -->
             <p class="h3">{{ user.data.user.userName }}</p>
             <address>
-              Street Address<br />
-              State, City<br />
-              Region, Postal Code<br />
-              ctr@example.com
+              桃園市<br />
+              中壢區<br />
+              新生路421號<br />
+              {{ user.data.user.email }}
             </address>
-            <button @click="removeCart()">清除購物車</button>
           </div>
           <!-- END Client Info -->
         </div>
@@ -148,10 +241,11 @@ function payment() {
             <thead>
               <tr>
                 <th class="text-center" style="width: 60px"></th>
-                <th>Product</th>
-                <th class="text-center" style="width: 90px">數量</th>
+                <th>商品</th>
+                <th class="text-center" style="width:200px">數量</th>
                 <th class="text-end" style="width: 120px">單價</th>
                 <th class="text-end" style="width: 120px">小計</th>
+                <th class="text-end" style="width: 120px">刪除</th>
               </tr>
             </thead>
             <tbody>
@@ -163,35 +257,45 @@ function payment() {
                   <img :src="item.product.productImage" alt="" width="50">
                 </td>
                 <td class="text-center">
-                  <span class="badge rounded-pill bg-primary">
-                    {{ item.quantity }}
-                  </span>
+                  <button type="button" class="btn btn-sm btn-Info me-1 mb-3" @click="increaseQuantity(i)">
+                    <i class="fa fa-circle-plus"></i>
+                  </button>
+                  &nbsp;{{ item.quantity }}&nbsp;
+                  <button type="button" class="btn btn-sm btn-Info me-1 mb-3" @click="decreaseQuantity(i)">
+                    <i class="fa fa-circle-minus"></i>
+                  </button>
                 </td>
-                <td class="text-end">NT. {{ item.product.productPrice }}</td>
-                <td class="text-end">{{ item.product.productPrice * item.quantity }}</td>
-              </tr>
+                <td class="text-end">NT. {{ item.product.productPrice }}
 
+                </td>
+                <td class="text-end">{{ item.product.productPrice * item.quantity }}</td>
+
+                <td class="text-end"> <button type="button" class="btn rounded-pill btn-alt-danger me-1 mb-3"
+                    @click="deleteItem(i)">
+                    <i class="fa fa-fw fa-times me-1"></i> 移除
+                  </button></td>
+              </tr>
               <tr>
-                <td colspan="4" class="fw-semibold text-end">稅
+                <td colspan="5" class="fw-semibold text-end">稅
                 </td>
                 <td class="text-end">０</td>
               </tr>
               <tr>
-                <td colspan="4" class="fw-semibold text-end">運費</td>
+                <td colspan="5" class="fw-semibold text-end">運費</td>
                 <td class="text-end">0</td>
               </tr>
               <tr>
-                <td colspan="4" class="fw-bold text-uppercase text-end bg-body-light">
+                <td colspan="5" class="fw-bold text-uppercase text-end bg-body-light">
                   總價
                 </td>
                 <td class="fw-bold text-end bg-body-light">{{ countTotal() }}</td>
               </tr>
               <tr>
-                <td colspan="4" class="fw-bold text-uppercase text-end bg-body-light">
+                <td colspan="5" class="fw-bold text-uppercase text-end bg-body-light">
                 </td>
                 <td class="fw-bold text-end bg-body-light">
                   <button type="button" class="btn btn-outline-danger">
-                    <i class="fal fa-dollar-sign" @click="checkOut(), payment(), removeCart()">結帳</i>
+                    <i class="fal fa-dollar-sign" @click="checkOut(), payment()">結帳</i>
                   </button>
                 </td>
               </tr>
@@ -204,8 +308,6 @@ function payment() {
 
         <!-- Footer -->
         <p class="fs-sm text-muted text-center">
-          Thank you very much for doing business with us. We look forward to
-          working with you again!
         </p>
         <!-- END Footer -->
       </div>

@@ -5,6 +5,7 @@ import com.eeit45.champion.vegetarian.dto.customer.BusinessRegisterRequest;
 import com.eeit45.champion.vegetarian.dto.customer.BusinessRequest;
 import com.eeit45.champion.vegetarian.dto.customer.PosRequest;
 import com.eeit45.champion.vegetarian.interceptor.LoginVO;
+import com.eeit45.champion.vegetarian.model.User;
 import com.eeit45.champion.vegetarian.model.customer.Business;
 import com.eeit45.champion.vegetarian.service.customer.BusinessService;
 import com.eeit45.champion.vegetarian.util.Result;
@@ -62,5 +63,19 @@ public class BusinessController {
 
         return ResponseEntity.status(HttpStatus.OK).body(updateBusiness);
     }
+
+    //商家使用者忘記密碼 ， 發送信
+    @PostMapping("/business/sendMail")
+    public ResponseEntity<Business> resetPassword(@RequestBody LoginRequest loginRequest) {
+
+        Business business = businessService.resetPassword(loginRequest);
+
+        if (business != null) {
+            return ResponseEntity.status(HttpStatus.OK).body(business);
+        }
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+
 
 }
