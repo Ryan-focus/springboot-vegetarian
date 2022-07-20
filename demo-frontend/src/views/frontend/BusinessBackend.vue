@@ -342,6 +342,7 @@ const image = ref({
 });
 
 
+
 // Set default properties
 let toast = Swal.mixin({
   buttonsStyling: false,
@@ -436,7 +437,7 @@ function createRestaurant() {
       //send request to server
       if (result.value) {
         var posData = {
-          validDate: '未審核',
+          validDate: '未開通',
           expiryDate: new Date(),
           UUID: null
         }
@@ -467,7 +468,9 @@ function createRestaurant() {
   // });
 }
 
-
+if (business.data.buness.businessPic == null) {
+  business.data.buness.businessPic = "avatar";
+}
 
 getReserveList();
 getPos();
@@ -485,7 +488,7 @@ getPos();
 
           <RouterLink :to="{ name: 'business-backend-profile' }" class="fw-semibold">
             <img class="rounded-circle" :src="`/assets/media/business/${business.data.business.businessPic}.jpg`"
-              alt="Header Avatar" style="width: 21px" />
+              style="width: 21px" />
 
             {{
                 business.data.business.businessName

@@ -37,11 +37,13 @@ var isRestuarantInfo = ref();
 var businessId = ref();
 
 const getImg = function () {
-
+  /**if (business.data.buness.businessPic == null) {
+    business.data.buness.businessPic = "avatar";
+  }
+   */
   axios
     .get(`http://${url}/business`)
     .then((res) => {
-      //獲取伺服器的回傳資料
       resImg.value = res.data;
     })
     .catch((error) => {

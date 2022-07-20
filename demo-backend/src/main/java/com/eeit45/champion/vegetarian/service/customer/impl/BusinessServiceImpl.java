@@ -65,6 +65,10 @@ public class BusinessServiceImpl implements BusinessService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         }
 
+        if(businessRegisterRequest.getBusinessPic() == null){
+            businessRegisterRequest.setBusinessPic("avatar");
+        }
+
         // MD5 Hash Value
         String hashPassword = DigestUtils.md5DigestAsHex(businessRegisterRequest.getPassword().getBytes());
         businessRegisterRequest.setPassword(hashPassword);
