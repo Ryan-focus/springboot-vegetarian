@@ -6,17 +6,14 @@ import com.eeit45.champion.vegetarian.constant.RestaurantType;
 public class RestaurantQueryParams {
 	private RestaurantCategory restaurantCategory;
 	private RestaurantType restaurantType;
-	private String searchName;
-	private String searchAddress;
+	private String restaurantName;
+	private String restaurantAddress;
 	
 	private String orderBy;
 	private String sort;
 	
 	private Integer limit;
 	private Integer offset;
-	
-	
-	
 	public RestaurantCategory getRestaurantCategory() {
 		return restaurantCategory;
 	}
@@ -29,17 +26,17 @@ public class RestaurantQueryParams {
 	public void setRestaurantType(RestaurantType restaurantType) {
 		this.restaurantType = restaurantType;
 	}
-	public String getSearchName() {
-		return searchName;
+	public String getRestaurantName() {
+		return restaurantName;
 	}
-	public void setSearchName(String searchName) {
-		this.searchName = searchName;
+	public void setRestaurantName(String restaurantName) {
+		this.restaurantName = restaurantName;
 	}
-	public String getSearchAddress() {
-		return searchAddress;
+	public String getRestaurantAddress() {
+		return restaurantAddress;
 	}
-	public void setSearchAddress(String searchAddress) {
-		this.searchAddress = searchAddress;
+	public void setRestaurantAddress(String restaurantAddress) {
+		this.restaurantAddress = restaurantAddress;
 	}
 	public String getOrderBy() {
 		return orderBy;

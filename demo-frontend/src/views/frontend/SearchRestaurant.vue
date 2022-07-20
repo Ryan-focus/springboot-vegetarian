@@ -97,7 +97,7 @@ const searchAddress = function (address) {
   data.loading = true;
   if (address != null) {
     axios
-      .get(`http://${url}/restaurantList?searchAddress=` + address)
+      .get(`http://${url}/restaurantList?restaurantAddress=` + address)
       .then((res) => {
         console.log(res);
         console.log(res.data);
@@ -109,7 +109,7 @@ const searchAddress = function (address) {
       .catch((err) => console.log(err));
   } else {
     axios
-      .get(`http://${url}/restaurantList?searchAddress=${restaurantAddress}`)
+      .get(`http://${url}/restaurantList?restaurantAddress=${restaurantAddress}`)
       .then((res) => {
         console.log(res);
         console.log(res.data);
@@ -124,35 +124,35 @@ const searchAddress = function (address) {
 searchAddress();
 
 // 取得條件(餐廳名稱)
-// const searchName = function (name) {
-//   data.loading = true;
-//   if (name != null) {
-//     axios
-//       .get(`http://${url}/restaurantList?searchName=` + name)
-//       .then((res) => {
-//         console.log(res);
-//         console.log(res.data);
-//         console.log(res.data.results);
+const searchName = function (name) {
+  data.loading = true;
+  if (name != null) {
+    axios
+      .get(`http://${url}/restaurantList?restaurantName=` + name)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.results);
 
-//         dataArray.value = res.data.results;
+        dataArray.value = res.data.results;
 
-//       })
-//       .catch((err) => console.log(err));
-//   } else {
-//     axios
-//       .get(`http://${url}/restaurantList?searchName=${restaurantName}`)
-//       .then((res) => {
-//         console.log(res);
-//         console.log(res.data);
-//         console.log(res.data.results);
+      })
+      .catch((err) => console.log(err));
+  } else {
+    axios
+      .get(`http://${url}/restaurantList?restaurantName=${restaurantName}`)
+      .then((res) => {
+        console.log(res);
+        console.log(res.data);
+        console.log(res.data.results);
 
-//         dataArray.value = res.data.results;
+        dataArray.value = res.data.results;
 
-//       })
-//       .catch((err) => console.log(err));
-//   }
-// }
-// searchName();
+      })
+      .catch((err) => console.log(err));
+  }
+}
+searchName();
 
 
 //帶值restaurantNumber到detail頁
@@ -203,18 +203,32 @@ function getBusinessList() {
 
 getBusinessList();
 </script>
-<!-- <script>
-export default {
-  name: "restaurantIndex",
-  props: {
-    paramsData: {
-      type: String
+<script>
+// 先確認使用者裝置能不能抓地點
+function getlocation() {
+
+
+  if (navigator.geolocation) {
+
+    // 使用者不提供權限，或是發生其它錯誤
+    function error() {
+      alert('無法取得你的位置');
     }
-  },
-};
 
+    // 使用者允許抓目前位置，回傳經緯度
+    function success(position) {
+      console.log(position.coords.latitude, position.coords.longitude);
+    }
 
-</script> -->
+    // 跟使用者拿所在位置的權限
+    navigator.geolocation.getCurrentPosition(success, error);
+
+  } else {
+    alert('Sorry, 你的裝置不支援地理位置功能。')
+  }
+}
+
+</script>
 
 
 <template>
@@ -237,7 +251,7 @@ export default {
             <option selected>推薦</option>
             <option value="1">熱門餐廳</option>
             <option value="2">評分最高</option>
-            <option value="3">離你最近</option>
+            <option value="3" @click="getlocation()">離你最近</option>
           </select>
 
           <!-- <a></a> -->
@@ -342,10 +356,16 @@ export default {
       </div>
       <!-- 右邊 google map  -->
       <div class="col">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3616.437657692995!2d121.21998631423737!3d24.985240346399994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34682183e7b783c3%3A0xf0ebfba2069b6158!2z6IGW5b635Z-6552j5a246Zmi!5e0!3m2!1szh-TW!2stw!4v1657885211036!5m2!1szh-TW!2stw"
-          width="600" height="600" style="border:0;" allowfullscreen="true" loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div>
+          <!-- 地圖 -->
+          <div id="info-map" class="col-md-4 col-lg-5">
+            <iframe v-for="item in dataArray" :key="item.restaurantNumber"
+              :src="`https://www.google.com/maps/embed/v1/place?key=AIzaSyBwhBQXDks6CAdcxO-1SoTU6wKttYcHLx0&q=${item.restaurantName}&language=zh-TW`"
+              width="700" height="250" style="border:0;" allowfullscreen="" loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+          </div>
+        </div>
       </div>
     </div>
   </div>

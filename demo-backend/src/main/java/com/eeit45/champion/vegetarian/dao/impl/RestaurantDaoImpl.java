@@ -45,13 +45,13 @@ public class RestaurantDaoImpl implements RestaurantDao{
 			sql = sql + " AND restaurantType = :restaurantType";
 			map.put("restaurantType", restaurantQueryParams.getRestaurantType().name());
 		}
-		if(restaurantQueryParams.getSearchName() != null) {
-			sql = sql + " AND restaurantName LIKE :searchName";
-			map.put("searchName", "%" + restaurantQueryParams.getSearchName() + "%");
+		if(restaurantQueryParams.getRestaurantName() != null) {
+			sql = sql + " AND restaurantName LIKE :restaurantName";
+			map.put("restaurantName", "%" + restaurantQueryParams.getRestaurantName() + "%");
 		}
-		if(restaurantQueryParams.getSearchAddress() != null) {
-			sql = sql + " AND restaurantAddress LIKE :searchAddress";
-			map.put("searchAddress", "%" + restaurantQueryParams.getSearchAddress() + "%");
+		if(restaurantQueryParams.getRestaurantAddress() != null) {
+			sql = sql + " AND restaurantAddress LIKE :restaurantAddress";
+			map.put("restaurantAddress", "%" + restaurantQueryParams.getRestaurantAddress() + "%");
 		}
 		
 		Integer total = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
@@ -72,13 +72,13 @@ public class RestaurantDaoImpl implements RestaurantDao{
 			sql = sql + " AND restaurantType = :restaurantType";
 			map.put("restaurantType", restaurantQueryParams.getRestaurantType().name());
 		}
-		if(restaurantQueryParams.getSearchName() != null) {
-			sql = sql + " AND restaurantName LIKE :searchName";
-			map.put("searchName", "%" + restaurantQueryParams.getSearchName() + "%");
+		if(restaurantQueryParams.getRestaurantName() != null) {
+			sql = sql + " AND restaurantName LIKE :restaurantName";
+			map.put("restaurantName", "%" + restaurantQueryParams.getRestaurantName() + "%");
 		}
-		if(restaurantQueryParams.getSearchAddress() != null) {
-			sql = sql + " AND restaurantAddress LIKE :searchAddress";
-			map.put("searchAddress", "%" + restaurantQueryParams.getSearchAddress() + "%");
+		if(restaurantQueryParams.getRestaurantAddress() != null) {
+			sql = sql + " AND restaurantAddress LIKE :restaurantAddress";
+			map.put("restaurantAddress", "%" + restaurantQueryParams.getRestaurantAddress() + "%");
 		}
 		
 		//排序功能,不需用if來判斷,因為在controller有給預設值
