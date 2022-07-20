@@ -314,6 +314,14 @@ const getOrder = function () {
       console.log(error, "失敗");
     });
 };
+//銷售額
+function countTotal() {
+  var total = 0
+  for (var i in this.orderData) {
+    total += parseInt(this.orderData[i].payment)
+  }
+  return total
+}
 //執行Axios
 getAxios();
 getOrder();
@@ -377,6 +385,7 @@ getOrder();
                 <dt class="fs-3 fw-bold">{{ productsTotal }}</dt>
                 <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
                   現有商品總數
+
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
@@ -482,9 +491,9 @@ getOrder();
               <template #content>
                 <div class="block-content flex-grow-1 d-flex justify-content-between">
                   <dl class="mb-0">
-                    <dt class="fs-3 fw-bold">570</dt>
+                    <dt class="fs-3 fw-bold">{{ orderTotal }}</dt>
                     <dd class="fs-sm fw-medium text-muted mb-0">
-                      Total Orders
+                      訂單總數
                     </dd>
                   </dl>
                   <div>
@@ -505,9 +514,9 @@ getOrder();
               <template #content>
                 <div class="block-content flex-grow-1 d-flex justify-content-between">
                   <dl class="mb-0">
-                    <dt class="fs-3 fw-bold">$5,234.21</dt>
+                    <dt class="fs-3 fw-bold">NTD{{ countTotal() }}</dt>
                     <dd class="fs-sm fw-medium text-muted mb-0">
-                      Total Earnings
+                      總銷售額
                     </dd>
                   </dl>
                   <div>
@@ -519,30 +528,6 @@ getOrder();
                 </div>
                 <div class="block-content p-1 text-center overflow-hidden">
                   <LineChart :chart-data="totalEarningsData" :options="totalEarningsOptions" style="height: 90px" />
-                </div>
-              </template>
-            </BaseBlock>
-          </div>
-          <div class="col-xl-12">
-            <BaseBlock class="d-flex flex-column h-100 mb-0">
-              <template #content>
-                <div class="block-content flex-grow-1 d-flex justify-content-between">
-                  <dl class="mb-0">
-                    <dt class="fs-3 fw-bold">264</dt>
-                    <dd class="fs-sm fw-medium text-muted mb-0">
-                      New Customers
-                    </dd>
-                  </dl>
-                  <div>
-                    <div class="d-inline-block px-2 py-1 rounded-3 fs-xs fw-semibold text-success bg-success-light">
-                      <i class="fa fa-caret-up me-1"></i>
-                      9.3%
-                    </div>
-                  </div>
-                </div>
-                <div class="block-content p-1 text-center overflow-hidden">
-                  <!-- New Customers Chart Container -->
-                  <LineChart :chart-data="newCustomersData" :options="newCustomersOptions" style="height: 90px" />
                 </div>
               </template>
             </BaseBlock>
