@@ -469,31 +469,28 @@ btn-outline-danger" data-bs-dismiss="modal">
               <span class="badge bg-danger"><i class="fa fa-times-circle"></i> 已無商品</span>
             </div>
           </div>
-          <!-- 下拉顯示選單 -->
-          <BaseBlock :title="`  商品詳細描述 `" btn-option-content>
-            <template #subtitle>
-              <!-- 這裡可以放副標題 -->
-            </template>
-            <div class="row items-push-2x text-center">
-              <!-- 這裡會顯示商品的詳細描述 -->
-              <div v-html="singleProduct.description">
-              </div>
-            </div>
-          </BaseBlock>
-
-        </div>
-        <!-- 表單內文在這裡結束 -->
-        <!-- 送出button -->
-        <div class="modal-footer">
           <input type="number" min="1" v-model="cartItem.quantity">
           &ensp;&ensp;&ensp;
           <button type="submit" class="btn btn-outline-primary" data-bs-dismiss="modal"
             @click="addToCart(singleProduct.productId)">
             <i class="fa fa-cart-shopping">加入購物車</i>
           </button>
-
         </div>
+        <!-- 下拉顯示選單 -->
+        <BaseBlock :title="`  商品詳細描述 `" btn-option-content>
+          <template #subtitle>
+            <!-- 這裡可以放副標題 -->
+          </template>
+          <div class="row items-push-2x text-center">
+            <!-- 這裡會顯示商品的詳細描述 -->
+            <div v-html="singleProduct.description">
+            </div>
+          </div>
+        </BaseBlock>
+
       </div>
+      <!-- 表單內文在這裡結束 -->
+
     </div>
   </div>
 </template>
