@@ -56,11 +56,11 @@ const getRestaurant = function () {
     axios
         .get(`http://${url}/restaurants/${restaurantNumber}`)
         .then((res) => {
-            console.log(res);
-            console.log(res.data);
+            console.log("取得餐廳種類：" + res.data.restaurantCategory);
+            const catagory = (res.data.restaurantCategory);
+            console.log(catagory);
             let array = [];
             array.push(res.data);
-
             dataArray.value = array;
 
         })
@@ -68,6 +68,28 @@ const getRestaurant = function () {
 }
 
 getRestaurant();
+
+//取得單筆餐廳by catagory
+const getByCatagory = function () {
+    data.loading = true;
+    axios
+        .get(`http://${url}/restaurantList/restaurantCategory=${restaurantCategory}`)
+
+        .then((res) => {
+            ;
+            console.log(res);
+            console.log(res.data);
+            let array = [];
+            array.push(res.data);
+            console.log(array);
+            restaurantCategory.value = res.data.restaurantCategory;
+            dataArray.value = array;
+
+        })
+        .catch((err) => console.log(err));
+}
+
+getByCatagory();
 
 
 //確認用戶是否已收藏該筆餐廳資料
@@ -142,9 +164,7 @@ export default {
     },
 };
 
-
 </script>
-
 
 
 <!-- 內容由此開始 -->
@@ -293,8 +313,6 @@ export default {
                     </BaseBlock>
                 </div>
 
-
-
                 <!-- 猜你可能喜歡 -->
                 <div class="container">
                     <h3 class="text-primary">猜你可能喜歡</h3>
@@ -314,12 +332,6 @@ export default {
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="card-body">
-                                                    <!-- <h5 class="card-title">Card title</h5>
-                                            <p class="card-text">This is a wider card with supporting text below as a
-                                                natural lead-in to additional content. This content is a little bit
-                                                longer.</p>
-                                            <p class="card-text"><small class="text-muted">Last updated 3 mins
-                                                    ago</small></p> -->
                                                     <div class="d-flex justify-content-between">
                                                         <h5 class="card-title text-dark">{{ item.restaurantName }}</h5>
 

@@ -45,10 +45,6 @@ const searchCatagory = function (catagory) {
     axios
       .get(`http://${url}/restaurantList?restaurantCategory=` + catagory)
       .then((res) => {
-        // console.log(res);
-        // console.log(res.data);
-        // console.log(res.data.results);
-
         dataArray.value = res.data.results;
 
       })
@@ -57,10 +53,6 @@ const searchCatagory = function (catagory) {
     axios
       .get(`http://${url}/restaurantList?restaurantCategory=${restaurantCategory}`)
       .then((res) => {
-        // console.log(res);
-        // console.log(res.data);
-        // console.log(res.data.results);
-
         dataArray.value = res.data.results;
 
       })
@@ -75,10 +67,6 @@ const searchType = function (type) {
   axios
     .get(`http://${url}/restaurantList?restaurantType=` + type)
     .then((res) => {
-      // console.log(res);
-      // console.log(res.data);
-      // console.log(res.data.results);
-
       dataArray.value = res.data.results;
 
     })
@@ -92,10 +80,6 @@ const searchAddress = function () {
   axios
     .get(`http://${url}/restaurantList`, { params: urlParams.value })
     .then((res) => {
-      console.log(res);
-      console.log(res.data);
-      console.log(res.data.results);
-
       dataArray.value = res.data.results;
 
     })
@@ -108,7 +92,7 @@ searchAddress();
 const searchName = function () {
 
   axios
-    .get(`http://${url}/restaurantList?restaurantName=${restaurantName}`)
+    .get(`http://${url}/restaurantList`, { params: urlParams.value })
     .then((res) => {
       console.log(res);
       console.log(res.data);
