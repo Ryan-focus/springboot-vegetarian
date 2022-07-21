@@ -3,6 +3,8 @@ import { useTemplateStore } from "@/stores/template";
 import { ref } from "vue";
 import { useRoute, useRouter } from 'vue-router';
 import axios from "axios";
+import { GoogleMap, Marker, MarkerCluster } from 'vue3-google-map'
+
 
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
@@ -26,15 +28,7 @@ const urlParams = ref(
 
 console.log(urlParams.value);
 
-const restaurantNumber = ref();
-const restaurantName = route.params.restaurantName;
-const restaurantTel = ref();
-const restaurantAddress = route.params;
 const restaurantCategory = route.params.restaurantCategory;
-const restaurantType = ref();
-const restaurantBusinessHours = ref();
-const restaurantScore = ref();
-const imageUrl = ref();
 const dataArray = ref();
 
 console.log(route.params);
@@ -107,6 +101,40 @@ const searchName = function () {
 searchName();
 
 
+//Google map
+
+const center = { lat: 24.9852355, lng: 121.2199863 }
+
+const locations = [
+  { lat: 24.9852355, lng: 121.2199863 },
+  { lat: -31.56391, lng: 147.154312 },
+  { lat: -33.718234, lng: 150.363181 },
+  { lat: -33.727111, lng: 150.371124 },
+  { lat: -33.848588, lng: 151.209834 },
+  { lat: -33.851702, lng: 151.216968 },
+  { lat: -34.671264, lng: 150.863657 },
+  { lat: -35.304724, lng: 148.662905 },
+  { lat: -36.817685, lng: 175.699196 },
+  { lat: -36.828611, lng: 175.790222 },
+  { lat: -37.75, lng: 145.116667 },
+  { lat: -37.759859, lng: 145.128708 },
+  { lat: -37.765015, lng: 145.133858 },
+  { lat: -37.770104, lng: 145.143299 },
+  { lat: -37.7737, lng: 145.145187 },
+  { lat: -37.774785, lng: 145.137978 },
+  { lat: -37.819616, lng: 144.968119 },
+  { lat: -38.330766, lng: 144.695692 },
+  { lat: -39.927193, lng: 175.053218 },
+  { lat: -41.330162, lng: 174.865694 },
+  { lat: -42.734358, lng: 147.439506 },
+  { lat: -42.734358, lng: 147.501315 },
+  { lat: -42.735258, lng: 147.438 },
+  { lat: -43.999792, lng: 170.463352 },
+]
+
+
+
+
 //帶值restaurantNumber到detail頁
 function restaurantDetail(restaurantNumber) {
   urlParams.value.restaurantNumber = restaurantNumber;
@@ -118,24 +146,6 @@ function restaurantDetail(restaurantNumber) {
     }
   });
 }
-
-//取得所有餐廳
-const getAxios = function () {
-  axios
-    .get(`http://${url}/restaurants`, { params: urlParams.value })
-    .then((res) => {
-      resData.value = res.data;
-    })
-    .catch((error) => {
-      console.log(error, "失敗");
-    });
-};
-
-
-// 執行Axios;
-getAxios();
-
-
 var businessRestuarantID = [];
 var businessID = [];
 
@@ -154,35 +164,28 @@ function getBusinessList() {
     })
 }
 
-getBusinessList();
-</script>
-<script>
+//google map Geolocation 
 // 先確認使用者裝置能不能抓地點
 function getlocation() {
-
-
   if (navigator.geolocation) {
-
-    // 使用者不提供權限，或是發生其它錯誤
-    function error() {
-      alert('無法取得你的位置');
-    }
-
-    // 使用者允許抓目前位置，回傳經緯度
-    function success(position) {
-      console.log(position.coords.latitude, position.coords.longitude);
-    }
-
     // 跟使用者拿所在位置的權限
     navigator.geolocation.getCurrentPosition(success, error);
-
   } else {
     alert('Sorry, 你的裝置不支援地理位置功能。')
   }
 }
+// 使用者不提供權限，或是發生其它錯誤
+function error() {
+  alert('無法取得你的位置');
+}
+// 使用者允許抓目前位置，回傳經緯度
+function success(position) {
+  console.log(position.coords.latitude, position.coords.longitude);
+}
 
+
+getBusinessList();
 </script>
-
 
 <template>
   <!-- 搜尋bar -->
@@ -311,12 +314,19 @@ function getlocation() {
       <div class="col">
         <div>
           <!-- 地圖 -->
-          <div id="info-map" class="col-md-4 col-lg-5">
-            <iframe v-for="item in dataArray" :key="item.restaurantNumber"
+          <div id="info-map" class="">
+            <!-- <iframe v-for="item in dataArray" :key="item.restaurantNumber"
               :src="`https://www.google.com/maps/embed/v1/place?key=AIzaSyBwhBQXDks6CAdcxO-1SoTU6wKttYcHLx0&q=${item.restaurantName}&language=zh-TW`"
               width="700" height="250" style="border:0;" allowfullscreen="" loading="lazy"
               referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
+            </iframe> -->
+            <GoogleMap api-key="AIzaSyBwhBQXDks6CAdcxO-1SoTU6wKttYcHLx0" style="width: 100%; height: 500px"
+              :center="center" :zoom="18">
+              <MarkerCluster>
+                <Marker v-for="(location, i) in locations" :options="{ position: location }" :key="i" />
+              </MarkerCluster>
+            </GoogleMap>
+
           </div>
         </div>
       </div>

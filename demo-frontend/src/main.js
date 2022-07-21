@@ -18,9 +18,7 @@ import BasePageHeading from "@/components/BasePageHeading.vue";
 //全域註冊 Loader
 // 讀取動畫套件
 // Import component
-import Loading from "vue3-loading-overlay";
-// Import stylesheet
-import "vue3-loading-overlay/dist/vue3-loading-overlay.css";
+import VueLoading from "vue3-loading-overlay";
 
 //import Vue- datePicker
 import Datepicker from "@vuepic/vue-datepicker";
@@ -28,12 +26,16 @@ import Datepicker from "@vuepic/vue-datepicker";
 // Template directives
 import clickRipple from "@/directives/clickRipple";
 
+//引入 google map
+import { GoogleMap } from "vue3-google-map";
+
 // Bootstrap framework
 import * as bootstrap from "bootstrap";
 window.bootstrap = bootstrap;
 
 // moment.js setting Zh-TW
 import moment from "moment";
+
 moment.defineLocale("zh-tw", {
   months:
     "一月_二月_三月_四月_五月_六月_七月_八月_九月_十月_十一月_十二月".split(
@@ -134,6 +136,8 @@ axios.defaults.withCredentials = false;
 axios.defaults.timeout = 5000;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
+// VueLoading.__defaults;
+
 // Register global components
 app.component("BaseBlock", BaseBlock);
 app.component("BaseBackground", BaseBackground);
@@ -145,7 +149,10 @@ app.directive("click-ripple", clickRipple);
 app.component("Datepicker", Datepicker);
 
 //using Loading
-app.component("Loading", Loading);
+app.component("Loading", VueLoading);
+
+//Using Google Maps
+app.component("GoogleMap", GoogleMap);
 
 //using Axios
 app.use(VueAxios, axios);

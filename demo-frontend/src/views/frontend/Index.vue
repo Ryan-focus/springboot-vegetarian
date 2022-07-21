@@ -7,6 +7,7 @@ import { useRouter } from "vue-router";
 const store = useTemplateStore();
 const router = useRouter();
 
+
 const urlParams = ref(
   {
     limit: 10,
@@ -55,6 +56,7 @@ function searchAddress(restaurantAddress) {
 }
 
 </script>
+
 
 
 <template>
@@ -126,6 +128,7 @@ function searchAddress(restaurantAddress) {
       <div class="content content-full"></div>
     </div>
     <!-- END Hero After -->
+
 
     <!-- Footer -->
     <footer id="page-footer" class="bg-body-light">
