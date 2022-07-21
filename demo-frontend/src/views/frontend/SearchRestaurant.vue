@@ -25,82 +25,16 @@ const urlParams = ref(
   }
 );
 
-console.log(urlParams.value);
-
 const restaurantCategory = route.params.restaurantCategory;
 const dataArray = ref();
 
-console.log(route.params);
 
-// 取得條件(類別)
-const searchCatagory = function (catagory) {
-  if (catagory != null) {
-    axios
-      .get(`http://${url}/restaurantList?restaurantCategory=` + catagory)
-      .then((res) => {
-        dataArray.value = res.data.results;
+/**LatLng(parseFloat(trader.geo.lat),parseFloat(trader.geo.lon) */
+//Google map
+const locations = ref([]);
 
-      })
-      .catch((err) => console.log(err));
-  } else {
-    axios
-      .get(`http://${url}/restaurantList?restaurantCategory=${restaurantCategory}`)
-      .then((res) => {
-        dataArray.value = res.data.results;
-
-      })
-      .catch((err) => console.log(err));
-  }
-}
-searchCatagory();
-
-// 取得條件(素食種類)
-const searchType = function (type) {
-
-  axios
-    .get(`http://${url}/restaurantList?restaurantType=` + type)
-    .then((res) => {
-      dataArray.value = res.data.results;
-
-    })
-    .catch((err) => console.log(err));
-}
-searchType();
-
-// 取得條件(地址)
-const searchAddress = function () {
-
-  axios
-    .get(`http://${url}/restaurantList`, { params: urlParams.value })
-    .then((res) => {
-      dataArray.value = res.data.results;
-
-    })
-    .catch((err) => console.log(err, "失敗"));
-}
-
-searchAddress();
-
-// 取得條件(餐廳名稱)
-const searchName = function () {
-
-  axios
-    .get(`http://${url}/restaurantList`, { params: urlParams.value })
-    .then((res) => {
-      console.log(res);
-      console.log(res.data);
-      console.log(res.data.results);
-
-      dataArray.value = res.data.results;
-
-    })
-    .catch((err) => console.log(err, "失敗"));
-}
-
-searchName();
-
-
-const center = { lat: null, lng: null }
+const center = { lat: parseFloat(null), lng: parseFloat(null) };
+const location = { lat: parseFloat(null), lng: parseFloat(null) };
 var centerLat, centerLng;
 function initMap() {
   navigator.geolocation.watchPosition((position) => {
@@ -120,24 +54,92 @@ function initMap() {
 }
 
 
-//Google map
-
-const locations = [];
 initMap();
-locations.push(center);
-console.log(locations);
+locations.value.push(center);
 
-const geocoder = new google.maps.Geocoder();
+function calllatlng(address) {
+  axios
+    .get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyBwhBQXDks6CAdcxO-1SoTU6wKttYcHLx0`)
+    .then((res) => {
+      JSON.parse(JSON.stringify(res))
+      console.log(res.data);
+      if (res.status === 200) {
+        location.lat = res.data.results[0].geometry.location.lat;
+        location.lng = res.data.results[0].geometry.location.lng;
+        locations.value.push(location);
+      }
+    })
+    .catch((err) => console.log(err));
+}
 
-// 請 Google Maps API 依據地址轉換成經緯度
-geocoder.geocode({ 'address': address }, function (results, status) {
-  if (status == 'OK') {
-    // 若轉換成功...
+
+// 取得條件(類別)
+const searchCatagory = function (catagory) {
+  if (catagory != null) {
+    axios
+      .get(`http://${url}/restaurantList?restaurantCategory=` + catagory)
+      .then((res) => {
+        console.log(res.data);
+        dataArray.value = res.data.results;
+        for (let i = 0; i <= res.data.results.length - 1; i++) {
+          calllatlng(res.data.results[i].restaurantAddress);
+        }
+      })
+      .catch((err) => console.log(err));
   } else {
-    // 若轉換失敗...
-    console.log(status)
+    axios
+      .get(`http://${url}/restaurantList?restaurantCategory=${restaurantCategory}`)
+      .then((res) => {
+        dataArray.value = res.data.results;
+        for (let i = 0; i <= res.data.results.length - 1; i++) {
+          calllatlng(res.data.results[i].restaurantAddress);
+        }
+      })
+      .catch((err) => console.log(err));
   }
-});
+}
+searchCatagory();
+
+// 取得條件(素食種類)
+const searchType = function (type) {
+
+  axios
+    .get(`http://${url}/restaurantList?restaurantType=` + type)
+    .then((res) => {
+      dataArray.value = res.data.results;
+
+    })
+    .catch((err) => console.log(err));
+}
+// searchType();
+
+// 取得條件(地址)
+const searchAddress = function () {
+
+  axios
+    .get(`http://${url}/restaurantList`, { params: urlParams.value })
+    .then((res) => {
+      dataArray.value = res.data.results;
+
+    })
+    .catch((err) => console.log(err, "失敗"));
+}
+
+// searchAddress();
+
+// 取得條件(餐廳名稱)
+const searchName = function () {
+
+  axios
+    .get(`http://${url}/restaurantList`, { params: urlParams.value })
+    .then((res) => {
+      dataArray.value = res.data.results;
+
+    })
+    .catch((err) => console.log(err, "失敗"));
+}
+
+// searchName();
 
 
 //帶值restaurantNumber到detail頁
@@ -161,33 +163,12 @@ function getBusinessList() {
 
       for (let i = 0; i <= res.data.length - 1; i++) {
         if (res.data[i].restaurantNumber != 0) {
-          console.log(res.data[i]);
           businessRestuarantID.push(res.data[i].restaurantNumber);
           businessID.push(res.data[i].businessId);
         }
       }
     })
 }
-
-//google map Geolocation 
-// 先確認使用者裝置能不能抓地點
-function getlocation() {
-  if (navigator.geolocation) {
-    // 跟使用者拿所在位置的權限
-    navigator.geolocation.getCurrentPosition(success, error);
-  } else {
-    alert('Sorry, 你的裝置不支援地理位置功能。')
-  }
-}
-// 使用者不提供權限，或是發生其它錯誤
-function error() {
-  alert('無法取得你的位置');
-}
-// 使用者允許抓目前位置，回傳經緯度
-function success(position) {
-  console.log(position.coords.latitude, position.coords.longitude);
-}
-
 
 getBusinessList();
 </script>
@@ -326,7 +307,7 @@ getBusinessList();
               referrerpolicy="no-referrer-when-downgrade">
             </iframe> -->
             <GoogleMap api-key="AIzaSyBwhBQXDks6CAdcxO-1SoTU6wKttYcHLx0" style="width: 100%; height: 500px"
-              :center="center" :zoom="18">
+              :center="center" :zoom="14">
               <MarkerCluster>
                 <Marker v-for="(location, i) in locations" :options="{ position: location }" :key="i" />
               </MarkerCluster>
