@@ -96,6 +96,11 @@ function addUser() {
   state.password = '10Sec8763';
 }
 
+function addUser2() {
+  state.account = 'nsdk8853@gmail.com';
+  state.password = 'Aa111111';
+}
+
 function addAdmin() {
   state.account = 'a1kgkms11@gmail.com';
   state.password = 'Aa222222';
@@ -198,6 +203,13 @@ function showPassword() {
                   <div class="col-md-6 col-xl-6">
                     <button type="button" class="btn w-100 btn-alt-success" @click="addAdmin">
                       <i class="fa fa-fw fa-plus me-1 opacity-50"></i>管理員
+                    </button>
+                  </div>
+                </div>
+                <div class="row mb-4">
+                  <div class="col-md-6 col-xl-6">
+                    <button type="button" class="btn w-100 btn-alt-success" @click="addUser2">
+                      <i class="fa fa-fw fa-plus me-1 opacity-50"></i>會員2
                     </button>
                   </div>
                 </div>
