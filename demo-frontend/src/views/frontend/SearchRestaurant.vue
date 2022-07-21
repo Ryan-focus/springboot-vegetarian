@@ -108,12 +108,17 @@ const searchType = function (type) {
   axios
     .get(`http://${url}/restaurantList?restaurantType=` + type)
     .then((res) => {
+      // dataArray.value = res.data.results;
       dataArray.value = res.data.results;
+      locations.value = [];
+      for (let i = 0; i <= res.data.results.length - 1; i++) {
+        calllatlng(res.data.results[i].restaurantAddress);
+      }
 
     })
     .catch((err) => console.log(err));
 }
-// searchType();
+searchType();
 
 // 取得條件(地址)
 const searchAddress = function () {
@@ -122,6 +127,10 @@ const searchAddress = function () {
     .get(`http://${url}/restaurantList`, { params: urlParams.value })
     .then((res) => {
       dataArray.value = res.data.results;
+      locations.value = [];
+      for (let i = 0; i <= res.data.results.length - 1; i++) {
+        calllatlng(res.data.results[i].restaurantAddress);
+      }
 
     })
     .catch((err) => console.log(err, "失敗"));
@@ -136,12 +145,16 @@ const searchName = function () {
     .get(`http://${url}/restaurantList`, { params: urlParams.value })
     .then((res) => {
       dataArray.value = res.data.results;
+      locations.value = [];
+      for (let i = 0; i <= res.data.results.length - 1; i++) {
+        calllatlng(res.data.results[i].restaurantAddress);
+      }
 
     })
     .catch((err) => console.log(err, "失敗"));
 }
 
-// searchName();
+searchName();
 
 
 //帶值restaurantNumber到detail頁
@@ -191,21 +204,21 @@ getBusinessList();
           <!-- <a></a> -->
 
           <!-- 下拉式選單 -->
-          <select aria-label="Default select example">
+          <!-- <select aria-label="Default select example">
             <option selected>推薦</option>
             <option value="1">熱門餐廳</option>
             <option value="2">評分最高</option>
             <option value="3" @click="getlocation()">離你最近</option>
-          </select>
+          </select> -->
 
           <!-- <a></a> -->
 
           <!-- checkbox -->
-          <input type="checkbox" value="營業中" id="flexCheckDefault-1" v-model="urlParams.restaurantBusinessHours"
+          <!-- <input type="checkbox" value="營業中" id="flexCheckDefault-1" v-model="urlParams.restaurantBusinessHours"
             @change="searchCatagory()">
           <label class="form-check-label me-2" for="flexCheckDefault-1">
             營業中
-          </label>
+          </label> -->
           <!-- <a></a> -->
           <input type="radio" value="全素" id="flexCheckDefault-2" v-model="urlParams.restaurantType"
             @change="searchType('全素')">
@@ -303,13 +316,8 @@ getBusinessList();
         <div>
           <!-- 地圖 -->
           <div id="info-map" class="">
-            <!-- <iframe v-for="item in dataArray" :key="item.restaurantNumber"
-              :src="`https://www.google.com/maps/embed/v1/place?key=AIzaSyBwhBQXDks6CAdcxO-1SoTU6wKttYcHLx0&q=${item.restaurantName}&language=zh-TW`"
-              width="700" height="250" style="border:0;" allowfullscreen="" loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade">
-            </iframe> -->
             <GoogleMap api-key="AIzaSyBwhBQXDks6CAdcxO-1SoTU6wKttYcHLx0" style="width: 100%; height: 500px"
-              :center="center" :zoom="14">
+              :center="center" :zoom="10">
               <MarkerCluster>
                 <Marker v-for="(location, i) in locations" :options="{ position: location }" :key="i" />
               </MarkerCluster>
