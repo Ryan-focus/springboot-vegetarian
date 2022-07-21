@@ -35,13 +35,15 @@ const locations = ref([]);
 
 const center = { lat: parseFloat(null), lng: parseFloat(null) };
 const location = { lat: parseFloat(null), lng: parseFloat(null) };
+
 var centerLat, centerLng;
+//取得使用者初始位置 ， 會詢問使用者願不願意提供位置
 function initMap() {
   navigator.geolocation.watchPosition((position) => {
     centerLat = position.coords.latitude;
     centerLng = position.coords.longitude;
     // 初始化地圖
-
+    //預設是聖德基督學院
     if (centerLat == null) {
       centerLat = 24.9852355;
     }
@@ -52,18 +54,16 @@ function initMap() {
     center.lng = centerLng;
   });
 }
-
-
 initMap();
+
 locations.value.push(center);
 
 function calllatlng(address) {
-  locations.value = [];
   axios
     .get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyBwhBQXDks6CAdcxO-1SoTU6wKttYcHLx0`)
     .then((res) => {
       JSON.parse(JSON.stringify(res))
-      console.log(res.data);
+      // console.log(res.data);
       if (res.status === 200) {
         location.lat = res.data.results[0].geometry.location.lat;
         location.lng = res.data.results[0].geometry.location.lng;
@@ -82,6 +82,7 @@ const searchCatagory = function (catagory) {
       .then((res) => {
         console.log(res.data);
         dataArray.value = res.data.results;
+        locations.value = [];
         for (let i = 0; i <= res.data.results.length - 1; i++) {
           calllatlng(res.data.results[i].restaurantAddress);
         }
