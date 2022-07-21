@@ -47,7 +47,7 @@ if (window.localStorage.getItem("access-user") != null) {
 }
 const userId = JSON.stringify(user.data.user.userId)
 //檢查localstorage裡面是否有東西，沒有設定為null不然直接抓會報錯
-var cartItemList = ref()
+var cartItemList = null
 if (window.localStorage.getItem("cartItem") != null) {
   cartItemList = JSON.parse(window.localStorage.getItem("cartItem")).cartItemList;
 }
@@ -198,9 +198,7 @@ function checkOut() {
     });
 
 }
-
-
-// 結帳功能
+// 付款功能
 function payment() {
   axios.post(
     "http://localhost:8088/paypal/payment?sum=" + total
