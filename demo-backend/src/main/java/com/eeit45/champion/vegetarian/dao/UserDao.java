@@ -48,6 +48,5 @@ public interface UserDao {
 	Integer countLogin();
 
 	Double countPercentLogin();
-
 	
 }
