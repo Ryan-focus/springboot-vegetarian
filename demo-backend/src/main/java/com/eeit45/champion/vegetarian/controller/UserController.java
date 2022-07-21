@@ -238,5 +238,25 @@ public class UserController {
 		}
 		
 	}
+	
+	@GetMapping("/user/countUser")
+	public Integer countUser() {
+		return userService.countUser();
+	}
+	
+	@GetMapping("/user/countRegister")
+	public Integer countRegister() {
+		return userService.countRegister();
+	}
+	
+	@GetMapping("/user/countLogin")
+	public Integer countLogin() {
+		return userService.countLogin();
+	}
+	
+	@GetMapping("/user/countPercentLogin")
+	public Double countPercentLogin() {
+		return userService.countPercentLogin();
+	}
 
 }

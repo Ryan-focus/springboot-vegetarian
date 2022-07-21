@@ -36,6 +36,14 @@ public interface UserService {
 
 	int updatePassword(String password, String newPassword, int id);
 	
+	Integer countUser();
+	
+	Integer countRegister();
+	
+	Integer countLogin();
+	
+	Double countPercentLogin();
+	
 //	boolean isBanned(UserRequest userRequest);
 
 }
