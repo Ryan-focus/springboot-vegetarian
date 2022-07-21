@@ -10,7 +10,7 @@ CREATE TABLE `user`(
                        status nvarchar (32) not null,
                        userPic LONGTEXT,
                        registerTime DATE not null ,
-                       lastLoginTime TIMESTAMP not null
+                       lastLoginTime TIMESTAMP
 );
 
 -- business
