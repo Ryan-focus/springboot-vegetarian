@@ -34,6 +34,7 @@ var categoryNumber = ref(null);
 
 const resWriterName = ref();
 const writerId = ref();
+const resUserPic =ref();
 
 const newData = ref();
 const newfData = ref();
@@ -87,6 +88,7 @@ const getAxios = function () {
       axios.get(`http://${url}/users/${writerId.value}`).then((res) => {
         //獲取伺服器的回傳資料
         resWriterName.value = res.data.userName;
+        resUserPic.value = res.data.userPic;
         console.log(res);
       });
     })
@@ -330,11 +332,7 @@ u {
                         overlay-container overlay-bottom
                       "
                     >
-                      <img
-                        class="img-avatar img-avatar48"
-                        src="/assets/media/avatars/avatar6.jpg"
-                        alt=""
-                      />
+                    <img :src="`data:image/png;base64,${resUserPic}`"  class="img-avatar img-avatar48" />
                     </div>
                     <div class="flex-grow-1">
                       <div class="fw-semibold" style="font-size: 18px">

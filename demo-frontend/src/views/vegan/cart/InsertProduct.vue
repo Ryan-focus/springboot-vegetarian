@@ -72,6 +72,14 @@ function fileUpload() {
     console.log(image);
   });
 }
+function addProduct() {
+  state.productName = "蔬脆棒棒腿 (全素 270g/共6支)"
+  state.productPrice = "180"
+  state.category = "生鮮"
+  state.veganCategory = "全素"
+  state.stock = "20"
+  state.description = "<p>外皮炸得金黃酥脆，內層保有軟嫩口感<br>100%全素產線，安心享用不擔心。<br>❙ 會員首購現折100元</p>"
+}
 
 // Validation rules
 const rules = computed(() => {
@@ -270,6 +278,9 @@ function createProduct() {
               <label class="form-label" for="example-select">產品細節描述</label>
               <ckeditor :editor="ClassicEditor" :config="editorConfig" v-model="state.description" />
             </div>
+
+            <!-- 一鍵新增 -->
+
             <div class="row items-push">
               <div class="col-lg-7 offset-lg-4">
                 <button class="btn btn-alt-primary">Submit</button>
@@ -277,8 +288,10 @@ function createProduct() {
             </div>
           </div>
         </div>
+
       </BaseBlock>
     </form>
+    <button class="btn btn-alt-secondary" @click="addProduct()">一鍵商品</button>
     <!-- END Basic -->
   </div>
 </template>
