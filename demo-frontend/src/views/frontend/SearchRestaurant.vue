@@ -5,7 +5,6 @@ import { useRoute, useRouter } from 'vue-router';
 import axios from "axios";
 import { GoogleMap, Marker, MarkerCluster } from 'vue3-google-map'
 
-
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
 // Main store
@@ -101,38 +100,44 @@ const searchName = function () {
 searchName();
 
 
+const center = { lat: null, lng: null }
+var centerLat, centerLng;
+function initMap() {
+  navigator.geolocation.watchPosition((position) => {
+    centerLat = position.coords.latitude;
+    centerLng = position.coords.longitude;
+    // 初始化地圖
+
+    if (centerLat == null) {
+      centerLat = 24.9852355;
+    }
+    if (centerLng == null) {
+      centerLng = 121.2199863;
+    }
+    center.lat = centerLat;
+    center.lng = centerLng;
+  });
+}
+
+
 //Google map
 
-const center = { lat: 24.9852355, lng: 121.2199863 }
+const locations = [];
+initMap();
+locations.push(center);
+console.log(locations);
 
-const locations = [
-  { lat: 24.9852355, lng: 121.2199863 },
-  { lat: -31.56391, lng: 147.154312 },
-  { lat: -33.718234, lng: 150.363181 },
-  { lat: -33.727111, lng: 150.371124 },
-  { lat: -33.848588, lng: 151.209834 },
-  { lat: -33.851702, lng: 151.216968 },
-  { lat: -34.671264, lng: 150.863657 },
-  { lat: -35.304724, lng: 148.662905 },
-  { lat: -36.817685, lng: 175.699196 },
-  { lat: -36.828611, lng: 175.790222 },
-  { lat: -37.75, lng: 145.116667 },
-  { lat: -37.759859, lng: 145.128708 },
-  { lat: -37.765015, lng: 145.133858 },
-  { lat: -37.770104, lng: 145.143299 },
-  { lat: -37.7737, lng: 145.145187 },
-  { lat: -37.774785, lng: 145.137978 },
-  { lat: -37.819616, lng: 144.968119 },
-  { lat: -38.330766, lng: 144.695692 },
-  { lat: -39.927193, lng: 175.053218 },
-  { lat: -41.330162, lng: 174.865694 },
-  { lat: -42.734358, lng: 147.439506 },
-  { lat: -42.734358, lng: 147.501315 },
-  { lat: -42.735258, lng: 147.438 },
-  { lat: -43.999792, lng: 170.463352 },
-]
+const geocoder = new google.maps.Geocoder();
 
-
+// 請 Google Maps API 依據地址轉換成經緯度
+geocoder.geocode({ 'address': address }, function (results, status) {
+  if (status == 'OK') {
+    // 若轉換成功...
+  } else {
+    // 若轉換失敗...
+    console.log(status)
+  }
+});
 
 
 //帶值restaurantNumber到detail頁

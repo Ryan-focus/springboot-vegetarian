@@ -284,7 +284,7 @@ public class PostDaoImpl implements PostDao {
 	// 搜尋收藏文章(使用者後台)
 	public List<Post> findFavoritePost(int uid) {
 
-		String sql = "SELECT * FROM post LEFT JOIN fav_post ON post.postId = fav_post.postId where fav_post.userId = :userId ";
+		String sql = "SELECT * FROM post LEFT JOIN fav_post ON post.postId = fav_post.postId where fav_post.userId = :userId ORDER BY post.postId DESC";
 		Map<String, Object> map = new HashMap<>();
 		map.put("userId", uid);
 
