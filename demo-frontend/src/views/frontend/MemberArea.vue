@@ -180,6 +180,12 @@ const getUser = () => axios.get(`http://localhost:8088/users/${uid}`)
 
 getUser();
 
+function add() {
+    state.password = '10Sec8763';
+    state.newPassword = 'Cccc8763';
+    state.confirmNewPassword = 'Cccc8763';
+}
+
 // function clear() {
 //     if (el) {
 //         el.addEventListener('hidden.bs.modal', function (e) {
@@ -533,6 +539,7 @@ a {
                                 <!-- <div>
                                     <input type="checkbox" onclick="showPassword()">顯示密碼
                                 </div> -->
+                                <br>
                                 <div class="mb-4">
                                     <!-- <div class="form-check"> -->
                                     <input class="form-check-input" type="checkbox"
@@ -545,6 +552,13 @@ a {
                             <div class="col-md-6 col-xl-5">
                                 <button type="submit" class="btn w-100 btn-alt-success">
                                     <i class="fa fa-fw fa-plus me-1 opacity-50"></i>確認修改
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-md-6 col-xl-5">
+                                <button type="button" class="btn w-100 btn-alt-success" @click="add">
+                                    <i class="fa fa-fw fa-plus me-1 opacity-50"></i>一鍵
                                 </button>
                             </div>
                         </div>
