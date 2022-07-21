@@ -90,6 +90,26 @@ async function onSubmit() {
   // Go to dashboard
   // router.push({ name: "backend-pages-auth" });
 }
+
+function addUser() {
+  state.account = 'hold10sec8763@gmail.com';
+  state.password = '10Sec8763';
+}
+
+function addAdmin() {
+  state.account = 'a1kgkms11@gmail.com';
+  state.password = 'Aa222222';
+}
+
+function showPassword() {
+  var x = document.getElementById("login-password");
+  if (x.type === "password") {
+    x.type = "text";
+  } else {
+    x.type = "password";
+  }
+}
+
 </script>
 
 <template>
@@ -118,8 +138,8 @@ async function onSubmit() {
               <h1 class="h2 mb-1">登入「愛蔬網」</h1>
               <p class="fw-medium text-muted">愛蔬網是有279個用戶的美食平台</p>
               <p>點擊下方按鈕登入以繼續</p>
-              <p>登入後即代表您已閱讀並且</p>
-              同意<a href="#">服務條款</a>及<a href="#">隱私政策</a>
+              <!-- <p>登入後即代表您已閱讀並且</p>
+              同意<a href="#">服務條款</a>及<a href="#">隱私政策</a> -->
 
               <!-- Sign In Form -->
               <form @submit.prevent="onSubmit">
@@ -148,6 +168,10 @@ async function onSubmit() {
                         name="login-remember" />
                       <label class="form-check-label" for="login-remember"><b>記住我</b></label>
                     </div>
+                    <br>
+                    <div>
+                      <input class="form-check-input" type="checkbox" @click="showPassword()">&nbsp;&nbsp;<b>顯示密碼</b>
+                    </div>
                   </div>
                 </div>
                 <div class="row mb-4">
@@ -160,9 +184,21 @@ async function onSubmit() {
 
                   <div class="col-md-6 col-xl-5">
                     <RouterLink :to="{ name: 'userRegister' }" class="btn w-100 btn-alt-primary">
-                      <i class="fa fa-fw fa-sign-in-alt me-1 opacity-50">
-                        <b>註冊</b></i>
+                      <i class="fa fa-fw fa-sign-in-alt me-1 opacity-50"></i>
+                      <b>註冊</b>
                     </RouterLink>
+                  </div>
+                </div>
+                <div class="row mb-4">
+                  <div class="col-md-6 col-xl-5">
+                    <button type="button" class="btn w-100 btn-alt-success" @click="addUser">
+                      <i class="fa fa-fw fa-plus me-1 opacity-50"></i>會員
+                    </button>
+                  </div>
+                  <div class="col-md-6 col-xl-6">
+                    <button type="button" class="btn w-100 btn-alt-success" @click="addAdmin">
+                      <i class="fa fa-fw fa-plus me-1 opacity-50"></i>管理員
+                    </button>
                   </div>
                 </div>
               </form>

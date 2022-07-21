@@ -41,5 +41,13 @@ public interface UserDao {
 
 	int updatePassword(String password, String newPassword, int id);
 
+	Integer countUser();
 
+	Integer countRegister();
+	
+	Integer countLogin();
+
+	Double countPercentLogin();
+
+	
 }

@@ -1,6 +1,7 @@
 package com.eeit45.champion.vegetarian.dao.impl;
 
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -279,6 +280,82 @@ public class UserDaoImpl implements UserDao {
 			map.put("search", userQueryParams.getSearch());
 		}
 		return sql;
+	}
+
+	@Override
+	public Integer countUser() {
+		
+		String sql = "select count(*) from `user`";
+		
+		Map<String, Object> map = new HashMap<>();
+
+        Integer count = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+		
+        return count;
+        
+	}
+
+	@Override
+	public Integer countRegister() {
+
+		String sql = "select count(*) from `user` where registerTime between :oneDay and :today";
+		
+		LocalDate today = LocalDate.now();
+		
+		LocalDate oneDay = today.minusDays(90);
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("oneDay", oneDay);
+		
+		map.put("today", today);
+
+        Integer count = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+		
+        return count;
+		
+	}
+
+	@Override
+	public Integer countLogin() {
+		
+		String sql = "select count(*) from `user` where lastLoginTime between :oneDay and :today";
+		
+		LocalDate today = LocalDate.now();
+		
+		LocalDate oneDay = today.minusDays(90);
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("oneDay", oneDay);
+		
+		map.put("today", today);
+
+        Integer count = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
+		
+        return count;
+		
+	}
+
+	@Override
+	public Double countPercentLogin() {
+		
+		String sql = "select (select count(*) from `user` where lastLoginTime between :oneDay and :today) / (select count(*) from `user`)";
+		
+		LocalDate today = LocalDate.now();
+		
+		LocalDate oneDay = today.minusDays(30);
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("oneDay", oneDay);
+		
+		map.put("today", today);
+
+		Double  count = namedParameterJdbcTemplate.queryForObject(sql, map, Double .class);
+		
+        return count;
+		
 	}
 
 

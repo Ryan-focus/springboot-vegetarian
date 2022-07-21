@@ -147,4 +147,24 @@ public class UserServiceImpl implements UserService {
 		return userDao.updatePassword(password, newPassword, id);
 	}
 
+	@Override
+	public Integer countUser() {
+		return userDao.countUser();
+	}
+
+	@Override
+	public Integer countRegister() {
+		return userDao.countRegister();
+	}
+
+	@Override
+	public Integer countLogin() {
+		return userDao.countLogin();
+	}
+
+	@Override
+	public Double countPercentLogin() {
+		return userDao.countPercentLogin();
+	}
+
 }
