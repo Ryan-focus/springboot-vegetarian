@@ -404,24 +404,27 @@ u {
                           <br />
                         </div>
                       </a>
-                      <div
-                        id="editButton"
-                        class="flex-grow-1 col-md-3 offset-md-10"
-                      >
-                        <button
-                          type="button"
-                          class="btn btn-sm btn-outline-success"
-                          @click="findPost(item.postId)"
-                        >
-                          編輯文章
-                        </button>
-                        <button
-                          type="button"
-                          class="btn btn-sm btn-outline-warning"
-                          @click="deletePost(item.postId)"
-                        >
-                          刪除文章
-                        </button>
+                      <div class="box">
+                        <div id="editButton" class="flex-grow-3 col-md-8">
+                          <button
+                            type="button"
+                            class="btn btn-sm btn-outline-success"
+                            @click="findPost(item.postId)"
+                          >
+                            編輯文章
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-sm btn-outline-warning"
+                            @click="deletePost(item.postId)"
+                          >
+                            刪除文章
+                          </button>
+                        </div>
+                        <div class="date1">
+                          發布日期：
+                          {{ item.postedDate }}
+                        </div>
                       </div>
                       <hr />
                     </li>
@@ -462,30 +465,30 @@ u {
                           <div class="fw-normal text-muted" id="posttext">
                             <div v-html="item.postedText"></div>
                           </div>
-                          <div class="newPostSide">
-                            <h6>{{ item.postedDate }}</h6>
-                          </div>
                           <br />
                         </div>
                       </a>
-                      <div
-                        id="editButton"
-                        class="flex-grow-1 col-md-3 offset-md-10"
-                      >
-                        <button
-                          type="button"
-                          class="btn btn-sm btn-outline-success"
-                          @click="findPost(item.postId)"
-                        >
-                          編輯文章
-                        </button>
-                        <button
-                          type="button"
-                          class="btn btn-sm btn-outline-warning"
-                          @click="deletePost(item.postId)"
-                        >
-                          刪除文章
-                        </button>
+                      <div class="box">
+                        <div id="editButton" class="flex-grow-3 col-md-8">
+                          <button
+                            type="button"
+                            class="btn btn-sm btn-outline-success"
+                            @click="findPost(item.postId)"
+                          >
+                            編輯文章
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-sm btn-outline-warning"
+                            @click="deletePost(item.postId)"
+                          >
+                            刪除文章
+                          </button>
+                        </div>
+                        <div class="date1">
+                          發布日期：
+                          {{ item.postedDate }}
+                        </div>
                       </div>
                       <hr />
                     </li>
