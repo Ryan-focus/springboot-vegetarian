@@ -178,9 +178,6 @@ INSERT INTO order_item (order_id, product_id, quantity, amount) VALUES
 insert into restaurant (restaurantName,restaurantTel,restaurantAddress,restaurantCategory,restaurantType,restaurantBusinessHours,restaurantScore,imageUrl,createdTime,updatedTime)
 VALUES
 
-insert into restaurant (restaurantName,restaurantTel,restaurantAddress,restaurantCategory,restaurantType,restaurantBusinessHours,restaurantScore,imageUrl,createdTime,updatedTime)
-VALUES
-
 ('中平素食之家','03-4284290','桃園市中壢區新興路210號','中式','全素_奶素_蛋素','週一到週日 10:30–13:30 17:00–20:00 
 無休息','4.2','https://i.imgur.com/lF5phuG.jpg',now(),now() ),
 
