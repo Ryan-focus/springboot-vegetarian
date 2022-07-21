@@ -220,14 +220,15 @@ function payment() {
 </script>
 
 <template>
-  <!-- Hero -->
-  <BasePageHeading title="購物車商品" subtitle="數量有限要買要快" class="d-print-none">
-    <template #extra>
-
-    </template>
-  </BasePageHeading>
-  <!-- END Hero -->
   <div v-if="cartItemList != null && cartItemList.length > 0">
+    <!-- Hero -->
+    <BasePageHeading title="購物車商品" subtitle="數量有限要買要快" class="d-print-none">
+      <template #extra>
+
+      </template>
+    </BasePageHeading>
+    <!-- END Hero -->
+
     <!-- Page Content -->
     <div class="content content-boxed">
       <!-- Invoice -->
@@ -355,10 +356,10 @@ function payment() {
                 <!-- Header -->
                 <div class="text-center">
                   <p>
-                    <i class="fa fa-3x fa-cog fa-spin text-primary"></i>
+                    <i class="fa fa-3x fa-seedling fa-spin text-success"></i>
                   </p>
                   <h1 class="h4 mb-1">購物車裡面空空如也</h1>
-                  <h2 class="h6 fw-normal text-muted mb-3">
+                  <h2 class="h4 fw-normal text-muted mb-3">
                     <a href="http://localhost:8080/#/shopping">點我選購商品</a>
                   </h2>
                 </div>
