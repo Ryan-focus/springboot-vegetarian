@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from "vue";
 import { useTemplateStore } from "@/stores/template";
+import { useRoute } from "vue-router";
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -226,118 +227,157 @@ function payment() {
     </template>
   </BasePageHeading>
   <!-- END Hero -->
+  <div v-if="cartItemList != null && cartItemList.length > 0">
+    <!-- Page Content -->
+    <div class="content content-boxed">
+      <!-- Invoice -->
+      <BaseBlock title="商品列表">
+        <template #options>
+          <button type="button" class="btn-block-option" @click="printPage()">
+            <i class="si si-printer me-1"></i> 列印清單
+          </button>
+        </template>
 
-  <!-- Page Content -->
-  <div class="content content-boxed">
-    <!-- Invoice -->
-    <BaseBlock title="商品列表">
-      <template #options>
-        <button type="button" class="btn-block-option" @click="printPage()">
-          <i class="si si-printer me-1"></i> 列印清單
-        </button>
-      </template>
+        <div class="p-sm-4 p-xl-7">
+          <!-- Invoice Info -->
+          <div class="row mb-4">
+            <!-- Company Info -->
+            <div class="col-6 fs-sm">
+            </div>
+            <!-- END Company Info -->
 
-      <div class="p-sm-4 p-xl-7">
-        <!-- Invoice Info -->
-        <div class="row mb-4">
-          <!-- Company Info -->
-          <div class="col-6 fs-sm">
+            <!-- Client Info -->
+            <div class="col-6 text-end fs-sm">
+              <!-- 使用者名稱 -->
+              <p class="h3">{{ user.data.user.userName }}</p>
+              <address>
+                桃園市<br />
+                中壢區<br />
+                新生路421號<br />
+                {{ user.data.user.email }}
+              </address>
+            </div>
+            <!-- END Client Info -->
           </div>
-          <!-- END Company Info -->
+          <!-- END Invoice Info -->
 
-          <!-- Client Info -->
-          <div class="col-6 text-end fs-sm">
-            <!-- 使用者名稱 -->
-            <p class="h3">{{ user.data.user.userName }}</p>
-            <address>
-              桃園市<br />
-              中壢區<br />
-              新生路421號<br />
-              {{ user.data.user.email }}
-            </address>
+          <!-- Table -->
+          <div class="table-responsive push">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th class="text-center" style="width: 60px"></th>
+                  <th>商品</th>
+                  <th class="text-center" style="width:200px">數量</th>
+                  <th class="text-end" style="width: 120px">單價</th>
+                  <th class="text-end" style="width: 120px">小計</th>
+                  <th class="text-end" style="width: 120px">刪除</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- 印出商品從這裡開始 -->
+                <tr v-for="(item, i) in cartItemList" :key="i">
+                  <td class="text-center">{{ i + 1 }}</td>
+                  <td>
+                    <p class="fw-semibold mb-1">{{ item.product.productName }}</p>
+                    <img :src="item.product.productImage" alt="" width="50">
+                  </td>
+                  <td class="text-center">
+                    <button type="button" class="btn btn-sm btn-Info me-1 mb-3" @click="increaseQuantity(i)">
+                      <i class="fa fa-circle-plus"></i>
+                    </button>
+                    &nbsp;{{ item.quantity }}&nbsp;
+                    <button type="button" class="btn btn-sm btn-Info me-1 mb-3" @click="decreaseQuantity(i)">
+                      <i class="fa fa-circle-minus"></i>
+                    </button>
+                  </td>
+                  <td class="text-end">NT. {{ item.product.productPrice }}
+
+                  </td>
+                  <td class="text-end">{{ item.product.productPrice * item.quantity }}</td>
+
+                  <td class="text-end"> <button type="button" class="btn rounded-pill btn-alt-danger me-1 mb-3"
+                      @click="deleteItem(i)">
+                      <i class="fa fa-fw fa-times me-1"></i> 移除
+                    </button></td>
+                </tr>
+                <tr>
+                  <td colspan="5" class="fw-semibold text-end">稅
+                  </td>
+                  <td class="text-end">０</td>
+                </tr>
+                <tr>
+                  <td colspan="5" class="fw-semibold text-end">運費</td>
+                  <td class="text-end">0</td>
+                </tr>
+                <tr>
+                  <td colspan="5" class="fw-bold text-uppercase text-end bg-body-light">
+                    總價
+                  </td>
+                  <td class="fw-bold text-end bg-body-light">{{ countTotal() }}</td>
+                </tr>
+                <tr>
+                  <td colspan="5" class="fw-bold text-uppercase text-end bg-body-light">
+                  </td>
+                  <td class="fw-bold text-end bg-body-light">
+                    <button type="button" class="btn btn-outline-primary">
+                      <i class="fa-brands fa-paypal" @click="checkOut()"> 結帳</i>
+                    </button>
+                  </td>
+                </tr>
+
+              </tbody>
+
+            </table>
+
+            <!-- END Table -->
           </div>
-          <!-- END Client Info -->
+
+
+          <!-- Footer -->
+          <p class="fs-sm text-muted text-center">
+          </p>
+          <!-- END Footer -->
         </div>
-        <!-- END Invoice Info -->
-
-        <!-- Table -->
-        <div class="table-responsive push">
-          <table class="table table-bordered">
-            <thead>
-              <tr>
-                <th class="text-center" style="width: 60px"></th>
-                <th>商品</th>
-                <th class="text-center" style="width:200px">數量</th>
-                <th class="text-end" style="width: 120px">單價</th>
-                <th class="text-end" style="width: 120px">小計</th>
-                <th class="text-end" style="width: 120px">刪除</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- 印出商品從這裡開始 -->
-              <tr v-for="(item, i) in cartItemList" :key="i">
-                <td class="text-center">{{ i + 1 }}</td>
-                <td>
-                  <p class="fw-semibold mb-1">{{ item.product.productName }}</p>
-                  <img :src="item.product.productImage" alt="" width="50">
-                </td>
-                <td class="text-center">
-                  <button type="button" class="btn btn-sm btn-Info me-1 mb-3" @click="increaseQuantity(i)">
-                    <i class="fa fa-circle-plus"></i>
-                  </button>
-                  &nbsp;{{ item.quantity }}&nbsp;
-                  <button type="button" class="btn btn-sm btn-Info me-1 mb-3" @click="decreaseQuantity(i)">
-                    <i class="fa fa-circle-minus"></i>
-                  </button>
-                </td>
-                <td class="text-end">NT. {{ item.product.productPrice }}
-
-                </td>
-                <td class="text-end">{{ item.product.productPrice * item.quantity }}</td>
-
-                <td class="text-end"> <button type="button" class="btn rounded-pill btn-alt-danger me-1 mb-3"
-                    @click="deleteItem(i)">
-                    <i class="fa fa-fw fa-times me-1"></i> 移除
-                  </button></td>
-              </tr>
-              <tr>
-                <td colspan="5" class="fw-semibold text-end">稅
-                </td>
-                <td class="text-end">０</td>
-              </tr>
-              <tr>
-                <td colspan="5" class="fw-semibold text-end">運費</td>
-                <td class="text-end">0</td>
-              </tr>
-              <tr>
-                <td colspan="5" class="fw-bold text-uppercase text-end bg-body-light">
-                  總價
-                </td>
-                <td class="fw-bold text-end bg-body-light">{{ countTotal() }}</td>
-              </tr>
-              <tr>
-                <td colspan="5" class="fw-bold text-uppercase text-end bg-body-light">
-                </td>
-                <td class="fw-bold text-end bg-body-light">
-                  <button type="button" class="btn btn-outline-primary">
-                    <i class="fa-brands fa-paypal" @click="checkOut()"> 結帳</i>
-                  </button>
-                </td>
-              </tr>
-
-            </tbody>
-
-          </table>
+      </BaseBlock>
+      <!-- END Invoice -->
+    </div>
+  </div>
+  <div v-else>
+    <!-- Page Content -->
+    <div class="hero-static d-flex align-items-center">
+      <div class="w-100">
+        <!-- Maintenance Section -->
+        <div class="bg-body-extra-light">
+          <div class="content content-full">
+            <div class="row justify-content-center">
+              <div class="col-md-8 col-lg-6 col-xl-4 py-6">
+                <!-- Header -->
+                <div class="text-center">
+                  <p>
+                    <i class="fa fa-3x fa-cog fa-spin text-primary"></i>
+                  </p>
+                  <h1 class="h4 mb-1">購物車裡面空空如也</h1>
+                  <h2 class="h6 fw-normal text-muted mb-3">
+                    <a href="http://localhost:8080/#/shopping">點我選購商品</a>
+                  </h2>
+                </div>
+                <!-- END Header -->
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- END Table -->
+        <!-- END Maintenance Section -->
 
         <!-- Footer -->
-        <p class="fs-sm text-muted text-center">
-        </p>
+        <div class="fs-sm text-center text-muted py-3">
+          <strong>{{ store.app.name + " " + store.app.version }}</strong> &copy;
+          {{ store.app.copyright }}
+        </div>
         <!-- END Footer -->
       </div>
-    </BaseBlock>
-    <!-- END Invoice -->
+    </div>
+    <!-- END Page Content -->
   </div>
   <!-- END Page Content -->
 </template>
