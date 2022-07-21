@@ -39,6 +39,7 @@ let toast = Swal.mixin({
 //取得localstorage
 var user = null;
 
+//判斷登入者權限
 if (window.localStorage.getItem("access-user") != null) {
   user = JSON.parse(window.localStorage.getItem("access-user"));
 } else if (window.localStorage.getItem("access-admin") != null) {
@@ -46,13 +47,8 @@ if (window.localStorage.getItem("access-user") != null) {
 }
 const userId = JSON.stringify(user.data.user.userId)
 //檢查localstorage裡面是否有東西，沒有設定為null不然直接抓會報錯
-var cartItemList = null
+var cartItemList = ref()
 if (window.localStorage.getItem("cartItem") != null) {
-  cartItemList = ref()
-  cartItemList = JSON.parse(window.localStorage.getItem("cartItem")).cartItemList;
-}
-
-function reflesh() {
   cartItemList = JSON.parse(window.localStorage.getItem("cartItem")).cartItemList;
 }
 
@@ -118,11 +114,6 @@ function deleteItem(i) {
         toast.fire("刪除失敗", "", "error");
       }
     });
-
-
-
-
-
 }
 
 // 更新數量
@@ -141,9 +132,6 @@ function decreaseQuantity(i) {
   window.location.reload()
 }
 
-
-
-
 // 寫入訂單功能
 //用foreach+push把想要的值推進array中
 var checkOutItemArray = []
@@ -159,23 +147,56 @@ for (var i in cartItemList) {
 
 //將更新好的array寫進來做結帳動作
 function checkOut() {
-  Swal.fire(
-    {
-      title: "即將跳轉至結帳頁面",
+  toast
+    .fire({
+      title: "確定商品是否正確？",
       text: "",
-      timer: 3000,
-      icon: "success"
-    }).then(
-      axios
-        .post(`http://localhost:8088/${userId}/order`, {
-          "buyItemList": checkOutItemArray
-        })
-        .then((res) => {
-          console.log(res.data)
-        }).catch((error) => {
-          console.log(error, "失敗");
-        })
-    )
+      icon: "warning",
+      showCancelButton: true,
+      customClass: {
+        confirmButton: "btn btn-danger m-1",
+        cancelButton: "btn btn-secondary m-1",
+      },
+      confirmButtonText: "前往付款",
+      cancelButtonText: "再看一下",
+
+      html: false,
+      preConfirm: () => {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            resolve();
+          }, 50);
+        });
+      },
+    })
+    .then((result) => {
+      //send request to server
+      if (result.value) {
+        Swal.fire(
+          {
+            title: "即將跳轉至結帳頁面",
+            text: "",
+            timer: 3000,
+            icon: "success"
+          }).then(
+            axios
+              .post(`http://localhost:8088/${userId}/order`, {
+                "buyItemList": checkOutItemArray
+              })
+              .then((res) => {
+                console.log(res.data)
+                payment()
+              }).catch((error) => {
+                console.log(error, "失敗");
+              })
+          )
+
+
+      } else if (result.dismiss === "cancel") {
+        toast.fire("歡迎繼續選購", "", "info");
+      }
+    });
+
 }
 
 
@@ -301,7 +322,7 @@ function payment() {
                 </td>
                 <td class="fw-bold text-end bg-body-light">
                   <button type="button" class="btn btn-outline-primary">
-                    <i class="fa-brands fa-paypal" @click="checkOut(), payment()"> 結帳</i>
+                    <i class="fa-brands fa-paypal" @click="checkOut()"> 結帳</i>
                   </button>
                 </td>
               </tr>
