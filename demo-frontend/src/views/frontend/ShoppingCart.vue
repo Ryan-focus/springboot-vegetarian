@@ -65,20 +65,30 @@ const cartItem = ref({
 })
 
 function addToCart(productId) {
-  cartItem.value.product = singleProduct.value
-  cartItem.value.quantity = this.cartItem.quantity
-  data.cartItemList.push(cartItem.value);
-  localStorage.setItem('cartItem', JSON.stringify(data));
-  console.log(data)
-  Swal.fire(
-    {
-      title: "已加入購物車",
-      text: "",
-      timer: 1500,
-      icon: "success"
-    }
-  )
-
+  if (singleProduct.value.stock < this.cartItem.quantity) {
+    Swal.fire(
+      {
+        title: "超出庫存",
+        text: "",
+        timer: 1500,
+        icon: "warning"
+      }
+    )
+  } else {
+    cartItem.value.product = singleProduct.value
+    cartItem.value.quantity = this.cartItem.quantity
+    data.cartItemList.push(cartItem.value);
+    localStorage.setItem('cartItem', JSON.stringify(data));
+    console.log(data)
+    Swal.fire(
+      {
+        title: "已加入購物車",
+        text: "",
+        timer: 1500,
+        icon: "success"
+      }
+    )
+  }
 }
 </script>
 <template>

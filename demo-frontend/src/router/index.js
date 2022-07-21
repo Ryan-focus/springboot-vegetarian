@@ -19,7 +19,6 @@ import BLayoutBackend from "@/BusinessLayouts/variations/Backend.vue";
 const jump = () => import("@/views/blank/jump.vue");
 // Frontend: Index
 const Index = () => import("@/views/frontend/Index.vue");
-const Map = () => import("@/views/frontend/testMap.vue");
 const Login = () => import("@/views/frontend/Login.vue");
 const UserRegister = () => import("@/views/frontend/Register.vue");
 const MemberArea = () => import("@/views/frontend/MemberArea.vue");
@@ -433,11 +432,6 @@ const routes = [
         path: "/searchRestaurant/check",
         name: "restaurant-reserve-check",
         component: ReserveDetail,
-      },
-      {
-        path: "/testMap",
-        name: "testMap",
-        component: Map,
       },
     ],
   },
