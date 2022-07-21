@@ -286,6 +286,7 @@ function forumCategory4() {
                           <div style="position: absolute; ">{{ moment(row.forumUpdateTime).format('YYYY/MM/D') }}
 
                           </div>
+                          <p></p>
                         </td>
 
                         <!-- <td class="d-none d-lg-table-cell text-center text-sm">
@@ -360,5 +361,13 @@ function forumCategory4() {
 .img-fluid {
   width: 100%;
   height: 100%;
+}
+
+.product-buyer-name {
+  display: inline-block;
+  white-space: nowrap;
+  width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>

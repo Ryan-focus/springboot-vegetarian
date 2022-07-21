@@ -37,9 +37,7 @@ const resForumCategory = ref();
 const resForumImage = ref();
 
 //用reactive會無法及時反應所以用ref另外宣告
-const image = ref({
-  imageUrl: null,
-});
+
 
 const getAxios = function () {
   axios
@@ -146,7 +144,7 @@ function updateForum(number) {
       console.log(error, "失敗");
     });
 }*/
-
+// ---------------0721註解-----------------------------------------------------
 function updateForum(number) {
   //send request to server
 
@@ -165,20 +163,92 @@ function updateForum(number) {
       console.log(error, "失敗");
     });
 }
+const image = ref({
+  imageUrl: null,
+});
 
-function sendForum(number, title, content, category, imageUrl) {
+//------------0721改------------------------
+// function updateForum(number) {
+//   toast
+//     .fire({
+//       title: "確定要更新嗎?",
+//       text: "更新後不能返回",
+//       icon: "warning",
+//       showCancelButton: true,
+//       customClass: {
+//         confirmButton: "btn btn-danger m-1",
+//         cancelButton: "btn btn-secondary m-1",
+//       },
+//       confirmButtonText: "更新資料",
+//       cancelButtonText: "取消更新",
+
+//       html: false,
+//       preConfirm: () => {
+//         return new Promise((resolve) => {
+//           setTimeout(() => {
+//             resolve();
+//           }, 50);
+//         });
+//       },
+//     })
+//     .then((result) => {
+//       //send request to server
+//       if (result.value) {
+//         const forum = {
+//           forumId: this.forumId,
+//           forumTitle: this.forumTitle,
+//           forumContent: this.forumContent,
+//           forumCategory: this.forumCategory,
+//           restaurantType: this.restaurantType,
+//           restaurantBusinessHours: this.restaurantBusinessHours,
+//           restaurantScore: this.restaurantScore,
+//           imageUrl: image.value.imageUrl,
+//         };
+//         //執行put方法
+
+//         axios
+//           .put(`http://${url}/forums/${number}`, forum)
+//           .then(() => {
+//             getAxios();
+//             toast.fire("更新成功", "", "success");
+
+//           })
+//           .catch((error) => {
+//             console.log(error, "失敗");
+//           });
+//       } else if (result.dismiss === "cancel") {
+//         toast.fire("更新失敗", "", "error");
+//       }
+//     });
+// }
+//------------------------------------
+function fileUpload() {
+  var files = document.getElementById("input").files;
+  var params = new FormData();
+  params.append("file", files[0]);
+  console.log(params.get("file"));
+  axios.post("http://localhost:8088/fileUpload", params).then((res) => {
+    image.value = res.data;
+    //印出路徑
+    console.log(image);
+  });
+}
+
+// ----------------------------------0721註解---------------------
+function sendForum(number, title, content, category,) {
   var data = {
     forumId: number,
     forumTitle: title,
     forumContent: content,
     forumCategory: category,
-    forumImageUrl: imageUrl,
+    forumImageUrl: image.value.imageUrl,
   };
 
   axios
     .put(`http://${url}/forums/${number}`, data)
     .then((res) => {
       console.log(res);
+
       getAxios();
       window.setTimeout(function () {
         location.reload();
@@ -234,18 +304,8 @@ function deleteForum(number) {
       }
     });
 
-  //檔案上傳方法，寫入後端後會吐回加入UUID之名稱，再回傳data寫入ref()裏
-  function fileUpload() {
-    var files = document.getElementById("input").files;
-    var params = new FormData();
-    params.append("file", files[0]);
-    console.log(params.get("file"));
-    axios.post("http://localhost:8088/fileUpload", params).then((res) => {
-      image.value = res.data;
-      //印出路徑
-      console.log(image);
-    });
-  }
+
+
 }
 
 
@@ -509,6 +569,14 @@ th.sort {
                     <textarea class="form-control" id="exampleFormControlTextarea1" rows="12" style="resize: none"
                       v-model="resForumContent"></textarea>
                   </div>
+                  <div>
+                    <label class="form-label" for="val-stock">圖片 </label>
+                    <input class="form-control" id="input" type="file" ref="myFile" @change="fileUpload()" />
+                    <br />
+                    <!-- 根據回傳值印出圖片 -->
+                    <img :src="image.imageUrl" style="max-width:500px;width:100%" />
+                    <br />
+                  </div>
 
 
 
@@ -519,7 +587,7 @@ th.sort {
                     取消
                   </button>
                   <button type="submit" class="btn btn-primary"
-                    @click.prevent="sendForum(resForumId, resForumTitle, resForumContent, resForumCategory)">送出</button>
+                    @click.prevent="sendForum(resForumId, resForumTitle, resForumContent, resForumCategory, resForumImage,)">送出</button>
                 </div>
               </div>
             </form>
