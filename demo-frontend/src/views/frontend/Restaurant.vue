@@ -66,7 +66,6 @@ const getRestaurant = function () {
         })
         .catch((err) => console.log(err));
 }
-
 getRestaurant();
 
 //取得單筆餐廳by catagory
@@ -88,22 +87,7 @@ const getByCatagory = function () {
         })
         .catch((err) => console.log(err));
 }
-
 getByCatagory();
-
-
-//確認用戶是否已收藏該筆餐廳資料
-axios
-    .get(`http://${url}/saveRestaurant/${restaurantNumber}/${uid}`)
-    .then((res) => {
-        saveData.value = res.data;
-        console.log(res.data);
-
-    })
-    .catch((error) => {
-        console.log(error, "失敗");
-    });
-
 
 // 取得所有餐廳
 const getAxios = function () {
@@ -116,12 +100,19 @@ const getAxios = function () {
             console.log(error, "失敗");
         });
 };
-
-
-// 執行Axios;
 getAxios();
 
+//確認用戶是否已收藏該筆餐廳資料
+axios
+    .get(`http://${url}/saveRestaurant/${restaurantNumber}/${uid}`)
+    .then((res) => {
+        saveData.value = res.data;
+        console.log(res.data);
 
+    })
+    .catch((error) => {
+        console.log(error, "失敗");
+    });
 
 
 //加入收藏
@@ -288,28 +279,43 @@ export default {
                         <hr />
 
                         <!-- 評論 -->
-                        <div class="container">
-                            <section>
-                                <h3> 評論 </h3>
-                                <p>一份保證十顆
+                        <div class="container" style="margin-top: 1cm;">
+                            <h3>評論</h3>
+                            <div class="row">
+                                <div class="col">
+                                    <div>
+                                        <h2 style="color:#FFEA00">★★★★★</h2>
+                                    </div>
+                                    <a>
+                                        <h5>
+                                            飄香一甲子的這家老店，傳承的不只是素食的好手藝，更承襲了先人們念茲在茲的善念，因此多年來，始終堅持自行研發素食材料，為的就是希望每一位上門的客人，都可以在吃到美味的同時，也吃進了充足的營養。
+                                        </h5>
+                                        <p class="text-end" style="color:#3498DB">一貪吃鬼的美好時光</p>
+                                    </a>
+                                </div>
 
-                                    紅酒一杯</p>
-                            </section>
+                                <div class="col">
+                                    <div>
+                                        <h2 style="color:#FFEA00">★★★★</h2>
+                                    </div>
+                                    <a>
+                                        <h5 class="title is-5">環境清潔、服務親切，很棒的用餐環境，食物有特色，特別喜歡煨湯和握壽司</h5>
+                                        <p class="text-end" style="color:#3498DB">一鍾建達</p>
+                                    </a>
+                                </div>
 
+                                <div class="col">
+                                    <div>
+                                        <h2 style="color:#FFEA00">★★★★★</h2>
+                                    </div>
+                                    <a>
+                                        <h5 class="title is-5">有名的金牌老店，歷史悠久的素食之家 應該七十年了，有很多素食老菜 老菜新作 創新料理 等等，生日壽宴聯誼聚餐
+                                            商業套餐都很適合！</h5>
+                                        <p class="text-end" style="color:#3498DB">一黃永毅</p>
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                        <hr />
-
-                        <!-- 食記 -->
-                        <div class="container">
-                            <section>
-                                <h3> 食記 </h3>
-                                <p>一份保證十顆
-
-                                    紅酒一杯</p>
-                            </section>
-
-                        </div>
-                        <hr />
                     </BaseBlock>
                 </div>
 
