@@ -58,6 +58,7 @@ initMap();
 locations.value.push(center);
 
 function calllatlng(address) {
+  locations.value = [];
   axios
     .get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyBwhBQXDks6CAdcxO-1SoTU6wKttYcHLx0`)
     .then((res) => {
