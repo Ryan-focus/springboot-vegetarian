@@ -366,7 +366,7 @@ u {
               <div class="textend"></div>
             </div>
           </BaseBlock>
-          <BaseBlock title="最多人按讚" header-class="bg-flat-light" themed>
+          <BaseBlock title="最多人喜歡" header-class="bg-flat-light" themed>
             <div v-if="likeData" class="row">
               <div
                 v-for="(item, index) in likeData.slice(0, 3)"
@@ -399,7 +399,7 @@ u {
         </div>
 
         <div class="col-md-4">
-          <BaseBlock title="按讚排行" header-class="bg-flat-light" themed>
+          <BaseBlock title="按讚排行榜" header-class="bg-flat-light" themed>
             <ul class="nav-items fs-sm" v-if="likeData">
               <li v-for="(item, index) in likeData.slice(0, 5)" :key="index">
                 <a class="d-flex py-2" :href="'/#/postContent/' + item.postId">
