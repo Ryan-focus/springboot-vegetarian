@@ -19,6 +19,7 @@ axios.post(
     }
 )
 
+//確認結帳完之後跳轉回來把購物車的物品清空
 function removeCart() {
     localStorage.removeItem("cartItem")
 }
@@ -40,7 +41,7 @@ const store = useTemplateStore();
                             <!-- Header -->
                             <div class="text-center">
                                 <p>
-                                    <i class="fa fa-3x fa-cog fa-spin text-primary"></i>
+                                    <i class="fa fa-3x fa-dollar-sign fa-spin text-primary"></i>
                                 </p>
                                 <h1 class="h4 mb-1">付款成功，感謝購買</h1>
                                 <h2 class="h6 fw-normal text-muted mb-3">
