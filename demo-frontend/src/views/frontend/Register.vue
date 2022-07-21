@@ -180,9 +180,9 @@ function showPassword() {
                       <input class="form-check-input" type="checkbox" id="signup-terms" name="signup-terms" :class="{
                         'is-invalid': v$.terms.$errors.length,
                       }" v-model="state.terms" @blur="v$.terms.$touch" />
-                      <label class="form-check-label" for="signup-terms">我同意不殺生 &amp; 信教吃素</label>
+                      <label class="form-check-label" for="signup-terms">我同意會員條款</label>
                       <div v-if="v$.terms.$errors.length" class="invalid-feedback animated fadeIn">
-                        你若不同意則不適合吃素
+                        請勾選以完成註冊
                       </div>
                     </div>
                   </div>
