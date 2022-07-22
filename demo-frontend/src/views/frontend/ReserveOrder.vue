@@ -170,9 +170,8 @@ function sendData() {
       <div class="row justify-content-left">
         <div class="col-sm-8">
           <!-- Story -->
-          <article class="story">
-            {{ restaurantBusinessHours }}
-          </article>
+
+          <div class="story" v-html="restaurantBusinessHours"></div>
           <!-- END Story -->
 
         </div>

@@ -7,7 +7,20 @@ import { required, between } from "@vuelidate/validators";
 import axios from "axios";
 import moment from 'moment';
 import Swal from "sweetalert2";
+// CKEditor 5, for more info and examples you can check out https://ckeditor.com/docs/ckeditor5/latest/builds/guides/integration/frameworks/vuejs-v3.html
+import CKEditor from "@ckeditor/ckeditor5-vue";
+
+// You can import one of the following CKEditor variation (only one at a time)
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import { useRouter } from "vue-router";
+
+
+
+// CKEditor 5 variables
+let ckeditor = CKEditor.component;
+
+const editorConfig = ref({});
+
 
 // vue-chart-3, for more info and examples you can check out https://vue-chart-3.netlify.app/ and http://www.chartjs.org/docs/ -->
 // import { LineChart, BarChart } from "vue-chart-3";
@@ -332,6 +345,8 @@ const state = reactive({
   restaurantName: null,
   restaurantTel: null,
   restaurantAddress: null,
+  restaurantCategory: null,
+  restaurantType: null,
   restaurantBusinessHours: null,
   restaurantScore: null,
   imageUrl: null,
@@ -470,6 +485,27 @@ function createRestaurant() {
 
 getReserveList();
 getPos();
+
+//CK Editors 一鍵輸入
+var content = `
+營業時間 <br>
+固定店休日：每週二<br>
+週一至週日 12:00~14:30 / 18:00~22:30<br>
+</p>
+`;
+
+
+function addform() {
+  state.restaurantName = "小心上癮素食麻辣火鍋";
+  state.restaurantTel = " 02-2763-1096";
+  state.restaurantAddress = "台北市松山區南京東路五段61-3號";
+  state.restaurantCategory = "中式";
+  state.restaurantType = "五辛素";
+  state.restaurantBusinessHours = content;
+  state.restaurantScore = "4.2";
+}
+
+
 </script>
 
 <template>
@@ -762,14 +798,14 @@ getPos();
           </p>
         </BaseBlock>
       </span>
-      <span class="col-md-8 col-lg-6 col-xl-4">
+      <span class="col-md-8 col-lg-6 col-xl-7">
         <form @submit.prevent="onSubmit" @submit="createRestaurant" id="forms">
           <BaseBlock title="新增餐廳表單" content-full>
             <div class="row push">
-              <div class="col-lg-4">
+              <div class="col-lg-2">
                 <p class="fs-sm text-muted">請填寫完整資訊</p>
               </div>
-              <div class="col-lg-8 col-xl-5">
+              <div class="col-lg-8 col-xl-10">
                 <!-- 餐廳名稱開始 -->
                 <div class="mb-4">
                   <label class="form-label" for="val-restaurantName">餐廳名稱<span class="text-danger">*</span></label>
@@ -831,13 +867,21 @@ getPos();
                 </div>
                 <!-- 營業時間 -->
                 <div class="mb-4">
-                  <label class="form-label" for="example-select">營業時間<span class="text-danger">*</span></label>
+                  <!-- <label class="form-label" for="example-select">營業時間及注意事項<span class="text-danger">*</span></label>
                   <input type="textarea" id="val-restaurantBusinessHours" class="form-control" :class="{
                     'is-invalid': v$.restaurantBusinessHours.$errors.length,
                   }" v-model="state.restaurantBusinessHours" @blur="v$.restaurantBusinessHours.$touch" />
                   <div v-if="v$.restaurantBusinessHours.$errors.length" class="invalid-feedback animated fadeIn">
                     此項為必填
-                  </div>
+                  </div> -->
+                  <BaseBlock content-full>
+                    <ckeditor :editor="ClassicEditor" :config="editorConfig" :class="{
+                      'is-invalid': v$.restaurantBusinessHours.$errors.length,
+                    }" v-model="state.restaurantBusinessHours" @blur="v$.restaurantBusinessHours.$touch" />
+                    <div v-if="v$.restaurantBusinessHours.$errors.length" class="invalid-feedback animated fadeIn">
+                      此項為必填
+                    </div>
+                  </BaseBlock>
                 </div>
                 <!-- 評分開始 -->
                 <div class="mb-4">
@@ -851,18 +895,24 @@ getPos();
 
                 </div>
                 <!-- 圖片上傳開始-->
-                <div>
+                <div class="mb-4">
                   <label class="form-label" for="val-stock">圖片 </label>
-                  <input class="form-control" id="input" type="file" ref="myFile" @change="fileUpload()" />
+                  <input class="form-control mb-4" id=" input" type="file" ref="myFile" @change="fileUpload()" />
                   <br />
+
+
                   <!-- 根據回傳值印出圖片 -->
                   <img :src="image.imageUrl" style="max-width:500px;width:100%" />
                   <br />
                 </div>
-
-                <div class="row items-push">
-                  <div class="col-lg-7 offset-lg-4">
+                <div class="row mb-4">
+                  <div class="col-md-6 col-xl-5">
                     <button type="submit" class="btn btn-alt-primary">送出</button>
+                  </div>
+                  <div class="col-md-6 col-xl-7">
+                    <button type="button" class="btn w-100 btn-alt-warning" @click="addform">
+                      <i class="fa fa-fw fa-fill me-1 opacity-50"></i> 一鍵輸入
+                    </button>
                   </div>
                 </div>
               </div>
@@ -873,6 +923,47 @@ getPos();
     </div>
   </div>
 
-  <div v-else class="content"> 123 </div>
+  <div v-else class="content">
+    <!-- Page Content -->
+    <div class="content content-boxed">
+      <!-- Invoice -->
+      <BaseBlock>
+
+        <div class="p-sm-4 p-xl-7">
+          <!-- Invoice Info -->
+          <div class="row mb-4">
+            <!-- Company Info -->
+            <div class="col-6 fs-sm">
+              <p class="h3"> {{
+                  business.data.business.businessName
+              }}</p>
+              <address>
+                負責人 :
+                {{
+                    business.data.business.principalName
+                }}<br />
+              </address>
+            </div>
+            <!-- END Company Info -->
+
+            <!-- Client Info -->
+            <div class="col-6 text-end fs-sm">
+              <p class="h3">您的申請已送出</p>
+            </div>
+            <!-- END Client Info -->
+          </div>
+          <!-- END Invoice Info -->
+
+          <!-- Footer -->
+          <p class="fs-md text-muted text-center bg-gray">
+            請耐心等候，我們即將為您開通權限。
+          </p>
+          <!-- END Footer -->
+        </div>
+      </BaseBlock>
+      <!-- END Invoice -->
+    </div>
+    <!-- END Page Content -->
+  </div>
 </template>
 

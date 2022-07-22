@@ -115,6 +115,10 @@ function showPassword() {
   }
 }
 
+function addform() {
+  state.account = 'carefuladdicted@gmail.com';
+  state.password = '10x65q76d53';
+}
 </script>
 
 <template>
@@ -210,6 +214,11 @@ function showPassword() {
                   <div class="col-md-6 col-xl-6">
                     <button type="button" class="btn w-100 btn-alt-success" @click="addUser2">
                       <i class="fa fa-fw fa-plus me-1 opacity-50"></i>會員2
+                    </button>
+                  </div>
+                  <div class="col-md-6 col-xl-6">
+                    <button type="button" class="btn w-100 btn-alt-warning" @click="addform">
+                      <i class="fa fa-fw fa-store me-1 opacity-50"></i> 商家
                     </button>
                   </div>
                 </div>
