@@ -104,6 +104,13 @@ async function onSubmit() {
 
     // perform async actions
 }
+
+function addForum() {
+    state.forumCategory = "健康"
+    state.forumTitle = "介紹新加坡兵役系統中「素食兵」的飲食"
+    state.forumContent = "<p>新加坡政府剛在過去的周末宣布，今年將慶祝國民服役55週年。</p> <p>身邊許多未服過兵役的本地和外國友人總是很好奇，筆者從小就吃素長大，在服兵役時會不會體力不足？能攝取足夠營養嗎？軍訓時要「上山下海越過叢林」，會不會跑到一半就沒力？</p> <p>其實，這些都是人們對吃素的刻板印象。</p> <div>作為「素食兵」的我最近回營受訓了一趟，帶大家一起看看戰備軍人回營受訓時，能吃到什麼樣的「素食好料」。據說，每名軍人的每一餐，花費約在6至7新元左右。</div> <p>基本款「三菜一飯」</p> <p>素食兵的餐食每天都會有三樣菜餚，午餐和晚餐的主食一般上都是白飯。</p> <div>早餐則可能會吃到米粉、炒麵或是包子和餡餅等素餡點心。</div> <p>看到這張「餐圖」，大家可能會覺得賣相不怎麼樣，但其實味道還算不錯。除了有蒸豆腐、炒豌豆來補充蛋白質，營中的素食菜單也常會出現一種俗稱「醃鴨」的古早素料。醃鴨屬麵筋類，照片中的醃鴨以酸酸甜甜的醬料烹煮，而且十分「多汁」，淋在白飯上搭配著吃，就不會感覺「乾巴巴」。</p>"
+}
+
 function createForum() {
     toast
         .fire({
@@ -235,6 +242,7 @@ function createForum() {
                 </div>
             </BaseBlock>
         </form>
+        <button class="btn btn-alt-secondary" @click="addForum()">一鍵日誌</button>
         <!-- END Basic -->
     </div>
 </template>
