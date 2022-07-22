@@ -67,8 +67,9 @@ async function onSubmit() {
     .post("http://localhost:8088/user/register", user)
     .then(function (response) {
       if (response.status === 200) {
-        Swal.fire("註冊成功 ~", "⁽⁽٩(๑˃̶͈̀ ᗨ ˂̶͈́)۶⁾⁾", "success");
-        location.replace("http://localhost:8080/#/signin");
+        Swal.fire(`請前往${state.email}完成驗證`, "⁽⁽٩(๑˃̶͈̀ ᗨ ˂̶͈́)۶⁾⁾", "success");
+        localStorage.setItem("registerInfo", state.email);
+        // location.replace("http://localhost:8080/#/signin");
       }
     })
     .catch(function (error) {

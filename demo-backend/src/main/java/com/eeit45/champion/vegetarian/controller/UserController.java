@@ -258,5 +258,19 @@ public class UserController {
 	public Double countPercentLogin() {
 		return userService.countPercentLogin();
 	}
+	
+	@PatchMapping("/user/updateStatus")
+	public ResponseEntity<User> updateStatus(@RequestParam("status") String status, @RequestParam("email") String email){
+		
+		int result = userService.updateStatus(status, email);
+		
+		if (result == 1) {
+			
+			return ResponseEntity.status(HttpStatus.OK).build();
+		} else {
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+		}
+		
+	}
 
 }
