@@ -7,6 +7,7 @@ import { useRouter } from "vue-router";
 const store = useTemplateStore();
 const router = useRouter();
 
+
 const urlParams = ref(
   {
     limit: 10,
@@ -19,8 +20,8 @@ const urlParams = ref(
 );
 
 //帶值category到下個頁面
-function searchCatagory(catagory) {
-  urlParams.value.restaurantCategory = catagory;
+function searchCatagory(restaurantCategory) {
+  urlParams.value.restaurantCategory = restaurantCategory;
 
   router.push({
     name: "restaurantIndex",
@@ -53,7 +54,9 @@ function searchAddress(restaurantAddress) {
     }
   });
 }
+
 </script>
+
 
 
 <template>
@@ -73,9 +76,9 @@ function searchAddress(restaurantAddress) {
             <div class="col-md-5 offset-md-3 content content-full text-center">
               <div class="mb-2">
                 <div>
-                  <input type="text" placeholder="搜尋餐廳名稱" v-model="urlParams.searchName" @change="searchName()" />
+                  <input type="text" placeholder="搜尋餐廳名稱" v-model="urlParams.restaurantName" @change="searchName()" />
 
-                  <input type="text" placeholder="搜尋地點" v-model="urlParams.searchAddress"
+                  <input type="text" placeholder="搜尋地點" v-model="urlParams.restaurantAddress"
                     @change="searchAddress('中壢')" />
                   <button class="btn btn-info" tabindex="0" type="button">
                     <i class="si si-magnifier"></i>
@@ -83,9 +86,9 @@ function searchAddress(restaurantAddress) {
                 </div>
                 <p class="space-x-1">
                   <span>搜尋:</span>
-                  <a href="#" @click.prevent="searchCatagory('中式')"><span
-                      class="badge rounded-pill bg-black-50">中式</span></a>
-                  <a href=" #" @click.prevent="searchCatagory('義式')">
+                  <a href="#" @click.prevent="searchCatagory('中式')">
+                    <span class="badge rounded-pill bg-black-50">中式</span></a>
+                  <a href="#" @click.prevent="searchCatagory('義式')">
                     <span class="badge rounded-pill bg-black-50">義式</span></a>
                   <a href="#" @click.prevent="searchCatagory('麵食')">
                     <span class="badge rounded-pill bg-black-50">麵食</span></a>
@@ -125,6 +128,7 @@ function searchAddress(restaurantAddress) {
       <div class="content content-full"></div>
     </div>
     <!-- END Hero After -->
+
 
     <!-- Footer -->
     <footer id="page-footer" class="bg-body-light">

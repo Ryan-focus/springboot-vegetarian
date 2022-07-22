@@ -1,8 +1,9 @@
 <script setup>
 import { useTemplateStore } from "@/stores/template";
-import { reactive, ref } from "vue";
+import { ref } from "vue";
 import { useRoute, useRouter } from 'vue-router';
 import axios from "axios";
+import { GoogleMap, Marker, MarkerCluster } from 'vue3-google-map'
 
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
@@ -11,19 +12,6 @@ const store = useTemplateStore();
 const router = useRouter();
 //接值
 const route = useRoute();
-const data = reactive({
-  loading: false,
-});
-
-const restaurantName = route.params.restaurantName;
-const restaurantTel = ref();
-const restaurantAddress = route.params.restaurantAddress;
-const restaurantCategory = route.params.restaurantCategory;
-const restaurantType = ref();
-const restaurantBusinessHours = ref();
-const restaurantScore = ref();
-const imageUrl = ref();
-const dataArray = ref();
 
 const urlParams = ref(
   {
@@ -31,41 +19,83 @@ const urlParams = ref(
     offset: 0,
     restaurantCategory: null,
     restaurantType: null,
-    restaurantBusinessHours: null,
-    restaurantScore: null,
-    restaurantNumber: null
+    restaurantName: null,
+    restaurantAddress: null,
+    restaurantNumber: null,
   }
 );
 
-console.log(route.params);
+const restaurantCategory = route.params.restaurantCategory;
+const dataArray = ref();
 
+
+/**LatLng(parseFloat(trader.geo.lat),parseFloat(trader.geo.lon) */
+//Google map
+const locations = ref([]);
+
+const center = { lat: parseFloat(null), lng: parseFloat(null) };
+const location = { lat: parseFloat(null), lng: parseFloat(null) };
+
+var centerLat, centerLng;
+//取得使用者初始位置 ， 會詢問使用者願不願意提供位置
+function initMap() {
+  navigator.geolocation.watchPosition((position) => {
+    centerLat = position.coords.latitude;
+    centerLng = position.coords.longitude;
+    // 初始化地圖
+    //預設是聖德基督學院
+    if (centerLat == null) {
+      centerLat = 24.9852355;
+    }
+    if (centerLng == null) {
+      centerLng = 121.2199863;
+    }
+    center.lat = centerLat;
+    center.lng = centerLng;
+  });
+}
+initMap();
+
+locations.value.push(center);
+
+function calllatlng(address) {
+  axios
+    .get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=AIzaSyBwhBQXDks6CAdcxO-1SoTU6wKttYcHLx0`)
+    .then((res) => {
+      JSON.parse(JSON.stringify(res))
+      // console.log(res.data);
+      if (res.status === 200) {
+        location.lat = res.data.results[0].geometry.location.lat;
+        location.lng = res.data.results[0].geometry.location.lng;
+        locations.value.push(location);
+      }
+    })
+    .catch((err) => console.log(err));
+}
 
 
 // 取得條件(類別)
 const searchCatagory = function (catagory) {
-  data.loading = true;
   if (catagory != null) {
     axios
       .get(`http://${url}/restaurantList?restaurantCategory=` + catagory)
       .then((res) => {
-        console.log(res);
         console.log(res.data);
-        console.log(res.data.results);
-
         dataArray.value = res.data.results;
-
+        locations.value = [];
+        for (let i = 0; i <= res.data.results.length - 1; i++) {
+          calllatlng(res.data.results[i].restaurantAddress);
+        }
       })
       .catch((err) => console.log(err));
   } else {
     axios
       .get(`http://${url}/restaurantList?restaurantCategory=${restaurantCategory}`)
       .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        console.log(res.data.results);
-
         dataArray.value = res.data.results;
-
+        for (let i = 0; i <= res.data.results.length - 1; i++) {
+          calllatlng(res.data.results[i].restaurantAddress);
+        }
       })
       .catch((err) => console.log(err));
   }
@@ -74,90 +104,61 @@ searchCatagory();
 
 // 取得條件(素食種類)
 const searchType = function (type) {
-  data.loading = true;
 
   axios
     .get(`http://${url}/restaurantList?restaurantType=` + type)
     .then((res) => {
-      console.log(res);
-      console.log(res.data);
-      console.log(res.data.results);
-
+      // dataArray.value = res.data.results;
       dataArray.value = res.data.results;
+      locations.value = [];
+      for (let i = 0; i <= res.data.results.length - 1; i++) {
+        calllatlng(res.data.results[i].restaurantAddress);
+      }
 
     })
     .catch((err) => console.log(err));
-
-
 }
 searchType();
 
 // 取得條件(地址)
-const searchAddress = function (address) {
-  data.loading = true;
-  if (address != null) {
-    axios
-      .get(`http://${url}/restaurantList?searchAddress=` + address)
-      .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        console.log(res.data.results);
+const searchAddress = function () {
 
-        dataArray.value = res.data.results;
+  axios
+    .get(`http://${url}/restaurantList`, { params: urlParams.value })
+    .then((res) => {
+      dataArray.value = res.data.results;
+      locations.value = [];
+      for (let i = 0; i <= res.data.results.length - 1; i++) {
+        calllatlng(res.data.results[i].restaurantAddress);
+      }
 
-      })
-      .catch((err) => console.log(err));
-  } else {
-    axios
-      .get(`http://${url}/restaurantList?searchAddress=${restaurantAddress}`)
-      .then((res) => {
-        console.log(res);
-        console.log(res.data);
-        console.log(res.data.results);
-
-        dataArray.value = res.data.results;
-
-      })
-      .catch((err) => console.log(err));
-  }
+    })
+    .catch((err) => console.log(err, "失敗"));
 }
-searchAddress();
+
+// searchAddress();
 
 // 取得條件(餐廳名稱)
-// const searchName = function (name) {
-//   data.loading = true;
-//   if (name != null) {
-//     axios
-//       .get(`http://${url}/restaurantList?searchName=` + name)
-//       .then((res) => {
-//         console.log(res);
-//         console.log(res.data);
-//         console.log(res.data.results);
+const searchName = function () {
 
-//         dataArray.value = res.data.results;
+  axios
+    .get(`http://${url}/restaurantList`, { params: urlParams.value })
+    .then((res) => {
+      dataArray.value = res.data.results;
+      locations.value = [];
+      for (let i = 0; i <= res.data.results.length - 1; i++) {
+        calllatlng(res.data.results[i].restaurantAddress);
+      }
 
-//       })
-//       .catch((err) => console.log(err));
-//   } else {
-//     axios
-//       .get(`http://${url}/restaurantList?searchName=${restaurantName}`)
-//       .then((res) => {
-//         console.log(res);
-//         console.log(res.data);
-//         console.log(res.data.results);
+    })
+    .catch((err) => console.log(err, "失敗"));
+}
 
-//         dataArray.value = res.data.results;
-
-//       })
-//       .catch((err) => console.log(err));
-//   }
-// }
-// searchName();
+searchName();
 
 
 //帶值restaurantNumber到detail頁
 function restaurantDetail(restaurantNumber) {
-  // urlParams.value.restaurantNumber = prams;
   urlParams.value.restaurantNumber = restaurantNumber;
 
   router.push({
@@ -167,24 +168,6 @@ function restaurantDetail(restaurantNumber) {
     }
   });
 }
-
-//取得所有餐廳
-const getAxios = function () {
-  axios
-    .get(`http://${url}/restaurants`, { params: urlParams.value })
-    .then((res) => {
-      resData.value = res.data;
-    })
-    .catch((error) => {
-      console.log(error, "失敗");
-    });
-};
-
-
-// 執行Axios;
-getAxios();
-
-
 var businessRestuarantID = [];
 var businessID = [];
 
@@ -195,7 +178,6 @@ function getBusinessList() {
 
       for (let i = 0; i <= res.data.length - 1; i++) {
         if (res.data[i].restaurantNumber != 0) {
-          console.log(res.data[i]);
           businessRestuarantID.push(res.data[i].restaurantNumber);
           businessID.push(res.data[i].businessId);
         }
@@ -205,19 +187,6 @@ function getBusinessList() {
 
 getBusinessList();
 </script>
-<!-- <script>
-export default {
-  name: "restaurantIndex",
-  props: {
-    paramsData: {
-      type: String
-    }
-  },
-};
-
-
-</script> -->
-
 
 <template>
   <!-- 搜尋bar -->
@@ -226,30 +195,30 @@ export default {
     <div class=" row col-md-5 offset-md-3 content content-full text-center">
       <div class="mb-2">
         <div>
-          <input type="text" placeholder="搜尋餐廳名稱" v-model="urlParams.searchName" @change="searchName()" />
+          <input type="text" placeholder="搜尋餐廳名稱" v-model="urlParams.restaurantName" @keyup="searchName()" />
           <!-- <a></a> -->
-          <input type="text" placeholder="搜尋地點" v-model="urlParams.searchAddress" @change="searchAddress()" />
+          <input type="text" placeholder="搜尋地點" v-model="urlParams.restaurantAddress" @keyup="searchAddress()" />
           <button class="btn btn-info" tabindex="0" type="button">
             <i class="si si-magnifier"></i>
           </button>
           <!-- <a></a> -->
 
           <!-- 下拉式選單 -->
-          <select aria-label="Default select example">
+          <!-- <select aria-label="Default select example">
             <option selected>推薦</option>
             <option value="1">熱門餐廳</option>
             <option value="2">評分最高</option>
-            <option value="3">離你最近</option>
-          </select>
+            <option value="3" @click="getlocation()">離你最近</option>
+          </select> -->
 
           <!-- <a></a> -->
 
           <!-- checkbox -->
-          <input type="checkbox" value="營業中" id="flexCheckDefault-1" v-model="urlParams.restaurantBusinessHours"
+          <!-- <input type="checkbox" value="營業中" id="flexCheckDefault-1" v-model="urlParams.restaurantBusinessHours"
             @change="searchCatagory()">
           <label class="form-check-label me-2" for="flexCheckDefault-1">
             營業中
-          </label>
+          </label> -->
           <!-- <a></a> -->
           <input type="radio" value="全素" id="flexCheckDefault-2" v-model="urlParams.restaurantType"
             @change="searchType('全素')">
@@ -344,10 +313,18 @@ export default {
       </div>
       <!-- 右邊 google map  -->
       <div class="col">
-        <iframe
-          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3616.437657692995!2d121.21998631423737!3d24.985240346399994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x34682183e7b783c3%3A0xf0ebfba2069b6158!2z6IGW5b635Z-6552j5a246Zmi!5e0!3m2!1szh-TW!2stw!4v1657885211036!5m2!1szh-TW!2stw"
-          width="600" height="600" style="border:0;" allowfullscreen="true" loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"></iframe>
+        <div>
+          <!-- 地圖 -->
+          <div id="info-map" class="">
+            <GoogleMap api-key="AIzaSyBwhBQXDks6CAdcxO-1SoTU6wKttYcHLx0" style="width: 100%; height: 500px"
+              :center="center" :zoom="10">
+              <MarkerCluster>
+                <Marker v-for="(location, i) in locations" :options="{ position: location }" :key="i" />
+              </MarkerCluster>
+            </GoogleMap>
+
+          </div>
+        </div>
       </div>
     </div>
   </div>

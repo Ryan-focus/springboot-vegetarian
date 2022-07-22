@@ -52,18 +52,6 @@ let toast = Swal.mixin({
 });
 
 const getAxios = function () {
-  //收藏文章
-  axios
-    .get(`http://${url}/favoritePost/${uid}`)
-    .then((res) => {
-      //獲取伺服器的回傳資料
-      resData.value = res.data;
-      resPostCategory.value = res.data.postCategory;
-    })
-    .catch((error) => {
-      console.log(error, "失敗");
-    });
-
   //發布中文章
   axios
     .get(`http://${url}/showPost/${uid}`)
@@ -84,19 +72,35 @@ const getAxios = function () {
     })
     .catch((error) => {
       console.log(error, "失敗");
-    });
-
-  //未通過文章
-  axios
-    .get(`http://${url}/showPostNoPass/${uid}`)
-    .then((res) => {
-      //獲取伺服器的回傳資料
-      resMyDataNoPass.value = res.data;
     })
-    .catch((error) => {
-      console.log(error, "失敗");
+
+    .then((res) => {
+      //未通過文章
+      axios
+        .get(`http://${url}/showPostNoPass/${uid}`)
+        .then((res) => {
+          //獲取伺服器的回傳資料
+          resMyDataNoPass.value = res.data;
+        })
+        .catch((error) => {
+          console.log(error, "失敗");
+        });
+    })
+    .then((res) => {
+      //收藏文章
+      axios
+        .get(`http://${url}/favoritePost/${uid}`)
+        .then((res) => {
+          //獲取伺服器的回傳資料
+          resData.value = res.data;
+          resPostCategory.value = res.data.postCategory;
+        })
+        .catch((error) => {
+          console.log(error, "失敗");
+        });
     });
 };
+
 //執行Axios
 getAxios();
 
@@ -368,7 +372,7 @@ u {
                 </div>
                 <!-- 待審核文章資料 -->
                 <div
-                  class="block-content tab-pane active"
+                  class="block-content tab-pane"
                   id="btabs-vertical-noAudit"
                   role="tabpanel"
                   aria-labelledby="btabs-vertical-noAudit-tab"
@@ -404,24 +408,27 @@ u {
                           <br />
                         </div>
                       </a>
-                      <div
-                        id="editButton"
-                        class="flex-grow-1 col-md-3 offset-md-10"
-                      >
-                        <button
-                          type="button"
-                          class="btn btn-sm btn-outline-success"
-                          @click="findPost(item.postId)"
-                        >
-                          編輯文章
-                        </button>
-                        <button
-                          type="button"
-                          class="btn btn-sm btn-outline-warning"
-                          @click="deletePost(item.postId)"
-                        >
-                          刪除文章
-                        </button>
+                      <div class="box">
+                        <div id="editButton" class="flex-grow-3 col-md-8">
+                          <button
+                            type="button"
+                            class="btn btn-sm btn-outline-success"
+                            @click="findPost(item.postId)"
+                          >
+                            編輯文章
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-sm btn-outline-warning"
+                            @click="deletePost(item.postId)"
+                          >
+                            刪除文章
+                          </button>
+                        </div>
+                        <div class="date1">
+                          發布日期：
+                          {{ item.postedDate }}
+                        </div>
                       </div>
                       <hr />
                     </li>
@@ -429,7 +436,7 @@ u {
                 </div>
                 <!-- 未通過文章資料 -->
                 <div
-                  class="block-content tab-pane active"
+                  class="block-content tab-pane"
                   id="btabs-vertical-noPass"
                   role="tabpanel"
                   aria-labelledby="btabs-vertical-noPass-tab"
@@ -462,30 +469,30 @@ u {
                           <div class="fw-normal text-muted" id="posttext">
                             <div v-html="item.postedText"></div>
                           </div>
-                          <div class="newPostSide">
-                            <h6>{{ item.postedDate }}</h6>
-                          </div>
                           <br />
                         </div>
                       </a>
-                      <div
-                        id="editButton"
-                        class="flex-grow-1 col-md-3 offset-md-10"
-                      >
-                        <button
-                          type="button"
-                          class="btn btn-sm btn-outline-success"
-                          @click="findPost(item.postId)"
-                        >
-                          編輯文章
-                        </button>
-                        <button
-                          type="button"
-                          class="btn btn-sm btn-outline-warning"
-                          @click="deletePost(item.postId)"
-                        >
-                          刪除文章
-                        </button>
+                      <div class="box">
+                        <div id="editButton" class="flex-grow-3 col-md-8">
+                          <button
+                            type="button"
+                            class="btn btn-sm btn-outline-success"
+                            @click="findPost(item.postId)"
+                          >
+                            編輯文章
+                          </button>
+                          <button
+                            type="button"
+                            class="btn btn-sm btn-outline-warning"
+                            @click="deletePost(item.postId)"
+                          >
+                            刪除文章
+                          </button>
+                        </div>
+                        <div class="date1">
+                          發布日期：
+                          {{ item.postedDate }}
+                        </div>
                       </div>
                       <hr />
                     </li>

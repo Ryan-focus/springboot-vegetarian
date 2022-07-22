@@ -150,7 +150,7 @@ public class PostDaoImpl implements PostDao {
 	// 查詢使用者發表文章(發布中)
 	public List<Post> findPostByUser(int uid) {
 
-		String sql = "SELECT *  FROM post WHERE userId = :userId AND postStatus = :postStatus ";
+		String sql = "SELECT *  FROM post WHERE userId = :userId AND postStatus = :postStatus ORDER BY postId DESC ";
 		Map<String, Object> map = new HashMap<>();
 		map.put("userId", uid);
 		map.put("postStatus", "發布中");
@@ -162,7 +162,7 @@ public class PostDaoImpl implements PostDao {
 	// 查詢使用者發表文章(待審核)
 	public List<Post> findPostByUserNoAudit(int uid) {
 
-		String sql = "SELECT *  FROM post WHERE userId = :userId AND postStatus = :postStatus ";
+		String sql = "SELECT *  FROM post WHERE userId = :userId AND postStatus = :postStatus ORDER BY postId DESC";
 		Map<String, Object> map = new HashMap<>();
 		map.put("userId", uid);
 		map.put("postStatus", "待審核");
@@ -174,7 +174,7 @@ public class PostDaoImpl implements PostDao {
 	// 查詢使用者發表文章(未通過)
 	public List<Post> findPostByUserNoPass(int uid) {
 
-		String sql = "SELECT *  FROM post WHERE userId = :userId AND postStatus = :postStatus ";
+		String sql = "SELECT *  FROM post WHERE userId = :userId AND postStatus = :postStatus ORDER BY postId DESC ";
 		Map<String, Object> map = new HashMap<>();
 		map.put("userId", uid);
 		map.put("postStatus", "未通過");
@@ -284,7 +284,7 @@ public class PostDaoImpl implements PostDao {
 	// 搜尋收藏文章(使用者後台)
 	public List<Post> findFavoritePost(int uid) {
 
-		String sql = "SELECT * FROM post LEFT JOIN fav_post ON post.postId = fav_post.postId where fav_post.userId = :userId ";
+		String sql = "SELECT * FROM post LEFT JOIN fav_post ON post.postId = fav_post.postId where fav_post.userId = :userId ORDER BY post.postId DESC";
 		Map<String, Object> map = new HashMap<>();
 		map.put("userId", uid);
 
