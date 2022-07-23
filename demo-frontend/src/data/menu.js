@@ -922,11 +922,6 @@ export default {
       icon: "fa fa-book-quran",
       to: "Forum-index",
     },
-    {
-      name: "會員後台",
-      icon: "fa fa-suer",
-      to: "index",
-    },
     // {
     //   name: "商家",
     //   icon: "fa fa-shop",

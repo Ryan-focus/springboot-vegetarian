@@ -1,5 +1,6 @@
 <script setup>
 // 已經宣告但從未使用過的Value (請勿刪除)
+import { useTemplateStore } from "@/stores/template";
 import { computed, ref } from "vue";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -14,6 +15,9 @@ const urlParams = ref(
     search: null
   }
 );
+
+// Main store
+const store = useTemplateStore();
 //接收的資料ref
 const resData = ref();
 const productsTotal = ref();
@@ -509,4 +513,19 @@ function addToCart(productId) {
 
     </div>
   </div>
+  <!-- Footer -->
+  <footer id="page-footer" class="bg-body-light">
+    <div class="content py-5">
+      <div class="row fs-sm fw-medium">
+        <div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end"> 本網站僅作為 <i class="fa fa-heart text-danger"></i>
+          <a class="fw-semibold" href="https://www.ispan.com.tw/" target="_blank">資展國際</a>專題使用
+        </div>
+        <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start"><a class="fw-semibold"
+            href="https://github.com/Ryan-focus/springboot-vegetarian"> EEIT45 - 跨域JAVA班 - 第一組 </a> © {{
+                store.app.copyright
+            }}</div>
+      </div>
+    </div>
+  </footer>
+  <!-- END Footer -->
 </template>

@@ -136,10 +136,10 @@ function logout() {
                     <p class="mt-2 mb-0 fw-medium">
                       {{ admin.data.user.userName }}
                     </p>
-                    <p class="mb-0 text-muted fs-sm fw-medium">Web Developer</p>
+                    <p class="mb-0 text-muted fs-sm fw-medium">管理員</p>
                   </div>
                   <div class="p-2">
-                    <a class="dropdown-item d-flex align-items-center justify-content-between"
+                    <!-- <a class="dropdown-item d-flex align-items-center justify-content-between"
                       href="javascript:void(0)">
                       <span class="fs-sm fw-medium">Inbox</span>
                       <span class="badge rounded-pill bg-primary ms-2">3</span>
@@ -159,7 +159,7 @@ function logout() {
                     <RouterLink :to="{ name: 'auth-lock' }"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       <span class="fs-sm fw-medium">Lock Account</span>
-                    </RouterLink>
+                    </RouterLink> -->
                     <RouterLink @click="logout()" :to="{ name: '' }"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       <span class="fs-sm fw-medium">登出</span>
@@ -170,7 +170,7 @@ function logout() {
               <!-- END User Dropdown -->
 
               <!-- Notifications Dropdown -->
-              <div class="dropdown d-inline-block ms-2">
+              <!-- <div class="dropdown d-inline-block ms-2">
                 <button type="button" class="btn btn-sm btn-alt-secondary" id="page-header-notifications-dropdown"
                   data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fa fa-fw fa-bell"></i>
@@ -213,14 +213,14 @@ function logout() {
                     </a>
                   </div>
                 </div>
-              </div>
+              </div> -->
               <!-- END Notifications Dropdown -->
 
               <!-- Toggle Side Overlay -->
-              <button type="button" class="btn btn-sm btn-alt-secondary ms-2"
+              <!-- <button type="button" class="btn btn-sm btn-alt-secondary ms-2"
                 @click="store.sideOverlay({ mode: 'toggle' })">
                 <i class="fa fa-fw fa-list-ul fa-flip-horizontal"></i>
-              </button>
+              </button> -->
               <!-- END Toggle Side Overlay -->
             </slot>
           </div>

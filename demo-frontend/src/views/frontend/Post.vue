@@ -1,4 +1,5 @@
 <script setup>
+import { useTemplateStore } from "@/stores/template";
 // 已經宣告但從未使用過的Value (請勿刪除)
 import { ref } from "vue";
 import axios from "axios";
@@ -14,6 +15,9 @@ import {
   DatasetShow,
 } from "vue-dataset";
 
+
+// Main store
+const store = useTemplateStore();
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
 const urlParams = "warning";
@@ -139,46 +143,22 @@ function findPost(id) {
       <div class="col-md-12 mb-4">
         <BaseBackground>
           <div class="col-xs-4">
-            <button
-              type="button"
-              class="btn btn-alt-info"
-              @click.prevent="getAxios"
-            >
+            <button type="button" class="btn btn-alt-info" @click.prevent="getAxios">
               全部
             </button>
-            <button
-              type="button"
-              class="btn btn-alt-info"
-              @click.prevent="Category1()"
-            >
+            <button type="button" class="btn btn-alt-info" @click.prevent="Category1()">
               全素
             </button>
-            <button
-              type="button"
-              class="btn btn-alt-info"
-              @click.prevent="Category2()"
-            >
+            <button type="button" class="btn btn-alt-info" @click.prevent="Category2()">
               蛋素
             </button>
-            <button
-              type="button"
-              class="btn btn-alt-info"
-              @click.prevent="Category3()"
-            >
+            <button type="button" class="btn btn-alt-info" @click.prevent="Category3()">
               奶素
             </button>
-            <button
-              type="button"
-              class="btn btn-alt-info"
-              @click.prevent="Category4()"
-            >
+            <button type="button" class="btn btn-alt-info" @click.prevent="Category4()">
               蛋奶素
             </button>
-            <button
-              type="button"
-              class="btn btn-alt-info"
-              @click.prevent="Category5()"
-            >
+            <button type="button" class="btn btn-alt-info" @click.prevent="Category5()">
               植物五辛素
             </button>
           </div>
@@ -191,20 +171,12 @@ function findPost(id) {
       <div class="container">
         <!-- Card deck -->
         <div class="card-deck row">
-          <div
-            class="col-xs-12 col-sm-6 col-md-4"
-            v-for="item in resData"
-            :key="item.postId"
-          >
+          <div class="col-xs-12 col-sm-6 col-md-4" v-for="item in resData" :key="item.postId">
             <!-- Card -->
             <div class="card">
               <!--Card image-->
               <div class="view overlay">
-                <img :src="item.imgurl"
-                  class="card-img-top"             
-                  alt="Card image cap"
-                  width="400" height="300"
-                />
+                <img :src="item.imgurl" class="card-img-top" alt="Card image cap" width="400" height="300" />
                 <a href="#!">
                   <div class="mask rgba-white-slight"></div>
                 </a>
@@ -220,11 +192,7 @@ function findPost(id) {
                 <br />
                 <!-- Provides extra visual weight and identifies the primary action in a set of buttons -->
 
-                <button
-                  type="button"
-                  class="btn rounded-0 btn-outline-info"
-                  @click="findPost(item.postId)"
-                >
+                <button type="button" class="btn rounded-0 btn-outline-info" @click="findPost(item.postId)">
                   Read More
                 </button>
               </div>
@@ -234,9 +202,26 @@ function findPost(id) {
           </div>
         </div>
         <!-- Card deck -->
+
+      </div>
+
+    </div>
+
+  </div>
+  <!-- Footer -->
+  <footer id="page-footer" class="bg-body-light">
+    <div class="content py-5">
+      <div class="row fs-sm fw-medium">
+        <div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end"> 本網站僅作為 <i class="fa fa-heart text-danger"></i>
+          <a class="fw-semibold" href="https://www.ispan.com.tw/" target="_blank">資展國際</a>專題使用
+        </div>
+        <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start"><a class="fw-semibold"
+            href="https://github.com/Ryan-focus/springboot-vegetarian"> EEIT45 - 跨域JAVA班 - 第一組 </a> © {{
+                store.app.copyright
+            }}</div>
       </div>
     </div>
-  </div>
-
+  </footer>
+  <!-- END Footer -->
   <!-- END Page Content -->
 </template>

@@ -1,7 +1,8 @@
 <script setup>
 import { ref, } from "vue";
 import Swal from "sweetalert2";
-
+// 已經宣告但從未使用過的Value (請勿刪除)
+import { useTemplateStore } from "@/stores/template";
 import axios from "axios";
 import moment from 'moment';
 import { useRouter } from "vue-router";
@@ -17,6 +18,9 @@ let toast = Swal.mixin({
   },
 });
 
+
+// Main store
+const store = useTemplateStore();
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
 //接收的資料ref
@@ -339,6 +343,21 @@ function forumCategory4() {
       </div>
     </div>
   </div>
+  <!-- Footer -->
+  <footer id="page-footer" class="bg-body-light">
+    <div class="content py-5">
+      <div class="row fs-sm fw-medium">
+        <div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end"> 本網站僅作為 <i class="fa fa-heart text-danger"></i>
+          <a class="fw-semibold" href="https://www.ispan.com.tw/" target="_blank">資展國際</a>專題使用
+        </div>
+        <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start"><a class="fw-semibold"
+            href="https://github.com/Ryan-focus/springboot-vegetarian"> EEIT45 - 跨域JAVA班 - 第一組 </a> © {{
+                store.app.copyright
+            }}</div>
+      </div>
+    </div>
+  </footer>
+  <!-- END Footer -->
 </template>
 <style>
 .product-buyer-name {

@@ -8,37 +8,19 @@ const store = useTemplateStore();
 <template>
   <!-- Footer -->
   <footer id="page-footer">
-    <slot>
-      <div class="bg-body-light">
-        <div class="content py-3">
-          <div class="row fs-sm">
-            <!-- <div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end">
-              <slot name="content-right">
-                Crafted with
-                <i class="fa fa-heart text-danger"></i> by
-                <a
-                  class="fw-semibold"
-                  href="https://1.envato.market/ydb"
-                  target="_blank"
-                  >pixelcave</a
-                >
-              </slot>
-            </div> -->
-            <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start">
-              <slot name="content-left">
-                <a
-                  class="fw-semibold"
-                  href="https://1.envato.market/AVD6j"
-                  target="_blank"
-                  >{{ store.app.name + " " + store.app.version }}</a
-                >
-                &copy; {{ store.app.copyright }}
-              </slot>
-            </div>
+    <div class="bg-body-light">
+      <div class="content py-3">
+        <div class="row fs-sm">
+          <div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end"> 本網站僅作為 <i class="fa fa-heart text-danger"></i>
+            <a class="fw-semibold" href="https://www.ispan.com.tw/" target="_blank">資展國際</a>專題使用
           </div>
+          <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start"><a class="fw-semibold"
+              href="https://github.com/Ryan-focus/springboot-vegetarian"> EEIT45 - 跨域JAVA班 - 第一組 </a> © {{
+                  store.app.copyright
+              }}</div>
         </div>
       </div>
-    </slot>
+    </div>
   </footer>
   <!-- END Footer -->
 </template>

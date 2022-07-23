@@ -435,8 +435,8 @@ th.sort {
                 </div>
 
 
-                <div v-if="isRestuarantInfo == null" class="mb-3">
-                  <h2>該商家尚未填寫餐廳資料</h2>
+                <div v-if="isRestuarantInfo == null" class="mb-3 mt-5">
+                  <h3>該商家尚未填寫 <strong class="bg-warning">餐廳資料</strong></h3>
                 </div>
 
 
