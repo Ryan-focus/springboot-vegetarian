@@ -37,13 +37,18 @@ var isRestuarantInfo = ref();
 var businessId = ref();
 
 const getImg = function () {
-  /**if (business.data.buness.businessPic == null) {
-    business.data.buness.businessPic = "avatar";
-  }
-   */
+  // if (businessId.value.data.buness.businessPic == null) {
+  //   businessId.value.data.buness.businessPic = "avatar";
+  // }
+
   axios
     .get(`http://${url}/business`)
     .then((res) => {
+      for (let i = 0; i <= res.data.length - 1; i++) {
+        if (res.data[i].businessPic == null) {
+          res.data[i].businessPic = "avatar";
+        }
+      }
       resImg.value = res.data;
     })
     .catch((error) => {
@@ -58,6 +63,8 @@ const getAxios = function () {
     .then((res) => {
       //獲取伺服器的回傳資料
       resData.value = res.data.results;
+      // businessId.value = res.data.results.businessId;
+
     })
     .catch((error) => {
       console.log(error, "失敗");
