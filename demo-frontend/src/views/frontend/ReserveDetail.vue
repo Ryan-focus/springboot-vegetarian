@@ -174,7 +174,6 @@ async function sendData() {
           icon: "success"
         })
         loader.hide();
-        router.replace({ to: 'index' });
       }
     }).catch(err => {
       Swal.fire({
@@ -185,6 +184,7 @@ async function sendData() {
       console.log(err);
     }).finally(() => {
       loader.hide();
+      location.replace("http://localhost:8080/#/");
     });
 }
 
