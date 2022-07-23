@@ -486,6 +486,10 @@ function createRestaurant() {
 getReserveList();
 getPos();
 
+if (business.data.business.businessPic == null) {
+  business.data.business.businessPic = "avatar";
+}
+
 //CK Editors 一鍵輸入
 var content = `
 營業時間 <br>
@@ -528,7 +532,7 @@ function addform() {
           </RouterLink>
         </h2>
       </div>
-      <div class="mt-3 mt-md-0 ms-md-3 space-x-1">
+      <!-- <div class="mt-3 mt-md-0 ms-md-3 space-x-1">
         <a href="javascript:void(0)" class="btn btn-sm btn-alt-secondary space-x-1">
           <i class="fa fa-cogs opacity-50"></i>
           <span>設定</span>
@@ -555,7 +559,7 @@ function addform() {
             </a>
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
   </div>
   <!-- END Hero -->

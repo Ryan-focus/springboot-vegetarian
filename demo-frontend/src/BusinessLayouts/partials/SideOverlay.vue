@@ -50,6 +50,9 @@ onUnmounted(() => {
 });
 
 const business = JSON.parse(window.sessionStorage.getItem("access-business"));
+if (business.data.business.businessPic == null) {
+  business.data.business.businessPic = "avatar"
+}
 </script>
 
 <template>

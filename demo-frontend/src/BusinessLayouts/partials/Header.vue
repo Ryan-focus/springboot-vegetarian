@@ -5,7 +5,7 @@ import { useTemplateStore } from "@/stores/template";
 import Swal from "sweetalert2";
 
 // Grab example data
-import notifications from "@/data/notifications";
+// import notifications from "@/data/notifications";
 
 
 // Main store and Router
@@ -55,6 +55,9 @@ function logout() {
   }, 200);
 }
 const business = JSON.parse(window.sessionStorage.getItem("access-business"));
+if (business.data.business.businessPic == null) {
+  business.data.business.businessPic = "avatar"
+}
 </script>
 
 <template>
@@ -138,7 +141,7 @@ const business = JSON.parse(window.sessionStorage.getItem("access-business"));
                     </p>
                     <p class="mb-0 text-muted fs-sm fw-medium">{{ business.data.business.principalName }}</p>
                   </div>
-                  <div class="p-2">
+                  <!-- <div class="p-2">
                     <a class="dropdown-item d-flex align-items-center justify-content-between"
                       href="javascript:void(0)">
                       <span class="fs-sm fw-medium">Inbox</span>
@@ -154,12 +157,12 @@ const business = JSON.parse(window.sessionStorage.getItem("access-business"));
                       <span class="fs-sm fw-medium">Settings</span>
                     </a>
                   </div>
-                  <div role="separator" class="dropdown-divider m-0"></div>
+                  <div role="separator" class="dropdown-divider m-0"></div> -->
                   <div class="p-2">
-                    <RouterLink :to="{ name: 'auth-lock' }"
+                    <!-- <RouterLink :to="{ name: 'auth-lock' }"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       <span class="fs-sm fw-medium">Lock Account</span>
-                    </RouterLink>
+                    </RouterLink> -->
                     <RouterLink @click="logout()" :to="{ name: '' }"
                       class="dropdown-item d-flex align-items-center justify-content-between">
                       <span class="fs-sm fw-medium">登出</span>
@@ -170,7 +173,7 @@ const business = JSON.parse(window.sessionStorage.getItem("access-business"));
               <!-- END User Dropdown -->
 
               <!-- Notifications Dropdown -->
-              <div class="dropdown d-inline-block ms-2">
+              <!-- <div class="dropdown d-inline-block ms-2">
                 <button type="button" class="btn btn-sm btn-alt-secondary" id="page-header-notifications-dropdown"
                   data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                   <i class="fa fa-fw fa-bell"></i>
@@ -213,14 +216,14 @@ const business = JSON.parse(window.sessionStorage.getItem("access-business"));
                     </a>
                   </div>
                 </div>
-              </div>
+              </div> -->
               <!-- END Notifications Dropdown -->
 
               <!-- Toggle Side Overlay -->
-              <button type="button" class="btn btn-sm btn-alt-secondary ms-2"
+              <!-- <button type="button" class="btn btn-sm btn-alt-secondary ms-2"
                 @click="store.sideOverlay({ mode: 'toggle' })">
                 <i class="fa fa-fw fa-list-ul fa-flip-horizontal"></i>
-              </button>
+              </button> -->
               <!-- END Toggle Side Overlay -->
             </slot>
           </div>
