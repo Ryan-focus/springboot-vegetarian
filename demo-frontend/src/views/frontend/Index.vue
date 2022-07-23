@@ -3,10 +3,10 @@ import { useTemplateStore } from "@/stores/template";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
+
 // Main store
 const store = useTemplateStore();
 const router = useRouter();
-
 
 const urlParams = ref(
   {
@@ -55,6 +55,18 @@ function searchAddress(restaurantAddress) {
   });
 }
 
+// // Demo page loader
+// function previewPageLoader() {
+//   // Start page loader
+//   store.pageLoader({ mode: "on" });
+
+//   // Set a timeout for demo purposes
+//   setTimeout(() => {
+//     // Stop page loader
+//     store.pageLoader({ mode: "off" });
+//   }, 1000);
+// }
+// previewPageLoader();
 </script>
 
 

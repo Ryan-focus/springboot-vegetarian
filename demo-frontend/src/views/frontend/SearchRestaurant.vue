@@ -4,7 +4,12 @@ import { ref } from "vue";
 import { useRoute, useRouter } from 'vue-router';
 import axios from "axios";
 import { GoogleMap, Marker, MarkerCluster } from 'vue3-google-map'
+import { useLoading } from 'vue3-loading-overlay';
 
+const loader = useLoading({
+  loader: 'dots',
+  color: '#CCDBE2'
+});
 //預設傳值伺服器與[params]
 const url = "localhost:8088";
 // Main store
@@ -68,39 +73,67 @@ function calllatlng(address) {
         location.lat = res.data.results[0].geometry.location.lat;
         location.lng = res.data.results[0].geometry.location.lng;
         locations.value.push(location);
+
       }
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
 
 // 取得條件(類別)
 const searchCatagory = function (catagory) {
+  loader.show();
   if (catagory != null) {
     axios
       .get(`http://${url}/restaurantList?restaurantCategory=` + catagory)
       .then((res) => {
+
         console.log(res.data);
         dataArray.value = res.data.results;
         locations.value = [];
         for (let i = 0; i <= res.data.results.length - 1; i++) {
           calllatlng(res.data.results[i].restaurantAddress);
         }
+
+        setTimeout(() => {
+          loader.hide();
+        }, 300)
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setTimeout(() => {
+          loader.hide();
+        }, 300)
+        console.log(err);
+      });
   } else {
     axios
       .get(`http://${url}/restaurantList?restaurantCategory=${restaurantCategory}`)
       .then((res) => {
+        loader.hide;
         dataArray.value = res.data.results;
         for (let i = 0; i <= res.data.results.length - 1; i++) {
           calllatlng(res.data.results[i].restaurantAddress);
         }
+        setTimeout(() => {
+          loader.hide();
+        }, 300)
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        setTimeout(() => {
+          loader.hide();
+        }, 300)
+        console.log(err);
+
+      }
+      );
   }
 }
-searchCatagory();
+if (restaurantCategory != null) {
+  searchCatagory(restaurantCategory);
+}
+
 
 // 取得條件(素食種類)
 const searchType = function (type) {
@@ -116,9 +149,12 @@ const searchType = function (type) {
       }
 
     })
-    .catch((err) => console.log(err));
+    .catch((err) => {
+
+      console.log(err);
+    });
 }
-searchType();
+
 
 // 取得條件(地址)
 const searchAddress = function () {
@@ -133,7 +169,10 @@ const searchAddress = function () {
       }
 
     })
-    .catch((err) => console.log(err, "失敗"));
+    .catch((err) => {
+      console.log(err, "失敗");
+
+    });
 }
 
 // searchAddress();
@@ -151,10 +190,13 @@ const searchName = function () {
       }
 
     })
-    .catch((err) => console.log(err, "失敗"));
+    .catch((err) => {
+      console.log(err, "失敗");
+
+    });
 }
 
-searchName();
+
 
 
 //帶值restaurantNumber到detail頁
@@ -173,6 +215,7 @@ var businessID = [];
 
 //取得驗證後商家數據，有登入在餐廳內的數據 
 function getBusinessList() {
+
   axios.get(`http://${url}/business`)
     .then((res) => {
 
@@ -182,6 +225,7 @@ function getBusinessList() {
           businessID.push(res.data[i].businessId);
         }
       }
+
     })
 }
 
@@ -290,9 +334,11 @@ getBusinessList();
                   <h4 style="color:#3498DB">{{ item.restaurantScore }} ★</h4>
 
                   <!-- 營業時間 -->
-                  <p style="color: grey;size: 1cm;">
+                  <!-- <p style="color: grey;size: 1cm;">
                     {{ item.restaurantBusinessHours }}
-                  </p>
+                  </p> -->
+
+                  <div v-html="item.restaurantBusinessHours" display="inline"></div>
 
                   <!-- 收藏 -->
                   <!-- <button type="button" class="btn btn-outline-primary me-3">收藏</button> -->
