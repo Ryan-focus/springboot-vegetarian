@@ -5,6 +5,7 @@ import { useTemplateStore } from "@/stores/template";
 import Swal from "sweetalert2";
 import axios from "axios";
 
+
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
 import useVuelidate from "@vuelidate/core";
 import { required } from "@vuelidate/validators";
@@ -13,6 +14,7 @@ import { required } from "@vuelidate/validators";
 const store = useTemplateStore();
 const router = useRouter();
 const renovate = inject("reload");
+
 
 // Input state variables
 const state = reactive({
@@ -115,6 +117,10 @@ function showPassword() {
   }
 }
 
+function addform() {
+  state.account = 'carefuladdicted@gmail.com';
+  state.password = '10x65q76d53';
+}
 </script>
 
 <template>
@@ -212,6 +218,11 @@ function showPassword() {
                       <i class="fa fa-fw fa-plus me-1 opacity-50"></i>會員2
                     </button>
                   </div>
+                  <div class="col-md-6 col-xl-6">
+                    <button type="button" class="btn w-100 btn-alt-warning" @click="addform">
+                      <i class="fa fa-fw fa-store me-1 opacity-50"></i> 商家
+                    </button>
+                  </div>
                 </div>
               </form>
               <!-- END Sign In Form -->
@@ -232,6 +243,11 @@ function showPassword() {
   </div>
 </template>
 <script>
+import { useLoading } from "vue3-loading-overlay";
+const loader = useLoading({
+  loader: 'dots',
+  color: '#CCDBE2'
+});
 export default {
   data() {
     return {
@@ -259,11 +275,13 @@ export default {
         allowOutsideClick: true,
 
         preConfirm: async () => {
+          loader.show();
           return axios.post("http://localhost:8088/user/sendMail", user)
             .then(response => {
-              console.log(response.status)
-              console.log(response.data)
+              console.log(response.status);
+              console.log(response.data);
               if (response.status === 200) {
+                loader.hide();
                 Swal.fire(`密碼信已寄出,請前往${email}查看`, "༼ つ ◕_◕ ༽つ", "success");
                 return response.data;
               }
@@ -272,6 +290,7 @@ export default {
               return axios.post("http://localhost:8088/business/sendMail", user)
                 .then(response => {
                   if (response.status === 200) {
+                    loader.hide();
                     Swal.fire({
                       title: "密碼信已寄出",
                       text: `請前往${email}查看`,
@@ -283,7 +302,8 @@ export default {
                 })
             }).catch((error) => {
               if (error.response.status === 400) {
-                Swal.fire("請確認帳號輸入是否正確", "崩潰🐸", "error");
+                loader.hide();
+                Swal.fire("請確認帳號輸入是否正確", "／人◕ ‿崩‿ ◕人＼", "error");
               } else {
                 console.log(error.response.status)
                 console.log(error.response.data.error)

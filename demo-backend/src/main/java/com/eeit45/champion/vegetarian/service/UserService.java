@@ -44,6 +44,8 @@ public interface UserService {
 	
 	Double countPercentLogin();
 	
+	int updateStatus(String status, String email);
+	
 //	boolean isBanned(UserRequest userRequest);
 
 }

@@ -22,6 +22,7 @@ const Index = () => import("@/views/frontend/Index.vue");
 const Login = () => import("@/views/frontend/Login.vue");
 const UserRegister = () => import("@/views/frontend/Register.vue");
 const MemberArea = () => import("@/views/frontend/MemberArea.vue");
+const Verification = () => import("@/views/frontend/Verification.vue");
 
 //購物車
 const ShoppingCart = () => import("@/views/frontend/ShoppingCart.vue");
@@ -319,6 +320,11 @@ const routes = [
         path: "/user/register",
         name: "userRegister",
         component: UserRegister,
+      },
+      {
+        path: "/user/verification",
+        name: "Verification",
+        component: Verification,
       },
       {
         path: "/memberArea",
@@ -1361,7 +1367,8 @@ router.beforeEach((to, from) => {
     to.name !== "restaurant-details" &&
     to.name !== "restaurant-reserve" &&
     to.name !== "restaurant-reserve-check" &&
-    to.name !== "shoppingCart"
+    to.name !== "shoppingCart" &&
+    to.name !== "Verification"
   ) {
     return { name: "login" };
   }

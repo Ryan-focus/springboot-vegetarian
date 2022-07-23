@@ -4,7 +4,7 @@ import { useTemplateStore } from "@/stores/template";
 import { reactive, computed, ref, onBeforeUnmount } from "vue";
 import { useRouter } from "vue-router";
 import Swal from "sweetalert2";
-
+import { useLoading } from "vue3-loading-overlay";
 // Vuelidate, for more info and examples you can check out https://github.com/vuelidate/vuelidate
 import useVuelidate from "@vuelidate/core";
 import {
@@ -37,7 +37,10 @@ adult.value = reserveItemList[2];
 kid.value = reserveItemList[3];
 reserveDate.value = reserveItemList[4];
 
-
+const loader = useLoading({
+  loader: 'dots',
+  color: '#CCDBE2'
+});
 const reserveOrder = ref();
 const restaurantName = ref();
 const restaurantTel = ref();
@@ -49,6 +52,7 @@ const restaurantScore = ref();
 const imageUrl = ref();
 
 const reserveRestaurant = function () {
+  loader.show();
   axios
     .get(`http://localhost:8088/restaurants/${restaurantNumber.value}`)
     .then((res) => {
@@ -66,6 +70,7 @@ const reserveRestaurant = function () {
     .catch((error) => {
       console.log(error, "失敗");
     }).finally(() => {
+      loader.hide();
     });
 }
 reserveRestaurant();
@@ -150,7 +155,7 @@ function back() {
 }
 // On form submission
 async function sendData() {
-
+  loader.show();
   const reserveData = {
     reserveDate: dataFormat(new Date(reserveDate.value)),
     adult: adult.value,
@@ -160,7 +165,6 @@ async function sendData() {
     reservePhone: state.userphone,
     reserveEmail: state.email
   };
-
   return axios.post(`http://localhost:8088/${businessId.value}/reserves`, reserveData)
     .then(response => {
       if (response.status === 201) {
@@ -169,11 +173,19 @@ async function sendData() {
           timer: 1000,
           icon: "success"
         })
-        router.replace({ name: "index" });
+        loader.hide();
       }
     }).catch(err => {
-      console.log(err.response)
-    })
+      Swal.fire({
+        title: "您的訂位失敗，請再試一次",
+        timer: 1000,
+        icon: "error"
+      })
+      console.log(err);
+    }).finally(() => {
+      loader.hide();
+      location.replace("http://localhost:8080/#/");
+    });
 }
 
 </script>
@@ -508,18 +520,13 @@ async function sendData() {
   <footer id="page-footer" class="bg-body-light">
     <div class="content py-5">
       <div class="row fs-sm fw-medium">
-        <div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end">
-          <!-- Crafted with -->
-          <!-- <i class="fa fa-heart text-danger"></i> by -->
-          <!-- <a class="fw-semibold" href="https://1.envato.market/ydb"
-              ></a -->
+        <div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end"> 本網站僅作為 <i class="fa fa-heart text-danger"></i>
+          <a class="fw-semibold" href="https://www.ispan.com.tw/" target="_blank">資展國際</a>專題使用
         </div>
-        <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start">
-          <a class="fw-semibold" href="/">{{
-              store.app.name + " " + store.app.version
-          }}</a>
-          &copy; {{ store.app.copyright }}
-        </div>
+        <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start"><a class="fw-semibold"
+            href="https://github.com/Ryan-focus/springboot-vegetarian"> EEIT45 - 跨域JAVA班 - 第一組 </a> © {{
+                store.app.copyright
+            }}</div>
       </div>
     </div>
   </footer>

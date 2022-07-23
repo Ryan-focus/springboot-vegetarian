@@ -192,6 +192,7 @@ u {
 .box {
   display: flex;
 }
+
 .date1 {
   align-items: center;
   height: 2em;
@@ -215,124 +216,76 @@ u {
           <!-- Vertical Block Tabs Default Style -->
           <BaseBlock class="row g-0">
             <template #content>
-              <ul
-                class="nav nav-tabs nav-tabs-block flex-md-column col-md-2"
-                role="tablist"
-              >
+              <ul class="nav nav-tabs nav-tabs-block flex-md-column col-md-2" role="tablist">
                 <li class="nav-item d-md-flex flex-md-column">
-                  <button
-                    class="nav-link text-md-start active"
-                    id="btabs-vertical-home-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#btabs-vertical-home"
-                    role="tab"
-                    aria-controls="btabs-vertical-home"
-                    aria-selected="true"
-                  >
-                    <i
-                      class="
+                  <button class="nav-link text-md-start active" id="btabs-vertical-home-tab" data-bs-toggle="tab"
+                    data-bs-target="#btabs-vertical-home" role="tab" aria-controls="btabs-vertical-home"
+                    aria-selected="true">
+                    <i class="
                         bi bi-check2-circle
                         opacity-50
                         me-1
                         d-none d-sm-inline-block
-                      "
-                    ></i>
+                      "></i>
                     發布中文章
                   </button>
                 </li>
 
                 <li class="nav-item d-md-flex flex-md-column">
-                  <button
-                    class="nav-link text-md-start"
-                    id="btabs-vertical-noAudit-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#btabs-vertical-noAudit"
-                    role="tab"
-                    aria-controls="btabs-vertical-noAudit"
-                    aria-selected="false"
-                  >
-                    <i
-                      class="
+                  <button class="nav-link text-md-start" id="btabs-vertical-noAudit-tab" data-bs-toggle="tab"
+                    data-bs-target="#btabs-vertical-noAudit" role="tab" aria-controls="btabs-vertical-noAudit"
+                    aria-selected="false">
+                    <i class="
                         bi bi-clipboard-check
                         opacity-50
                         me-1
                         d-none d-sm-inline-block
-                      "
-                    ></i>
+                      "></i>
                     待審核文章
                   </button>
                 </li>
                 <li class="nav-item d-md-flex flex-md-column">
-                  <button
-                    class="nav-link text-md-start"
-                    id="btabs-vertical-noPass-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#btabs-vertical-noPass"
-                    role="tab"
-                    aria-controls="btabs-vertical-noPass"
-                    aria-selected="false"
-                  >
-                    <i
-                      class="
+                  <button class="nav-link text-md-start" id="btabs-vertical-noPass-tab" data-bs-toggle="tab"
+                    data-bs-target="#btabs-vertical-noPass" role="tab" aria-controls="btabs-vertical-noPass"
+                    aria-selected="false">
+                    <i class="
                         bi bi-x-circle
                         opacity-50
                         me-1
                         d-none d-sm-inline-block
-                      "
-                    ></i>
+                      "></i>
                     未通過文章
                   </button>
                 </li>
                 <li class="nav-item d-md-flex flex-md-column">
-                  <button
-                    class="nav-link text-md-start"
-                    id="btabs-vertical-profile-tab"
-                    data-bs-toggle="tab"
-                    data-bs-target="#btabs-vertical-profile"
-                    role="tab"
-                    aria-controls="btabs-vertical-profile"
-                    aria-selected="false"
-                  >
-                    <i
-                      class="
+                  <button class="nav-link text-md-start" id="btabs-vertical-profile-tab" data-bs-toggle="tab"
+                    data-bs-target="#btabs-vertical-profile" role="tab" aria-controls="btabs-vertical-profile"
+                    aria-selected="false">
+                    <i class="
                         bi bi-bookmark-star
                         opacity-50
                         me-1
                         d-none d-sm-inline-block
-                      "
-                    ></i>
+                      "></i>
                     我的收藏文章
                   </button>
                 </li>
               </ul>
               <div class="tab-content col-md-9">
                 <!-- 發布中文章資料 -->
-                <div
-                  class="block-content tab-pane active"
-                  id="btabs-vertical-home"
-                  role="tabpanel"
-                  aria-labelledby="btabs-vertical-home-tab"
-                >
+                <div class="block-content tab-pane active" id="btabs-vertical-home" role="tabpanel"
+                  aria-labelledby="btabs-vertical-home-tab">
                   <ul class="nav-items fs-sm">
                     <li v-for="item in resMyData" :key="item">
-                      <a
-                        class="d-flex py-2"
-                        :href="'/#/postContent/' + item.postId"
-                      >
-                        <div
-                          class="
+                      <a class="d-flex py-2" :href="'/#/postContent/' + item.postId">
+                        <div class="
                             flex-shrink-0
                             me-3
                             ms-2
                             overlay-container overlay-bottom
                             col-md-4
-                          "
-                        >
-                          <img
-                            :src="item.imgurl"
-                            class="img-thumbnail"
-                            alt="..."
-                          />
+                          ">
+                          <img :src="item.imgurl" class="img-thumbnail" alt="..." />
                         </div>
                         <div id="newPostSide" class="flex-grow-1 col-md-12">
                           <div class="newPostSide">
@@ -346,18 +299,10 @@ u {
                       </a>
                       <div class="box">
                         <div id="editButton" class="flex-grow-3 col-md-8">
-                          <button
-                            type="button"
-                            class="btn btn-sm btn-outline-success"
-                            @click="findPost(item.postId)"
-                          >
+                          <button type="button" class="btn btn-sm btn-outline-success" @click="findPost(item.postId)">
                             編輯文章
                           </button>
-                          <button
-                            type="button"
-                            class="btn btn-sm btn-outline-warning"
-                            @click="deletePost(item.postId)"
-                          >
+                          <button type="button" class="btn btn-sm btn-outline-warning" @click="deletePost(item.postId)">
                             刪除文章
                           </button>
                         </div>
@@ -371,32 +316,19 @@ u {
                   </ul>
                 </div>
                 <!-- 待審核文章資料 -->
-                <div
-                  class="block-content tab-pane"
-                  id="btabs-vertical-noAudit"
-                  role="tabpanel"
-                  aria-labelledby="btabs-vertical-noAudit-tab"
-                >
+                <div class="block-content tab-pane" id="btabs-vertical-noAudit" role="tabpanel"
+                  aria-labelledby="btabs-vertical-noAudit-tab">
                   <ul class="nav-items fs-sm">
                     <li v-for="item in resMyDataNoAudit" :key="item">
-                      <a
-                        class="d-flex py-2"
-                        :href="'/#/postContent/' + item.postId"
-                      >
-                        <div
-                          class="
+                      <a class="d-flex py-2" :href="'/#/postContent/' + item.postId">
+                        <div class="
                             flex-shrink-0
                             me-3
                             ms-2
                             overlay-container overlay-bottom
                             col-md-4
-                          "
-                        >
-                          <img
-                            :src="item.imgurl"
-                            class="img-thumbnail"
-                            alt="..."
-                          />
+                          ">
+                          <img :src="item.imgurl" class="img-thumbnail" alt="..." />
                         </div>
                         <div id="newPostSide" class="flex-grow-1 col-md-12">
                           <div class="newPostSide">
@@ -410,18 +342,10 @@ u {
                       </a>
                       <div class="box">
                         <div id="editButton" class="flex-grow-3 col-md-8">
-                          <button
-                            type="button"
-                            class="btn btn-sm btn-outline-success"
-                            @click="findPost(item.postId)"
-                          >
+                          <button type="button" class="btn btn-sm btn-outline-success" @click="findPost(item.postId)">
                             編輯文章
                           </button>
-                          <button
-                            type="button"
-                            class="btn btn-sm btn-outline-warning"
-                            @click="deletePost(item.postId)"
-                          >
+                          <button type="button" class="btn btn-sm btn-outline-warning" @click="deletePost(item.postId)">
                             刪除文章
                           </button>
                         </div>
@@ -435,32 +359,19 @@ u {
                   </ul>
                 </div>
                 <!-- 未通過文章資料 -->
-                <div
-                  class="block-content tab-pane"
-                  id="btabs-vertical-noPass"
-                  role="tabpanel"
-                  aria-labelledby="btabs-vertical-noPass-tab"
-                >
+                <div class="block-content tab-pane" id="btabs-vertical-noPass" role="tabpanel"
+                  aria-labelledby="btabs-vertical-noPass-tab">
                   <ul class="nav-items fs-sm">
                     <li v-for="item in resMyDataNoPass" :key="item">
-                      <a
-                        class="d-flex py-2"
-                        :href="'/#/postContent/' + item.postId"
-                      >
-                        <div
-                          class="
+                      <a class="d-flex py-2" :href="'/#/postContent/' + item.postId">
+                        <div class="
                             flex-shrink-0
                             me-3
                             ms-2
                             overlay-container overlay-bottom
                             col-md-4
-                          "
-                        >
-                          <img
-                            :src="item.imgurl"
-                            class="img-thumbnail"
-                            alt="..."
-                          />
+                          ">
+                          <img :src="item.imgurl" class="img-thumbnail" alt="..." />
                         </div>
                         <div id="newPostSide" class="flex-grow-1 col-md-12">
                           <div class="newPostSide">
@@ -474,18 +385,10 @@ u {
                       </a>
                       <div class="box">
                         <div id="editButton" class="flex-grow-3 col-md-8">
-                          <button
-                            type="button"
-                            class="btn btn-sm btn-outline-success"
-                            @click="findPost(item.postId)"
-                          >
+                          <button type="button" class="btn btn-sm btn-outline-success" @click="findPost(item.postId)">
                             編輯文章
                           </button>
-                          <button
-                            type="button"
-                            class="btn btn-sm btn-outline-warning"
-                            @click="deletePost(item.postId)"
-                          >
+                          <button type="button" class="btn btn-sm btn-outline-warning" @click="deletePost(item.postId)">
                             刪除文章
                           </button>
                         </div>
@@ -499,32 +402,19 @@ u {
                   </ul>
                 </div>
                 <!-- 收藏文章資料 -->
-                <div
-                  class="block-content tab-pane"
-                  id="btabs-vertical-profile"
-                  role="tabpanel"
-                  aria-labelledby="btabs-vertical-profile-tab"
-                >
+                <div class="block-content tab-pane" id="btabs-vertical-profile" role="tabpanel"
+                  aria-labelledby="btabs-vertical-profile-tab">
                   <ul class="nav-items fs-sm">
                     <li v-for="item in resData" :key="item.postId">
-                      <a
-                        class="d-flex py-2"
-                        :href="'/#/postContent/' + item.postId"
-                      >
-                        <div
-                          class="
+                      <a class="d-flex py-2" :href="'/#/postContent/' + item.postId">
+                        <div class="
                             flex-shrink-0
                             me-3
                             ms-2
                             overlay-container overlay-bottom
                             col-md-4
-                          "
-                        >
-                          <img
-                            :src="item.imgurl"
-                            class="img-thumbnail"
-                            alt="..."
-                          />
+                          ">
+                          <img :src="item.imgurl" class="img-thumbnail" alt="..." />
                         </div>
                         <div id="newPostSide" class="flex-grow-1 col-md-12">
                           <div class="newPostSide">

@@ -14,11 +14,12 @@ import router from "./router";
 import BaseBlock from "@/components/BaseBlock.vue";
 import BaseBackground from "@/components/BaseBackground.vue";
 import BasePageHeading from "@/components/BasePageHeading.vue";
+import LoadingVue from "@/components/LoadingVue.vue";
 
 //全域註冊 Loader
 // 讀取動畫套件
 // Import component
-import VueLoading from "vue3-loading-overlay";
+import { useLoading } from "vue3-loading-overlay";
 
 //import Vue- datePicker
 import Datepicker from "@vuepic/vue-datepicker";
@@ -133,7 +134,7 @@ const app = createApp(App);
 //Axios
 // axios.defaults.baseURL = config.api.url
 axios.defaults.withCredentials = false;
-axios.defaults.timeout = 5000;
+axios.defaults.timeout = 10000;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 // VueLoading.__defaults;
@@ -142,6 +143,7 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 app.component("BaseBlock", BaseBlock);
 app.component("BaseBackground", BaseBackground);
 app.component("BasePageHeading", BasePageHeading);
+app.component("LoadingVue", LoadingVue);
 
 // Register global directives
 app.directive("click-ripple", clickRipple);
@@ -149,7 +151,7 @@ app.directive("click-ripple", clickRipple);
 app.component("Datepicker", Datepicker);
 
 //using Loading
-app.component("Loading", VueLoading);
+app.use(useLoading);
 
 //Using Google Maps
 app.component("GoogleMap", GoogleMap);

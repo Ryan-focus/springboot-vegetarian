@@ -23,8 +23,8 @@ const state = reactive({
   principalPhone: null,
   businessName: null,
   district: null,
-  businessPic: null,
-  // terms: null,
+  // businessPic: null,
+  terms: null,
 });
 
 // Validation rules
@@ -123,6 +123,17 @@ async function onSubmit() {
     });
   //  router.push({ name: "backend-pages-auth" });
 }
+
+function addform() {
+  state.email = 'carefuladdicted@gmail.com';
+  state.password = '10x65q76d53';
+  state.confirmPassword = '10x65q76d53';
+  state.principalName = '陳永盛';
+  state.principalPhone = "0988432167";
+  state.businessName = "小心上癮商店";
+  state.district = "臺北市";
+  state.terms = true;
+}
 </script>
 
 <template>
@@ -136,7 +147,7 @@ async function onSubmit() {
     ">
     <div class="content">
       <div class="row justify-content-center push">
-        <div class="col-md-8 col-lg-6 col-xl-4">
+        <div class="col-md-8 col-lg-6 col-xl-5">
           <!-- Sign Up Block -->
           <BaseBlock title="愛蔬網-商家註冊" class="mb-0">
             <template #options>
@@ -244,6 +255,11 @@ async function onSubmit() {
                     <div class="col-md-6 col-xl-5">
                       <button type="submit" class="btn w-100 btn-alt-success">
                         <i class="fa fa-fw fa-plus me-1 opacity-50"></i>註冊
+                      </button>
+                    </div>
+                    <div class="col-md-6 col-xl-7">
+                      <button type="button" class="btn w-100 btn-alt-warning" @click="addform">
+                        <i class="fa fa-fw fa-fill me-1 opacity-50"></i> 一鍵輸入
                       </button>
                     </div>
                   </div>

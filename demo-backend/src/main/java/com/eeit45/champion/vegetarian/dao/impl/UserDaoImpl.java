@@ -121,7 +121,7 @@ public class UserDaoImpl implements UserDao {
         //springsecurity 的 BCryptPasswordEncoder 加密, 解密(回傳boolean): bcryptPasswordEncoder.matches("使用者輸入密碼",存入資料庫密碼)
         map.put("password", new BCryptPasswordEncoder().encode(userRequest.getPassword()));
         map.put("userName", userRequest.getUserName());
-        map.put("status", "正常");
+        map.put("status", "禁用");
         map.put("userPic", userRequest.getUserPic());
         
         //日期處理
@@ -356,6 +356,19 @@ public class UserDaoImpl implements UserDao {
 		
         return count;
 		
+	}
+
+	@Override
+	public int updateStatus(String status, String email) {
+
+		String sql = "UPDATE vegandb.user SET status= :status WHERE email= :email";
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("status", status);
+		map.put("email", email);
+		
+		return namedParameterJdbcTemplate.update(sql, map);
+	
 	}
 
 

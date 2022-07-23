@@ -3,10 +3,10 @@ import { useTemplateStore } from "@/stores/template";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
 
+
 // Main store
 const store = useTemplateStore();
 const router = useRouter();
-
 
 const urlParams = ref(
   {
@@ -55,6 +55,18 @@ function searchAddress(restaurantAddress) {
   });
 }
 
+// // Demo page loader
+// function previewPageLoader() {
+//   // Start page loader
+//   store.pageLoader({ mode: "on" });
+
+//   // Set a timeout for demo purposes
+//   setTimeout(() => {
+//     // Stop page loader
+//     store.pageLoader({ mode: "off" });
+//   }, 1000);
+// }
+// previewPageLoader();
 </script>
 
 
@@ -63,16 +75,17 @@ function searchAddress(restaurantAddress) {
   <div>
     <!-- Hero -->
     <div id="one-vue-hero" class="bg-body-extra-light">
-      <BaseBackground image="/assets/media/vegan/index-bg.jpg" inner-class="bg-black-25">
+      <BaseBackground image="/assets/media/vegan/index-bg.jpg" inner-class="bg-black-50">
         <div class="content content-full text-center">
-          <div class="my-1"></div>
-          <h1 class="h1 text-white mb-3"><b>想知道哪裡有素食 ?</b></h1>
+          <!-- <div class="my-1"></div> -->
+          <h1 class="h1 text-white mb-3" style="margin-top:3.5cm"><b>想知道哪裡有素食 ?</b></h1>
           <h3>
-            <span class="text-white-75"><b>從超過 50 家精選餐廳中，探索您不知道的熱門素食。</b></span>
+            <span class="text-white-75" style="margin-top:1cm"><b>從超過 50
+                家精選餐廳中，探索您不知道的熱門素食。</b></span>
           </h3>
         </div>
         <form @submit.prevent>
-          <div class="row">
+          <div class=" row">
             <div class="col-md-5 offset-md-3 content content-full text-center">
               <div class="mb-2">
                 <div>
@@ -107,26 +120,14 @@ function searchAddress(restaurantAddress) {
             </div>
           </div>
         </form>
-        <div class="row">
-          <div class="col-md-5 offset-md-4 justify-content-center in row">
-            <div class="col-lg-4 mb-3 me-auto">
-              <a href="">
-                <img src="https://ifoodie.tw/assets/images/app_store_badge.png" alt="" class="img-fluid" /></a>
-            </div>
-            <div class="col-lg-4 mb-3 me-auto">
-              <a href=""><img src="https://play.google.com/intl/en_us/badges/images/apps/zh-tw-play-badge.png" alt=""
-                  class="img-fluid" /></a>
-            </div>
-          </div>
-        </div>
       </BaseBackground>
     </div>
     <!-- END Hero -->
 
     <!-- Hero After -->
-    <div id="one-vue-hero-after" class="bg-body-light">
+    <!-- <div id="one-vue-hero-after" class="bg-body-light">
       <div class="content content-full"></div>
-    </div>
+    </div> -->
     <!-- END Hero After -->
 
 
@@ -134,18 +135,13 @@ function searchAddress(restaurantAddress) {
     <footer id="page-footer" class="bg-body-light">
       <div class="content py-5">
         <div class="row fs-sm fw-medium">
-          <div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end">
-            <!-- Crafted with -->
-            <!-- <i class="fa fa-heart text-danger"></i> by -->
-            <!-- <a class="fw-semibold" href="https://1.envato.market/ydb"
-              ></a -->
+          <div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end"> 本網站僅作為 <i class="fa fa-heart text-danger"></i>
+            <a class="fw-semibold" href="https://www.ispan.com.tw/" target="_blank">資展國際</a>專題使用
           </div>
-          <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start">
-            <a class="fw-semibold" href="/">{{
-                store.app.name + " " + store.app.version
-            }}</a>
-            &copy; {{ store.app.copyright }}
-          </div>
+          <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start"><a class="fw-semibold"
+              href="https://github.com/Ryan-focus/springboot-vegetarian"> EEIT45 - 跨域JAVA班 - 第一組 </a> © {{
+                  store.app.copyright
+              }}</div>
         </div>
       </div>
     </footer>

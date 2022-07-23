@@ -3,6 +3,8 @@
 import { useTemplateStore } from "@/stores/template";
 // eslint-disable-next-line no-unused-vars
 import { reactive, ref, onMounted } from "vue";
+
+import { useLoading } from "vue3-loading-overlay";
 //using Axios 
 import axios from "axios";
 // Vue Star Rating, for more info and examples you can check out https://github.com/craigh411/vue-StarRating
@@ -13,6 +15,10 @@ import { useRoute } from "vue-router";
 import Datepicker from '@vuepic/vue-datepicker';
 import router from "../../router";
 //接值
+const loader = useLoading({
+  loader: 'dots',
+  color: '#CCDBE2'
+});
 const route = useRoute();
 const restaurantNumber = route.params.restaurantId;
 const businessId = route.params.businessId;
@@ -28,7 +34,7 @@ const restaurantScore = ref();
 const imageUrl = ref();
 
 const reserveRestaurant = function () {
-
+  loader.show();
   axios
     .get(`http://localhost:8088/restaurants/${restaurantNumber}`)
     .then((res) => {
@@ -46,7 +52,7 @@ const reserveRestaurant = function () {
     .catch((error) => {
       console.log(error, "失敗");
     }).finally(() => {
-
+      loader.hide();
     });
 }
 reserveRestaurant();
@@ -85,6 +91,7 @@ const data = (sessionStorage.getItem('reserve')) ? JSON.parse(sessionStorage.get
 };
 
 function sendData() {
+  sessionStorage.removeItem("reserve");
   data.reserveItemList.push(restaurantNumber);
   data.reserveItemList.push(businessId);
   data.reserveItemList.push(adult.value);
@@ -170,9 +177,8 @@ function sendData() {
       <div class="row justify-content-left">
         <div class="col-sm-8">
           <!-- Story -->
-          <article class="story">
-            {{ restaurantBusinessHours }}
-          </article>
+
+          <div class="story" v-html="restaurantBusinessHours"></div>
           <!-- END Story -->
 
         </div>
@@ -357,18 +363,13 @@ function sendData() {
   <footer id="page-footer" class="bg-body-light">
     <div class="content py-5">
       <div class="row fs-sm fw-medium">
-        <div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end">
-          <!-- Crafted with -->
-          <!-- <i class="fa fa-heart text-danger"></i> by -->
-          <!-- <a class="fw-semibold" href="https://1.envato.market/ydb"
-              ></a -->
+        <div class="col-sm-6 order-sm-2 py-1 text-center text-sm-end"> 本網站僅作為 <i class="fa fa-heart text-danger"></i>
+          <a class="fw-semibold" href="https://www.ispan.com.tw/" target="_blank">資展國際</a>專題使用
         </div>
-        <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start">
-          <a class="fw-semibold" href="/">{{
-              store.app.name + " " + store.app.version
-          }}</a>
-          &copy; {{ store.app.copyright }}
-        </div>
+        <div class="col-sm-6 order-sm-1 py-1 text-center text-sm-start"><a class="fw-semibold"
+            href="https://github.com/Ryan-focus/springboot-vegetarian"> EEIT45 - 跨域JAVA班 - 第一組 </a> © {{
+                store.app.copyright
+            }}</div>
       </div>
     </div>
   </footer>

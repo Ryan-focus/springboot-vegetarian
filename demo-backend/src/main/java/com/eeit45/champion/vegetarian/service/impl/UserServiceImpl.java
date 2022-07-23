@@ -53,7 +53,19 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public Integer createUser(UserRequest userRequest) {
-		return userDao.createUser(userRequest);
+		
+		int result = userDao.createUser(userRequest);
+		
+		if(result != 0) {
+			SimpleMailMessage sm = new SimpleMailMessage();
+			sm.setFrom("eeit45no1@gmail.com");		//發送者
+			sm.setTo(userRequest.getEmail());	//收件者
+			sm.setSubject("愛蔬網帳號驗證信");	//主旨
+			sm.setText("您好，會員" + userRequest.getUserName() + "\n\n請點選下方連結驗證email" + "\n\nhttp://localhost:8080/#/user/verification");	//內文
+			javaMailSender.send(sm);
+		}
+		
+		return result;
 	}
 
 	@Override
@@ -165,6 +177,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Double countPercentLogin() {
 		return userDao.countPercentLogin();
+	}
+
+	@Override
+	public int updateStatus(String status, String email) {
+		return userDao.updateStatus(status, email);
 	}
 
 }
