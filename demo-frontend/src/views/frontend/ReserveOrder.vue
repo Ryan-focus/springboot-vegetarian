@@ -3,6 +3,8 @@
 import { useTemplateStore } from "@/stores/template";
 // eslint-disable-next-line no-unused-vars
 import { reactive, ref, onMounted } from "vue";
+
+import { useLoading } from "vue3-loading-overlay";
 //using Axios 
 import axios from "axios";
 // Vue Star Rating, for more info and examples you can check out https://github.com/craigh411/vue-StarRating
@@ -13,6 +15,10 @@ import { useRoute } from "vue-router";
 import Datepicker from '@vuepic/vue-datepicker';
 import router from "../../router";
 //接值
+const loader = useLoading({
+  loader: 'dots',
+  color: '#CCDBE2'
+});
 const route = useRoute();
 const restaurantNumber = route.params.restaurantId;
 const businessId = route.params.businessId;
@@ -28,7 +34,7 @@ const restaurantScore = ref();
 const imageUrl = ref();
 
 const reserveRestaurant = function () {
-
+  loader.show();
   axios
     .get(`http://localhost:8088/restaurants/${restaurantNumber}`)
     .then((res) => {
@@ -46,7 +52,7 @@ const reserveRestaurant = function () {
     .catch((error) => {
       console.log(error, "失敗");
     }).finally(() => {
-
+      loader.hide();
     });
 }
 reserveRestaurant();
@@ -85,6 +91,7 @@ const data = (sessionStorage.getItem('reserve')) ? JSON.parse(sessionStorage.get
 };
 
 function sendData() {
+  sessionStorage.removeItem("reserve");
   data.reserveItemList.push(restaurantNumber);
   data.reserveItemList.push(businessId);
   data.reserveItemList.push(adult.value);
