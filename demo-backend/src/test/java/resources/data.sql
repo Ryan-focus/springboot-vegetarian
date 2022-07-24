@@ -234,16 +234,7 @@ INSERT INTO post (title, postedDate, postedText, imgurl,postStatus,postCategory,
 -- fav_post收藏文章
 INSERT INTO fav_post (postId,favDate,userId) VALUES
 (3,now(),2),
-(3,now(),3),
-(3,now(),4),
-(3,now(),5),
-(7,now(),2),
-(7,now(),6),
-(7,now(),8),
-(8,now(),2),
-(8,now(),3),
-(4,now(),2),
-(5,now(),2);
+(8,now(),2);
 
 
 -- like_post按讚文章
