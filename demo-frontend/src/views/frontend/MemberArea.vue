@@ -88,7 +88,7 @@ async function onSubmit() {
         .then(function (response) {
             if (response.status === 200) {
                 hideBackdrop();
-                Swal.fire("修改成功,請重新登入!", "⁽⁽٩(๑˃̶͈̀ ᗨ ˂̶͈́)۶⁾⁾", "success");
+                Swal.fire("密碼修改成功,請重新登入!", "⁽⁽٩(๑˃̶͈̀ ᗨ ˂̶͈́)۶⁾⁾", "success");
                 logOut();
                 renovate();
             }
@@ -181,9 +181,13 @@ const getUser = () => axios.get(`http://localhost:8088/users/${uid}`)
 getUser();
 
 function add() {
-    state.password = '10Sec8763';
+    // state.password = '10Sec8763';
     state.newPassword = 'Cccc8763';
     state.confirmNewPassword = 'Cccc8763';
+}
+
+function addName() {
+    state.name = '聖誕狐';
 }
 
 // function clear() {
@@ -318,10 +322,10 @@ body.modal-open {
     padding-right: 0 !important;
 }
 
-.modal-backdrop {
+/* .modal-backdrop {
     opacity: 0 !important;
     filter: alpha(opacity=0) !important;
-}
+} */
 
 /* body {
     overflow: hidden;
@@ -375,7 +379,7 @@ a {
             <div class="container py-5 h-100">
                 <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col col-lg-6 mb-4 mb-lg-0">
-                        <div class="card mb-3" style="border-radius: .5rem;">
+                        <div class="card mb-3" style="border-radius: .5rem; margin-top: -20px;">
                             <div class="row g-0">
                                 <div class="col-md-4 gradient-custom text-center text-white"
                                     style="border-top-left-radius: .5rem; border-bottom-left-radius: .5rem;">
@@ -446,7 +450,7 @@ a {
             <div class="modal-content">
                 <!-- Header -->
                 <div class="modal-header">
-                    <h3>圖片上傳</h3>
+                    <h3 style="margin-top:10px">上傳圖片</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <!-- Body -->
@@ -456,7 +460,9 @@ a {
                         <input type="file" accept="image/*" @change="uploadImage" id="file">
                         <img :src="previewImage" />
                     </div>
-                    <button type="button" class="btn btn-info" @click="submitFile" data-bs-dismiss="modal"> 上傳 </button>
+                    <button type="button" class="btn btn-info" @click="submitFile" data-bs-dismiss="modal">
+                        <i class="fa fa-fw fa-upload me-1 opacity-50"></i>
+                        上傳 </button>
                 </div>
             </div>
         </div>
@@ -466,28 +472,36 @@ a {
             <div class="modal-content">
                 <!-- Header -->
                 <div class="modal-header">
-                    <h3>名稱修改</h3>
+                    <h3 style="margin-top:30px">修改名稱</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <!-- Body -->
                 <div class="modal-body">
                     <!-- 登入表單 -->
                     <form @submit.prevent="Submit">
-                        <div class="py-3">
+                        <div class="py-3" style="margin-top: 30px;">
                             <div class="mb-4">
                                 <input type="text" class="form-control form-control-lg form-control-alt"
                                     placeholder="使用者名稱" :class="{
                                         'is-invalid': $v.name.$errors.length,
                                     }" v-model="state.name" @blur="$v.name.$touch" />
                                 <div v-if="$v.name.$errors.length" class="invalid-feedback animated fadeIn">
-                                    請輸入使用者名稱
+                                    請輸入名稱
                                 </div>
                             </div>
                         </div>
                         <div class="row mb-4">
                             <div class="col-md-6 col-xl-5">
-                                <button type="submit" class="btn w-100 btn-alt-success">
-                                    <i class="fa fa-fw fa-plus me-1 opacity-50"></i>確認修改
+                                <button type="submit" class="btn w-100 btn-primary">
+                                    <i class="fa fa-fw fa-pen-to-square me-1 opacity-50"></i>
+                                    修改
+                                </button>
+                            </div>
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                            <div class="col-md-6 col-xl-5">
+                                <button type="button" class="btn w-100 btn-success" @click="addName">
+                                    <i class="far fa-fw fa-keyboard me-1 opacity-50"></i>
+                                    一鍵
                                 </button>
                             </div>
                         </div>
@@ -501,14 +515,14 @@ a {
             <div class="modal-content">
                 <!-- Header -->
                 <div class="modal-header">
-                    <h3>密碼修改</h3>
+                    <h3 style="margin-top:25px">修改密碼</h3>
                     <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                 </div>
                 <!-- Body -->
                 <div class="modal-body">
                     <!-- 登入表單 -->
                     <form @submit.prevent="onSubmit">
-                        <div class="py-3">
+                        <div class="py-3" style="margin-top: 40px;">
                             <div class="mb-4">
                                 <input type="password" class="form-control form-control-lg form-control-alt"
                                     id="password" name="signup-password" placeholder="密碼" :class="{
@@ -540,7 +554,7 @@ a {
                                     <input type="checkbox" onclick="showPassword()">顯示密碼
                                 </div> -->
                                 <br>
-                                <div class="mb-4">
+                                <div class="mb-4" style="text-align: left;">
                                     <!-- <div class="form-check"> -->
                                     <input class="form-check-input" type="checkbox"
                                         @click="showPassword()">&nbsp;&nbsp;顯示密碼
@@ -550,15 +564,16 @@ a {
                         </div>
                         <div class="row mb-4">
                             <div class="col-md-6 col-xl-5">
-                                <button type="submit" class="btn w-100 btn-alt-success">
-                                    <i class="fa fa-fw fa-plus me-1 opacity-50"></i>確認修改
+                                <button type="submit" class="btn w-100 btn-primary">
+                                    <i class="fa fa-fw fa-pen-to-square me-1 opacity-50"></i>
+                                    修改
                                 </button>
                             </div>
-                        </div>
-                        <div class="row mb-4">
+                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                             <div class="col-md-6 col-xl-5">
-                                <button type="button" class="btn w-100 btn-alt-success" @click="add">
-                                    <i class="fa fa-fw fa-plus me-1 opacity-50"></i>一鍵
+                                <button type="button" class="btn w-100 btn-success" @click="add">
+                                    <i class="far fa-fw fa-keyboard me-1 opacity-50"></i>
+                                    一鍵
                                 </button>
                             </div>
                         </div>

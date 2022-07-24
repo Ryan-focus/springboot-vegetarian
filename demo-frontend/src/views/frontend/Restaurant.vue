@@ -324,68 +324,104 @@ export default {
                     <h3 class="text-primary">猜你可能喜歡</h3>
                     <div>
                         <BaseBlock>
-
                             <div class="card-group">
-
-                                <div class="row row-cols-3 row-cols-md-1 g-1" v-for="item in resData"
-                                    :key="item.restaurantNumber">
+                                <div class="row row-cols-3 row-cols-md-1 g-1">
 
                                     <div class="card mb-3" style="max-width: 400px;">
                                         <div class="row g-0">
                                             <div class="col-md-6">
-                                                <img class="img-fluid rounded" :src="`${item.imageUrl}`" alt=""
-                                                    width="300">
+                                                <img class="img-fluid rounded" src="https://i.imgur.com/W2UMR9o.jpg"
+                                                    alt="" width="300">
                                             </div>
                                             <div class="col-md-6">
                                                 <div class="card-body">
                                                     <div class="d-flex justify-content-between">
-                                                        <h5 class="card-title text-dark">{{ item.restaurantName }}</h5>
+                                                        <h5 class="card-title text-dark">九蓮素食</h5>
 
                                                         <p class="h6" style="color:#3498DB">
-                                                            {{ item.restaurantScore }} ★
+                                                            4.5 ★
                                                         </p>
 
                                                     </div>
                                                     <!-- 營業時間 -->
                                                     <p style="color: grey;size: 1cm;">
-                                                        {{ item.restaurantBusinessHours }}
+                                                        週一到週日 11:00–13:30 16:30–19:30
+                                                        週三休息
                                                     </p>
                                                     <!-- 詳細 -->
-                                                    <button type="button" class="btn btn-outline-primary me-3"
-                                                        @click.prevent="restaurantDetail(item.restaurantNumber)">詳細</button>
+                                                    <button type="button"
+                                                        class="btn btn-outline-primary me-3">詳細</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
 
+                                    <div class="card mb-3" style="max-width: 400px;">
+                                        <div class="row g-0">
+                                            <div class="col-md-6">
+                                                <img class="img-fluid rounded" src="https://i.imgur.com/8QEAg9s.jpg"
+                                                    alt="" width="300">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between">
+                                                        <h5 class="card-title text-dark">可米素食餐館</h5>
 
+                                                        <p class="h6" style="color:#3498DB">
+                                                            4.2 ★
+                                                        </p>
+
+                                                    </div>
+                                                    <!-- 營業時間 -->
+                                                    <p style="color: grey;size: 1cm;">
+                                                        週二到週日 11:00 - 20:00
+                                                        週一休息
+                                                    </p>
+                                                    <!-- 詳細 -->
+                                                    <button type="button"
+                                                        class="btn btn-outline-primary me-3">詳細</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="card mb-3" style="max-width: 400px;">
+                                        <div class="row g-0">
+                                            <div class="col-md-6">
+                                                <img class="img-fluid rounded" src="https://i.imgur.com/2TmF7n8.jpg"
+                                                    alt="" width="300">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between">
+                                                        <h5 class="card-title text-dark">普門茶品</h5>
+
+                                                        <p class="h6" style="color:#3498DB">
+                                                            4.3 ★
+                                                        </p>
+
+                                                    </div>
+                                                    <!-- 營業時間 -->
+                                                    <p style="color: grey;size: 1cm;">
+                                                        週二到週日 11:30–14:00 17:30–20:00
+                                                        週一休息
+                                                    </p>
+                                                    <!-- 詳細 -->
+                                                    <button type="button"
+                                                        class="btn btn-outline-primary me-3">詳細</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </div>
-
-
-
-
                             </div>
-
-
-
-
-
-
                         </BaseBlock>
-
                     </div>
                 </div>
-
             </div>
-
         </div>
     </div>
-
-    <!-- 測試 -->
-    <!-- 測試 -->
-
-
 
 
     <!-- Footer -->

@@ -169,6 +169,11 @@ getAxios();
 //在這邊去設定Table :th的欄位名稱
 const cols = reactive([
   {
+    name: "編號",
+    field: "productId",
+    sort: "",
+  },
+  {
     name: "產品名稱",
     field: "productName",
     sort: "",
@@ -419,7 +424,7 @@ th.sort {
               <table class="table table-bordered table-hover table-vcenter">
                 <thead>
                   <tr>
-                    <th scope="col" class="text-center">編號</th>
+
                     <th v-for="(th, index) in cols" :key="th.field"
                       :class="['sort', th.sort] && `d-none d-sm-table-cell`" @click="onSort($event, index)">
                       {{ th.name }} <i class="gg-select float-end"></i>
@@ -430,7 +435,7 @@ th.sort {
                 <DatasetItem tag="tbody" class="fs-sm">
                   <template #default="{ row }">
                     <tr>
-                      <th scope="row">{{ row.productId }}</th>
+                      <th scope="row" style="min-width: 80px">{{ row.productId }}</th>
                       <td class="text-center" style="min-width: 150px">
                         {{ row.productName }}
                       </td>

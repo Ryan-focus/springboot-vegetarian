@@ -23,7 +23,7 @@ import axios from "axios";
 // Chart.defaults.plugins.legend.labels.boxWidth = 10;
 
 // Helper variables
-const orderSearch = ref(false);
+// const orderSearch = ref(false);
 
 // Chart Earnings data
 // const earningsData = reactive({
@@ -397,7 +397,8 @@ getBusiness();
             <div class="bg-body-light rounded-bottom">
               <RouterLink :to="{ name: 'backend-restaurants-restaurant-info' }"
                 class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between">
-                <span>查看全部餐廳</span><i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i></RouterLink>
+                <span>查看全部餐廳</span><i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
+              </RouterLink>
             </div>
           </template>
         </BaseBlock>
@@ -421,7 +422,8 @@ getBusiness();
             <div class="bg-body-light rounded-bottom">
               <RouterLink :to="{ name: 'backend-cart-product-info' }"
                 class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between">
-                <span>查看全部商品</span><i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i></RouterLink>
+                <span>查看全部商品</span><i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
+              </RouterLink>
             </div>
           </template>
         </BaseBlock>
@@ -445,38 +447,14 @@ getBusiness();
             <div class="bg-body-light rounded-bottom">
               <RouterLink :to="{ name: 'backend-reserve-info' }"
                 class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between">
-                <span>查看全部合作商家</span><i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i></RouterLink>
+                <span>查看全部合作商家</span><i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
+              </RouterLink>
             </div>
           </template>
         </BaseBlock>
         <!-- END Messages -->
       </div>
-      <div class="col-sm-6 col-xxl-3">
-        <!-- Conversion Rate -->
-        <BaseBlock class="d-flex flex-column h-100 mb-0">
-          <template #content>
-            <div class="block-content block-content-full flex-grow-1 d-flex justify-content-between align-items-center">
-              <dl class="mb-0">
-                <dt class="fs-3 fw-bold">15.99%</dt>
-                <dd class="fs-sm fw-medium fs-sm fw-medium text-muted mb-0">
-                  消費轉換率
-                </dd>
-              </dl>
-              <div class="item item-rounded-lg bg-body-light">
-                <i class="fa fa-chart-bar fs-3 text-primary"></i>
-              </div>
-            </div>
-            <div class="bg-body-light rounded-bottom">
-              <a class="block-content block-content-full block-content-sm fs-sm fw-medium d-flex align-items-center justify-content-between"
-                href="javascript:void(0)">
-                <span>查看統計數據</span>
-                <i class="fa fa-arrow-alt-circle-right ms-1 opacity-25 fs-base"></i>
-              </a>
-            </div>
-          </template>
-        </BaseBlock>
-        <!-- END Conversion Rate-->
-      </div>
+
     </div>
     <!-- END Overview -->
 
@@ -653,7 +631,7 @@ getBusiness();
     <!-- END Statistics -->
 
     <!-- Recent Orders -->
-    <BaseBlock title="最近訂單">
+    <!-- <BaseBlock title="最近訂單">
       <template #options>
         <div class="space-x-1">
           <button type="button" class="btn btn-sm btn-alt-secondary" @click="
@@ -695,12 +673,12 @@ getBusiness();
             </div>
           </div>
         </div>
-      </template>
+      </template> -->
 
-      <template #content>
-        <div v-if="orderSearch" id="one-dashboard-search-orders" class="block-content border-bottom">
-          <!-- Search Form -->
-          <form @sumit.prevent>
+    <!-- <template #content>
+        <div v-if="orderSearch" id="one-dashboard-search-orders" class="block-content border-bottom"> -->
+    <!-- Search Form -->
+    <!-- <form @sumit.prevent>
             <div class="push">
               <div class="input-group">
                 <input type="text" class="form-control form-control-alt" id="one-ecom-orders-search"
@@ -710,12 +688,12 @@ getBusiness();
                 </span>
               </div>
             </div>
-          </form>
-          <!-- END Search Form -->
-        </div>
-        <div class="block-content block-content-full">
-          <!-- Recent Orders Table -->
-          <div class="table-responsive">
+          </form> -->
+    <!-- END Search Form -->
+    <!-- </div>
+        <div class="block-content block-content-full"> -->
+    <!-- Recent Orders Table -->
+    <!-- <div class="table-responsive">
             <table class="table table-hover table-vcenter">
               <thead>
                 <tr>
@@ -935,12 +913,12 @@ getBusiness();
                 </tr>
               </tbody>
             </table>
-          </div>
-          <!-- END Recent Orders Table -->
-        </div>
-        <div class="block-content block-content-full bg-body-light">
-          <!-- Pagination -->
-          <nav aria-label="Photos Search Navigation">
+          </div> -->
+    <!-- END Recent Orders Table -->
+    <!-- </div>
+        <div class="block-content block-content-full bg-body-light"> -->
+    <!-- Pagination -->
+    <!-- <nav aria-label="Photos Search Navigation">
             <ul class="pagination pagination-sm justify-content-end mb-0">
               <li class="page-item">
                 <a class="page-link" href="javascript:void(0)" tabindex="-1" aria-label="Previous">
@@ -965,11 +943,11 @@ getBusiness();
                 </a>
               </li>
             </ul>
-          </nav>
-          <!-- END Pagination -->
-        </div>
+          </nav> -->
+    <!-- END Pagination -->
+    <!-- </div>
       </template>
-    </BaseBlock>
+    </BaseBlock> -->
     <!-- END Recent Orders -->
   </div>
   <!-- END Page Content -->

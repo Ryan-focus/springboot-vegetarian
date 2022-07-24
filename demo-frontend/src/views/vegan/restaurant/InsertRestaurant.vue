@@ -90,6 +90,18 @@ function createRestaurant() {
     window.location = "#/backend/restaurants/restaurantInfo";
   });
 }
+
+// 一鍵輸入
+function addRestaurant() {
+  state.restaurantName = "愛蔬網美食餐廳"
+  state.restaurantTel = "03-4532632"
+  state.restaurantAddress = "桃園市中壢區新生路二段421號"
+  state.restaurantCategory = "美式"
+  state.restaurantType = "全素"
+  state.restaurantBusinessHours = "週一到週日 09:00-18:00 全年無休"
+  state.restaurantScore = "5.0"
+}
+
 </script>
 
 <template>
@@ -217,8 +229,9 @@ function createRestaurant() {
 
 
             <div class="d-flex justify-content-center">
+              <button type="button" class="btn btn-alt-primary me-2" @click="addRestaurant">一鍵輸入</button>
               <button type="submit" class="btn btn-alt-primary me-2">送出</button>
-              <!-- <button type="submit" class="btn btn-alt-primary" id="autoinput">一鍵輸入</button> -->
+
             </div>
 
 

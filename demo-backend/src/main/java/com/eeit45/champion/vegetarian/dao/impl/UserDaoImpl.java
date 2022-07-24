@@ -329,7 +329,7 @@ public class UserDaoImpl implements UserDao {
 		
 		map.put("oneDay", oneDay);
 		
-		map.put("today", today);
+		map.put("today", new Timestamp(System.currentTimeMillis()));
 
         Integer count = namedParameterJdbcTemplate.queryForObject(sql, map, Integer.class);
 		
@@ -350,7 +350,7 @@ public class UserDaoImpl implements UserDao {
 		
 		map.put("oneDay", oneDay);
 		
-		map.put("today", today);
+		map.put("today", new Timestamp(System.currentTimeMillis()));
 
 		Double  count = namedParameterJdbcTemplate.queryForObject(sql, map, Double .class);
 		
