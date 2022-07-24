@@ -61,7 +61,7 @@ public class UserServiceImpl implements UserService {
 			sm.setFrom("eeit45no1@gmail.com");		//發送者
 			sm.setTo(userRequest.getEmail());	//收件者
 			sm.setSubject("愛蔬網帳號驗證信");	//主旨
-			sm.setText("您好，會員" + userRequest.getUserName() + "\n\n請點選下方連結驗證email" + "\n\nhttp://localhost:8080/#/user/verification");	//內文
+			sm.setText("您好，會員" + userRequest.getUserName() + "\n\n請點選下方連結驗證email以完成註冊" + "\n\nhttp://localhost:8080/#/user/verification");	//內文
 			javaMailSender.send(sm);
 		}
 		

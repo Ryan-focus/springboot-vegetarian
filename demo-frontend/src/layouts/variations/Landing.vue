@@ -87,7 +87,7 @@ function logOut() {
   max-width: 100%;
   max-height: 100%;
   border-radius: 50%;
-  border: 1px solid #2828FF;
+  /* border: 1px solid #2828FF; */
 }
 </style>
 

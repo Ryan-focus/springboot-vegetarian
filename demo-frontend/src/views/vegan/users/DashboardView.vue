@@ -367,7 +367,8 @@ getData();
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
-                <i class="far fa-gem fs-3 text-primary"></i>
+                <!-- <i class="far fa-gem fs-3 text-primary"></i> -->
+                <i class="far fa-user-circle fs-3 text-primary"></i>
               </div>
             </div>
             <div class="bg-body-light rounded-bottom">
@@ -393,7 +394,8 @@ getData();
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
-                <i class="far fa-user-circle fs-3 text-primary"></i>
+                <!-- <i class="far fa-user-circle fs-3 text-primary"></i> -->
+                <i class="fa fa-rocket fs-3 text-primary"></i>
               </div>
             </div>
             <div class="bg-body-light rounded-bottom">
@@ -419,7 +421,8 @@ getData();
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
-                <i class="far fa-paper-plane fs-3 text-primary"></i>
+                <!-- <i class="far fa-paper-plane fs-3 text-primary"></i> -->
+                <i class="fa fa-feather-pointed fs-3 text-primary"></i>
               </div>
             </div>
             <div class="bg-body-light rounded-bottom">
@@ -445,7 +448,8 @@ getData();
                 </dd>
               </dl>
               <div class="item item-rounded-lg bg-body-light">
-                <i class="fa fa-chart-bar fs-3 text-primary"></i>
+                <!-- <i class="fa fa-chart-bar fs-3 text-primary"></i> -->
+                <i class="far fa-paper-plane fs-3 text-primary"></i>
               </div>
             </div>
             <div class="bg-body-light rounded-bottom">

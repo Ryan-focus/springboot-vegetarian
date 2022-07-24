@@ -195,7 +195,7 @@ function addform() {
 
                   <div class="col-md-6 col-xl-5">
                     <RouterLink :to="{ name: 'userRegister' }" class="btn w-100 btn-alt-primary">
-                      <i class="fa fa-fw fa-sign-in-alt me-1 opacity-50"></i>
+                      <i class="fa fa-fw fa-plus me-1 opacity-50"></i>
                       <b>註冊</b>
                     </RouterLink>
                   </div>
@@ -203,22 +203,22 @@ function addform() {
                 <div class="row mb-4">
                   <div class="col-md-6 col-xl-5">
                     <button type="button" class="btn w-100 btn-alt-success" @click="addUser">
-                      <i class="fa fa-fw fa-plus me-1 opacity-50"></i>會員
+                      <i class="fa fa-fw fa-user me-1 opacity-50"></i>會員
                     </button>
                   </div>
                   <div class="col-md-6 col-xl-6">
-                    <button type="button" class="btn w-100 btn-alt-success" @click="addAdmin">
-                      <i class="fa fa-fw fa-plus me-1 opacity-50"></i>管理員
+                    <button type="button" class="btn w-100 btn-alt-secondary" @click="addAdmin">
+                      <i class="fa fa-fw fa-user-gear me-1 opacity-50"></i>管理員
                     </button>
                   </div>
                 </div>
                 <div class="row mb-4">
                   <div class="col-md-6 col-xl-6">
                     <button type="button" class="btn w-100 btn-alt-success" @click="addUser2">
-                      <i class="fa fa-fw fa-plus me-1 opacity-50"></i>會員2
+                      <i class="fa fa-fw fa-user me-1 opacity-50"></i>會員2
                     </button>
                   </div>
-                  <div class="col-md-6 col-xl-6">
+                  <div class="col-md-6 col-xl-5">
                     <button type="button" class="btn w-100 btn-alt-warning" @click="addform">
                       <i class="fa fa-fw fa-store me-1 opacity-50"></i> 商家
                     </button>
