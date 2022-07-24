@@ -67,7 +67,7 @@ async function onSubmit() {
     .post("http://localhost:8088/user/register", user)
     .then(function (response) {
       if (response.status === 200) {
-        Swal.fire(`請前往${state.email}完成驗證`, "⁽⁽٩(๑˃̶͈̀ ᗨ ˂̶͈́)۶⁾⁾", "success");
+        Swal.fire(`請前往${state.email}完成驗證`, "(`・ω・´)", "success");
         localStorage.setItem("registerInfo", state.email);
         // location.replace("http://localhost:8080/#/signin");
       }
@@ -195,13 +195,13 @@ function showPassword() {
                 </div>
                 <div class="row mb-4">
                   <div class="col-md-6 col-xl-5">
-                    <button type="submit" class="btn w-100 btn-alt-success">
+                    <button type="submit" class="btn w-100 btn-alt-primary">
                       <i class="fa fa-fw fa-plus me-1 opacity-50"></i>註冊
                     </button>
                   </div>&nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
                   <div class="col-md-6 col-xl-5">
                     <button type="button" class="btn w-100 btn-alt-success" @click="add">
-                      <i class="fa fa-fw fa-plus me-1 opacity-50"></i>一鍵
+                      <i class="far fa-fw fa-keyboard me-1 opacity-50"></i>一鍵
                     </button>
                   </div>
                 </div>

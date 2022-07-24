@@ -25,14 +25,14 @@ async function verify() {
         })
         .then(response => {
             if (response.status === 200) {
-                Swal.fire("驗證成功,會員已開通", "༼ つ ◕_◕ ༽つ", "success");
+                Swal.fire("驗證成功,會員已開通", "(*´▽`*)", "success");
                 location.replace("http://localhost:8080/#/signin");
                 localStorage.removeItem("registerInfo");
             }
         })
         .catch(function (error) {
             if (error.response.status === 400) {
-                Swal.fire("驗證失敗", "◢▆▅▄▃崩╰(〒皿〒)╯潰▃▄▅▇◣", "error");
+                // Swal.fire("驗證失敗", "◢▆▅▄▃崩╰(〒皿〒)╯潰▃▄▅▇◣", "error");
                 location.replace("http://localhost:8080/#/user/register");
             } else {
                 console.log(error.response.status)

@@ -175,7 +175,7 @@ const searchAddress = function () {
     });
 }
 
-// searchAddress();
+searchAddress();
 
 // 取得條件(餐廳名稱)
 const searchName = function () {
@@ -343,7 +343,7 @@ getBusinessList();
                   <!-- 收藏 -->
                   <!-- <button type="button" class="btn btn-outline-primary me-3">收藏</button> -->
                   <!-- 詳細 -->
-                  <button type="button" class="btn btn-outline-primary me-3"
+                  <button type="button" class="btn btn-outline-primary me-3" style="margin-top:0.5cm"
                     @click.prevent="restaurantDetail(item.restaurantNumber)">詳細</button>
                   <!-- 前往訂位-->
                   <a v-if="businessRestuarantID.indexOf(item.restaurantNumber) >= 0"
