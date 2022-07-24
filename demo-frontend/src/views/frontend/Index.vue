@@ -4,6 +4,7 @@ import { ref } from "vue";
 import { useRouter } from "vue-router";
 
 
+
 // Main store
 const store = useTemplateStore();
 const router = useRouter();
@@ -18,6 +19,7 @@ const urlParams = ref(
     restaurantName: null
   }
 );
+
 
 //帶值category到下個頁面
 function searchCatagory(restaurantCategory) {
@@ -80,7 +82,7 @@ function searchAddress(restaurantAddress) {
           <!-- <div class="my-1"></div> -->
           <h1 class="h1 text-white mb-3" style="margin-top:3.5cm"><b>想知道哪裡有素食 ?</b></h1>
           <h3>
-            <span class="text-white-75" style="margin-top:1cm"><b>從超過 50
+            <span class="text-white-75" style="margin-top:1cm"><b>從超過 30
                 家精選餐廳中，探索您不知道的熱門素食。</b></span>
           </h3>
         </div>

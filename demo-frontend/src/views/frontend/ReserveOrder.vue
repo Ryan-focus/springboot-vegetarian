@@ -2,7 +2,7 @@
 // 已經宣告但從未使用過的Value (請勿刪除)
 import { useTemplateStore } from "@/stores/template";
 // eslint-disable-next-line no-unused-vars
-import { reactive, ref, onMounted } from "vue";
+import { reactive, ref } from "vue";
 
 import { useLoading } from "vue3-loading-overlay";
 //using Axios 
@@ -10,10 +10,10 @@ import axios from "axios";
 // Vue Star Rating, for more info and examples you can check out https://github.com/craigh411/vue-StarRating
 import StarRating from "vue-star-rating";
 // useRoute 接值 ，做查詢 
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 // Calendar
 import Datepicker from '@vuepic/vue-datepicker';
-import router from "../../router";
+const router = useRouter();
 //接值
 const loader = useLoading({
   loader: 'dots',
@@ -63,7 +63,6 @@ const date = ref(new Date());
 const startDate = ref(new Date());
 const maxDate = ref(new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate() + 30));
 
-
 //v-bind value 
 const adult = ref(2);
 const kid = ref(0);
@@ -104,6 +103,76 @@ function sendData() {
   });
 }
 
+//WebSocket
+const account = ref(null);
+const wsIsRun = ref(false);
+const webSocket = ref(null);
+const ws = ref('');
+const wsTimer = ref(null);
+const message = ref();
+
+
+wsIsRun.value = true;
+wsInit();
+
+
+function sendDataToServer() {
+  if (webSocket.value.readyState === 1) {
+    webSocket.value.send(message.value);
+  } else {
+    throw Error("服務尚未連接");
+  }
+}
+function wsInit() {
+  const wsuri = `ws://localhost:8088/websocket/${account.value}`;
+  ws.value = wsuri;
+  if (!wsIsRun.value) return
+  // 
+  wsDestroy();
+  webSocket.value = new WebSocket(ws.value);
+  webSocket.value.addEventListener('open', wsOpenHanler);
+  webSocket.value.addEventListener('message', wsMessageHanler);
+  webSocket.value.addEventListener('error', wsErrorHanler);
+  webSocket.value.addEventListener('close', wsCloseHanler);
+
+  clearInterval(wsTimer.value)
+  wsTimer.value = setInterval(() => {
+    if (webSocket.value.readyState === 1) {
+      clearInterval(wsTimer.value);
+    } else {
+      console.log('ws連接失敗')
+      wsInit()
+    }
+  }, 3000)
+}
+
+function wsOpenHanler() {
+  console.log('ws建立成功');
+}
+function wsMessageHanler(e) {
+  console.log('wsMessageHanler');
+  // console.log(e);
+  message.value = e.data;
+}
+function wsErrorHanler(e) {
+  console.log(e, '通訊中發生錯誤');
+  wsInit();
+}
+function wsCloseHanler(e) {
+  console.log(e, 'ws關閉');
+  wsInit();
+}
+function wsDestroy() {
+  if (webSocket.value !== null) {
+    webSocket.value.removeEventListener('open', wsOpenHanler);
+    webSocket.value.removeEventListener('message', wsMessageHanler);
+    webSocket.value.removeEventListener('error', wsErrorHanler);
+    webSocket.value.removeEventListener('close', wsCloseHanler);
+    webSocket.value.close();
+    webSocket.value = null;
+    clearInterval(wsTimer.value);
+  }
+}
 
 </script>
 
@@ -169,6 +238,10 @@ function sendData() {
         <span>
           <i class="fa fa-map me-3 h5 text-secondary"></i> <a class="text-warning h5 fw-normal me-4 link-fx"
             target="_blank">查看地圖</a>
+        </span>
+        <span>
+          <i class="fa fa-user me-2 h5 text-secondary"></i>
+          <h6 class="text-warning" style="display:inline">{{ message }}</h6>
         </span>
       </div>
 

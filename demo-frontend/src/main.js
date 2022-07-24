@@ -15,6 +15,7 @@ import BaseBlock from "@/components/BaseBlock.vue";
 import BaseBackground from "@/components/BaseBackground.vue";
 import BasePageHeading from "@/components/BasePageHeading.vue";
 import LoadingVue from "@/components/LoadingVue.vue";
+import WebSocket from "@/WebSocket/WebSocket.vue";
 
 //全域註冊 Loader
 // 讀取動畫套件
@@ -144,6 +145,8 @@ app.component("BaseBlock", BaseBlock);
 app.component("BaseBackground", BaseBackground);
 app.component("BasePageHeading", BasePageHeading);
 app.component("LoadingVue", LoadingVue);
+//Register WebSocket
+app.component("WebSocket", WebSocket);
 
 // Register global directives
 app.directive("click-ripple", clickRipple);
