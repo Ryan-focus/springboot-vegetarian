@@ -48,7 +48,7 @@ public interface UserDao {
 	Integer countLogin();
 
 	Double countPercentLogin();
-	
+
 	int updateStatus(String status, String email);
 	
 }
