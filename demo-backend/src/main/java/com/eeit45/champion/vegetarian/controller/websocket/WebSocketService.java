@@ -44,9 +44,9 @@ public class WebSocketService {
         webSocketMap.put(userName, client);
 
         log.info("----------------------------------------------------------------------------");
-        log.info("用戶連接:"+userName+",當前在線人數為:" + getOnlineCount());
+        log.info("用戶連接:"+userName+",當前在線人數為 : " + getOnlineCount());
         try {
-            sendMessage("來自後台的反饋：連接成功");
+            sendMessage("有 " + getOnlineCount() + "人，在瀏覽此頁面");
         } catch (IOException e) {
             log.error("用戶:"+userName+",網絡異常!!!!!!");
         }

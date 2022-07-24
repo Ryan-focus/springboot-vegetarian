@@ -1,5 +1,4 @@
 <template>
-    <WebSocket></WebSocket>
     <router-view v-if="isRouterAlive" />
 </template>
 

@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/websocket")
 public class WebSocketController {
 
-    @GetMapping("/pushone")
-    public void pushone()
+    @GetMapping("/one")
+    public void pushOne()
     {
-        WebSocketService.sendMessage("badao","公眾號:霸道的程序猿");
+        WebSocketService.sendMessage("cat","貓咪");
     }
 }
