@@ -58,11 +58,11 @@ public class WebSocketService {
     @OnClose
     public void onClose() {
         if(webSocketMap.containsKey(userName)){
-            webSocketMap.remove(userName);
             if(webSocketMap.size()>0)
             {
                 //從set中刪除
                 subOnlineCount();
+                webSocketMap.remove(userName);
             }
         }
         log.info("----------------------------------------------------------------------------");
@@ -75,7 +75,7 @@ public class WebSocketService {
      * @param message 客戶端發送過來的消息*/
     @OnMessage
     public void onMessage(String message, Session session) {
-        log.info("收到用戶消息:"+userName+",報文:"+message);
+        log.info("收到用戶消息:"+userName+",內容:"+message);
         //可以群發消息
         //消息保存到數據庫、redis
         if(StringUtils.isNotBlank(message)){

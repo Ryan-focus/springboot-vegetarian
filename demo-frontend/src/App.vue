@@ -1,4 +1,5 @@
 <template>
+    <WebSocket></WebSocket>
     <router-view v-if="isRouterAlive" />
 </template>
 
@@ -15,7 +16,6 @@
 @import "@/assets/scss/oneui/themes/smooth";
 </style>
 <script>
-
 import { defineComponent, ref, nextTick, provide } from 'vue';
 
 export default defineComponent({

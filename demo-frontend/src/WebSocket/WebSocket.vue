@@ -1,12 +1,9 @@
-<template>
-    <button class="btn btn-warning" @click="sendDataToServer">給後台發送消息</button>
-</template> 
-
 <script>
 export default {
     name: "WebSocket",
     data() {
         return {
+            account: null,
             // ws是否啟動
             wsIsRun: false,
             // 定義ws對象
@@ -33,7 +30,7 @@ export default {
          * 初始化ws 
          */
         wsInit() {
-            const wsuri = 'ws://localhost:8088/websocket/badao'
+            const wsuri = `ws://localhost:8088/websocket/${this.account}`;
             this.ws = wsuri
             if (!this.wsIsRun) return
             // 銷毀ws 
