@@ -135,7 +135,7 @@ const app = createApp(App);
 //Axios
 // axios.defaults.baseURL = config.api.url
 axios.defaults.withCredentials = false;
-axios.defaults.timeout = 10000;
+axios.defaults.timeout = 30000;
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 // VueLoading.__defaults;
