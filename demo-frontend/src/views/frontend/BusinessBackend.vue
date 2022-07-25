@@ -374,8 +374,11 @@ function fileUpload() {
   var files = document.getElementById("input").files;
   var params = new FormData();
   params.append("file", files[0]);
+  console.log(params.get("file"));
   axios.post("http://localhost:8088/fileUpload", params).then((res) => {
     image.value = res.data;
+    //印出路徑
+    console.log(image);
   });
 }
 
@@ -899,16 +902,16 @@ function addform() {
 
                 </div>
                 <!-- 圖片上傳開始-->
-                <div class="mb-4">
+                <div>
                   <label class="form-label" for="val-stock">圖片 </label>
-                  <input class="form-control mb-4" id=" input" type="file" ref="myFile" @change="fileUpload()" />
+                  <input class="form-control" id="input" type="file" ref="myFile" @change="fileUpload()" />
                   <br />
-
-
                   <!-- 根據回傳值印出圖片 -->
                   <img :src="image.imageUrl" style="max-width:500px;width:100%" />
                   <br />
                 </div>
+                <div class="mb-4"></div>
+                <!--排版隔層-->
                 <div class="row mb-4">
                   <div class="col-md-6 col-xl-5">
                     <button type="submit" class="btn btn-alt-primary">送出</button>
