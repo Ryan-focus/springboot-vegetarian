@@ -65,11 +65,11 @@ async function onSubmit() {
         if (response.data.data.user != null && response.data.data.user.userId == 1) {
           localStorage.setItem("access-admin", JSON.stringify(response.data));
           // store.getStates({ admin: response.data });
-          location.replace("http://localhost:8080/#/backend/dashboard");
+          router.replace({ path: '/backend/dashboard' });
         } else if (response.data.data.user != null) {
           localStorage.setItem("access-user", JSON.stringify(response.data));
           // store.getStates({ admin: response.data });
-          location.replace("http://localhost:8080/#/");
+          router.replace({ name: "index" });
           renovate();
         } else if (response.data.data.business != null) {
           sessionStorage.setItem("access-business", JSON.stringify(response.data));
