@@ -1,7 +1,7 @@
 <script setup>
 // 已經宣告但從未使用過的Value (請勿刪除)
 import { useTemplateStore } from "@/stores/template";
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import axios from "axios";
 import Swal from "sweetalert2";
 //預設傳值伺服器與[params]
@@ -68,7 +68,7 @@ const cartItem = ref({
   quantity: "",
 })
 
-function addToCart(productId) {
+function addToCart() {
   if (singleProduct.value.stock < this.cartItem.quantity) {
     Swal.fire(
       {
@@ -110,19 +110,13 @@ function addToCart(productId) {
         </div>
         <div class="carousel-inner">
           <div class="carousel-item active">
-            <img
-              src="https://cms.cdn.91app.com/images/original/12557/481fb4bf-120e-42de-b3a6-9b2d0bfc55ef-1656481480-j7s9rs73lm_m_1200x531_800x354_400x177.jpg"
-              class="d-block w-100" alt="Carousel Image 1" />
+            <img :src="`/assets/media/vegan/cart_banner01.jpg`" class="d-block w-100" alt="Carousel Image 1" />
           </div>
           <div class="carousel-item">
-            <img
-              src="https://cms.cdn.91app.com/images/original/12557/481fb4bf-120e-42de-b3a6-9b2d0bfc55ef-1636528299-v1vyikczrn_m_1200x531_800x354_400x177.jpg"
-              class="d-block w-100" alt="Carousel Image 1" />
+            <img :src="`/assets/media/vegan/cart_banner02.jpg`" class="d-block w-100" alt="Carousel Image 1" />
           </div>
           <div class="carousel-item">
-            <img
-              src="https://cms.cdn.91app.com/images/original/12557/481fb4bf-120e-42de-b3a6-9b2d0bfc55ef-1631241731-h1yuofsgjg_m_1200x531_800x354_400x177.jpg"
-              class="d-block w-100" alt="Carousel Image 1" />
+            <img :src="`/assets/media/vegan/cart_banner03.jpg`" class="d-block w-100" alt="Carousel Image 1" />
           </div>
         </div>
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
@@ -143,7 +137,7 @@ function addToCart(productId) {
   <div class="row">
     <BaseBlock>
       <img
-        src="  https://cms.cdn.91app.com/images/original/12557/481fb4bf-120e-42de-b3a6-9b2d0bfc55ef-1585213936-x05bo61xos_m.png"
+        src="https://cms.cdn.91app.com/images/original/12557/481fb4bf-120e-42de-b3a6-9b2d0bfc55ef-1585213936-x05bo61xos_m.png"
         alt="" class="d-inline" />
       <img
         src="https://cms.cdn.91app.com/images/original/12557/481fb4bf-120e-42de-b3a6-9b2d0bfc55ef-1551854126-u4jy8my8l6.png"
