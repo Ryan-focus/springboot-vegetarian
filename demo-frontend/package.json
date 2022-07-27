@@ -49,6 +49,7 @@
     "bootstrap-icons": "^1.8.3",
     "bootstrap-sweetalert": "^1.0.1",
     "dropzone": "^6.0.0-beta.2",
+    "firebase": "^9.9.1",
     "highlightjs": "^9.16.2",
     "moment": "^2.29.4",
     "nprogress": "^0.2.0",
